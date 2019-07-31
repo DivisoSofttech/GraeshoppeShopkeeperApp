@@ -1,3 +1,4 @@
+import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
@@ -16,12 +17,23 @@ export class AppComponent {
       url: '/product',
       icon: 'logo-buffer'
     },
+    {
+      title: 'Category',
+      url: '/category',
+      icon: 'filing'
+    },
+    {
+      title: 'UOM',
+      url: 'uom/',
+      icon: 'speedometer'
+    },
   ];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private keycloakService: KeycloakService
   ) {
     this.initializeApp();
   }
@@ -31,5 +43,10 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  logout() {
+    console.log('hello');
+    this.keycloakService.logout();
   }
 }

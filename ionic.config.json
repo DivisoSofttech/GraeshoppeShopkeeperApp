@@ -1,5 +1,7 @@
 {
   "name": "GraeShoppe",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
