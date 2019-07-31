@@ -1,5 +1,4 @@
-import { EditProductComponent } from './../../components/edit-product/edit-product.component';
-import { CreateProductComponent } from './../../components/create-product/create-product.component';
+import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { ProductCardComponent } from './../../components/product-card/product-card.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -29,8 +28,7 @@ const routes: Routes = [
   declarations: [ProductPage],
   entryComponents: [
     ProductCardComponent,
-    CreateProductComponent,
-    EditProductComponent
+    CreateEditProductComponent
   ]
 })
 export class ProductPageModule {}

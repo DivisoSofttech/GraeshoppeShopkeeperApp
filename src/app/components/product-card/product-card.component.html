@@ -1,8 +1,11 @@
 <ion-card>
   <div class="overlay">
     <ion-buttons float-right>
-      <ion-button fill="none">
+      <ion-action-sheet-controller margin> </ion-action-sheet-controller>
+      
+      <ion-button fill="none" (click) = "presentActionSheet()">
         <ion-icon slot="icon-only" name="more" color="light"></ion-icon>
+        
       </ion-button>
     </ion-buttons>
   </div>
