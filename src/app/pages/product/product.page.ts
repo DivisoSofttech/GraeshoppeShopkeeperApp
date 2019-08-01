@@ -1,3 +1,5 @@
+import { ModalController } from '@ionic/angular';
+import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private modalController: ModalController
+  ) { }
 
   ngOnInit() {
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CreateEditProductComponent,
+      componentProps: {mode:'create'}
+    });
+    return await modal.present();
   }
 
 }

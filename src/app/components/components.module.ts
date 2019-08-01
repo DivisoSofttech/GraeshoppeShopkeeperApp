@@ -1,20 +1,20 @@
+import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { CreateProductComponent } from './create-product/create-product.component';
 import { ProductCardComponent } from './product-card/product-card.component';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditProductComponent } from './edit-product/edit-product.component';
 
 
 
 @NgModule({
-  declarations: [ProductCardComponent, CreateProductComponent, EditProductComponent],
+  declarations: [ProductCardComponent,CreateEditProductComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
   ],
-  exports: [ProductCardComponent, CreateProductComponent, EditProductComponent]
+  exports: [ProductCardComponent,CreateEditProductComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ComponentsModule { }
