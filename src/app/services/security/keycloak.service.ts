@@ -81,7 +81,7 @@ export class KeycloakService {
 
   logout() {
     this.oauthService.logOut();
-    this.util.navigateRoot();
     this.storage.clear();
+    this.util.navigateToLogin();
   }
 }

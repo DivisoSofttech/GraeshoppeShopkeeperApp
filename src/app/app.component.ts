@@ -1,3 +1,4 @@
+import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
 
@@ -33,6 +34,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private util: Util,
     private keycloakService: KeycloakService
   ) {
     this.initializeApp();
@@ -46,7 +48,7 @@ export class AppComponent {
   }
 
   logout() {
-    console.log('hello');
     this.keycloakService.logout();
+    this.util.createToast('You\'ve been logged out');
   }
 }

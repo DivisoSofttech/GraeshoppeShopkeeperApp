@@ -9,7 +9,6 @@ export class Util {
         private loadingController: LoadingController,
         private toastController: ToastController,
         private navController: NavController,
-        private routes: Router
     ) {}
 
     async createLoader() {
@@ -38,7 +37,12 @@ export class Util {
     }
 
     navigateRoot() {
-        this.navController.navigateForward('');
+        this.navController.navigateRoot('');
+    }
+
+
+    navigateToLogin() {
+        this.navController.navigateRoot('login')
     }
 
 }
