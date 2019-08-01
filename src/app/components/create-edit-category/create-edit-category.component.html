@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
       <ion-buttons>
+         <div *ngIf="throughProduct=='false'">
         <ion-button (click) = "dismiss()">
         <ion-icon name = "close" ></ion-icon>
         </ion-button>
+        </div>
         <div *ngIf= "mode=='update'">
             <ion-title>Update Category</ion-title>
         </div>
@@ -13,7 +15,6 @@
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
   <div margin>
     <ion-card>
       <ion-item margin>
@@ -26,7 +27,7 @@
       </ion-item>
     </ion-card>
   </div>
-</ion-content>
+
 <ion-footer>
   <div *ngIf= "mode=='update'">
     <ion-button margin expand="block" color="primary">Update</ion-button>

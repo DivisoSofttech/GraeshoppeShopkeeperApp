@@ -1,6 +1,6 @@
 import { Category } from './../../api/models/category';
-import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 
 @Component({
@@ -12,17 +12,30 @@ export class CreateEditCategoryComponent implements OnInit {
 
   category: Category = {};
   mode = 'create';
+  pop: boolean = false;
+  
+  @Input() throughProduct = 'false';
+  //@ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
-    private commandResource: CommandResourceService
+    private commandResource: CommandResourceService,
+    private popover: PopoverController
   ) { }
 
   ngOnInit() {
     console.log("Mode = ",this.mode);
     
   }
+  // modal() {
+  //     this.slides.slideTo(0);
+  // }
   dismiss(){
-    this.modalController.dismiss();
+    if(this.pop){
+      this.popover.dismiss();
+    }
+    else{
+      this.modalController.dismiss();
+    }
   }
 
   addCategory(){

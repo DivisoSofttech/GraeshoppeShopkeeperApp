@@ -21,7 +21,7 @@ export class ProductCardComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
-      componentProps: {mode:  'update'}
+      componentProps: {mode:  'update' ,product: this.product}
     });
     return await modal.present();
   }
