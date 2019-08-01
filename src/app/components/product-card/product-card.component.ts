@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductDTO } from 'src/app/api/models';
 import { CreateEditProductComponent } from './../create-edit-product/create-edit-product.component';
-import { PopoverController, ActionSheetController, ModalController } from '@ionic/angular';
+import {  ActionSheetController, ModalController } from '@ionic/angular';
+import { Product } from '../../api/models/product';
 
 @Component({
   selector: 'app-product-card',
@@ -10,7 +10,7 @@ import { PopoverController, ActionSheetController, ModalController } from '@ioni
 })
 export class ProductCardComponent implements OnInit {
   @Input()
-  product: ProductDTO;
+  product: Product;
 
   constructor(
     private actionSheetController: ActionSheetController,
@@ -21,7 +21,7 @@ export class ProductCardComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
-      componentProps: {mode:'update'}
+      componentProps: {mode:  'update'}
     });
     return await modal.present();
   }
@@ -33,7 +33,7 @@ export class ProductCardComponent implements OnInit {
         role: 'destructive',
         icon: 'create',
         handler: () => {
-          this.presentModal()
+          this.presentModal();
           console.log('Edit clicked');
         }
       },

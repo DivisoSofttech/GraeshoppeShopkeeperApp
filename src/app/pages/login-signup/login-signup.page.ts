@@ -1,13 +1,10 @@
+import { CommandResourceService } from '../../api/services/command-resource.service';
+import { Util } from './../../services/util';
 import { StoreDTO } from './../../api/models/store-dto';
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { IonSlides } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  CommandResourceService,
-  QueryResourceService
-} from 'src/app/api/services';
-import { Util } from 'src/app/services/util';
-import { ApiConfiguration } from 'src/app/api/api-configuration';
+import { QueryResourceService } from '../../api/services/query-resource.service';
 
 @Component({
   selector: 'app-login-signup',
@@ -26,7 +23,6 @@ export class LoginSignupPage implements OnInit {
   constructor(
     private keycloakService: KeycloakService,
     private util: Util,
-    private apiConfiguration: ApiConfiguration,
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService
   ) {}
