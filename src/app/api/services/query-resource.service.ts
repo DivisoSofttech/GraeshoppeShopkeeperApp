@@ -12,6 +12,7 @@ import { PdfDTO } from '../models/pdf-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { EntryLineItem } from '../models/entry-line-item';
 import { CategoryDTO } from '../models/category-dto';
+import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { PageOfProduct } from '../models/page-of-product';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
@@ -44,7 +45,7 @@ class QueryResourceService extends __BaseService {
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
   static readonly findAllEntryLineItemsUsingGETPath = '/api/query/entryLineItem/{storeId}';
   static readonly findAllCategoriesWithOutImageUsingGETPath = '/api/query/findAllCategoriesWithOutImage';
-  static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCateogories';
+  static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCateogories/{storeId}';
   static readonly findAllCustomersUsingGETPath = '/api/query/findAllCustomer/{searchTerm}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
   static readonly findAllProductsByCategoryIdUsingGETPath = '/api/query/findAllProductByCategoryId/{categoryId}/{storeId}';
@@ -247,6 +248,8 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams` containing the following parameters:
    *
+   * - `storeId`: storeId
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
@@ -259,6 +262,7 @@ class QueryResourceService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
@@ -282,6 +286,8 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams` containing the following parameters:
    *
+   * - `storeId`: storeId
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
@@ -299,6 +305,8 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllCategoriesUsingGETParams` containing the following parameters:
    *
+   * - `storeId`: storeId
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
@@ -307,16 +315,17 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAllCategoriesUsingGETResponse(params: QueryResourceService.FindAllCategoriesUsingGETParams): __Observable<__StrictHttpResponse<Array<CategoryDTO>>> {
+  findAllCategoriesUsingGETResponse(params: QueryResourceService.FindAllCategoriesUsingGETParams): __Observable<__StrictHttpResponse<PageOfCategory>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/findAllCateogories`,
+      this.rootUrl + `/api/query/findAllCateogories/${params.storeId}`,
       __body,
       {
         headers: __headers,
@@ -327,12 +336,14 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<CategoryDTO>>;
+        return _r as __StrictHttpResponse<PageOfCategory>;
       })
     );
   }
   /**
    * @param params The `QueryResourceService.FindAllCategoriesUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -342,9 +353,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAllCategoriesUsingGET(params: QueryResourceService.FindAllCategoriesUsingGETParams): __Observable<Array<CategoryDTO>> {
+  findAllCategoriesUsingGET(params: QueryResourceService.FindAllCategoriesUsingGETParams): __Observable<PageOfCategory> {
     return this.findAllCategoriesUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<CategoryDTO>)
+      __map(_r => _r.body as PageOfCategory)
     );
   }
 
@@ -1610,11 +1621,11 @@ class QueryResourceService extends __BaseService {
    * @param regNo regNo
    * @return OK
    */
-  findStoreByRegNoUsingGETResponse(regNo?: string): __Observable<__StrictHttpResponse<Store>> {
+  findStoreByRegNoUsingGETResponse(regNo: string): __Observable<__StrictHttpResponse<Store>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (regNo != null) __params = __params.set('regNo', regNo.toString());
+
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/query/stores/${regNo}`,
@@ -1636,7 +1647,7 @@ class QueryResourceService extends __BaseService {
    * @param regNo regNo
    * @return OK
    */
-  findStoreByRegNoUsingGET(regNo?: string): __Observable<Store> {
+  findStoreByRegNoUsingGET(regNo: string): __Observable<Store> {
     return this.findStoreByRegNoUsingGETResponse(regNo).pipe(
       __map(_r => _r.body as Store)
     );
@@ -1858,6 +1869,11 @@ module QueryResourceService {
   export interface FindAllCategoriesWithOutImageUsingGETParams {
 
     /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      */
     sort?: Array<string>;
@@ -1877,6 +1893,11 @@ module QueryResourceService {
    * Parameters for findAllCategoriesUsingGET
    */
   export interface FindAllCategoriesUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

@@ -9,7 +9,7 @@ export interface Contact {
   mobile?: number;
   mobileNumber?: string;
   saluation?: string;
-  telephone?: string;
+  telephone?: number;
   twitter?: string;
   websiteURL?: string;
 }
