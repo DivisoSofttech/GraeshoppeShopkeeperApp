@@ -1,8 +1,9 @@
 import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Category } from './../../api/models/category';
-import { QueryResourceService } from 'src/app/api/services';
 import { Component, OnInit } from '@angular/core';
+import { QueryResourceService } from '../../api/services/query-resource.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-category',
@@ -11,16 +12,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryPage implements OnInit {
 
+
   categories: Category[] = [];
 
   constructor(
-    private queryResource: QueryResourceService,
+    private queryService: QueryResourceService,
     private actionSheetController: ActionSheetController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private storage: Storage
   ) { }
 
   ngOnInit() {
-    this.getCategory();
+    this.storage.get('user').then(user => {
+      this.queryService.findAllCategoriesUsingGET({storeId: user.preferred_username}).subscribe(res => {
+        this.categories = res.content;
+      });
+    });
   }
 
   async presentModal() {
@@ -60,12 +67,5 @@ export class CategoryPage implements OnInit {
       }]
     });
     await actionSheet.present();
-  }
-  getCategory(){
-    this.queryResource.findAllCategoriesUsingGET({})
-        .subscribe(data => {
-          this.categories = data;
-          console.log(data);
-        }),err => console.log("Error getting Categories",err);
   }
 }

@@ -1,5 +1,4 @@
 /* tslint:disable */
-import { Country } from './country';
 import { Customer } from './customer';
 export interface Address {
   addressLine1?: string;
@@ -8,7 +7,7 @@ export interface Address {
   alternatePhone?: number;
   city?: string;
   cityOrTown?: string;
-  country?: Country;
+  country?: string;
   customer?: Customer;
   customerId?: string;
   houseNoOrBuildingName?: string;

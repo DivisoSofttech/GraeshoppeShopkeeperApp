@@ -6,6 +6,8 @@ import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Product } from 'src/app/api/models';
+import { Storage } from '@ionic/storage';
+
 
 @Component({
   selector: 'app-create-edit-product',
@@ -24,7 +26,8 @@ export class CreateEditProductComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private query: QueryResourceService,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private storage: Storage
   ) { }
 
   ngOnInit() {
@@ -66,9 +69,11 @@ export class CreateEditProductComponent implements OnInit {
         err => console.log("Error Getting ProductDTO Using Product",err))
   }
   getCategories(){
-    this.query.findAllCategoriesUsingGET({})
-        .subscribe(categories => this.categories=categories,
-        err => console.log("Error Getting Categories",err))
+    this.storage.get('user').then(user => {
+      this.query.findAllCategoriesUsingGET({storeId: user.preferred_username}).subscribe(res => {
+        this.categories = res.content;
+      });
+    });
   }
   getUOM(){
     this.query.findAllUomUsingGET({})
