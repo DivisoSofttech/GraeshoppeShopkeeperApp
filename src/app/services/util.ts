@@ -42,7 +42,7 @@ export class Util {
 
 
     navigateToLogin() {
-        this.navController.navigateRoot('login')
+        this.navController.navigateRoot('login');
     }
 
 }

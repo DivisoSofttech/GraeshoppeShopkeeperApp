@@ -50,11 +50,12 @@ export class KeycloakService {
   }
 
   authenticate(credentials: any, success: any, err: any) {
-    this.oauthService.fetchTokenUsingPasswordFlow(
+    this.oauthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
       credentials.username,
       credentials.password,
       new HttpHeaders()
     ).then(data => {
+      this.storage.set('user' , data);
       success();
     }).catch(e => {
       err();
