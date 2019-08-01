@@ -1,5 +1,6 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { ProductDTO } from 'src/app/api/models';
 import { CreateEditProductComponent } from './../create-edit-product/create-edit-product.component';
-import { Component, OnInit } from '@angular/core';
 import { PopoverController, ActionSheetController, ModalController } from '@ionic/angular';
 
 @Component({
@@ -8,6 +9,8 @@ import { PopoverController, ActionSheetController, ModalController } from '@ioni
   styleUrls: ['./product-card.component.scss'],
 })
 export class ProductCardComponent implements OnInit {
+  @Input()
+  product: ProductDTO;
 
   constructor(
     private actionSheetController: ActionSheetController,
