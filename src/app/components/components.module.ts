@@ -1,3 +1,5 @@
+import { CreateEditCategoryComponent } from './create-edit-category/create-edit-category.component';
+import { CreateEditUomComponent } from './create-edit-uom/create-edit-uom.component';
 import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -8,13 +10,13 @@ import { CommonModule } from '@angular/common';
 
 
 @NgModule({
-  declarations: [ProductCardComponent,CreateEditProductComponent],
+  declarations: [ProductCardComponent,CreateEditProductComponent,CreateEditUomComponent,CreateEditCategoryComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
   ],
-  exports: [ProductCardComponent,CreateEditProductComponent],
+  exports: [ProductCardComponent,CreateEditProductComponent,CreateEditUomComponent,CreateEditCategoryComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ComponentsModule { }

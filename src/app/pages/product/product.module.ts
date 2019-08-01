@@ -1,3 +1,5 @@
+import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
+import { CreateEditUomComponent } from './../../components/create-edit-uom/create-edit-uom.component';
 import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { ProductCardComponent } from './../../components/product-card/product-card.component';
 import { NgModule } from '@angular/core';
@@ -28,7 +30,9 @@ const routes: Routes = [
   declarations: [ProductPage],
   entryComponents: [
     ProductCardComponent,
-    CreateEditProductComponent
+    CreateEditProductComponent,
+    CreateEditUomComponent,
+    CreateEditCategoryComponent
   ]
 })
 export class ProductPageModule {}

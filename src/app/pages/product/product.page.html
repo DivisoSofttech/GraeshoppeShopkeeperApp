@@ -24,13 +24,13 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button data-desc="Product" (click)= "presentModal()">
+      <ion-fab-button data-desc="Product" (click)="presentProductModal()">
         <ion-icon name="logo-buffer"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button data-desc="Category" >
+      <ion-fab-button data-desc="Category" (click)="presentCategoryModal()">
         <ion-icon name="filing"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button data-desc="UOM">
+      <ion-fab-button data-desc="UOM" (click)="presentUomModal()">
         <ion-icon name="speedometer"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

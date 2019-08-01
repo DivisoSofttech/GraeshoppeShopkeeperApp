@@ -1,3 +1,5 @@
+import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
+import { CreateEditUomComponent } from './../../components/create-edit-uom/create-edit-uom.component';
 import { ModalController } from '@ionic/angular';
 import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { Component, OnInit } from '@angular/core';
@@ -16,9 +18,25 @@ export class ProductPage implements OnInit {
   ngOnInit() {
   }
 
-  async presentModal() {
+  async presentProductModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
+      componentProps: {mode:'create'}
+    });
+    return await modal.present();
+  }
+
+  async presentUomModal() {
+    const modal = await this.modalController.create({
+      component: CreateEditUomComponent,
+      componentProps: {mode:'create'}
+    });
+    return await modal.present();
+  }
+
+  async presentCategoryModal() {
+    const modal = await this.modalController.create({
+      component: CreateEditCategoryComponent,
       componentProps: {mode:'create'}
     });
     return await modal.present();
