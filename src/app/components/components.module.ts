@@ -1,3 +1,4 @@
+import { SettingsOptionComponent } from './settings-option/settings-option.component';
 import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 import { CategoryCardComponent } from './category-card/category-card.component';
 import { IonicModule } from '@ionic/angular';
@@ -14,7 +15,8 @@ import { UomCardComponent } from './uom-card/uom-card.component';
     ProductCardComponent,
     CreateEditProductComponent,
     CategoryCardComponent,
-    UomCardComponent
+    UomCardComponent,
+    SettingsOptionComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { UomCardComponent } from './uom-card/uom-card.component';
     ProductCardComponent,
     CreateEditProductComponent,
     CategoryCardComponent,
-    UomCardComponent
+    UomCardComponent,
+    SettingsOptionComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

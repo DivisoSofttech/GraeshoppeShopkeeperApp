@@ -16,5 +16,6 @@ export interface StoreDTO {
   propreitorId?: number;
   regNo?: string;
   storeAddressId?: number;
+  storeSettingsId?: number;
   totalRating?: number;
 }

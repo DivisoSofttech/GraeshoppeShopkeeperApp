@@ -1,10 +1,12 @@
 export { Address } from './models/address';
 export { AuxilaryLineItem } from './models/auxilary-line-item';
+export { AuxilaryLineItemDTO } from './models/auxilary-line-item-dto';
 export { Banner } from './models/banner';
 export { Brand } from './models/brand';
 export { Category } from './models/category';
 export { CategoryDTO } from './models/category-dto';
 export { ComboLineItem } from './models/combo-line-item';
+export { ComboLineItemDTO } from './models/combo-line-item-dto';
 export { Contact } from './models/contact';
 export { ContactDTO } from './models/contact-dto';
 export { Customer } from './models/customer';
