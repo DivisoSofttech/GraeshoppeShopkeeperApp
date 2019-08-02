@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+         <div *ngIf="throughProduct=='false'">
+        <ion-button (click) = "dismiss()">
+        <ion-icon name = "close" ></ion-icon>
+        </ion-button>
+        </div>
+        <div *ngIf= "mode=='update'">
+            <ion-title>Update Category</ion-title>
+        </div>
+        <div *ngIf= "mode=='create'">
+          <ion-title>Create Category</ion-title>
+        </div>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  <div margin>
+    <ion-card> 
+      <ion-item margin >
+          
+              <ion-img [src]="'data:' + category.imageContentType + ';base64,' + category.image"></ion-img>
+      
+      </ion-item>
+      <ion-item margin>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input  type="text" [(ngModel)] = "category.name"></ion-input>
+        <ion-icon slot="end" name="camera" (click)="selectImage()"></ion-icon>
+      </ion-item>
+      <ion-item margin>
+        <ion-label position="floating">Descriptin</ion-label>
+        <ion-textarea [(ngModel)] = "category.description"></ion-textarea>
+      </ion-item>
+    </ion-card> 
+  </div>
+
+<ion-footer>
+  <div *ngIf= "mode=='update'">
+    <ion-button margin expand="block" color="primary"(click)="updateCategory()">Update</ion-button>
+  </div>
+  <div *ngIf= "mode=='create'">
+  <ion-button margin expand="block" color="primary" (click)="addCategory()">Create</ion-button>
+  </div>
+</ion-footer>

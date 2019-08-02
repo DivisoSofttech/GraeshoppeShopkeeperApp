@@ -1,0 +1,30 @@
+.description {
+    padding-top: 0%;
+}
+
+.imageShow{
+    width: 100%;
+    height: 100%;
+} 
+
+.stock-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: black;
+}
+
+.display-list {
+    display: list-item;
+    list-style: none;
+    font-size: 15px;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0%;
+    width: 100%;
+    max-height: 25px;
+    height: 15%;
+    padding-bottom: 30px;
+}

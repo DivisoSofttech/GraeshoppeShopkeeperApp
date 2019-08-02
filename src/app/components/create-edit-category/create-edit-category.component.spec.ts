@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditUomComponent } from './edit-uom.component';
+import { CreateEditCategoryComponent } from './create-edit-category.component';
 
-describe('EditUomComponent', () => {
-  let component: EditUomComponent;
-  let fixture: ComponentFixture<EditUomComponent>;
+describe('CreateEditCategoryComponent', () => {
+  let component: CreateEditCategoryComponent;
+  let fixture: ComponentFixture<CreateEditCategoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditUomComponent ],
+      declarations: [ CreateEditCategoryComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditUomComponent);
+    fixture = TestBed.createComponent(CreateEditCategoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

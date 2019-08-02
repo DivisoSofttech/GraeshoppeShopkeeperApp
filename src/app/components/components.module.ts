@@ -1,12 +1,16 @@
-import { SettingsOptionComponent } from './settings-option/settings-option.component';
+import { IonicModule } from '@ionic/angular';
+import { SettingsOptionComponent } from 'src/app/components/settings-option/settings-option.component';
+import { CreateEditCategoryComponent } from './create-edit-category/create-edit-category.component';
+import { ImageSelectorComponent } from './image-selector/image-selector.component';
+import { CreateEditUomComponent } from './create-edit-uom/create-edit-uom.component';
 import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 import { CategoryCardComponent } from './category-card/category-card.component';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UomCardComponent } from './uom-card/uom-card.component';
+import { ImageCropperModule } from 'ngx-img-cropper';
 
 
 
@@ -16,9 +20,17 @@ import { UomCardComponent } from './uom-card/uom-card.component';
     CreateEditProductComponent,
     CategoryCardComponent,
     UomCardComponent,
-    SettingsOptionComponent
+    SettingsOptionComponent,
+    ImageSelectorComponent,
+    ProductCardComponent,
+    CreateEditProductComponent,
+    CreateEditUomComponent,
+    CreateEditCategoryComponent,
+    CategoryCardComponent
   ],
+
   imports: [
+    ImageCropperModule,
     CommonModule,
     FormsModule,
     IonicModule,
@@ -28,8 +40,12 @@ import { UomCardComponent } from './uom-card/uom-card.component';
     CreateEditProductComponent,
     CategoryCardComponent,
     UomCardComponent,
-    SettingsOptionComponent
+    SettingsOptionComponent,
+    ImageSelectorComponent,
+    CreateEditUomComponent,
+    CreateEditCategoryComponent
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [ImageSelectorComponent]
 })
 export class ComponentsModule { }

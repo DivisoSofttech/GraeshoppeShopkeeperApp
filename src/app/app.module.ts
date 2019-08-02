@@ -1,3 +1,4 @@
+import { ImageCropperModule } from 'ngx-img-cropper';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthInterceptor } from './services/security/auth-interceptor';
 import { ConfigsModule } from './configs/configs.module';
@@ -14,11 +15,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { Util } from './services/util';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    ImageCropperModule,
     BrowserModule,
     HttpClientModule,
     ConfigsModule,
@@ -31,6 +34,7 @@ import { Util } from './services/util';
     OAuthModule.forRoot(),
   ],
   providers: [
+    Camera,
     StatusBar,
     Util,
     SplashScreen,

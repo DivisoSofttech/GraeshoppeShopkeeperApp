@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddUomComponent } from './add-uom.component';
+import { ImageSelectorComponent } from './image-selector.component';
 
-describe('AddUomComponent', () => {
-  let component: AddUomComponent;
-  let fixture: ComponentFixture<AddUomComponent>;
+describe('ImageSelectorComponent', () => {
+  let component: ImageSelectorComponent;
+  let fixture: ComponentFixture<ImageSelectorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddUomComponent ],
+      declarations: [ ImageSelectorComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddUomComponent);
+    fixture = TestBed.createComponent(ImageSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
