@@ -1,0 +1,37 @@
+<div class="right-margin">
+  <ion-card class="full-width">
+    <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option color="warning">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item lines="none" class="full-width" no-padding>
+        <ion-list class="full-width" no-padding>
+        <ion-item lines="none">
+          <ion-text>{{uom.unit}}</ion-text>
+        </ion-item>
+        <ion-item [ngClass]="isreadMore?'slideInDown':'hidden'" class="full-width animated transition-props"  lines="none">
+          <ion-label class="description full-width">
+            {{'Description: ' + uom.description}}
+            <br>
+            {{'iDPCode: ' + uom.iDPcode}}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-buttons slot="end">
+        <ion-button (click)="readMore()">
+          <ion-icon name="arrow-dropdown" class="initial" [ngClass]="isreadMore?'rotate':''"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteUOM()">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-card>
+</div>

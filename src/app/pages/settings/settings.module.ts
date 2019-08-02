@@ -5,13 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { UomPage } from './uom.page';
-import { ComponentsModule } from 'src/app/components/components.module';
+import { SettingsPage } from './settings.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: UomPage
+    component: SettingsPage
   }
 ];
 
@@ -20,9 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    ComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [UomPage]
+  declarations: [SettingsPage]
 })
-export class UomPageModule {}
+export class SettingsPageModule {}
