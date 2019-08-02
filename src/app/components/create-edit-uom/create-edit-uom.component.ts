@@ -1,6 +1,6 @@
 import { UOMDTO } from './../../api/models/uomdto';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-create-edit-uom',
@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateEditUomComponent implements OnInit {
 
+  @Input() throughProduct = 'false';
   mode = 'create';
   uom: UOMDTO = {};
   constructor(

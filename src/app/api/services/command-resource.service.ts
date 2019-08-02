@@ -7,7 +7,9 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { CategoryDTO } from '../models/category-dto';
+import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { CustomerAggregator } from '../models/customer-aggregator';
@@ -30,8 +32,10 @@ import { UserRatingDTO } from '../models/user-rating-dto';
   providedIn: 'root',
 })
 class CommandResourceService extends __BaseService {
+  static readonly createAuxilaryLineItemUsingPOSTPath = '/api/command/auxilarylineitem';
   static readonly updateCategoryUsingPUTPath = '/api/command/categories';
   static readonly deleteCategoryUsingDELETEPath = '/api/command/categories/{id}';
+  static readonly createComboLineItemUsingPOSTPath = '/api/command/combolineitem';
   static readonly updateContactUsingPUTPath = '/api/command/contacts';
   static readonly deleteContactUsingDELETEPath = '/api/command/contacts/{id}';
   static readonly updateCustomerUsingPUTPath = '/api/command/customers';
@@ -76,6 +80,42 @@ class CommandResourceService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param auxilaryLineItemDTO auxilaryLineItemDTO
+   * @return OK
+   */
+  createAuxilaryLineItemUsingPOSTResponse(auxilaryLineItemDTO: AuxilaryLineItemDTO): __Observable<__StrictHttpResponse<AuxilaryLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = auxilaryLineItemDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/auxilarylineitem`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AuxilaryLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param auxilaryLineItemDTO auxilaryLineItemDTO
+   * @return OK
+   */
+  createAuxilaryLineItemUsingPOST(auxilaryLineItemDTO: AuxilaryLineItemDTO): __Observable<AuxilaryLineItemDTO> {
+    return this.createAuxilaryLineItemUsingPOSTResponse(auxilaryLineItemDTO).pipe(
+      __map(_r => _r.body as AuxilaryLineItemDTO)
+    );
   }
 
   /**
@@ -145,6 +185,42 @@ class CommandResourceService extends __BaseService {
   deleteCategoryUsingDELETE(id: number): __Observable<null> {
     return this.deleteCategoryUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param comboLineItemDTO comboLineItemDTO
+   * @return OK
+   */
+  createComboLineItemUsingPOSTResponse(comboLineItemDTO: ComboLineItemDTO): __Observable<__StrictHttpResponse<ComboLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = comboLineItemDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/combolineitem`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ComboLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param comboLineItemDTO comboLineItemDTO
+   * @return OK
+   */
+  createComboLineItemUsingPOST(comboLineItemDTO: ComboLineItemDTO): __Observable<ComboLineItemDTO> {
+    return this.createComboLineItemUsingPOSTResponse(comboLineItemDTO).pipe(
+      __map(_r => _r.body as ComboLineItemDTO)
     );
   }
 

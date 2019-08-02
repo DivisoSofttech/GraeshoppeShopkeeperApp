@@ -1,3 +1,5 @@
+import { ImageSelectorComponent } from './../../components/image-selector/image-selector.component';
+import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -29,6 +31,6 @@ const routes: Routes = [
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
-  entryComponents: [CategoryCardComponent]
+  entryComponents: [CategoryCardComponent,CreateEditCategoryComponent]
 })
 export class CategoryPageModule {}

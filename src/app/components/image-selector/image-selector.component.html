@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons>
+           
+          <ion-button (click) = "dismiss()">
+          <ion-icon name = "close" ></ion-icon>
+          </ion-button>
+         
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content>
+<div>
+    <img-cropper  #cropper1 [image]="data"  [settings]="cropperSettings"></img-cropper>
+</div>
+<br/>  
+<img
+[src]="data.image"
+[width]="cropperSettings.croppedWidth"
+[height]="cropperSettings.croppedHeight"
+/> 
+</ion-content>

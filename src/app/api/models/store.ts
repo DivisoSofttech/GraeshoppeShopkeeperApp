@@ -7,8 +7,8 @@ import { StoreAddress } from './store-address';
 import { StoreType } from './store-type';
 import { UserRating } from './user-rating';
 export interface Store {
+  maxDeliveryTime?: string;
   banners?: Array<Banner>;
-  closingTime?: string;
   contactNo?: number;
   deliveryInfos?: Array<DeliveryInfo>;
   email?: string;
@@ -18,7 +18,7 @@ export interface Store {
   info?: string;
   location?: string;
   locationName?: string;
-  maxDeliveryTime?: string;
+  closingTime?: string;
   minAmount?: number;
   name?: string;
   openingTime?: string;

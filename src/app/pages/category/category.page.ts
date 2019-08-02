@@ -17,8 +17,6 @@ export class CategoryPage implements OnInit {
 
   constructor(
     private queryService: QueryResourceService,
-    private actionSheetController: ActionSheetController,
-    private modalController: ModalController,
     private storage: Storage
   ) { }
 
@@ -30,42 +28,5 @@ export class CategoryPage implements OnInit {
     });
   }
 
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditCategoryComponent,
-      componentProps: {mode:'update'}
-    });
-    return await modal.present();
-  }
-
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      buttons: [{
-        text: 'Update',
-        role: 'destructive',
-        icon: 'create',
-        handler: () => {
-          this.presentModal()
-          console.log('Edit clicked');
-        }
-      },
-      {
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      },
-      {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
+  
 }

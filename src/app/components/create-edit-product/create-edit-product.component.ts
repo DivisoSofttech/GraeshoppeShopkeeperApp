@@ -1,10 +1,11 @@
+import { AuxilaryLineItemDTO } from './../../api/models/auxilary-line-item-dto';
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { UOMDTO } from './../../api/models/uomdto';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
 import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QueryResourceService } from 'src/app/api/services';
+import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Product } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 
@@ -17,9 +18,14 @@ import { Storage } from '@ionic/storage';
 export class CreateEditProductComponent implements OnInit {
   
   product: Product = {};
-  productDTO: ProductDTO = {};
+  productDTO: ProductDTO = {
+    isAuxilaryItem : false
+  };
+  products: Product[] = [];
   categories: CategoryDTO[] = [];
   uom: UOMDTO[] = [];
+  auxilary: AuxilaryLineItemDTO = {};
+  auxilaries: AuxilaryLineItemDTO[] = [];
   mode = 'create';
   value: string = '';
   @ViewChild('slides', { static: false }) slides: IonSlides;
@@ -27,7 +33,8 @@ export class CreateEditProductComponent implements OnInit {
     private modalController: ModalController,
     private query: QueryResourceService,
     private popoverController: PopoverController,
-    private storage: Storage
+    private storage: Storage,
+    private commandResource: CommandResourceService
   ) { }
 
   ngOnInit() {
@@ -37,6 +44,7 @@ export class CreateEditProductComponent implements OnInit {
     }
     this.getCategories();
     this.getUOM();
+
   }
 
   dismiss(){
@@ -47,7 +55,11 @@ export class CreateEditProductComponent implements OnInit {
     this.value = value;
     if (this.value === 'category') {
       this.slides.slideTo(1);
-    } else {
+    }
+    else if(this.value === 'uom'){
+      this.slides.slideTo(2);
+    }
+     else {
       this.slides.slideTo(0);
       this.value = '';
     }
@@ -80,4 +92,11 @@ export class CreateEditProductComponent implements OnInit {
         .subscribe(uom => this.uom = uom,
         err => console.log("Error Getting UOMs",err))
   }
+  createProduct(){
+    this.commandResource.createProductUsingPOST(this.productDTO)
+        .subscribe(data => console.log("product added",data),
+        err => console.log("error creating product",err)
+    )
+  }
+
 }
