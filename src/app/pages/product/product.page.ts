@@ -25,20 +25,26 @@ export class ProductPage implements OnInit {
   products: Product[];
 
   ngOnInit() {
-    let storeId;
+    let iDPcode;
     this.storage.get('user').then(user => {
-      storeId = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({storeId}).subscribe(res => {
+      iDPcode = user.preferred_username;
+      this.queryService.findAllProductsUsingGET({iDPcode}).subscribe(res => {
         this.products = res.content;
       });
     });
   }
+  deleteProduct(product: Product){
 
+    this.products = this.products.filter(p=>p !== product)
+  }
   async presentProductModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
       componentProps: {mode: 'create'}
     });
+    modal.onDidDismiss().then(
+      product => this.products.push(product.data)
+    )
     return await modal.present();
   }
 
@@ -55,6 +61,7 @@ export class ProductPage implements OnInit {
       component: CreateEditCategoryComponent,
       componentProps: {mode:'create'}
     });
+    
     return await modal.present();
   }
 

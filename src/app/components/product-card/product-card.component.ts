@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { CommandResourceService } from 'src/app/api/services';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CreateEditProductComponent } from './../create-edit-product/create-edit-product.component';
 import {  ActionSheetController, ModalController } from '@ionic/angular';
 import { Product } from '../../api/models/product';
@@ -11,13 +12,20 @@ import { Product } from '../../api/models/product';
 export class ProductCardComponent implements OnInit {
   @Input()
   product: Product;
+  @Output()
+  delete = new EventEmitter();
 
   constructor(
     private actionSheetController: ActionSheetController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private commandResource: CommandResourceService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.product);
+    
+  }
+
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
@@ -42,7 +50,8 @@ export class ProductCardComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');
+          this.commandResource.deleteProductUsingDELETE(this.product.id)
+              .subscribe(data =>  this.delete.emit());
         }
       },
       {

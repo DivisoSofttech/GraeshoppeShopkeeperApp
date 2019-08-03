@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-buttons>
            
-          <ion-button (click) = "dismiss()">
+          <ion-button  (click) = "dismiss()">
           <ion-icon name = "close" ></ion-icon>
           </ion-button>
          
@@ -11,12 +11,26 @@
   </ion-header>
 <ion-content>
 <div>
-    <img-cropper  #cropper1 [image]="data"  [settings]="cropperSettings"></img-cropper>
+    <img-cropper  #cropper [image]="data"  [settings]="cropperSettings"></img-cropper>
 </div>
-<br/>  
-<img
-[src]="data.image"
-[width]="cropperSettings.croppedWidth"
-[height]="cropperSettings.croppedHeight"
-/> 
+<ion-item>
+  <ion-buttons>
+    <ion-button>
+      <label class="btn btn-primary">
+          Upload
+          <input
+            id="file_input_file"
+            class="none"
+            type="file"
+            style="display: none;"
+            (change)="onChange($event)"
+          />
+        </label>
+      </ion-button>
+        <ion-button  (click) = "save()">
+            Save
+            </ion-button>
+  </ion-buttons>
+    
+</ion-item>
 </ion-content>

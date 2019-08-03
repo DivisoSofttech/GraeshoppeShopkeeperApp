@@ -1,7 +1,7 @@
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { Category } from './../../api/models/category';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-category-card',
@@ -16,13 +16,19 @@ export class CategoryCardComponent implements OnInit {
   ) { }
   @Input()
   category: Category;
+  @Output() 
+  update = new EventEmitter();
 
   ngOnInit() {}
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateEditCategoryComponent,
-      componentProps: {mode:  'update' ,Category: this.category}
+      componentProps: {mode:  'update' ,category: this.category}
+    });
+    modal.onDidDismiss()
+    .then(data => {
+     this.update.emit(data); 
     });
     return await modal.present();
   }
@@ -35,6 +41,7 @@ export class CategoryCardComponent implements OnInit {
         icon: 'create',
         handler: () => {
           this.presentModal();
+          
           console.log('Edit clicked');
         }
       },

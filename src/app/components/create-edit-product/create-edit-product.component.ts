@@ -1,3 +1,4 @@
+import { ImageSelectorComponent } from './../image-selector/image-selector.component';
 import { AuxilaryLineItemDTO } from './../../api/models/auxilary-line-item-dto';
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { UOMDTO } from './../../api/models/uomdto';
@@ -22,9 +23,10 @@ export class CreateEditProductComponent implements OnInit {
     isAuxilaryItem : false
   };
   products: Product[] = [];
+  //auxilaryProduct: Product[] = [];
   categories: CategoryDTO[] = [];
   uom: UOMDTO[] = [];
-  auxilary: AuxilaryLineItemDTO = {};
+  auxilaryItem: AuxilaryLineItemDTO = {};
   auxilaries: AuxilaryLineItemDTO[] = [];
   mode = 'create';
   value: string = '';
@@ -43,12 +45,13 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
     }
     this.getCategories();
-    this.getUOM();
+    // this.getAuxilaryItems();
+    //this.getUOM();
 
   }
 
-  dismiss(){
-    this.modalController.dismiss();
+  dismiss(data){
+    this.modalController.dismiss(data);
   }
 
   slide(value: string) {
@@ -87,16 +90,54 @@ export class CreateEditProductComponent implements OnInit {
       });
     });
   }
-  getUOM(){
-    this.query.findAllUomUsingGET({})
-        .subscribe(uom => this.uom = uom,
-        err => console.log("Error Getting UOMs",err))
-  }
+  // getUOM(){
+  //   this.query.findAllUomUsingGET({})
+  //       .subscribe(uom => this.uom = uom,
+  //       err => console.log("Error Getting UOMs",err))
+  // }
   createProduct(){
     this.commandResource.createProductUsingPOST(this.productDTO)
-        .subscribe(data => console.log("product added",data),
+        .subscribe(data => {
+          console.log("product added",data);
+          this.dismiss(data);
+        },
         err => console.log("error creating product",err)
     )
+    
+    // if(this.productDTO.isAuxilaryItem==false){
+    //   this.commandResource.createAuxilaryLineItemUsingPOST()
+    // }
+    
   }
+  async selectImage() {
+
+    const modal = await this.modalController.create({
+      component: ImageSelectorComponent,
+      cssClass: 'half-height'
+    });
+
+    modal.onDidDismiss()
+    .then(data => {
+      console.log("sdf",data);
+      console.log(this.productDTO.image);
+      console.log("ghf",data.data.imageType);
+      
+      
+      this.productDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
+      this.productDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':')+1,data.data.image.indexOf(';'));
+      console.log(this.productDTO.image);
+      console.log(this.productDTO.imageContentType);
+      
+    });
+
+    return await modal.present();
+  }
+
+  // getAuxilaryItems(){
+  //   this.query.getAuxilaryLineItemsUsingGET({})
+  //       .subscribe(auxilaryItems => this.auxilaries = auxilaryItems
+  //         ,err => console.log("error getting Auxilary items",err)
+  //         );
+  // }
 
 }
