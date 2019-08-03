@@ -9,7 +9,7 @@ import { CropperSettings, ImageCropperComponent } from 'ngx-img-cropper';
   styleUrls: ['./image-selector.component.scss'],
 })
 export class ImageSelectorComponent implements OnInit {
-  
+
   public data: any = {};
   cropperSettings: CropperSettings;
   @ViewChild('cropper', { static: true })
@@ -17,7 +17,7 @@ export class ImageSelectorComponent implements OnInit {
   constructor(
     private camera: Camera,
     private modalController: ModalController
-  ) { 
+  ) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.width = 300;
     this.cropperSettings.height = 300;
@@ -50,4 +50,5 @@ export class ImageSelectorComponent implements OnInit {
   save() {
     this.modalController.dismiss(this.data);
   }
+
 }

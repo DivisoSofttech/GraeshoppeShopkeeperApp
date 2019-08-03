@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'category', loadChildren: './pages/category/category.module#CategoryPageModule', canActivate: [AuthGuardService] },
   { path: 'uom', loadChildren: './pages/uom/uom.module#UomPageModule', canActivate: [AuthGuardService]  },
   { path: 'login', loadChildren: './pages/login-signup/login-signup.module#LoginSignupPageModule' },
+  { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule', canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

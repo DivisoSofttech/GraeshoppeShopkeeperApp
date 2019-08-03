@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+
+  <div>
+    <ion-img src="assets/images/burger.jpeg" class="store-image"></ion-img>
+  </div>
+
+  <ion-list no-padding no-margin>
+    <app-settings-option *ngFor="let option of options" [option]="option"></app-settings-option>
+  </ion-list>
+</ion-content>

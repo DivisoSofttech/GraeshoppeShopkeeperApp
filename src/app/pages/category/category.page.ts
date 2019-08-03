@@ -32,5 +32,6 @@ export class CategoryPage implements OnInit {
     this.categories = this.categories.filter(c => c.id !== category.data.id);
     this.categories.push(category.data);
   }
-  
+
 }
+

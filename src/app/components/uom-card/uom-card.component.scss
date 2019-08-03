@@ -1,0 +1,30 @@
+.rotate {
+    transform: rotate(180deg);
+}
+
+.initial {
+    transition-duration: 0.3s;
+}
+
+.full-width {
+    width: 100%;
+    overflow: visible;  
+}
+
+.left-margin {
+    margin-left: 16px;
+}
+
+.right-margin {
+    margin-right: 21px;
+}
+
+.description {
+    color: gray;
+    font-size: 14px;
+}
+
+.transition-props {
+    animation-duration: 0s;
+    animation-delay: 0s;
+}
