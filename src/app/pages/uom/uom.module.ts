@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { UomPage } from './uom.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { AddComponent } from 'src/app/components/add/add.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     ComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [UomPage]
+  declarations: [UomPage],
+  entryComponents: [AddComponent]
 })
 export class UomPageModule {}

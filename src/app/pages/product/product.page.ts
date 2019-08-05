@@ -17,7 +17,6 @@ import { Product } from '../../api/models/product';
 export class ProductPage implements OnInit {
 
   constructor(
-    private modalController: ModalController,
     private storage: Storage,
     private queryService: QueryResourceService
   ) { }
@@ -37,32 +36,6 @@ export class ProductPage implements OnInit {
 
     this.products = this.products.filter(p=>p !== product)
   }
-  async presentProductModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditProductComponent,
-      componentProps: {mode: 'create'}
-    });
-    modal.onDidDismiss().then(
-      product => this.products.push(product.data)
-    )
-    return await modal.present();
-  }
 
-  async presentUomModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditUomComponent,
-      componentProps: {mode:'create'}
-    });
-    return await modal.present();
-  }
-
-  async presentCategoryModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditCategoryComponent,
-      componentProps: {mode:'create'}
-    });
-    
-    return await modal.present();
-  }
 
 }

@@ -9,4 +9,5 @@
   <ion-list>
     <app-uom-card *ngFor="let uom of uoms" [uom]="uom" (deleteEvent)="remove(uom)"></app-uom-card>
   </ion-list>
+  <app-add (uomAdd)="onAddUOM($event)"></app-add>
 </ion-content>
