@@ -168,7 +168,9 @@ export class CreateEditProductComponent implements OnInit {
   saveCombo(){
     
     this.comboLineItems.forEach(
-      ci => this.commandResource.createAuxilaryLineItemUsingPOST(ci)
+      ci => this.commandResource.createComboLineItemUsingPOST(ci)
+                .subscribe(data => console.log("combo",data)
+                )
     )
     console.log("combo items",this.comboLineItems);
     
