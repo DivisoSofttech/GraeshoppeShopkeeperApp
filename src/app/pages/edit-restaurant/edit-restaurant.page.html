@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Restaurant</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="storeBundleDTO" class="ion-justify-content-center">
+  <ion-card>
+    <ion-card-subtitle>General</ion-card-subtitle>
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="8" class="vertical-align-center">
+          <img class="image"
+            [src]="'data:' + storeBundleDTO.store.imageContentType + ';base64,' + storeBundleDTO.store.image">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="vertical-align-center move-up" >
+            <ion-fab-button color="light" class="ion-margin-bottom" (click)="uploadImage()" >
+              <ion-icon name="camera"></ion-icon>
+            </ion-fab-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input [(ngModel)]="storeBundleDTO.store.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="storeBundleDTO.store.email"></ion-input>
+    </ion-item>
+  </ion-card>
+</ion-content>

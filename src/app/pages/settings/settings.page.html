@@ -7,11 +7,27 @@
 
 <ion-content no-padding>
 
-  <div>
-    <ion-img src="assets/images/burger.jpeg" class="store-image"></ion-img>
-  </div>
+  <ion-card>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size-sm="4" size="5" size-lg="3" size-md="4">
+            <img src="assets/images/burger.jpeg" class="store-image">
+        </ion-col>
+        <ion-col size="6">
+          <ion-card-title>
+            Restarant Name
+          </ion-card-title>
+          <ion-label>Cuisines</ion-label>
+          <ion-card-subtitle class="wrap-whitespace">
+            <ion-icon name="pin" color="medium"></ion-icon>
+            locality, city, province
+          </ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
   <ion-list no-padding no-margin>
-    <app-settings-option *ngFor="let option of options" [option]="option"></app-settings-option>
+    <app-settings-option class="pointer" *ngFor="let option of options" [option]="option" [routerLink]="option.route"></app-settings-option>
   </ion-list>
 </ion-content>

@@ -7,22 +7,22 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { PageOfUOM } from '../models/page-of-uom';
+import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
+import { CategoryDTO } from '../models/category-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { PdfDTO } from '../models/pdf-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { EntryLineItem } from '../models/entry-line-item';
-import { CategoryDTO } from '../models/category-dto';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { PageOfProduct } from '../models/page-of-product';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
-import { UOMDTO } from '../models/uomdto';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
 import { PageOfOrder } from '../models/page-of-order';
 import { ProductDTO } from '../models/product-dto';
-import { Review } from '../models/review';
 import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
 import { PageOfSale } from '../models/page-of-sale';
@@ -31,7 +31,6 @@ import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { Store } from '../models/store';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TicketLine } from '../models/ticket-line';
-import { UserRating } from '../models/user-rating';
 
 /**
  * Query Resource
@@ -40,27 +39,28 @@ import { UserRating } from '../models/user-rating';
   providedIn: 'root',
 })
 class QueryResourceService extends __BaseService {
+  static readonly findUOMByStoreIdUsingGETPath = '/api/query/UOM/{storeId}';
+  static readonly getAuxilaryLineItemsByStoreIdUsingGETPath = '/api/query/auxilarylineitems/{storeId}';
+  static readonly updateCategoryUsingPUT1Path = '/api/query/categories';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
   static readonly exportCustomersUsingGETPath = '/api/query/customers/export';
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
   static readonly findAllEntryLineItemsUsingGETPath = '/api/query/entryLineItem/{storeId}';
-  static readonly findAllCategoriesWithOutImageUsingGETPath = '/api/query/findAllCategoriesWithOutImage';
+  static readonly findAllCategoriesWithOutImageUsingGETPath = '/api/query/findAllCategoriesWithOutImage/{iDPcode}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCateogories/{storeId}';
   static readonly findAllCustomersUsingGETPath = '/api/query/findAllCustomer/{searchTerm}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
   static readonly findAllProductsByCategoryIdUsingGETPath = '/api/query/findAllProductByCategoryId/{categoryId}/{storeId}';
-  static readonly findAllProductsUsingGETPath = '/api/query/findAllProducts/{storeId}';
+  static readonly findAllProductsUsingGETPath = '/api/query/findAllProducts/{iDPcode}';
   static readonly findAllStockCurrentByProductNameUsingGETPath = '/api/query/findAllStockCurrentByProductName/{name}/{storeId}';
   static readonly findAllStockCurrentByCategoryUsingGETPath = '/api/query/findAllStockCurrentsByCategoryId/{categoryId}/{storeId}';
-  static readonly findAllUomUsingGETPath = '/api/query/findAllUom';
   static readonly findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}/{storeId}';
   static readonly findStockCurrentByProductIdUsingGETPath = '/api/query/findStockCurrentByProductId/{productId}/{storeId}';
   static readonly findStockCurrentDTOByProductIdUsingGETPath = '/api/query/findStockCurrentDTOByProductId/{productId}';
   static readonly findStockEntryByProductIdUsingGETPath = '/api/query/findStockEntryByProductId/{productId}/{storeId}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
-  static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{storeId}';
+  static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
-  static readonly findAllReviewsUsingGETPath = '/api/query/reviews';
   static readonly findAllSaleAggregatesUsingGETPath = '/api/query/sales/combined/{storeId}';
   static readonly findSaleByIdUsingGETPath = '/api/query/sales/{id}';
   static readonly findSalesUsingGETPath = '/api/query/sales/{storeId}';
@@ -68,19 +68,199 @@ class QueryResourceService extends __BaseService {
   static readonly findOneStockCurrentUsingGETPath = '/api/query/stock-currents/{id}';
   static readonly findOneStockEntryUsingGETPath = '/api/query/stock-entries/{id}';
   static readonly findAllStockDiariesUsingGETPath = '/api/query/stock-entries/{storeId}';
-  static readonly getAllStockCurrentsUsingGETPath = '/api/query/stockcurrentByStoreId/{storeId}';
+  static readonly getAllStockCurrentsByIDPcodeUsingGETPath = '/api/query/stockcurrentByIDPcode/{iDPcode}';
   static readonly getStoreBundleUsingGETPath = '/api/query/storeBundle/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
   static readonly findAllTicketlinesUsingGETPath = '/api/query/ticket-lines';
   static readonly findOneTicketLinesUsingGETPath = '/api/query/ticket-lines/{id}';
   static readonly findAllTicketLinesBySaleIdUsingGETPath = '/api/query/ticket-lines/{saleId}';
-  static readonly findAllUserRatingsUsingGETPath = '/api/query/user-ratings';
 
   constructor(
     config: __Configuration,
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindUOMByStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findUOMByStoreIdUsingGETResponse(params: QueryResourceService.FindUOMByStoreIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfUOM>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/UOM/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfUOM>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindUOMByStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findUOMByStoreIdUsingGET(params: QueryResourceService.FindUOMByStoreIdUsingGETParams): __Observable<PageOfUOM> {
+    return this.findUOMByStoreIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfUOM)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  getAuxilaryLineItemsByStoreIdUsingGETResponse(params: QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfAuxilaryLineItem>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/auxilarylineitems/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfAuxilaryLineItem>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  getAuxilaryLineItemsByStoreIdUsingGET(params: QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams): __Observable<PageOfAuxilaryLineItem> {
+    return this.getAuxilaryLineItemsByStoreIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfAuxilaryLineItem)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.UpdateCategoryUsingPUT1Params` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `imageContentType`:
+   *
+   * - `image`:
+   *
+   * - `id`:
+   *
+   * - `description`:
+   *
+   * - `IDPcode`:
+   *
+   * @return OK
+   */
+  updateCategoryUsingPUT1Response(params: QueryResourceService.UpdateCategoryUsingPUT1Params): __Observable<__StrictHttpResponse<CategoryDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.name != null) __params = __params.set('name', params.name.toString());
+    if (params.imageContentType != null) __params = __params.set('imageContentType', params.imageContentType.toString());
+    if (params.image != null) __params = __params.set('image', params.image.toString());
+    if (params.id != null) __params = __params.set('id', params.id.toString());
+    if (params.description != null) __params = __params.set('description', params.description.toString());
+    if (params.IDPcode != null) __params = __params.set('IDPcode', params.IDPcode.toString());
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/query/categories`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<CategoryDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.UpdateCategoryUsingPUT1Params` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `imageContentType`:
+   *
+   * - `image`:
+   *
+   * - `id`:
+   *
+   * - `description`:
+   *
+   * - `IDPcode`:
+   *
+   * @return OK
+   */
+  updateCategoryUsingPUT1(params: QueryResourceService.UpdateCategoryUsingPUT1Params): __Observable<CategoryDTO> {
+    return this.updateCategoryUsingPUT1Response(params).pipe(
+      __map(_r => _r.body as CategoryDTO)
+    );
   }
 
   /**
@@ -248,7 +428,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -268,7 +448,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/findAllCategoriesWithOutImage`,
+      this.rootUrl + `/api/query/findAllCategoriesWithOutImage/${params.iDPcode}`,
       __body,
       {
         headers: __headers,
@@ -286,7 +466,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -538,7 +718,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllProductsUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -558,7 +738,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/findAllProducts/${params.storeId}`,
+      this.rootUrl + `/api/query/findAllProducts/${params.iDPcode}`,
       __body,
       {
         headers: __headers,
@@ -576,7 +756,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllProductsUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -713,58 +893,6 @@ class QueryResourceService extends __BaseService {
   findAllStockCurrentByCategoryUsingGET(params: QueryResourceService.FindAllStockCurrentByCategoryUsingGETParams): __Observable<PageOfStockCurrent> {
     return this.findAllStockCurrentByCategoryUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStockCurrent)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.FindAllUomUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findAllUomUsingGETResponse(params: QueryResourceService.FindAllUomUsingGETParams): __Observable<__StrictHttpResponse<Array<UOMDTO>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findAllUom`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<UOMDTO>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindAllUomUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findAllUomUsingGET(params: QueryResourceService.FindAllUomUsingGETParams): __Observable<Array<UOMDTO>> {
-    return this.findAllUomUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<UOMDTO>)
     );
   }
 
@@ -1020,7 +1148,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllProductUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1040,7 +1168,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/productByStoreId/${params.storeId}`,
+      this.rootUrl + `/api/query/productByStoreId/${params.iDPcode}`,
       __body,
       {
         headers: __headers,
@@ -1058,7 +1186,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindAllProductUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1107,63 +1235,6 @@ class QueryResourceService extends __BaseService {
   findProductUsingGET(id: number): __Observable<ProductDTO> {
     return this.findProductUsingGETResponse(id).pipe(
       __map(_r => _r.body as ProductDTO)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.FindAllReviewsUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllReviewsUsingGETResponse(params: QueryResourceService.FindAllReviewsUsingGETParams): __Observable<__StrictHttpResponse<Array<Review>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/reviews`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Review>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindAllReviewsUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllReviewsUsingGET(params: QueryResourceService.FindAllReviewsUsingGETParams): __Observable<Array<Review>> {
-    return this.findAllReviewsUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<Review>)
     );
   }
 
@@ -1504,9 +1575,9 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.GetAllStockCurrentsUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.GetAllStockCurrentsByIDPcodeUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1516,7 +1587,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  getAllStockCurrentsUsingGETResponse(params: QueryResourceService.GetAllStockCurrentsUsingGETParams): __Observable<__StrictHttpResponse<PageOfStockCurrent>> {
+  getAllStockCurrentsByIDPcodeUsingGETResponse(params: QueryResourceService.GetAllStockCurrentsByIDPcodeUsingGETParams): __Observable<__StrictHttpResponse<PageOfStockCurrent>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -1526,7 +1597,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/stockcurrentByStoreId/${params.storeId}`,
+      this.rootUrl + `/api/query/stockcurrentByIDPcode/${params.iDPcode}`,
       __body,
       {
         headers: __headers,
@@ -1542,9 +1613,9 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.GetAllStockCurrentsUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.GetAllStockCurrentsByIDPcodeUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `iDPcode`: iDPcode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1554,8 +1625,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  getAllStockCurrentsUsingGET(params: QueryResourceService.GetAllStockCurrentsUsingGETParams): __Observable<PageOfStockCurrent> {
-    return this.getAllStockCurrentsUsingGETResponse(params).pipe(
+  getAllStockCurrentsByIDPcodeUsingGET(params: QueryResourceService.GetAllStockCurrentsByIDPcodeUsingGETParams): __Observable<PageOfStockCurrent> {
+    return this.getAllStockCurrentsByIDPcodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStockCurrent)
     );
   }
@@ -1776,66 +1847,73 @@ class QueryResourceService extends __BaseService {
       __map(_r => _r.body as Array<TicketLine>)
     );
   }
-
-  /**
-   * @param params The `QueryResourceService.FindAllUserRatingsUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllUserRatingsUsingGETResponse(params: QueryResourceService.FindAllUserRatingsUsingGETParams): __Observable<__StrictHttpResponse<Array<UserRating>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/user-ratings`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<UserRating>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindAllUserRatingsUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllUserRatingsUsingGET(params: QueryResourceService.FindAllUserRatingsUsingGETParams): __Observable<Array<UserRating>> {
-    return this.findAllUserRatingsUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<UserRating>)
-    );
-  }
 }
 
 module QueryResourceService {
+
+  /**
+   * Parameters for findUOMByStoreIdUsingGET
+   */
+  export interface FindUOMByStoreIdUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for getAuxilaryLineItemsByStoreIdUsingGET
+   */
+  export interface GetAuxilaryLineItemsByStoreIdUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for updateCategoryUsingPUT1
+   */
+  export interface UpdateCategoryUsingPUT1Params {
+    name?: string;
+    imageContentType?: string;
+    image?: string;
+    id?: number;
+    description?: string;
+    IDPcode?: string;
+  }
 
   /**
    * Parameters for findAllEntryLineItemsUsingGET
@@ -1869,9 +1947,9 @@ module QueryResourceService {
   export interface FindAllCategoriesWithOutImageUsingGETParams {
 
     /**
-     * storeId
+     * iDPcode
      */
-    storeId: string;
+    iDPcode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -2004,9 +2082,9 @@ module QueryResourceService {
   export interface FindAllProductsUsingGETParams {
 
     /**
-     * storeId
+     * iDPcode
      */
-    storeId: string;
+    iDPcode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -2082,27 +2160,6 @@ module QueryResourceService {
 
     /**
      * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
-   * Parameters for findAllUomUsingGET
-   */
-  export interface FindAllUomUsingGETParams {
-
-    /**
-     * sort
-     */
-    sort?: Array<string>;
-
-    /**
-     * size
-     */
-    size?: number;
-
-    /**
-     * page
      */
     page?: number;
   }
@@ -2202,35 +2259,9 @@ module QueryResourceService {
   export interface FindAllProductUsingGETParams {
 
     /**
-     * storeId
+     * iDPcode
      */
-    storeId: string;
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
-   * Parameters for findAllReviewsUsingGET
-   */
-  export interface FindAllReviewsUsingGETParams {
-
-    /**
-     * storeId
-     */
-    storeId: string;
+    iDPcode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -2353,14 +2384,14 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for getAllStockCurrentsUsingGET
+   * Parameters for getAllStockCurrentsByIDPcodeUsingGET
    */
-  export interface GetAllStockCurrentsUsingGETParams {
+  export interface GetAllStockCurrentsByIDPcodeUsingGETParams {
 
     /**
-     * storeId
+     * iDPcode
      */
-    storeId: string;
+    iDPcode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -2421,32 +2452,6 @@ module QueryResourceService {
 
     /**
      * page
-     */
-    page?: number;
-  }
-
-  /**
-   * Parameters for findAllUserRatingsUsingGET
-   */
-  export interface FindAllUserRatingsUsingGETParams {
-
-    /**
-     * storeId
-     */
-    storeId: string;
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
      */
     page?: number;
   }

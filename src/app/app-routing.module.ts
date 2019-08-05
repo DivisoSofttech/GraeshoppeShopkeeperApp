@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'uom', loadChildren: './pages/uom/uom.module#UomPageModule', canActivate: [AuthGuardService]  },
   { path: 'login', loadChildren: './pages/login-signup/login-signup.module#LoginSignupPageModule' },
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule', canActivate: [AuthGuardService] },
+  { path: 'edit-restaurant', loadChildren: './pages/edit-restaurant/edit-restaurant.module#EditRestaurantPageModule', canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

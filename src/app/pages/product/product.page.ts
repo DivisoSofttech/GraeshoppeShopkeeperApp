@@ -28,7 +28,7 @@ export class ProductPage implements OnInit {
     let storeId;
     this.storage.get('user').then(user => {
       storeId = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({storeId}).subscribe(res => {
+      this.queryService.findAllProductsUsingGET({iDPcode: storeId}).subscribe(res => {
         this.products = res.content;
       });
     });

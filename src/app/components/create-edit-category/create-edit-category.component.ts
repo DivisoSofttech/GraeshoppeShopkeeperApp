@@ -14,9 +14,9 @@ export class CreateEditCategoryComponent implements OnInit {
 
   category: Category = {};
   mode = 'create';
-  pop: boolean = false;
+  pop = false;
   @Input() throughProduct = 'false';
-  //@ViewChild('slides', { static: false }) slides: IonSlides;
+  // @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
     private commandResource: CommandResourceService,
@@ -26,11 +26,11 @@ export class CreateEditCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.storage.get('user').then(user => {
-      this.category.iDPcode = user.preferred_username
+      this.category.iDPcode = user.preferred_username;
     });
-    console.log("Mode = ",this.mode);
-    console.log("Cate = ",this.category);
-    
+    console.log('Mode = ', this.mode);
+    console.log('Cate = ', this.category);
+
   }
   async selectImage() {
 
@@ -41,11 +41,11 @@ export class CreateEditCategoryComponent implements OnInit {
 
     modal.onDidDismiss()
     .then(data => {
-      console.log("sdf",data);
-      console.log("base",data.data.image.substring(data.data.image.indexOf(',') + 1));
-      console.log("type",data.data.image.slice(data.data.image.indexOf(':'),data.data.image.indexOf(';')));
-      
-      
+      console.log('sdf', data);
+      console.log('base', data.data.image.substring(data.data.image.indexOf(',') + 1));
+      console.log('type', data.data.image.slice(data.data.image.indexOf(':'), data.data.image.indexOf(';')));
+
+
       this.category.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
       this.category.imageContentType = data.data.imageType;
     });
@@ -55,24 +55,23 @@ export class CreateEditCategoryComponent implements OnInit {
   // modal() {
   //     this.slides.slideTo(0);
   // }
-  dismiss(){
-    if(this.pop){
+  dismiss() {
+    if (this.pop) {
       this.popover.dismiss();
-    }
-    else{
+    } else {
       this.modalController.dismiss();
     }
   }
 
-  addCategory(){
+  addCategory() {
     this.commandResource.createProductCategoryUsingPOST(this.category)
-        .subscribe(data => console.log("Category Added",data))
-        ,err => console.log("Error Creating Category",err);
+        .subscribe(data => console.log('Category Added', data)
+        , err => console.log('Error Creating Category', err));
   }
-  updateCategory(){
+  updateCategory() {
     this.commandResource.updateCategoryUsingPUT(this.category)
-    .subscribe(data => console.log("Category Updated",data))
-    ,err => console.log("Error Updating Category",err);
+    .subscribe(data => console.log('Category Updated', data)
+    , err => console.log('Error Updating Category', err));
   }
 
 }

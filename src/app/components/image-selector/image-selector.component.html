@@ -1,22 +1,22 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-buttons>
-           
-          <ion-button (click) = "dismiss()">
-          <ion-icon name = "close" ></ion-icon>
-          </ion-button>
-         
-        </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Upload Image</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-<div>
-    <img-cropper  #cropper1 [image]="data"  [settings]="cropperSettings"></img-cropper>
-</div>
-<br/>  
-<img
-[src]="data.image"
-[width]="cropperSettings.croppedWidth"
-[height]="cropperSettings.croppedHeight"
-/> 
+  <div class="upload-btn-wrapper ion-margin-top">
+    <ion-button class="btn">Upload a file</ion-button>
+    <input type="file" (change)="fileChangeListener($event)" />
+  </div>
+  <div>
+    <img-cropper #cropper1 [image]="data" [settings]="cropperSettings"></img-cropper>
+  </div>
+  <br />
+  <img *ngIf="data.image" [src]="data.image" [width]="cropperSettings.croppedWidth"
+    [height]="cropperSettings.croppedHeight" />
 </ion-content>
