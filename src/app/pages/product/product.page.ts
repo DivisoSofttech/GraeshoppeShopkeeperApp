@@ -21,7 +21,7 @@ export class ProductPage implements OnInit {
     private queryService: QueryResourceService
   ) { }
 
-  products: Product[];
+  products: Product[] =[];
 
   ngOnInit() {
     let iDPcode;
@@ -32,10 +32,19 @@ export class ProductPage implements OnInit {
       });
     });
   }
+  updateProduct(product){
+    console.log("product",product);
+    
+    const index = this.products.findIndex(p => p.id === product.id);
+    this.products.splice(index,1,product);
+  }
   deleteProduct(product: Product){
 
     this.products = this.products.filter(p=>p !== product)
   }
+  onAddProduct(product) {
+    this.products.push(product);
+   }
 
 
 }

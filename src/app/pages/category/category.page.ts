@@ -20,6 +20,9 @@ export class CategoryPage implements OnInit {
     private storage: Storage
   ) { }
 
+  onAddCategory(category) {
+    this.categories.push(category);
+   }
   ngOnInit() {
     this.storage.get('user').then(user => {
       this.queryService.findAllCategoriesUsingGET({storeId: user.preferred_username}).subscribe(res => {
