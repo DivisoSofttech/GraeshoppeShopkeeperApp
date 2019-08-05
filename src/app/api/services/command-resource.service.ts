@@ -8,6 +8,7 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
+import { BannerDTO } from '../models/banner-dto';
 import { CategoryDTO } from '../models/category-dto';
 import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
@@ -19,6 +20,7 @@ import { ReplyDTO } from '../models/reply-dto';
 import { ReviewDTO } from '../models/review-dto';
 import { SaleDTO } from '../models/sale-dto';
 import { StockCurrentDTO } from '../models/stock-current-dto';
+import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { StoreDTO } from '../models/store-dto';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TypeDTO } from '../models/type-dto';
@@ -33,9 +35,16 @@ import { UserRatingDTO } from '../models/user-rating-dto';
 })
 class CommandResourceService extends __BaseService {
   static readonly createAuxilaryLineItemUsingPOSTPath = '/api/command/auxilarylineitem';
+  static readonly updateAuxilaryLineItemUsingPUTPath = '/api/command/auxilarylineitem';
+  static readonly deleteAuxilaryLineIteamUsingDELETEPath = '/api/command/auxilarylineitem/{id}';
+  static readonly createBannerUsingPOSTPath = '/api/command/banner';
+  static readonly updateBannerUsingPUTPath = '/api/command/banner';
+  static readonly deleteBannerUsingDELETEPath = '/api/command/banner/{id}';
   static readonly updateCategoryUsingPUTPath = '/api/command/categories';
   static readonly deleteCategoryUsingDELETEPath = '/api/command/categories/{id}';
   static readonly createComboLineItemUsingPOSTPath = '/api/command/combolineitem';
+  static readonly updateComboLineItemUsingPUTPath = '/api/command/combolineitem';
+  static readonly deleteComboLineItemUsingDELETEPath = '/api/command/combolineitem/{id}';
   static readonly updateContactUsingPUTPath = '/api/command/contacts';
   static readonly deleteContactUsingDELETEPath = '/api/command/contacts/{id}';
   static readonly updateCustomerUsingPUTPath = '/api/command/customers';
@@ -59,6 +68,8 @@ class CommandResourceService extends __BaseService {
   static readonly deleteSaleUsingDELETEPath = '/api/command/sales/{id}';
   static readonly createStockCurrentUsingPOSTPath = '/api/command/stock-currents';
   static readonly updateStockCurrentUsingPUTPath = '/api/command/stock-currents';
+  static readonly deleteStoreTypeUsingDELETEPath = '/api/command/store-types/{id}';
+  static readonly createStoreBundleUsingPOSTPath = '/api/command/storeBundle';
   static readonly createStoreUsingPOSTPath = '/api/command/stores';
   static readonly updateStoreUsingPUTPath = '/api/command/stores';
   static readonly deleteStoreUsingDELETEPath = '/api/command/stores/{id}';
@@ -115,6 +126,182 @@ class CommandResourceService extends __BaseService {
   createAuxilaryLineItemUsingPOST(auxilaryLineItemDTO: AuxilaryLineItemDTO): __Observable<AuxilaryLineItemDTO> {
     return this.createAuxilaryLineItemUsingPOSTResponse(auxilaryLineItemDTO).pipe(
       __map(_r => _r.body as AuxilaryLineItemDTO)
+    );
+  }
+
+  /**
+   * @param auxilaryLineItemDTO auxilaryLineItemDTO
+   * @return OK
+   */
+  updateAuxilaryLineItemUsingPUTResponse(auxilaryLineItemDTO: AuxilaryLineItemDTO): __Observable<__StrictHttpResponse<AuxilaryLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = auxilaryLineItemDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/auxilarylineitem`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AuxilaryLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param auxilaryLineItemDTO auxilaryLineItemDTO
+   * @return OK
+   */
+  updateAuxilaryLineItemUsingPUT(auxilaryLineItemDTO: AuxilaryLineItemDTO): __Observable<AuxilaryLineItemDTO> {
+    return this.updateAuxilaryLineItemUsingPUTResponse(auxilaryLineItemDTO).pipe(
+      __map(_r => _r.body as AuxilaryLineItemDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteAuxilaryLineIteamUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/auxilarylineitem/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteAuxilaryLineIteamUsingDELETE(id: number): __Observable<null> {
+    return this.deleteAuxilaryLineIteamUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param bannerDTO bannerDTO
+   * @return OK
+   */
+  createBannerUsingPOSTResponse(bannerDTO: BannerDTO): __Observable<__StrictHttpResponse<BannerDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = bannerDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/banner`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<BannerDTO>;
+      })
+    );
+  }
+  /**
+   * @param bannerDTO bannerDTO
+   * @return OK
+   */
+  createBannerUsingPOST(bannerDTO: BannerDTO): __Observable<BannerDTO> {
+    return this.createBannerUsingPOSTResponse(bannerDTO).pipe(
+      __map(_r => _r.body as BannerDTO)
+    );
+  }
+
+  /**
+   * @param bannerDTO bannerDTO
+   * @return OK
+   */
+  updateBannerUsingPUTResponse(bannerDTO: BannerDTO): __Observable<__StrictHttpResponse<BannerDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = bannerDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/banner`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<BannerDTO>;
+      })
+    );
+  }
+  /**
+   * @param bannerDTO bannerDTO
+   * @return OK
+   */
+  updateBannerUsingPUT(bannerDTO: BannerDTO): __Observable<BannerDTO> {
+    return this.updateBannerUsingPUTResponse(bannerDTO).pipe(
+      __map(_r => _r.body as BannerDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteBannerUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/banner/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteBannerUsingDELETE(id: number): __Observable<null> {
+    return this.deleteBannerUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 
@@ -221,6 +408,76 @@ class CommandResourceService extends __BaseService {
   createComboLineItemUsingPOST(comboLineItemDTO: ComboLineItemDTO): __Observable<ComboLineItemDTO> {
     return this.createComboLineItemUsingPOSTResponse(comboLineItemDTO).pipe(
       __map(_r => _r.body as ComboLineItemDTO)
+    );
+  }
+
+  /**
+   * @param comboLineItemDTO comboLineItemDTO
+   * @return OK
+   */
+  updateComboLineItemUsingPUTResponse(comboLineItemDTO: ComboLineItemDTO): __Observable<__StrictHttpResponse<ComboLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = comboLineItemDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/combolineitem`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ComboLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param comboLineItemDTO comboLineItemDTO
+   * @return OK
+   */
+  updateComboLineItemUsingPUT(comboLineItemDTO: ComboLineItemDTO): __Observable<ComboLineItemDTO> {
+    return this.updateComboLineItemUsingPUTResponse(comboLineItemDTO).pipe(
+      __map(_r => _r.body as ComboLineItemDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteComboLineItemUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/combolineitem/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteComboLineItemUsingDELETE(id: number): __Observable<null> {
+    return this.deleteComboLineItemUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 
@@ -1035,6 +1292,76 @@ class CommandResourceService extends __BaseService {
   updateStockCurrentUsingPUT(StockCurrent: StockCurrentDTO): __Observable<StockCurrentDTO> {
     return this.updateStockCurrentUsingPUTResponse(StockCurrent).pipe(
       __map(_r => _r.body as StockCurrentDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteStoreTypeUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/store-types/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteStoreTypeUsingDELETE(id: number): __Observable<null> {
+    return this.deleteStoreTypeUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param storeBundleDTO storeBundleDTO
+   * @return OK
+   */
+  createStoreBundleUsingPOSTResponse(storeBundleDTO: StoreBundleDTO): __Observable<__StrictHttpResponse<StoreBundleDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = storeBundleDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/storeBundle`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StoreBundleDTO>;
+      })
+    );
+  }
+  /**
+   * @param storeBundleDTO storeBundleDTO
+   * @return OK
+   */
+  createStoreBundleUsingPOST(storeBundleDTO: StoreBundleDTO): __Observable<StoreBundleDTO> {
+    return this.createStoreBundleUsingPOSTResponse(storeBundleDTO).pipe(
+      __map(_r => _r.body as StoreBundleDTO)
     );
   }
 

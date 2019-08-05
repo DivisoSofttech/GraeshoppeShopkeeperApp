@@ -1,3 +1,4 @@
+import { AddCuisineComponent } from './../../components/add-cuisine/add-cuisine.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ImageSelectorComponent } from './../../components/image-selector/image-selector.component';
 import { NgModule } from '@angular/core';
@@ -25,6 +26,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [EditRestaurantPage],
-  entryComponents: [ImageSelectorComponent]
+  entryComponents: [ImageSelectorComponent, AddCuisineComponent]
 })
 export class EditRestaurantPageModule {}

@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'product',
-    loadChildren: () => import('./pages/product/product.module').then(m => m.ProductPageModule),
+    loadChildren: './pages/product/product.module#ProductPageModule',
     canActivate: [AuthGuardService]
   },
   { path: 'category', loadChildren: './pages/category/category.module#CategoryPageModule', canActivate: [AuthGuardService] },

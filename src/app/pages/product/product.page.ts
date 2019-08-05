@@ -6,7 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { Component, OnInit } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
-import { ProductDTO } from '../../api/models/product-dto';
 import { Product } from '../../api/models/product';
 
 @Component({
@@ -25,27 +24,33 @@ export class ProductPage implements OnInit {
   products: Product[];
 
   ngOnInit() {
-    let storeId;
+    let iDPcode;
     this.storage.get('user').then(user => {
-      storeId = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode: storeId}).subscribe(res => {
+      iDPcode = user.preferred_username;
+      this.queryService.findAllProductsUsingGET({iDPcode}).subscribe(res => {
         this.products = res.content;
       });
     });
   }
+  deleteProduct(product: Product) {
 
+    this.products = this.products.filter(p => p !== product);
+  }
   async presentProductModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
       componentProps: {mode: 'create'}
     });
+    modal.onDidDismiss().then(
+      product => this.products.push(product.data)
+    );
     return await modal.present();
   }
 
   async presentUomModal() {
     const modal = await this.modalController.create({
       component: CreateEditUomComponent,
-      componentProps: {mode:'create'}
+      componentProps: {mode: 'create'}
     });
     return await modal.present();
   }
@@ -53,8 +58,9 @@ export class ProductPage implements OnInit {
   async presentCategoryModal() {
     const modal = await this.modalController.create({
       component: CreateEditCategoryComponent,
-      componentProps: {mode:'create'}
+      componentProps: {mode: 'create'}
     });
+
     return await modal.present();
   }
 

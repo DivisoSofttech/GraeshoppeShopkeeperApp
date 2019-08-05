@@ -9,7 +9,7 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let product of products"  size-lg="3" size-sm="4" size="6" size-md="3">
-        <app-product-card [product]="product"></app-product-card>
+        <app-product-card [product]="product" (delete)="deleteProduct(product)"></app-product-card>
       </ion-col>
     </ion-row>
   </ion-grid>

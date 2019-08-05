@@ -1,3 +1,4 @@
+import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { IonicModule } from '@ionic/angular';
 import { SettingsOptionComponent } from 'src/app/components/settings-option/settings-option.component';
 import { CreateEditCategoryComponent } from './create-edit-category/create-edit-category.component';
@@ -26,7 +27,8 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    AddCuisineComponent
   ],
 
   imports: [
@@ -42,8 +44,12 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     UomCardComponent,
     SettingsOptionComponent,
     ImageSelectorComponent,
+    ProductCardComponent,
+    CreateEditProductComponent,
     CreateEditUomComponent,
-    CreateEditCategoryComponent
+    CreateEditCategoryComponent,
+    CategoryCardComponent,
+    AddCuisineComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [ImageSelectorComponent]

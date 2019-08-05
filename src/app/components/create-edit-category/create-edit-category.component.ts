@@ -1,7 +1,8 @@
+import { CategoryDTO } from './../../api/models/category-dto';
 import { ImageSelectorComponent } from './../image-selector/image-selector.component';
 import { Category } from './../../api/models/category';
 import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 
@@ -13,21 +14,25 @@ import { Storage } from '@ionic/storage';
 export class CreateEditCategoryComponent implements OnInit {
 
   category: Category = {};
+  categoryDTO: CategoryDTO = {};
   mode = 'create';
   pop = false;
   @Input() throughProduct = 'false';
+  @Output() update = new EventEmitter();
   // @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
     private commandResource: CommandResourceService,
     private popover: PopoverController,
-    private storage: Storage
+    private storage: Storage,
+    private query: QueryResourceService
   ) { }
 
   ngOnInit() {
     this.storage.get('user').then(user => {
       this.category.iDPcode = user.preferred_username;
     });
+    this.getcategoryDTOUsingCategory();
     console.log('Mode = ', this.mode);
     console.log('Cate = ', this.category);
 
@@ -41,13 +46,8 @@ export class CreateEditCategoryComponent implements OnInit {
 
     modal.onDidDismiss()
     .then(data => {
-      console.log('sdf', data);
-      console.log('base', data.data.image.substring(data.data.image.indexOf(',') + 1));
-      console.log('type', data.data.image.slice(data.data.image.indexOf(':'), data.data.image.indexOf(';')));
-
-
-      this.category.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
-      this.category.imageContentType = data.data.imageType;
+      this.categoryDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
+      this.categoryDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
     });
 
     return await modal.present();
@@ -55,23 +55,33 @@ export class CreateEditCategoryComponent implements OnInit {
   // modal() {
   //     this.slides.slideTo(0);
   // }
-  dismiss() {
-    if (this.pop) {
-      this.popover.dismiss();
-    } else {
-      this.modalController.dismiss();
-    }
+  dismiss(data) {
+      this.modalController.dismiss(data);
   }
 
   addCategory() {
-    this.commandResource.createProductCategoryUsingPOST(this.category)
-        .subscribe(data => console.log('Category Added', data)
+    this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
+        .subscribe(data => {
+          console.log('Category Added', data);
+          this.update.emit();
+          this.dismiss(data);
+        }
         , err => console.log('Error Creating Category', err));
+
   }
   updateCategory() {
-    this.commandResource.updateCategoryUsingPUT(this.category)
-    .subscribe(data => console.log('Category Updated', data)
+    this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
+    .subscribe(data => {
+      console.log('Category Updated', data);
+      this.update.emit();
+      this.dismiss(data);
+    }
     , err => console.log('Error Updating Category', err));
+
+  }
+  getcategoryDTOUsingCategory() {
+    this.query.findCategoryUsingGET(this.category.id)
+        .subscribe(categoryDTO => this.categoryDTO = categoryDTO);
   }
 
 }
