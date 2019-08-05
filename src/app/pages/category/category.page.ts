@@ -27,10 +27,13 @@ export class CategoryPage implements OnInit {
       });
     });
   }
-  updateProduct(category){
-    console.log("tyuee",category);
+  updateCategory(category){
+    //console.log("tyuee",category);
     this.categories = this.categories.filter(c => c.id !== category.data.id);
     this.categories.push(category.data);
+  }
+  deleteCategory(category: Category){
+    this.categories = this.categories.filter(c=>c !== category)
   }
 
 }

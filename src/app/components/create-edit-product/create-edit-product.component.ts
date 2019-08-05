@@ -45,7 +45,7 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
     }
     this.getCategories();
-    // this.getAuxilaryItems();
+    //this.getAuxilaryItems();
     //this.getUOM();
 
   }
@@ -66,16 +66,6 @@ export class CreateEditProductComponent implements OnInit {
       this.slides.slideTo(0);
       this.value = '';
     }
-  }
-
-  async addCategoryPopoverModal(ev: any){
-    const popover = await this.popoverController.create({
-      component: CreateEditCategoryComponent,
-      event: ev,
-      componentProps: {mode:  'create' ,pop: true},
-      translucent: true
-    });
-    return await popover.present();
   }
 
   getProductDtoUsingProduct(){
@@ -103,11 +93,13 @@ export class CreateEditProductComponent implements OnInit {
         },
         err => console.log("error creating product",err)
     )
-    
-    // if(this.productDTO.isAuxilaryItem==false){
-    //   this.commandResource.createAuxilaryLineItemUsingPOST()
-    // }
-    
+  }
+  updateProduct(){
+    this.commandResource.updateProductUsingPUT(this.productDTO)
+        .subscribe(data => {
+          console.log("Product Updated",data);
+          this.dismiss(data);
+        })
   }
   async selectImage() {
 
