@@ -16,10 +16,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { Util } from './services/util';
 import { Camera } from '@ionic-native/camera/ngx';
+import { ComponentsModule } from './components/components.module';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
+  entryComponents: [PasswordResetComponent],
   imports: [
     ImageCropperModule,
     BrowserModule,
@@ -31,11 +34,13 @@ import { Camera } from '@ionic-native/camera/ngx';
     }),
     IonicModule.forRoot(),
     AppRoutingModule,
+    ComponentsModule,
     OAuthModule.forRoot(),
   ],
   providers: [
     Camera,
     StatusBar,
+    InAppBrowser,
     Util,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

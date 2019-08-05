@@ -1,5 +1,5 @@
-<ion-card>
-  <ion-item l ines="none">
+<ion-card  [routerLink]="[option.url]">
+  <ion-item lines="none"  routerDirection="root">
     <ion-label color="primary" slot="start">
       <ion-icon color="primary" class="icon-size" [name]="option.icon"></ion-icon>
       {{option.title}}

@@ -80,6 +80,33 @@ export class KeycloakService {
     );
   }
 
+  resetPassword(newPassword , success , err) {
+    this.storage.get('user')
+    .then(user => {
+      this.keycloakConfig.refreshClient()
+      .then(() => {
+        this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
+        this.keycloakAdmin.users.resetPassword(
+          {
+            realm: 'graeshoppe',
+            id: user.preferred_username,
+            credential: {
+              temporary: false,
+              type: 'password',
+              value: newPassword,
+            },
+          }
+        ).then(data => {
+          success(data);
+        })
+        .catch(e => {
+          err(e);
+        })
+      });
+  
+    })
+  }
+
   logout() {
     this.oauthService.logOut();
     this.storage.clear();

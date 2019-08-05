@@ -20,15 +20,18 @@ export class SettingsPage implements OnInit {
   options: any = [
     {
       title: 'Edit Restaurant',
-      icon: 'create'
+      icon: 'create',
+      url: ' '
     },
     {
       title: 'Change Password',
-      icon: 'lock'
+      icon: 'lock',
+      url: '/password-reset'
     },
     {
       title: 'Delete Account',
-      icon: 'trash'
+      icon: 'trash',
+      url: ' '
     },
   ];
 

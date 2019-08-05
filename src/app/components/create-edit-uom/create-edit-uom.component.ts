@@ -27,16 +27,14 @@ export class CreateEditUomComponent implements OnInit {
 
   ngOnInit() {
     console.log("Mode = ",this.mode);
-    console.log('Storeidpcode' , this.storeIdpcode)
-    if(this.storeIdpcode === undefined) {
-      this.util.createToast('Server Error');
-    } else {
+    if(this.storeIdpcode === undefined && this.mode === 'create') {
+      console.log('Server Error : idpcode');
+    } else if(this.mode !== 'update') {
+      console.log('Storeidpcode' , this.storeIdpcode)
       this.uom.idpcode = this.storeIdpcode;
     }
   }
-  dismiss(data){
-    this.modalController.dismiss(data);
-  }
+
 
   createUom() {
     this.util.createLoader()
@@ -51,6 +49,25 @@ export class CreateEditUomComponent implements OnInit {
         this.util.createToast('Unable to create UOM , Server Error');
       });  
     })
+  }
+
+  updateUom() {
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.commandResource.updateUOMUsingPUT(this.uom)
+      .subscribe(uom => {
+        this.dismiss(uom);
+        loader.dismiss();
+      } , err => {
+        loader.dismiss();
+        this.util.createToast('Unable to Update UOM , Server Error');
+      });  
+    })
+  }
+
+  dismiss(data){
+    this.modalController.dismiss(data);
   }
 
 }
