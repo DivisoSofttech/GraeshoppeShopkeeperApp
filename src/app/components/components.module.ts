@@ -11,6 +11,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UomCardComponent } from './uom-card/uom-card.component';
 import { ImageCropperModule } from 'ngx-img-cropper';
+import { AddComponent } from './add/add.component';
 
 
 
@@ -26,7 +27,8 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    AddComponent
   ],
 
   imports: [
@@ -43,9 +45,16 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     SettingsOptionComponent,
     ImageSelectorComponent,
     CreateEditUomComponent,
-    CreateEditCategoryComponent
+    CreateEditCategoryComponent,
+    AddComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ImageSelectorComponent]
+  entryComponents: [
+    ImageSelectorComponent,
+    ProductCardComponent,
+    CreateEditProductComponent,
+    CreateEditUomComponent,
+    CreateEditCategoryComponent
+  ]
 })
 export class ComponentsModule { }
