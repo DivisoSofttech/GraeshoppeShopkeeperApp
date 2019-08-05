@@ -8,11 +8,15 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { PageOfUOM } from '../models/page-of-uom';
+import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
+import { BannerDTO } from '../models/banner-dto';
 import { CategoryDTO } from '../models/category-dto';
+import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { PdfDTO } from '../models/pdf-dto';
 import { CustomerDTO } from '../models/customer-dto';
+import { Type } from '../models/type';
 import { EntryLineItem } from '../models/entry-line-item';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
@@ -27,10 +31,12 @@ import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
 import { PageOfSale } from '../models/page-of-sale';
 import { StockEntryDTO } from '../models/stock-entry-dto';
+import { StoreDTO } from '../models/store-dto';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { Store } from '../models/store';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TicketLine } from '../models/ticket-line';
+import { UOMDTO } from '../models/uomdto';
 
 /**
  * Query Resource
@@ -40,12 +46,16 @@ import { TicketLine } from '../models/ticket-line';
 })
 class QueryResourceService extends __BaseService {
   static readonly findUOMByIDPcodeUsingGETPath = '/api/query/UOM/{iDPcode}';
+  static readonly findAuxilaryLineItemUsingGETPath = '/api/query/auxilaryitem/{id}';
   static readonly getAuxilaryLineItemsByStoreIdUsingGETPath = '/api/query/auxilarylineitems/{iDPcode}';
+  static readonly findBannerUsingGETPath = '/api/query/banner/{id}';
   static readonly updateCategoryUsingPUT1Path = '/api/query/categories';
   static readonly findCategoryUsingGETPath = '/api/query/category/{id}';
+  static readonly findCombolineItemUsingGETPath = '/api/query/combolineitem/{id}';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
   static readonly exportCustomersUsingGETPath = '/api/query/customers/export';
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
+  static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/delivery-Types/{storeId}';
   static readonly findAllEntryLineItemsUsingGETPath = '/api/query/entryLineItem/{storeId}';
   static readonly findAllCategoriesWithOutImageUsingGETPath = '/api/query/findAllCategoriesWithOutImage/{iDPcode}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCateogories/{storeId}';
@@ -71,11 +81,13 @@ class QueryResourceService extends __BaseService {
   static readonly findOneStockEntryUsingGETPath = '/api/query/stock-entries/{id}';
   static readonly findAllStockDiariesUsingGETPath = '/api/query/stock-entries/{storeId}';
   static readonly getAllStockCurrentsByIDPcodeUsingGETPath = '/api/query/stockcurrentByIDPcode/{iDPcode}';
+  static readonly findStoreUsingGETPath = '/api/query/store/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/storeBundle/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
   static readonly findAllTicketlinesUsingGETPath = '/api/query/ticket-lines';
   static readonly findOneTicketLinesUsingGETPath = '/api/query/ticket-lines/{id}';
   static readonly findAllTicketLinesBySaleIdUsingGETPath = '/api/query/ticket-lines/{saleId}';
+  static readonly findUOMUsingGETPath = '/api/query/uom/{id}';
 
   constructor(
     config: __Configuration,
@@ -142,6 +154,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param id id
+   * @return OK
+   */
+  findAuxilaryLineItemUsingGETResponse(id: number): __Observable<__StrictHttpResponse<AuxilaryLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/auxilaryitem/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AuxilaryLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findAuxilaryLineItemUsingGET(id: number): __Observable<AuxilaryLineItemDTO> {
+    return this.findAuxilaryLineItemUsingGETResponse(id).pipe(
+      __map(_r => _r.body as AuxilaryLineItemDTO)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams` containing the following parameters:
    *
    * - `iDPcode`: iDPcode
@@ -195,6 +243,42 @@ class QueryResourceService extends __BaseService {
   getAuxilaryLineItemsByStoreIdUsingGET(params: QueryResourceService.GetAuxilaryLineItemsByStoreIdUsingGETParams): __Observable<PageOfAuxilaryLineItem> {
     return this.getAuxilaryLineItemsByStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfAuxilaryLineItem)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findBannerUsingGETResponse(id: number): __Observable<__StrictHttpResponse<BannerDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/banner/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<BannerDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findBannerUsingGET(id: number): __Observable<BannerDTO> {
+    return this.findBannerUsingGETResponse(id).pipe(
+      __map(_r => _r.body as BannerDTO)
     );
   }
 
@@ -305,6 +389,42 @@ class QueryResourceService extends __BaseService {
    * @param id id
    * @return OK
    */
+  findCombolineItemUsingGETResponse(id: number): __Observable<__StrictHttpResponse<ComboLineItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/combolineitem/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ComboLineItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findCombolineItemUsingGET(id: number): __Observable<ComboLineItemDTO> {
+    return this.findCombolineItemUsingGETResponse(id).pipe(
+      __map(_r => _r.body as ComboLineItemDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
   findContactByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<ContactDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
@@ -403,6 +523,42 @@ class QueryResourceService extends __BaseService {
   findCustomerByIdUsingGET(id: number): __Observable<CustomerDTO> {
     return this.findCustomerByIdUsingGETResponse(id).pipe(
       __map(_r => _r.body as CustomerDTO)
+    );
+  }
+
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findAllDeliveryTypesByStoreIdUsingGETResponse(storeId: string): __Observable<__StrictHttpResponse<Array<Type>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/delivery-Types/${storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<Type>>;
+      })
+    );
+  }
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findAllDeliveryTypesByStoreIdUsingGET(storeId: string): __Observable<Array<Type>> {
+    return this.findAllDeliveryTypesByStoreIdUsingGETResponse(storeId).pipe(
+      __map(_r => _r.body as Array<Type>)
     );
   }
 
@@ -1727,6 +1883,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param id id
+   * @return OK
+   */
+  findStoreUsingGETResponse(id: number): __Observable<__StrictHttpResponse<StoreDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/store/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StoreDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findStoreUsingGET(id: number): __Observable<StoreDTO> {
+    return this.findStoreUsingGETResponse(id).pipe(
+      __map(_r => _r.body as StoreDTO)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetStoreBundleUsingGETParams` containing the following parameters:
    *
    * - `regNo`: regNo
@@ -1940,6 +2132,42 @@ class QueryResourceService extends __BaseService {
   findAllTicketLinesBySaleIdUsingGET(saleId: number): __Observable<Array<TicketLine>> {
     return this.findAllTicketLinesBySaleIdUsingGETResponse(saleId).pipe(
       __map(_r => _r.body as Array<TicketLine>)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findUOMUsingGETResponse(id: number): __Observable<__StrictHttpResponse<UOMDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/uom/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<UOMDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findUOMUsingGET(id: number): __Observable<UOMDTO> {
+    return this.findUOMUsingGETResponse(id).pipe(
+      __map(_r => _r.body as UOMDTO)
     );
   }
 }

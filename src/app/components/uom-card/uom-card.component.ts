@@ -25,6 +25,9 @@ export class UomCardComponent implements OnInit {
   readMore() {
     this.isreadMore = !this.isreadMore;
   }
+
+  @Output() updateEvent = new EventEmitter();
+
   constructor(
     private commandResource: CommandResourceService,
     private modalController: ModalController,
@@ -34,25 +37,40 @@ export class UomCardComponent implements OnInit {
   ngOnInit() {}
 
   deleteUOM() {
-    this.commandResource.deleteUOMUsingDELETE(this.uom.id).subscribe(
-      res => {
-        this.deleteEvent.emit();
-        this.util.createToast('Deletion successful');
-      },
-      err => {
-        this.util.createToast('Couldn\'t delete item');
-      }
-    );
+    this.util.createLoader()
+    .then(loader => {
+
+      loader.present();
+      this.commandResource.deleteUOMUsingDELETE(this.uom.id).subscribe(
+        res => {
+          this.deleteEvent.emit();
+          loader.dismiss();
+          this.util.createToast('Deletion successful');
+        },
+        err => {
+          loader.dismiss();
+          this.util.createToast('Couldn\'t delete item');
+        }
+      );
+  
+      
+    })
   }
 
-  async editUOM(uom) {
+  async editUOMModal() {
     const modal = await this.modalController.create({
       component: CreateEditUomComponent,
       componentProps: {mode:  'update' , uom: this.uom}
     });
 
     modal.onDidDismiss()
-    .then()
+    .then(data => {
+
+      if(data.data != undefined) {
+        this.updateEvent.emit(data.data);
+      }
+
+    })
 
     return await modal.present();
   }

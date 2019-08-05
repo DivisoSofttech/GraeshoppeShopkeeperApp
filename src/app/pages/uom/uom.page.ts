@@ -76,11 +76,16 @@ export class UomPage implements OnInit {
    this.uoms.push(uom);
   }
 
-  remove(uom: UOM) {
+  onRemoveUOM(uom: UOM) {
     this.uoms.splice(
       this.uoms.indexOf(uom),
       1
     );
   }
+
+  onUpdateUOM(uom) {
+    const index = this.uoms.findIndex(u => u.id === uom.id);
+    this.uoms.splice(index , 1 , uom);
+  } 
 
 }
