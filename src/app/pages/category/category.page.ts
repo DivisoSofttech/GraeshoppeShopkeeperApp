@@ -20,6 +20,9 @@ export class CategoryPage implements OnInit {
     private storage: Storage
   ) { }
 
+  onAddCategory(category) {
+    this.categories.push(category);
+   }
   ngOnInit() {
     this.storage.get('user').then(user => {
       this.queryService.findAllCategoriesUsingGET({storeId: user.preferred_username}).subscribe(res => {
@@ -27,10 +30,13 @@ export class CategoryPage implements OnInit {
       });
     });
   }
-  updateProduct(category){
-    console.log("tyuee",category);
+  updateCategory(category){
+    //console.log("tyuee",category);
     this.categories = this.categories.filter(c => c.id !== category.data.id);
     this.categories.push(category.data);
+  }
+  deleteCategory(category: Category){
+    this.categories = this.categories.filter(c=>c !== category)
   }
 
 }

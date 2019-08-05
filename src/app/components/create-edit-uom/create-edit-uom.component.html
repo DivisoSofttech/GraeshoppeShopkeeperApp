@@ -2,7 +2,7 @@
   <ion-toolbar>
       <ion-buttons>
           <div *ngIf="throughProduct=='false'">
-              <ion-button (click) = "dismiss()">
+              <ion-button (click) = "dismiss(undefined)">
               <ion-icon name = "close" ></ion-icon>
               </ion-button>
               </div>
@@ -13,6 +13,7 @@
           <ion-title>Create UOM</ion-title>
         </div>
       </ion-buttons>
+      
   </ion-toolbar>
 </ion-header>
 
@@ -31,9 +32,9 @@
 
 <ion-footer>
     <div *ngIf= "mode=='update'">
-      <ion-button margin expand="block" color="primary">Update</ion-button>
+      <ion-button margin expand="block" color="primary" (click)="updateUom()">Update</ion-button>
     </div>
     <div *ngIf= "mode=='create'">
-    <ion-button margin expand="block" color="primary">Create</ion-button>
+    <ion-button margin expand="block" color="primary" (click)="createUom()">Create</ion-button>
     </div>
 </ion-footer>

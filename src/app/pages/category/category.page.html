@@ -9,8 +9,9 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let category of categories"  size-lg="3" size-sm="4" size="6" size-md="3">
-        <app-category-card [category]="category" (update) = "updateProduct($event)"></app-category-card>
+        <app-category-card [category]="category" (delete)="deleteCategory(category)" (update) = "updateCategory($event)"></app-category-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <app-add (categoryAdd)="onAddCategory($event)"></app-add>
 </ion-content>

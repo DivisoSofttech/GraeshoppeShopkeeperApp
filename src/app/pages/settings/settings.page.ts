@@ -26,7 +26,7 @@ export class SettingsPage implements OnInit {
     {
       title: 'Change Password',
       icon: 'lock',
-      route: '/change-password'
+      route: '/password-reset'
     },
     {
       title: 'Delete Account',

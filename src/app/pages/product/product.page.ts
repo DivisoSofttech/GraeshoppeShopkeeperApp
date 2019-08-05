@@ -16,12 +16,11 @@ import { Product } from '../../api/models/product';
 export class ProductPage implements OnInit {
 
   constructor(
-    private modalController: ModalController,
     private storage: Storage,
     private queryService: QueryResourceService
   ) { }
 
-  products: Product[];
+  products: Product[] = [];
 
   ngOnInit() {
     let iDPcode;
@@ -32,36 +31,19 @@ export class ProductPage implements OnInit {
       });
     });
   }
+  updateProduct(product) {
+    console.log('product', product);
+
+    const index = this.products.findIndex(p => p.id === product.id);
+    this.products.splice(index, 1, product);
+  }
   deleteProduct(product: Product) {
 
     this.products = this.products.filter(p => p !== product);
   }
-  async presentProductModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditProductComponent,
-      componentProps: {mode: 'create'}
-    });
-    modal.onDidDismiss().then(
-      product => this.products.push(product.data)
-    );
-    return await modal.present();
-  }
+  onAddProduct(product) {
+    this.products.push(product);
+   }
 
-  async presentUomModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditUomComponent,
-      componentProps: {mode: 'create'}
-    });
-    return await modal.present();
-  }
-
-  async presentCategoryModal() {
-    const modal = await this.modalController.create({
-      component: CreateEditCategoryComponent,
-      componentProps: {mode: 'create'}
-    });
-
-    return await modal.present();
-  }
 
 }

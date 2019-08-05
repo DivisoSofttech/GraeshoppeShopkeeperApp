@@ -13,12 +13,13 @@ import { Storage } from '@ionic/storage';
 })
 export class CreateEditCategoryComponent implements OnInit {
 
-  category: Category = {};
+  category: Category = {
+
+  };
   categoryDTO: CategoryDTO = {};
   mode = 'create';
   pop = false;
   @Input() throughProduct = 'false';
-  @Output() update = new EventEmitter();
   // @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
@@ -31,8 +32,11 @@ export class CreateEditCategoryComponent implements OnInit {
   ngOnInit() {
     this.storage.get('user').then(user => {
       this.category.iDPcode = user.preferred_username;
+      this.categoryDTO.iDPcode = user.preferred_username;
     });
-    this.getcategoryDTOUsingCategory();
+    if (this.category.id != null) {
+      this.getcategoryDTOUsingCategory();
+    }
     console.log('Mode = ', this.mode);
     console.log('Cate = ', this.category);
 
@@ -63,7 +67,6 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
           console.log('Category Added', data);
-          this.update.emit();
           this.dismiss(data);
         }
         , err => console.log('Error Creating Category', err));
@@ -73,7 +76,6 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
       console.log('Category Updated', data);
-      this.update.emit();
       this.dismiss(data);
     }
     , err => console.log('Error Updating Category', err));

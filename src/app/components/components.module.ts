@@ -12,6 +12,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UomCardComponent } from './uom-card/uom-card.component';
 import { ImageCropperModule } from 'ngx-img-cropper';
+import { AddComponent } from './add/add.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -28,7 +31,9 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     CategoryCardComponent,
-    AddCuisineComponent
+    AddCuisineComponent,
+    PasswordResetComponent,
+    AddComponent
   ],
 
   imports: [
@@ -36,6 +41,7 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     CommonModule,
     FormsModule,
     IonicModule,
+    RouterModule
   ],
   exports: [
     ProductCardComponent,
@@ -49,9 +55,17 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     CategoryCardComponent,
-    AddCuisineComponent
+    AddCuisineComponent,
+    PasswordResetComponent,
+    AddComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ImageSelectorComponent]
+  entryComponents: [
+    ImageSelectorComponent,
+    ProductCardComponent,
+    CreateEditProductComponent,
+    CreateEditUomComponent,
+    CreateEditCategoryComponent,
+  ]
 })
 export class ComponentsModule { }
