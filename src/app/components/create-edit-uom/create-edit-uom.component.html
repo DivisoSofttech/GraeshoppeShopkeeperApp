@@ -6,10 +6,10 @@
               <ion-icon name = "close" ></ion-icon>
               </ion-button>
               </div>
-        <div *ngIf= "mode=='update'">
+        <div *ngIf= "mode=='update'&&throughProduct=='false'">
             <ion-title>Update UOM</ion-title>
         </div>
-        <div *ngIf= "mode=='create'">
+        <div *ngIf= "mode=='create'&&throughProduct=='false'">
           <ion-title>Create UOM</ion-title>
         </div>
       </ion-buttons>

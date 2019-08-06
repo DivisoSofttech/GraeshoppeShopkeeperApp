@@ -1,3 +1,4 @@
+import { ProductViewComponent } from './../../components/product-view/product-view.component';
 
 import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { CreateEditUomComponent } from './../../components/create-edit-uom/create-edit-uom.component';
@@ -17,7 +18,8 @@ export class ProductPage implements OnInit {
 
   constructor(
     private storage: Storage,
-    private queryService: QueryResourceService
+    private queryService: QueryResourceService,
+    private modalController: ModalController
   ) { }
 
   products: Product[] = [];
@@ -44,6 +46,5 @@ export class ProductPage implements OnInit {
   onAddProduct(product) {
     this.products.push(product);
    }
-
 
 }

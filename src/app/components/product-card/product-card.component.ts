@@ -1,3 +1,4 @@
+import { ProductViewComponent } from './../product-view/product-view.component';
 import { CommandResourceService } from 'src/app/api/services';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CreateEditProductComponent } from './../create-edit-product/create-edit-product.component';
@@ -70,5 +71,12 @@ export class ProductCardComponent implements OnInit {
     });
     await actionSheet.present();
   }
+  async viewProductModal(){
+    const modal = await this.modalController.create({
+      component: ProductViewComponent,
+      componentProps: {product: this.product}
+    });
+    return await modal.present();
+   }
 
 }

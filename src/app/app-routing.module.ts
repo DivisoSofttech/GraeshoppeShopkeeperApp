@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'edit-restaurant',
     loadChildren: './pages/edit-restaurant/edit-restaurant.module#EditRestaurantPageModule', canActivate: [AuthGuardService] },
   { path: 'password-reset', component: PasswordResetComponent, canActivate: [AuthGuardService] },
+  { path: 'reports', loadChildren: './pages/reports/reports.module#ReportsPageModule' },
 ];
 
 @NgModule({
