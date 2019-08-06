@@ -24,19 +24,15 @@ export class ProductPage implements OnInit {
 
   constructor(
     private storage: Storage,
-<<<<<<< HEAD
     private util: Util,
     private queryService: QueryResourceService
-=======
-    private queryService: QueryResourceService,
-    private modalController: ModalController
->>>>>>> b9551d3e1add4186cae5818e7a789273f64f79d9
   ) { }
 
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
       this.loader = loader;
+      this.loader.present();
       this.getProducts(0 , true);
     });
   }
@@ -62,7 +58,11 @@ export class ProductPage implements OnInit {
         if(limit === false) {
           if(i < res.totalPages) {
             this.getProducts(i , limit);  
-          }  
+          } else {
+            this.loader.dismiss();
+          }
+        } else {
+          this.loader.dismiss();
         } 
       },
       err => {
