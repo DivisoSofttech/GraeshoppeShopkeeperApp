@@ -31,6 +31,7 @@ export class CategoryPage implements OnInit {
     this.util.createLoader()
     .then(loader => {
       this.loader = loader;
+      this.loader.present();
       this.getCategories(0 , true);
     });
   }
@@ -56,8 +57,15 @@ export class CategoryPage implements OnInit {
         if(limit === false) {
           if(i < res.totalPages) {
             this.getCategories(i , limit);  
-          }  
-        } 
+          } else {
+            this.loader.dismiss();
+          }
+        } else {
+          this.loader.dismiss();
+        }
+      }
+      ,err=>{
+        this.loader.dismiss();
       });
     });
   }
