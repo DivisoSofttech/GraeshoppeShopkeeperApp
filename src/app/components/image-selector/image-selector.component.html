@@ -10,7 +10,7 @@
     </ion-toolbar>
   </ion-header>
 <ion-content>
-<div>
+<div [ngClass]="data.image?'':'hidden'" >
     <img-cropper  #cropper [image]="data"  [settings]="cropperSettings"></img-cropper>
 </div>
 <ion-item>
@@ -20,9 +20,8 @@
           Upload
           <input
             id="file_input_file"
-            class="none"
+            class="none hidden"
             type="file"
-            style="display: none;"
             (change)="onChange($event)"
           />
         </label>

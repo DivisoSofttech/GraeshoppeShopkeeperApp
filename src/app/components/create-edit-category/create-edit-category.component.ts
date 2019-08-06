@@ -13,13 +13,14 @@ import { Storage } from '@ionic/storage';
 })
 export class CreateEditCategoryComponent implements OnInit {
 
-  category: Category = {};
+  category: Category = {
+
+  };
   categoryDTO: CategoryDTO = {};
   mode = 'create';
-  pop: boolean = false;
+  pop = false;
   @Input() throughProduct = 'false';
-  @Output() update = new EventEmitter();
-  //@ViewChild('slides', { static: false }) slides: IonSlides;
+  // @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
     private commandResource: CommandResourceService,
@@ -30,12 +31,15 @@ export class CreateEditCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.storage.get('user').then(user => {
-      this.category.iDPcode = user.preferred_username
+      this.category.iDPcode = user.preferred_username;
+      this.categoryDTO.iDPcode = user.preferred_username;
     });
-    this.getcategoryDTOUsingCategory();
-    console.log("Mode = ",this.mode);
-    console.log("Cate = ",this.category);
-    
+    if (this.category.id != null) {
+      this.getcategoryDTOUsingCategory();
+    }
+    console.log('Mode = ', this.mode);
+    console.log('Cate = ', this.category);
+
   }
   async selectImage() {
 
@@ -47,7 +51,7 @@ export class CreateEditCategoryComponent implements OnInit {
     modal.onDidDismiss()
     .then(data => {
       this.categoryDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
-      this.categoryDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':')+1,data.data.image.indexOf(';'));
+      this.categoryDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
     });
 
     return await modal.present();
@@ -55,33 +59,31 @@ export class CreateEditCategoryComponent implements OnInit {
   // modal() {
   //     this.slides.slideTo(0);
   // }
-  dismiss(data){
+  dismiss(data) {
       this.modalController.dismiss(data);
   }
 
-  addCategory(){
+  addCategory() {
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
-          console.log("Category Added",data);
-          this.update.emit();
+          console.log('Category Added', data);
           this.dismiss(data);
-        })
-        ,err => console.log("Error Creating Category",err);
-    
+        }
+        , err => console.log('Error Creating Category', err));
+
   }
-  updateCategory(){
+  updateCategory() {
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
-      console.log("Category Updated",data);
-      this.update.emit();
+      console.log('Category Updated', data);
       this.dismiss(data);
-    })
-    ,err => console.log("Error Updating Category",err);
-    
+    }
+    , err => console.log('Error Updating Category', err));
+
   }
-  getcategoryDTOUsingCategory(){
+  getcategoryDTOUsingCategory() {
     this.query.findCategoryUsingGET(this.category.id)
-        .subscribe(categoryDTO => this.categoryDTO=categoryDTO)
+        .subscribe(categoryDTO => this.categoryDTO = categoryDTO);
   }
 
 }

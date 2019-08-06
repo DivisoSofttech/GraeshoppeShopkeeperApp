@@ -14,6 +14,8 @@ export class ProductCardComponent implements OnInit {
   product: Product;
   @Output()
   delete = new EventEmitter();
+  @Output()
+  update = new EventEmitter();
 
   constructor(
     private actionSheetController: ActionSheetController,
@@ -22,14 +24,17 @@ export class ProductCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.product);
-    
   }
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateEditProductComponent,
       componentProps: {mode:  'update' , product: this.product}
+
+    });
+    modal.onDidDismiss()
+    .then(data => {
+     this.update.emit(data.data);
     });
     return await modal.present();
   }

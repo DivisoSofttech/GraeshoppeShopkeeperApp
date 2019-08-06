@@ -1,3 +1,4 @@
+import { CommandResourceService } from 'src/app/api/services';
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 import { Category } from './../../api/models/category';
@@ -12,12 +13,15 @@ export class CategoryCardComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private command: CommandResourceService
   ) { }
   @Input()
   category: Category;
   @Output() 
   update = new EventEmitter();
+  @Output()
+  delete = new EventEmitter();
 
   ngOnInit() {}
 
@@ -50,6 +54,8 @@ export class CategoryCardComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
+          this.command.deleteCategoryUsingDELETE(this.category.id)
+              .subscribe(data =>  this.delete.emit())
           console.log('Delete clicked');
         }
       },

@@ -6,12 +6,27 @@
 </ion-header>
 
 <ion-content>
-    <ion-grid>
+    
+  <ion-grid>
       <ion-row>
-        <ion-col *ngFor="let category of categories"  size-lg="3" size-sm="4" size="6" size-md="3">
+        
+        <ion-col *ngFor="let order  of orders"  size-lg="3" size-sm="4" size="6" size-md="3">
           <app-order-card></app-order-card>
         </ion-col>
+
+        <ion-col>
+
+        </ion-col>
+
       </ion-row>
     </ion-grid>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreOrders($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+      
   </ion-content>
   

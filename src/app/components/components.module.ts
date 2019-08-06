@@ -1,3 +1,4 @@
+import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { IonicModule } from '@ionic/angular';
 import { SettingsOptionComponent } from 'src/app/components/settings-option/settings-option.component';
 import { CreateEditCategoryComponent } from './create-edit-category/create-edit-category.component';
@@ -32,6 +33,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     CreateEditCategoryComponent,
     CategoryCardComponent,
     OrderCardComponent,
+    AddCuisineComponent,
     PasswordResetComponent,
     AddComponent
   ],
@@ -50,9 +52,13 @@ import { OrderCardComponent } from './order-card/order-card.component';
     UomCardComponent,
     SettingsOptionComponent,
     ImageSelectorComponent,
+    ProductCardComponent,
+    CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     OrderCardComponent,
+    CategoryCardComponent,
+    AddCuisineComponent,
     PasswordResetComponent,
     AddComponent
   ],

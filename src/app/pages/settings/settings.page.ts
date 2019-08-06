@@ -17,21 +17,21 @@ export class SettingsPage implements OnInit {
     private storage: Storage
   ) { }
 
-  options: any = [
+  options: {title: string, icon: string, route: string}[] = [
     {
       title: 'Edit Restaurant',
       icon: 'create',
-      url: ' '
+      route: '/edit-restaurant'
     },
     {
       title: 'Change Password',
       icon: 'lock',
-      url: '/password-reset'
+      route: '/password-reset'
     },
     {
       title: 'Delete Account',
       icon: 'trash',
-      url: ' '
+      route: '/delete-account'
     },
   ];
 
@@ -46,5 +46,4 @@ export class SettingsPage implements OnInit {
     //   }
     // );
   }
-
 }

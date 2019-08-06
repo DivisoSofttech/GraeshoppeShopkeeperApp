@@ -18,7 +18,6 @@ import { Util } from './services/util';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,7 +39,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   providers: [
     Camera,
     StatusBar,
-    InAppBrowser,
     Util,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

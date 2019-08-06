@@ -8,6 +8,7 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { PageOfUOM } from '../models/page-of-uom';
+import { PageOfProduct } from '../models/page-of-product';
 import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
 import { BannerDTO } from '../models/banner-dto';
@@ -20,7 +21,6 @@ import { Type } from '../models/type';
 import { EntryLineItem } from '../models/entry-line-item';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
-import { PageOfProduct } from '../models/page-of-product';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
@@ -46,6 +46,7 @@ import { UOMDTO } from '../models/uomdto';
 })
 class QueryResourceService extends __BaseService {
   static readonly findUOMByIDPcodeUsingGETPath = '/api/query/UOM/{iDPcode}';
+  static readonly getAllAuxilaryProductUsingGETPath = '/api/query/auxilary-products';
   static readonly findAuxilaryLineItemUsingGETPath = '/api/query/auxilaryitem/{id}';
   static readonly getAuxilaryLineItemsByStoreIdUsingGETPath = '/api/query/auxilarylineitems/{iDPcode}';
   static readonly findBannerUsingGETPath = '/api/query/banner/{id}';
@@ -150,6 +151,39 @@ class QueryResourceService extends __BaseService {
   findUOMByIDPcodeUsingGET(params: QueryResourceService.FindUOMByIDPcodeUsingGETParams): __Observable<PageOfUOM> {
     return this.findUOMByIDPcodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfUOM)
+    );
+  }
+
+  /**
+   * @return OK
+   */
+  getAllAuxilaryProductUsingGETResponse(): __Observable<__StrictHttpResponse<PageOfProduct>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/auxilary-products`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfProduct>;
+      })
+    );
+  }
+  /**
+   * @return OK
+   */
+  getAllAuxilaryProductUsingGET(): __Observable<PageOfProduct> {
+    return this.getAllAuxilaryProductUsingGETResponse().pipe(
+      __map(_r => _r.body as PageOfProduct)
     );
   }
 
