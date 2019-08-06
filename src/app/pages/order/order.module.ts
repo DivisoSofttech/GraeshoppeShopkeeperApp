@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { OrderPage } from './order.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { OrderCardComponent } from 'src/app/components/order-card/order-card.component';
 
 const routes: Routes = [
   {
@@ -19,8 +21,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [OrderPage]
+  declarations: [OrderPage],
+  entryComponents: [OrderCardComponent]
 })
 export class OrderPageModule {}

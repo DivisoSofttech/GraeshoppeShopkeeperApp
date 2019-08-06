@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { QueryResourceService } from 'src/app/api/services';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-order',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderPage implements OnInit {
 
-  constructor() { }
+  user;
+
+  constructor(
+    private queryResource: QueryResourceService,
+    private storage: Storage
+  ) { }
 
   ngOnInit() {
+    this.storage.get('user')
+    .then((data) =>{
+      this.user = data;
+      this.getOrders();
+     });
   }
+
+  getOrders() {
+    this.queryResource.findOrderLineByStoreIdUsingGET({
+      storeId: this.user.preffered_username
+    })
+  }
+
+
 
 }

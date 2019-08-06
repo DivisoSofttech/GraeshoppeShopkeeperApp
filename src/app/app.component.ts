@@ -24,9 +24,9 @@ export class AppComponent {
       icon: 'filing'
     },
     {
-      title: 'UOM',
-      url: '/uom',
-      icon: 'speedometer'
+      title: 'Order',
+      url: '/order',
+      icon: 'list-box'
     },
     {
       title: 'UOM',

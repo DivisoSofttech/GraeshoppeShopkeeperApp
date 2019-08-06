@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>order</ion-title>
+      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+    <ion-title>Order</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-</ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let category of categories"  size-lg="3" size-sm="4" size="6" size-md="3">
+          <app-order-card></app-order-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  

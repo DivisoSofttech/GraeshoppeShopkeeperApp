@@ -4,6 +4,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { Storage } from '@ionic/storage';
 import { Util } from 'src/app/services/util';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-password-reset',
@@ -23,17 +24,20 @@ export class PasswordResetComponent implements OnInit {
   oldPasswordInvalid = false;
   buttonDisabled = true;
 
+  loader: HTMLIonLoadingElement;
+
   constructor(
    private keycloak: KeycloakService,
    private storage: Storage,
-   private util: Util
+   private util: Util,
+   private navc: NavController
   ) { }
 
   ngOnInit() {
     this.storage.get('user')
     .then(user => {
       this.user = user;
-    })
+    });
   }
 
   checkInputMatch() {
@@ -47,28 +51,37 @@ export class PasswordResetComponent implements OnInit {
   }
 
   checkPasswordValid() {
-    const regx = /^[A-Za-z]\w{7,14}$/;
-    if(regx.test(this.password)) {
-      console.log('true)');
-      this.passwordValid = true;
-      this.buttonDisabled = false;
-    } else {
-      console.log('false');
-      this.passwordValid = false;
-      this.buttonDisabled = true;
-    }
+   return true;
   }
 
   updatePassword() {
 
-    let changePasswordFunc = ()=>{
-      this.keycloak.resetPassword(this.password,
-        ()=>{alert('Password Updated');},
-        ()=>{alert('Password Updation Failed');});
-    }
-
-    changePasswordFunc();
+    this.util.createLoader()
+    .then(loader => {
+      this.loader = loader;
+      if(this.oldPassword === undefined) {
+        alert('Enter Old Password')
+      }
+      let changePasswordFunc = ()=>{
+        this.keycloak.resetPassword(this.password,
+          ()=>{this.loader.dismiss()
+            .then(() =>{
+              alert('Password Updated');
+              this.navc.back();
+            })},
+          ()=>{this.loader.dismiss();alert('Password Updation Failed');});
+      }
+  
+      this.loader.present();
+      this.keycloak.authenticate({ username: this.user.preferred_username , password: this.oldPassword}, 
+      ()=>{
+        changePasswordFunc();
+      },
+      ()=>{
+        this.loader.dismiss();
+        alert('Invalid Old Password');
+      });
+    })
+   
   }
-
-
 }
