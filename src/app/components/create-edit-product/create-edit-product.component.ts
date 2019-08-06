@@ -32,6 +32,7 @@ export class CreateEditProductComponent implements OnInit {
   mode = 'create';
   value: string = '';
   combo: boolean = false;
+  aux: boolean = false;
   comboLineItems: ComboLineItemDTO[]=[];
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
@@ -48,7 +49,7 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
     }
     this.getCategories();
-    //this.getAuxilaryItems();
+    this.getAuxilaryItems();
     this.getUOM();
     this.getNonComboNonAuxilaryProduct();
 
@@ -59,6 +60,14 @@ export class CreateEditProductComponent implements OnInit {
     }
     else{
       this.combo=true;
+    }
+  }
+  showAux(){
+    if(this.aux==true){
+      this.aux=false;
+    }
+    else{
+      this.aux=true;
     }
   }
   dismiss(data){
@@ -106,6 +115,10 @@ export class CreateEditProductComponent implements OnInit {
           this.comboLineItems.forEach(
             ci => ci.productId=data.id
           )
+          this.auxilaryLineItemDTOs.forEach(
+            ai => ai.productId=data.id
+          )
+          this.saveAuxilary();
           this.saveCombo();
         },
         err => console.log("error creating product",err)
@@ -149,7 +162,15 @@ export class CreateEditProductComponent implements OnInit {
       });
     });
   }
-
+  getAuxilaryItems(){
+    this.storage.get('user').then(user => {
+      this.query.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(res => {
+        this.auxilaryProduct = res.content;
+        console.log("aux",res.content);
+        
+      });
+    });
+  }
   selectedComboItem(item,toggle){ 
 
     console.log("item",item);
@@ -164,7 +185,29 @@ export class CreateEditProductComponent implements OnInit {
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id != item.id);
     }
   }
+  selectedAuxilaryItem(item,toggle){
+    console.log("item",item);
+    console.log("toggle",toggle.detail.checked);
+    const aux: AuxilaryLineItemDTO = {
+      auxilaryItemId: item.id
+    }
+    if(toggle.detail.checked==true){
+      this.auxilaryLineItemDTOs.push(aux);
+    }
+    else{
+      this.auxilaryLineItemDTOs = this.auxilaryLineItemDTOs.filter(ai => ai.id != item.id);
+    }
+  }
 
+  saveAuxilary(){
+    this.auxilaryLineItemDTOs.forEach(
+      ai => this.commandResource.createAuxilaryLineItemUsingPOST(ai)
+                .subscribe(data => console.log("auxilary",data)
+                )
+    )
+    console.log("auxilary items",this.auxilaryLineItemDTOs);
+    
+  }
   saveCombo(){
     
     this.comboLineItems.forEach(

@@ -68,6 +68,7 @@ class CommandResourceService extends __BaseService {
   static readonly deleteSaleUsingDELETEPath = '/api/command/sales/{id}';
   static readonly createStockCurrentUsingPOSTPath = '/api/command/stock-currents';
   static readonly updateStockCurrentUsingPUTPath = '/api/command/stock-currents';
+  static readonly deleteStoreTypeUsingDELETEPath = '/api/command/store-types/{id}';
   static readonly createStoreBundleUsingPOSTPath = '/api/command/storeBundle';
   static readonly createStoreUsingPOSTPath = '/api/command/stores';
   static readonly updateStoreUsingPUTPath = '/api/command/stores';
@@ -1291,6 +1292,40 @@ class CommandResourceService extends __BaseService {
   updateStockCurrentUsingPUT(StockCurrent: StockCurrentDTO): __Observable<StockCurrentDTO> {
     return this.updateStockCurrentUsingPUTResponse(StockCurrent).pipe(
       __map(_r => _r.body as StockCurrentDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteStoreTypeUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/store-types/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteStoreTypeUsingDELETE(id: number): __Observable<null> {
+    return this.deleteStoreTypeUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 

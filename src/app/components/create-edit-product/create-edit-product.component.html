@@ -122,9 +122,20 @@
                       </ion-select> -->
                 </span>
                 <span slot="end">
-                    <ion-icon name="add" ></ion-icon>
+                    <ion-icon name="add" (click)="showAux()" ></ion-icon>
                 </span>
+                
             </ion-item>
+            <ion-item *ngIf="aux==true">
+                <ion-card class="scroll"> 
+                    <ion-list>
+                      <ion-item lines="none" *ngFor="let data of auxilaryProduct">
+                        <ion-label>{{data.name}}</ion-label>
+                        <ion-checkbox slot="end" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
+                      </ion-item>
+                    </ion-list>
+                    </ion-card>
+                </ion-item>
             <ion-item *ngIf="productDTO.isAuxilaryItem==false">
                 <span slot="start">
                     <ion-label>Add Combo Items</ion-label>
@@ -135,12 +146,16 @@
                   
               </ion-item>
               <ion-item *ngIf="combo==true">
-                  <ion-list>
+                
+                  <ion-card class="scroll"> 
+                    <ion-list>
                       <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts">
                         <ion-label>{{data.name}}</ion-label>
                         <ion-checkbox slot="end" (ionChange)="selectedComboItem(data,$event)"></ion-checkbox>
                       </ion-item>
                     </ion-list>
+                    </ion-card>
+                 
               </ion-item>
             <ion-item>
               <ion-label slot="start">Service Item</ion-label>
