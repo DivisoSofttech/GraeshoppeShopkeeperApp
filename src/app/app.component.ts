@@ -29,6 +29,11 @@ export class AppComponent {
       icon: 'speedometer'
     },
     {
+      title: 'UOM',
+      url: '/uom',
+      icon: 'speedometer'
+    },
+    {
       title: 'Settings',
       url: '/settings',
       icon: 'settings'

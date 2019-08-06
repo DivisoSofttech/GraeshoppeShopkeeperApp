@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: './pages/login-signup/login-signup.module#LoginSignupPageModule' },
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule', canActivate: [AuthGuardService] },
   { path: 'password-reset', component: PasswordResetComponent, canActivate: [AuthGuardService] },
+  { path: 'order', loadChildren: './pages/order/order.module#OrderPageModule' }
 ];
 
 @NgModule({
