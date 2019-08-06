@@ -13,7 +13,7 @@ import { Util } from 'src/app/services/util';
 export class PasswordResetComponent implements OnInit {
 
   user;
-  oldPassword
+  oldPassword;
   password;
   rePassword;
 
@@ -33,22 +33,22 @@ export class PasswordResetComponent implements OnInit {
     this.storage.get('user')
     .then(user => {
       this.user = user;
-    })
+    });
   }
 
   checkInputMatch() {
-    if(this.password === this.rePassword) {
+    if (this.password === this.rePassword) {
       this.passwordMatch = true;
       this.buttonDisabled = false;
     } else {
-      this.passwordMatch= false;
+      this.passwordMatch = false;
       this.buttonDisabled = true;
     }
   }
 
   checkPasswordValid() {
     const regx = /^[A-Za-z]\w{7,14}$/;
-    if(regx.test(this.password)) {
+    if (regx.test(this.password)) {
       console.log('true)');
       this.passwordValid = true;
       this.buttonDisabled = false;
@@ -61,11 +61,11 @@ export class PasswordResetComponent implements OnInit {
 
   updatePassword() {
 
-    let changePasswordFunc = ()=>{
+    const changePasswordFunc = () => {
       this.keycloak.resetPassword(this.password,
-        ()=>{alert('Password Updated');},
-        ()=>{alert('Password Updation Failed');});
-    }
+        () => {alert('Password Updated'); },
+        () => {alert('Password Updation Failed'); });
+    };
 
     changePasswordFunc();
   }

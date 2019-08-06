@@ -7,23 +7,24 @@ import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
 import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
+import {
+  QueryResourceService,
+  CommandResourceService
+} from 'src/app/api/services';
 import { Product } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
-
 
 @Component({
   selector: 'app-create-edit-product',
   templateUrl: './create-edit-product.component.html',
-  styleUrls: ['./create-edit-product.component.scss'],
+  styleUrls: ['./create-edit-product.component.scss']
 })
 export class CreateEditProductComponent implements OnInit {
-  
   product: Product = {};
   productDTO: ProductDTO = {
-    isAuxilaryItem : false
+    isAuxilaryItem: false
   };
-  auxilaryLineItemDTOs: AuxilaryLineItemDTO[] =[];
+  auxilaryLineItemDTOs: AuxilaryLineItemDTO[] = [];
   products: Product[] = [];
   nonAuxNonComboProducts: Product[] = [];
   auxilaryProduct: Product[] = [];
@@ -41,11 +42,11 @@ export class CreateEditProductComponent implements OnInit {
     private popoverController: PopoverController,
     private storage: Storage,
     private commandResource: CommandResourceService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    console.log("Mode = ",this.mode);
-    if(this.mode=='update'){
+    console.log('Mode = ', this.mode);
+    if (this.mode === 'update') {
       this.getProductDtoUsingProduct();
     }
     this.getCategories();
@@ -54,12 +55,11 @@ export class CreateEditProductComponent implements OnInit {
     this.getNonComboNonAuxilaryProduct();
 
   }
-  showCombo(){
-    if(this.combo==true){
-      this.combo=false;
-    }
-    else{
-      this.combo=true;
+  showCombo() {
+    if (this.combo === true) {
+      this.combo = false;
+    } else {
+      this.combo = true;
     }
   }
   showAux(){
@@ -78,39 +78,39 @@ export class CreateEditProductComponent implements OnInit {
     this.value = value;
     if (this.value === 'category') {
       this.slides.slideTo(1);
-    }
-    else if(this.value === 'uom'){
+    } else if (this.value === 'uom') {
       this.slides.slideTo(2);
-    }
-     else {
+    } else {
       this.slides.slideTo(0);
       this.value = '';
     }
   }
 
-  getProductDtoUsingProduct(){
+  getProductDtoUsingProduct() {
     this.query.findProductUsingGET(this.product.id)
         .subscribe(productDto => this.productDTO = productDto,
-        err => console.log("Error Getting ProductDTO Using Product",err))
+        err => console.log('Error Getting ProductDTO Using Product', err));
   }
-  getCategories(){
+  getCategories() {
     this.storage.get('user').then(user => {
-      this.query.findAllCategoriesUsingGET({storeId: user.preferred_username}).subscribe(res => {
-        this.categories = res.content;
-      });
+      this.query
+        .findAllCategoriesUsingGET({ storeId: user.preferred_username })
+        .subscribe(res => {
+          this.categories = res.content;
+        });
     });
   }
-  getUOM(){
+  getUOM() {
     this.storage.get('user').then(user => {
       this.query.findUOMByIDPcodeUsingGET({iDPcode: user.preferred_username}).subscribe(res => {
         this.uoms = res.content;
       });
     });
   }
-  createProduct(){
+  createProduct() {
     this.commandResource.createProductUsingPOST(this.productDTO)
         .subscribe(data => {
-          console.log("product added",data);
+          console.log('product added', data);
           this.dismiss(data);
           this.comboLineItems.forEach(
             ci => ci.productId=data.id
@@ -121,16 +121,16 @@ export class CreateEditProductComponent implements OnInit {
           this.saveAuxilary();
           this.saveCombo();
         },
-        err => console.log("error creating product",err)
-    )
-    
+        err => console.log('error creating product', err)
+    );
+
   }
-  updateProduct(){
+  updateProduct() {
     this.commandResource.updateProductUsingPUT(this.productDTO)
         .subscribe(data => {
-          console.log("Product Updated",data);
+          console.log('Product Updated', data);
           this.dismiss(data);
-        })
+        });
   }
   async selectImage() {
 
@@ -141,21 +141,21 @@ export class CreateEditProductComponent implements OnInit {
 
     modal.onDidDismiss()
     .then(data => {
-      console.log("sdf",data);
+      console.log('sdf', data);
       console.log(this.productDTO.image);
-      console.log("ghf",data.data.imageType);
-      
-      
+      console.log('ghf', data.data.imageType);
+
+
       this.productDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
-      this.productDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':')+1,data.data.image.indexOf(';'));
+      this.productDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
       console.log(this.productDTO.image);
       console.log(this.productDTO.imageContentType);
-      
+
     });
 
     return await modal.present();
   }
-  getNonComboNonAuxilaryProduct(){
+  getNonComboNonAuxilaryProduct() {
     this.storage.get('user').then(user => {
       this.query.getNotAuxNotComboProductsByIDPcodeUsingGET({iDPcode: user.preferred_username}).subscribe(res => {
         this.nonAuxNonComboProducts = res.content;
@@ -173,16 +173,15 @@ export class CreateEditProductComponent implements OnInit {
   }
   selectedComboItem(item,toggle){ 
 
-    console.log("item",item);
-    console.log("toggle",toggle.detail.checked);
+    console.log('item', item);
+    console.log('toggle', toggle.detail.checked);
     const combo: ComboLineItemDTO = {
       comboItemId: item.id
-    }
-    if(toggle.detail.checked==true){
+    };
+    if (toggle.detail.checked === true) {
       this.comboLineItems.push(combo);
-    }
-    else{
-      this.comboLineItems = this.comboLineItems.filter(ci => ci.id != item.id);
+    } else {
+      this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
   }
   selectedAuxilaryItem(item,toggle){
@@ -212,10 +211,10 @@ export class CreateEditProductComponent implements OnInit {
     
     this.comboLineItems.forEach(
       ci => this.commandResource.createComboLineItemUsingPOST(ci)
-                .subscribe(data => console.log("combo",data)
+                .subscribe(data => console.log('combo', data)
                 )
-    )
-    console.log("combo items",this.comboLineItems);
-    
+    );
+    console.log('combo items', this.comboLineItems);
+
   }
 }

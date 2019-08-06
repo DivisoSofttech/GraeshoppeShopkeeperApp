@@ -1,5 +1,10 @@
 .store-image {
-    width: 140px;
-    height: 190px;
-    background-size: cover;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px #888888;
+}
+
+.wrap-whitespace {
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
 }

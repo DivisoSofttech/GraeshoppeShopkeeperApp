@@ -24,8 +24,6 @@ export class ProductCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.product);
-    
   }
 
   async presentModal() {
@@ -36,7 +34,7 @@ export class ProductCardComponent implements OnInit {
     });
     modal.onDidDismiss()
     .then(data => {
-     this.update.emit(data.data); 
+     this.update.emit(data.data);
     });
     return await modal.present();
   }

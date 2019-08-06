@@ -6,7 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
 import { Component, OnInit } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
-import { ProductDTO } from '../../api/models/product-dto';
 import { Product } from '../../api/models/product';
 
 @Component({
@@ -21,7 +20,7 @@ export class ProductPage implements OnInit {
     private queryService: QueryResourceService
   ) { }
 
-  products: Product[] =[];
+  products: Product[] = [];
 
   ngOnInit() {
     let iDPcode;
@@ -32,15 +31,15 @@ export class ProductPage implements OnInit {
       });
     });
   }
-  updateProduct(product){
-    console.log("product",product);
-    
-    const index = this.products.findIndex(p => p.id === product.id);
-    this.products.splice(index,1,product);
-  }
-  deleteProduct(product: Product){
+  updateProduct(product) {
+    console.log('product', product);
 
-    this.products = this.products.filter(p=>p !== product)
+    const index = this.products.findIndex(p => p.id === product.id);
+    this.products.splice(index, 1, product);
+  }
+  deleteProduct(product: Product) {
+
+    this.products = this.products.filter(p => p !== product);
   }
   onAddProduct(product) {
     this.products.push(product);
