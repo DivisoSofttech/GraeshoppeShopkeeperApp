@@ -18,13 +18,12 @@ export class CreateEditCategoryComponent implements OnInit {
   };
   categoryDTO: CategoryDTO = {};
   mode = 'create';
-  pop = false;
+  @Output() onSlide = new EventEmitter();
   @Input() throughProduct = 'false';
   // @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modalController: ModalController,
     private commandResource: CommandResourceService,
-    private popover: PopoverController,
     private storage: Storage,
     private query: QueryResourceService
   ) { }
@@ -67,7 +66,12 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
           console.log('Category Added', data);
+          if(this.throughProduct=='false'){
           this.dismiss(data);
+          }
+          else{
+            this.onSlide.emit();
+          }
         }
         , err => console.log('Error Creating Category', err));
 

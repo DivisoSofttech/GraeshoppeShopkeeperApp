@@ -1,3 +1,4 @@
+import { ProductViewComponent } from './product-view/product-view.component';
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { IonicModule } from '@ionic/angular';
 import { SettingsOptionComponent } from 'src/app/components/settings-option/settings-option.component';
@@ -35,7 +36,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
     OrderCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,
-    AddComponent
+    AddComponent,
+    ProductViewComponent
   ],
 
   imports: [
@@ -60,7 +62,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
     CategoryCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,
-    AddComponent
+    AddComponent,
+    ProductViewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
@@ -69,6 +72,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
+    ProductViewComponent
   ]
 })
 export class ComponentsModule { }

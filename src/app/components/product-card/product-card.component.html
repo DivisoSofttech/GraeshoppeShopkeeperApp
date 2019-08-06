@@ -9,12 +9,12 @@
       </ion-button>
     </ion-buttons>
   </div>
-  <ion-img [src]="'data:' + product.imageContentType + ';base64,' + product.image" class="imageShow"></ion-img>
+  <ion-img (click)="viewProductModal()" [src]="'data:' + product.imageContentType + ';base64,' + product.image" class="imageShow"></ion-img>
   <ion-card-content no-padding class="description">
     <ion-grid>
       <ion-row>
         <ion-col size="12" text-start>
-          <ion-text class="stock-name">{{product.name}}</ion-text>
+          <ion-text class="stock-name" (click)="viewProductModal()" >{{product.name}}</ion-text>
           <ion-text text-start class="display-list"><strong>&#8364; {{product.sellingPrice}}</strong></ion-text>
         </ion-col>
       </ion-row>

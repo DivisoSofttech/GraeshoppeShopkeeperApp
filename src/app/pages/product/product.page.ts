@@ -1,3 +1,4 @@
+import { ProductViewComponent } from './../../components/product-view/product-view.component';
 
 import { Storage } from '@ionic/storage';
 import { Component,  OnInit, ViewChild } from '@angular/core';
@@ -23,8 +24,13 @@ export class ProductPage implements OnInit {
 
   constructor(
     private storage: Storage,
+<<<<<<< HEAD
     private util: Util,
     private queryService: QueryResourceService
+=======
+    private queryService: QueryResourceService,
+    private modalController: ModalController
+>>>>>>> b9551d3e1add4186cae5818e7a789273f64f79d9
   ) { }
 
   ngOnInit() {
@@ -108,6 +114,5 @@ export class ProductPage implements OnInit {
       }
     });
   }
-
 
 }

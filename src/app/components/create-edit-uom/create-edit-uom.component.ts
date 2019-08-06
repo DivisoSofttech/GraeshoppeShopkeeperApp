@@ -1,6 +1,6 @@
 import { UOMDTO } from './../../api/models/uomdto';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 
@@ -18,7 +18,7 @@ export class CreateEditUomComponent implements OnInit {
   uom: UOMDTO = {};
 
   storeIdpcode;
-
+  @Output() onSlide = new EventEmitter();
   constructor(
     private commandResource: CommandResourceService,
     private modalController: ModalController,
@@ -42,7 +42,12 @@ export class CreateEditUomComponent implements OnInit {
       loader.present();
       this.commandResource.createUOMUsingPOST(this.uom)
       .subscribe(uom => {
-        this.dismiss(uom);
+        if(this.throughProduct=='false'){
+          this.dismiss(uom);
+          }
+          else{
+            this.onSlide.emit();
+          }
         loader.dismiss();
       } , err => {
         loader.dismiss();

@@ -31,7 +31,7 @@ export class CreateEditProductComponent implements OnInit {
   categories: CategoryDTO[] = [];
   uoms: UOMDTO[] = [];
   mode = 'create';
-  value: string = '';
+  value: string = 'none';
   combo: boolean = false;
   aux: boolean = false;
   comboLineItems: ComboLineItemDTO[]=[];
@@ -82,7 +82,7 @@ export class CreateEditProductComponent implements OnInit {
       this.slides.slideTo(2);
     } else {
       this.slides.slideTo(0);
-      this.value = '';
+      this.value = 'none';
     }
   }
 
