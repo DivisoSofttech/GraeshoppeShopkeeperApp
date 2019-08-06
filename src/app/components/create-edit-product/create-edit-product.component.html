@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons>
-      <div *ngIf="value==''">
+      <div *ngIf="value=='none'">
         <ion-button (click)="dismiss()">
           <ion-icon name="close"></ion-icon>
         </ion-button>
@@ -11,11 +11,17 @@
           <ion-icon name="arrow-round-back"></ion-icon>
         </ion-button>
       </div>
-      <div *ngIf="mode=='update'">
+      <div *ngIf="mode=='update'&&value=='none'">
         <ion-title>Update Product</ion-title>
       </div>
-      <div *ngIf="mode=='create'">
+      <div *ngIf="mode=='create'&&value=='none'">
         <ion-title>Create Product</ion-title>
+      </div>
+      <div *ngIf="value=='category'">
+          <ion-title>Create Category</ion-title>
+        </div>
+      <div *ngIf="value=='uom'">
+          <ion-title>Create UOM</ion-title>
       </div>
     </ion-buttons>
   </ion-toolbar>
@@ -122,9 +128,20 @@
                       </ion-select> -->
                 </span>
                 <span slot="end">
-                    <ion-icon name="add" ></ion-icon>
+                    <ion-icon name="add" (click)="showAux()" ></ion-icon>
                 </span>
+                
             </ion-item>
+            <ion-item *ngIf="aux==true">
+                <ion-card class="scroll"> 
+                    <ion-list>
+                      <ion-item lines="none" *ngFor="let data of auxilaryProduct">
+                        <ion-label>{{data.name}}</ion-label>
+                        <ion-checkbox slot="end" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
+                      </ion-item>
+                    </ion-list>
+                    </ion-card>
+                </ion-item>
             <ion-item *ngIf="productDTO.isAuxilaryItem==false">
                 <span slot="start">
                     <ion-label>Add Combo Items</ion-label>
@@ -135,12 +152,16 @@
                   
               </ion-item>
               <ion-item *ngIf="combo==true">
-                  <ion-list>
+                
+                  <ion-card class="scroll"> 
+                    <ion-list>
                       <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts">
                         <ion-label>{{data.name}}</ion-label>
                         <ion-checkbox slot="end" (ionChange)="selectedComboItem(data,$event)"></ion-checkbox>
                       </ion-item>
                     </ion-list>
+                    </ion-card>
+                 
               </ion-item>
             <ion-item>
               <ion-label slot="start">Service Item</ion-label>
@@ -159,14 +180,14 @@
       </div>
     </ion-slide>
     <ion-slide>
-      <app-create-edit-category [throughProduct]='true'></app-create-edit-category>
+      <app-create-edit-category (onSlide)="slide('none')" [throughProduct]='true'></app-create-edit-category>
     </ion-slide>
     <ion-slide>
-      <app-create-edit-uom [throughProduct]='true'></app-create-edit-uom>
+      <app-create-edit-uom (onSlide)="slide('none')" [throughProduct]='true'></app-create-edit-uom>
     </ion-slide>
   </ion-slides>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="value!='category'&&value!='uom'">
   <div *ngIf="mode=='update'">
     <ion-button margin expand="block" color="primary" (click)="updateProduct()">Update</ion-button>
   </div>

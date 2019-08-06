@@ -89,7 +89,7 @@ export class KeycloakService {
         this.keycloakAdmin.users.resetPassword(
           {
             realm: 'graeshoppe',
-            id: user.preferred_username,
+            id: user.sub,
             credential: {
               temporary: false,
               type: 'password',

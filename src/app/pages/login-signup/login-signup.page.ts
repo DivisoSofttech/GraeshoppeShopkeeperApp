@@ -42,11 +42,11 @@ export class LoginSignupPage implements OnInit {
           loader.dismiss();
           this.util.navigateRoot();
           this.createStore(this.username);
-          this.util.createToast('Logged in successfully');
+          this.util.createToast('Logged in successfully' , 'checkmark-circle-outline');
         },
         () => {
           loader.dismiss();
-          this.util.createToast('Invalid user credentials');
+          this.util.createToast('Invalid user credentials' , 'close-circle-outline');
         }
       );
     });

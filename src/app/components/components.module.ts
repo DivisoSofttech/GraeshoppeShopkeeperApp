@@ -1,3 +1,4 @@
+import { ProductViewComponent } from './product-view/product-view.component';
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { IonicModule } from '@ionic/angular';
 import { SettingsOptionComponent } from 'src/app/components/settings-option/settings-option.component';
@@ -15,6 +16,7 @@ import { ImageCropperModule } from 'ngx-img-cropper';
 import { AddComponent } from './add/add.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { RouterModule } from '@angular/router';
+import { OrderCardComponent } from './order-card/order-card.component';
 
 
 
@@ -31,9 +33,11 @@ import { RouterModule } from '@angular/router';
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     CategoryCardComponent,
+    OrderCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,
-    AddComponent
+    AddComponent,
+    ProductViewComponent
   ],
 
   imports: [
@@ -54,10 +58,12 @@ import { RouterModule } from '@angular/router';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
+    OrderCardComponent,
     CategoryCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,
-    AddComponent
+    AddComponent,
+    ProductViewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
@@ -66,6 +72,7 @@ import { RouterModule } from '@angular/router';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
+    ProductViewComponent
   ]
 })
 export class ComponentsModule { }

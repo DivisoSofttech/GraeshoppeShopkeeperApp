@@ -18,7 +18,7 @@ export class Util {
         });
     }
 
-    createToast(msg: string) {
+    createToast(msg: string , iconName?: string) {
      this.toastController.create({
             message: msg ,
             duration: 2000,
@@ -29,7 +29,7 @@ export class Util {
             buttons: [
               {
                 side: 'start',
-                icon: 'warning',
+                icon: iconName !== undefined?iconName:'information-circle-outline',
               }]
           }).then(data => {
               data.present();
