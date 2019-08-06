@@ -46,7 +46,7 @@ import { UOMDTO } from '../models/uomdto';
 })
 class QueryResourceService extends __BaseService {
   static readonly findUOMByIDPcodeUsingGETPath = '/api/query/UOM/{iDPcode}';
-  static readonly getAllAuxilaryProductUsingGETPath = '/api/query/auxilary-products';
+  static readonly getAllAuxilaryProductUsingGETPath = '/api/query/auxilary-products/{storeId}';
   static readonly findAuxilaryLineItemUsingGETPath = '/api/query/auxilaryitem/{id}';
   static readonly getAuxilaryLineItemsByStoreIdUsingGETPath = '/api/query/auxilarylineitems/{iDPcode}';
   static readonly findBannerUsingGETPath = '/api/query/banner/{id}';
@@ -155,15 +155,17 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param storeId storeId
    * @return OK
    */
-  getAllAuxilaryProductUsingGETResponse(): __Observable<__StrictHttpResponse<PageOfProduct>> {
+  getAllAuxilaryProductUsingGETResponse(storeId: string): __Observable<__StrictHttpResponse<PageOfProduct>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/auxilary-products`,
+      this.rootUrl + `/api/query/auxilary-products/${storeId}`,
       __body,
       {
         headers: __headers,
@@ -179,10 +181,11 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
+   * @param storeId storeId
    * @return OK
    */
-  getAllAuxilaryProductUsingGET(): __Observable<PageOfProduct> {
-    return this.getAllAuxilaryProductUsingGETResponse().pipe(
+  getAllAuxilaryProductUsingGET(storeId: string): __Observable<PageOfProduct> {
+    return this.getAllAuxilaryProductUsingGETResponse(storeId).pipe(
       __map(_r => _r.body as PageOfProduct)
     );
   }
