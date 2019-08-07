@@ -13,5 +13,18 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <app-add  (productAdd)="onAddProduct($event)"></app-add>
+  <app-add (productAdd)="onAddProduct($event)"></app-add>
+
+  <!--Infinite Scroll-->
+  <ion-infinite-scroll threshold="600px" (ionInfinite)="loadMoreProducts($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!--Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>

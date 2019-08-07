@@ -17,6 +17,7 @@ import { ImageCropperModule } from 'ngx-img-cropper';
 import { AddComponent } from './add/add.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { RouterModule } from '@angular/router';
+import { OrderCardComponent } from './order-card/order-card.component';
 
 
 
@@ -33,6 +34,7 @@ import { RouterModule } from '@angular/router';
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     CategoryCardComponent,
+    OrderCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,
     AddComponent,
@@ -58,6 +60,7 @@ import { RouterModule } from '@angular/router';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
+    OrderCardComponent,
     CategoryCardComponent,
     AddCuisineComponent,
     PasswordResetComponent,

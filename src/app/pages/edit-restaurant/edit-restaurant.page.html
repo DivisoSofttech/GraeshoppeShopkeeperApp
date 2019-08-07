@@ -4,32 +4,37 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="updateStoreBundle()" >SAVE</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="storeBundleDTO" class="ion-justify-content-center">
-  <ion-card class="ion-padding-top">
-    <ion-grid>
-      <ion-row class="ion-justify-content-center">
-        <ion-col size="8" class="vertical-align-center hide-overflow">
-          <ion-img class="image hide-overflow"
-            [src]="'data:' + storeBundleDTO.store.imageContentType + ';base64,' + storeBundleDTO.store.image">
-          </ion-img>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="vertical-align-center move-up">
-          <ion-fab-button color="light" class="ion-margin-bottom" (click)="uploadImage()">
-            <ion-icon name="camera"></ion-icon>
-          </ion-fab-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-text>{{this.storeBundleDTO.store.info}}</ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="8" class="vertical-align-center hide-overflow">
+        <ion-img class="image hide-overflow"
+          [src]="'data:' + storeBundleDTO.store.imageContentType + ';base64,' + storeBundleDTO.store.image">
+        </ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="vertical-align-center move-up">
+        <ion-fab-button color="light" class="ion-margin-bottom" (click)="uploadImage()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>{{this.storeBundleDTO.store.info}}</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- General -->
+  <ion-card class="ion-padding-top ion-padding-bottom">
     <ion-label position="fixed" class="ion-padding-start">
       <ion-icon name="settings"></ion-icon>
       General
@@ -46,13 +51,73 @@
       <ion-label position="floating">Contact</ion-label>
       <ion-input [(ngModel)]="storeBundleDTO.store.contactNo"></ion-input>
     </ion-item>
-    <ion-label position="stacked" class="ion-padding-start">Cuisines</ion-label>
-    <span><br></span>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Open</ion-label>
+            <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.openingTime"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Closing</ion-label>
+            <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.closingTime"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- address -->
+    <ion-item class="ion-margin-bottom">
+      <ion-label>Address</ion-label>
+      <ion-button (click)="toggleAddress()" fill="none">
+        <ion-icon name="arrow-dropdown" slot="icon-only" class="initial" [ngClass]="showAddress?'rotate':''"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-card [ngClass]="showAddress?'slideInDown':'hidden'" class="full-width animated transition-props" lines="none">
+      <ion-item>
+        <ion-label position="floating">Type</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.addressType"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Building name or number</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.houseNoOrBuildingName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Area</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.roadNameAreaOrStreet"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">City</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.city"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Landmark</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.landmark"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">State</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.state"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Zip code</ion-label>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.pincode"></ion-input>
+      </ion-item>
+    </ion-card>
+    <!-- /address -->
+
+    <ion-label position="stacked" class="ion-padding-start ion-margin-bottom">Cuisines</ion-label>
+    <span class="ion-margin-bottom"><br></span>
     <span *ngFor="let cuisine of storeBundleDTO.storeType">
-      <ion-badge color="dark" class="ion-margin-start ion-margin-bottom">
+      <ion-badge color="dark" class="ion-margin-start ion-margin-top">
         <ion-text>
           {{cuisine.name}}
-          <ion-text class="ion-padding-left pointer" color="danger" (click)="removeCuisine(cuisine)">
+          <ion-text class="ion-padding-left pointer" color="danger" (click)="cuisineDeleteAlert(cuisine)">
             <strong>
               x
             </strong>
@@ -68,39 +133,88 @@
       <ion-input [(ngModel)]="storeBundleDTO.store.minAmount"></ion-input>
     </ion-item>
   </ion-card>
+  <!-- /General -->
+
+  <!-- Delivery info -->
   <ion-card class="ion-padding-top">
     <ion-label position="fixed" class="ion-padding-start">
       <ion-icon name="cube"></ion-icon>
       Delivery Info
     </ion-label>
-    <ion-item>
+    <ion-item class="ion-margin-bottom">
       <ion-label position="stacked" class="no-wrap">Max delivery time</ion-label>
       <ion-text>{{storeBundleDTO.store.maxDeliveryTime.slice(11,16)}}</ion-text>
     </ion-item>
-    <ion-label position="stacked" class="ion-padding-start ion-padding-top">Delivery types</ion-label>
+    <ion-label position="stacked" class="ion-padding-start ion-margin-top">Delivery types</ion-label>
     <ion-item>
-      <ion-checkbox class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('delivery', $event)"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="deliveryChecked"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('delivery', $event)"></ion-checkbox>
       <ion-label>Delivery</ion-label>
     </ion-item>
-    <ion-item *ngIf="deliveryInfo">
-      <ion-label position="floating">Starting Time</ion-label>
-      <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.startingTime"></ion-datetime>
-    </ion-item>
-    <ion-item *ngIf="deliveryInfo">
-      <ion-label position="floating">Starting Time</ion-label>
-      <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.endTime"></ion-datetime>
-    </ion-item>
+    <ion-card *ngIf="deliveryChecked">
+      <ion-item>
+        <ion-label position="floating">Starting Time</ion-label>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.startingTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Ending Time</ion-label>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.endTime"></ion-datetime>
+      </ion-item>
+    </ion-card>
     <ion-item>
-      <ion-checkbox class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('collection', $event)"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="collectionChecked"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('collection', $event)"></ion-checkbox>
       <ion-label>Collection</ion-label>
     </ion-item>
-    <ion-item *ngIf="collectionInfo">
-      <ion-label position="floating">Starting Time</ion-label>
-      <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.startingTime"></ion-datetime>
-    </ion-item>
-    <ion-item *ngIf="collectionInfo">
-      <ion-label position="floating">Ending Time</ion-label>
-      <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.endTime"></ion-datetime>
+    <ion-card *ngIf="collectionChecked">
+      <ion-item>
+        <ion-label position="floating">Starting Time</ion-label>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.startingTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Ending Time</ion-label>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.endTime"></ion-datetime>
+      </ion-item>
+    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Delivery Charge</ion-label>
+            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.deliveryCharge"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">Service Charge</ion-label>
+            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.serviceCharge"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+  <!-- /Delivery info -->
+
+  <ion-card class="ion-padding-top">
+    <ion-label position="fixed" class="ion-padding-start">
+      <ion-icon name="today"></ion-icon>
+      Order Accept Type
+    </ion-label>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-checkbox></ion-checkbox>
+              <ion-label class="ion-padding-start">Automatic</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-checkbox></ion-checkbox>
+              <ion-label class="ion-padding-start">Manual</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-card>
 </ion-content>

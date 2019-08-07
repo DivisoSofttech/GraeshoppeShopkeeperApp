@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'edit-restaurant',
     loadChildren: './pages/edit-restaurant/edit-restaurant.module#EditRestaurantPageModule', canActivate: [AuthGuardService] },
   { path: 'password-reset', component: PasswordResetComponent, canActivate: [AuthGuardService] },
+  { path: 'order', loadChildren: './pages/order/order.module#OrderPageModule' },
   { path: 'reports', loadChildren: './pages/reports/reports.module#ReportsPageModule' },
 ];
 
