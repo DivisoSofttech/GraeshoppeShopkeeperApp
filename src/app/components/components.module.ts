@@ -1,3 +1,4 @@
+import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
 import { IonicModule } from '@ionic/angular';
@@ -35,7 +36,8 @@ import { RouterModule } from '@angular/router';
     AddCuisineComponent,
     PasswordResetComponent,
     AddComponent,
-    ProductViewComponent
+    ProductViewComponent,
+    CategoryViewComponent
   ],
 
   imports: [
@@ -60,7 +62,8 @@ import { RouterModule } from '@angular/router';
     AddCuisineComponent,
     PasswordResetComponent,
     AddComponent,
-    ProductViewComponent
+    ProductViewComponent,
+    CategoryViewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
@@ -69,7 +72,8 @@ import { RouterModule } from '@angular/router';
     CreateEditProductComponent,
     CreateEditUomComponent,
     CreateEditCategoryComponent,
-    ProductViewComponent
+    ProductViewComponent,
+    CategoryViewComponent
   ]
 })
 export class ComponentsModule { }

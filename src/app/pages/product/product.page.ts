@@ -35,16 +35,19 @@ export class ProductPage implements OnInit {
   }
   updateProduct(product) {
     console.log('product', product);
-
-    const index = this.products.findIndex(p => p.id === product.id);
-    this.products.splice(index, 1, product);
+    this.queryService.findProductByIdUsingGET(product.id)
+        .subscribe(product => {
+          const productDomain: Product = product;
+          const index = this.products.findIndex(p => p.id === product.id);
+          this.products.splice(index, 1, productDomain);
+        })
   }
   deleteProduct(product: Product) {
-
     this.products = this.products.filter(p => p !== product);
   }
   onAddProduct(product) {
-    this.products.push(product);
-   }
+    this.queryService.findProductByIdUsingGET(product.id)
+        .subscribe(productDomain => this.products.push(productDomain))
+  }
 
 }

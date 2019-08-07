@@ -13,6 +13,7 @@ import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
 import { BannerDTO } from '../models/banner-dto';
 import { CategoryDTO } from '../models/category-dto';
+import { Category } from '../models/category';
 import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { PdfDTO } from '../models/pdf-dto';
@@ -26,6 +27,7 @@ import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
 import { PageOfOrder } from '../models/page-of-order';
+import { Product } from '../models/product';
 import { ProductDTO } from '../models/product-dto';
 import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
@@ -52,6 +54,7 @@ class QueryResourceService extends __BaseService {
   static readonly findBannerUsingGETPath = '/api/query/banner/{id}';
   static readonly updateCategoryUsingPUT1Path = '/api/query/categories';
   static readonly findCategoryUsingGETPath = '/api/query/category/{id}';
+  static readonly findCategoryByIdUsingGETPath = '/api/query/categorybyid/{id}';
   static readonly findCombolineItemUsingGETPath = '/api/query/combolineitem/{id}';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
   static readonly exportCustomersUsingGETPath = '/api/query/customers/export';
@@ -72,6 +75,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockEntryByProductIdUsingGETPath = '/api/query/findStockEntryByProductId/{productId}/{storeId}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
+  static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
   static readonly findAllSaleAggregatesUsingGETPath = '/api/query/sales/combined/{storeId}';
@@ -419,6 +423,42 @@ class QueryResourceService extends __BaseService {
   findCategoryUsingGET(id: number): __Observable<CategoryDTO> {
     return this.findCategoryUsingGETResponse(id).pipe(
       __map(_r => _r.body as CategoryDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findCategoryByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Category>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/categorybyid/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Category>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findCategoryByIdUsingGET(id: number): __Observable<Category> {
+    return this.findCategoryByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Category)
     );
   }
 
@@ -1430,6 +1470,42 @@ class QueryResourceService extends __BaseService {
   findOrderLineByStoreIdUsingGET(params: QueryResourceService.FindOrderLineByStoreIdUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderLineByStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findProductByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Product>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/product/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Product>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findProductByIdUsingGET(id: number): __Observable<Product> {
+    return this.findProductByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Product)
     );
   }
 

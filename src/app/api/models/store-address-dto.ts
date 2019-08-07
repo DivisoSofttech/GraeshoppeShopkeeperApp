@@ -1,12 +1,12 @@
 /* tslint:disable */
 export interface StoreAddressDTO {
+  landmark?: string;
   addressType?: string;
-  alternatePhone?: number;
   city?: string;
   customerId?: string;
   houseNoOrBuildingName?: string;
   id?: number;
-  landmark?: string;
+  alternatePhone?: number;
   name?: string;
   phone?: number;
   pincode?: number;
