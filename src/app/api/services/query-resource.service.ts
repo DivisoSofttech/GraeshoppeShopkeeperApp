@@ -39,6 +39,7 @@ import { Store } from '../models/store';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TicketLine } from '../models/ticket-line';
 import { UOMDTO } from '../models/uomdto';
+import { UOM } from '../models/uom';
 
 /**
  * Query Resource
@@ -93,6 +94,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOneTicketLinesUsingGETPath = '/api/query/ticket-lines/{id}';
   static readonly findAllTicketLinesBySaleIdUsingGETPath = '/api/query/ticket-lines/{saleId}';
   static readonly findUOMUsingGETPath = '/api/query/uom/{id}';
+  static readonly findUOMByIdUsingGETPath = '/api/query/uombyid/{id}';
 
   constructor(
     config: __Configuration,
@@ -2281,6 +2283,42 @@ class QueryResourceService extends __BaseService {
   findUOMUsingGET(id: number): __Observable<UOMDTO> {
     return this.findUOMUsingGETResponse(id).pipe(
       __map(_r => _r.body as UOMDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findUOMByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<UOM>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/uombyid/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<UOM>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findUOMByIdUsingGET(id: number): __Observable<UOM> {
+    return this.findUOMByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as UOM)
     );
   }
 }

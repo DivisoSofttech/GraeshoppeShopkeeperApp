@@ -1,15 +1,22 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-    <ion-title>Product</ion-title>
+    <ion-title *ngIf="showSearchbar==false">Product</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleSearchbar()" *ngIf="showSearchbar==false">
+        <ion-icon  name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar animated (ionChange)="searchProducts(0)" (ionCancel)="toggleSearchbar()" showCancelButton="always" placeholder="find products..." *ngIf="showSearchbar==true"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content no-padding>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let product of products"  size-lg="3" size-sm="4" size="6" size-md="3">
-        <app-product-card [product]="product" (update)="updateProduct($event)" (delete)="deleteProduct(product)"></app-product-card>
+      <ion-col *ngFor="let product of products" size-lg="3" size-sm="4" size="6" size-md="3">
+        <app-product-card [product]="product" (update)="updateProduct($event)" (delete)="deleteProduct(product)">
+        </app-product-card>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -17,9 +24,7 @@
 
   <!--Infinite Scroll-->
   <ion-infinite-scroll threshold="600px" (ionInfinite)="loadMoreProducts($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

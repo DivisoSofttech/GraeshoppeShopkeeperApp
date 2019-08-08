@@ -15,10 +15,11 @@ import { IonInfiniteScroll } from '@ionic/angular';
 export class ProductPage implements OnInit {
 
   loader: HTMLIonLoadingElement;
-
+  searchTerm: string;
   pageCount = 0;
-
+  showSearchbar: boolean = false;
   products: Product[] = [];
+  tempProducts: Product[] =[];
 
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
 
@@ -36,7 +37,34 @@ export class ProductPage implements OnInit {
       this.getProducts(0 , true);
     });
   }
-
+  toggleSearchbar(){
+    this.showSearchbar = !this.showSearchbar;
+  }
+  searchProducts(i){
+    let storeId;
+    this.storage.get('user').then(user => {
+      storeId = user.preferred_username;
+      this.queryService.findAllProductBySearchTermUsingGET({storeId,page: i,searchTerm: this.searchTerm})
+          .subscribe(res => {
+            this.tempProducts = this.products
+            this.products = [];
+            console.log("search term",this.searchTerm);
+            console.log("searched products",res.content);
+            
+            
+            res.content.forEach(p => {
+              this.products.push(p);
+            });
+            i++;
+            if(i < res.totalPages) {
+              this.searchProducts(i);  
+            } else {
+              this.loader.dismiss();
+            }
+          });
+    })
+    
+  }
   getProducts(i , limit?: Boolean , success?) {
     let iDPcode;
     this.storage.get('user').then(user => {
