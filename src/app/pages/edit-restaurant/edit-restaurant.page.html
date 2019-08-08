@@ -143,7 +143,7 @@
     </ion-label>
     <ion-item class="ion-margin-bottom">
       <ion-label position="stacked" class="no-wrap">Max delivery time</ion-label>
-      <ion-text>{{storeBundleDTO.store.maxDeliveryTime.slice(11,16)}}</ion-text>
+      <ion-datetime [(ngModel)]="storeBundleDTO.store.maxDeliveryTime" displayFormat="mm"></ion-datetime>
     </ion-item>
     <ion-label position="stacked" class="ion-padding-start ion-margin-top">Delivery types</ion-label>
     <ion-item>
@@ -203,13 +203,13 @@
         <ion-row>
           <ion-col size="6">
             <ion-item>
-              <ion-checkbox></ion-checkbox>
+              <ion-checkbox [(ngModel)]="orderIsAuto" (ionChange)="onChangeOrderAcceptType('auto', $event)"></ion-checkbox>
               <ion-label class="ion-padding-start">Automatic</ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
             <ion-item>
-              <ion-checkbox></ion-checkbox>
+              <ion-checkbox [(ngModel)]="!orderIsAuto" (ionChange)="onChangeOrderAcceptType('manual', $event)"></ion-checkbox>
               <ion-label class="ion-padding-start">Manual</ion-label>
             </ion-item>
           </ion-col>

@@ -39,6 +39,7 @@ export class EditRestaurantPage implements OnInit {
 
   deliveryChecked: boolean;
   collectionChecked: boolean;
+  orderIsAuto = true;
 
   deliveryInfo: DeliveryInfoDTO;
   collectionInfo: DeliveryInfoDTO;
@@ -55,6 +56,7 @@ export class EditRestaurantPage implements OnInit {
         .subscribe(res => {
           this.storeBundleDTO = res;
           this.setDeliveryTypes();
+          this.setOrderAcceptTypes();
         });
     });
   }
@@ -68,7 +70,8 @@ export class EditRestaurantPage implements OnInit {
       this.storeBundleDTO.store.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );
-      this.storeBundleDTO.store.imageContentType = data.data.imageType;
+      this.storeBundleDTO.store.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
+      console.log(this.storeBundleDTO.store.imageContentType, 'jyuftuu');
     });
     return await modal.present();
   }
@@ -109,8 +112,9 @@ export class EditRestaurantPage implements OnInit {
     });
     await pop.present();
     pop.onDidDismiss().then(data => {
-      console.log(data);
-      this.storeBundleDTO.storeType.push(data.data);
+      if (data.data.name !== undefined && data.data.name !== null && data.data.name !== '') {
+        this.storeBundleDTO.storeType.push(data.data);
+      }
     });
   }
 
@@ -240,6 +244,35 @@ export class EditRestaurantPage implements OnInit {
         this.collection.id = this.storeBundleDTO.deliveryInfos[
           this.collectionIndex
         ].typeId;
+      }
+    }
+  }
+
+  setOrderAcceptTypes() {
+    if (this.storeBundleDTO.storeSettings.orderAcceptType !== null) {
+      this.orderIsAuto = this.storeBundleDTO.storeSettings.orderAcceptType.toLowerCase() === 'automatic' ? true : false;
+    } else {
+      this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
+    }
+  }
+
+  onChangeOrderAcceptType(autoOrManual: string, event) {
+    console.log(this.orderIsAuto);
+    if (autoOrManual === 'auto') {
+      if (event.detail.checked) {
+        this.orderIsAuto = true;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
+      } else {
+        this.orderIsAuto = false;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
+      }
+    } else {
+      if (event.detail.checked) {
+        this.orderIsAuto = false;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
+      } else {
+        this.orderIsAuto = true;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       }
     }
   }

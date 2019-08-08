@@ -2,6 +2,6 @@
 export interface StoreSettingsDTO {
   deliveryCharge?: number;
   id?: number;
-  orderAcceptType?: number;
+  orderAcceptType?: string;
   serviceCharge?: number;
 }
