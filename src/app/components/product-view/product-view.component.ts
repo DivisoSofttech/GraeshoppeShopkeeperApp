@@ -15,7 +15,9 @@ export class ProductViewComponent implements OnInit {
     private modalController:  ModalController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.product);
+  }
 
   dismiss(){
     this.modalController.dismiss();

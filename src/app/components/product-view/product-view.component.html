@@ -1,7 +1,79 @@
-
 <ion-content>
     <div class="close">
         <ion-icon (click)="dismiss()" class="icon-size" name="close"></ion-icon>
     </div>
-      <img [src]="'data:' + product.imageContentType + ';base64,' + product.image"/>
+    <img [src]="'data:' + product.imageContentType + ';base64,' + product.image" />
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-label>Name</ion-label>
+                <ion-text>{{product.name}}</ion-text>
+            </ion-item>
+            <ion-item>
+                <ion-label>Description</ion-label>
+                <ion-text>{{product.reference}}</ion-text>
+            </ion-item>
+            <ion-item *ngIf="product.category!=null">
+                <ion-label>Category</ion-label>
+                <ion-text>{{product.category.name}}</ion-text>
+            </ion-item>
+            <ion-item *ngIf="product.unit!=null">
+                <ion-label>Unit</ion-label>
+                <ion-text>{{product.unit.unit}}</ion-text>
+            </ion-item>
+        </ion-card-content>
+        <ion-card>
+            <ion-item margin>
+                <ion-label>Sell price</ion-label>
+                <ion-text><strong>{{product.sellingPrice}}</strong></ion-text>
+            </ion-item>
+            <ion-item margin>
+                <ion-label>Buy price</ion-label>
+                <ion-text><strong>{{product.buyPrice}}</strong></ion-text>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <div *ngIf="product.isAuxilaryItem==true">
+                <ion-item padding>
+                    <ion-label>Auxilary item</ion-label>
+                    <ion-checkbox disabled [(ngModel)]="product.isAuxilaryItem"></ion-checkbox>
+                </ion-item>
+            </div>
+            <div *ngIf="product.isAuxilaryItem==false">
+                <ion-item>
+                    <ion-label>Auxilary items</ion-label>
+                </ion-item>
+                <ion-card class="scroll" *ngIf="product.auxilaryLineItems!=null">
+                    <ion-list>
+                        <ion-item lines="none" *ngFor="let data of product.auxilaryLineItems">
+                            <ion-text>{{data.auxilaryItem.name}}</ion-text>
+                        </ion-item>
+                    </ion-list>
+                </ion-card>
+                <ion-item>
+                    <ion-label>Combo items</ion-label>
+                </ion-item>
+                <ion-card class="scroll" *ngIf="product.comboLineItems!=null">
+                    <ion-list>
+                        <ion-item lines="none" *ngFor="let data of product.comboLineItems">
+                            <ion-text>{{data.comboItem.name}}</ion-text>
+                        </ion-item>
+                    </ion-list>
+                </ion-card>
+            </div>
+            <ion-item>
+                <ion-label slot="start">Service Item</ion-label>
+                <ion-checkbox disabled slot="end" [(ngModel)]="product.isServiceItem"></ion-checkbox>
+            </ion-item>
+            
+                <ion-item>
+                    <ion-label slot="start">Active</ion-label>
+                    <ion-toggle disabled slot="start" [(ngModel)]="product.isActive"></ion-toggle>
+                    <ion-label slot="start">Show in App</ion-label>
+                    <ion-toggle disabled slot="end" [(ngModel)]="product.showInCatalogue"></ion-toggle>
+                </ion-item>
+            
+        </ion-card>
+    </ion-card>
+
 </ion-content>

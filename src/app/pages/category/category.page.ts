@@ -27,10 +27,15 @@ export class CategoryPage implements OnInit {
     private util: Util
   ) { }
 
+  onAddCategory(category) {
+    this.queryService.findCategoryByIdUsingGET(category.id)
+    .subscribe(categoryDomain => this.categories.push(categoryDomain))
+   }
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
       this.loader = loader;
+      this.loader.present();
       this.getCategories(0 , true);
     });
   }
@@ -56,24 +61,31 @@ export class CategoryPage implements OnInit {
         if(limit === false) {
           if(i < res.totalPages) {
             this.getCategories(i , limit);  
-          }  
-        } 
+          } else {
+            this.loader.dismiss();
+          }
+        } else {
+          this.loader.dismiss();
+        }
+      }
+      ,err=>{
+        this.loader.dismiss();
       });
     });
   }
 
   updateCategory(category){
-    //console.log("tyuee",category);
-    this.categories = this.categories.filter(c => c.id !== category.data.id);
-    this.categories.push(category.data);
+    console.log('product', category);
+    this.queryService.findCategoryByIdUsingGET(category.id)
+        .subscribe(category => {
+          const categoryDomain: Category = category;
+          const index = this.categories.findIndex(p => p.id === category.id);
+          this.categories.splice(index, 1, categoryDomain);
+        })
   }
 
   deleteCategory(category: Category){
     this.categories = this.categories.filter(c=>c !== category)
-  }
-
-  onAddCategory(category) {
-    this.categories.push(category);
   }
 
   refresh(event) {

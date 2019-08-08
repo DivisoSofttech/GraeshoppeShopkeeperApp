@@ -1,3 +1,4 @@
+import { CategoryViewComponent } from './../category-view/category-view.component';
 import { CommandResourceService } from 'src/app/api/services';
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { ModalController, ActionSheetController } from '@ionic/angular';
@@ -70,5 +71,12 @@ export class CategoryCardComponent implements OnInit {
     });
     await actionSheet.present();
   }
+  async viewCategoryModal(){
+    const modal = await this.modalController.create({
+      component: CategoryViewComponent,
+      componentProps: {category: this.category}
+    });
+    return await modal.present();
+   }
 
 }

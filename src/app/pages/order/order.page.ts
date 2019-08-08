@@ -23,7 +23,7 @@ export class OrderPage implements OnInit {
 
   ngOnInit() {
     this.storage.get('user')
-    .then((data) =>{
+    .then((data) => {
       this.user = data;
       this.getOrders(0 , true);
      });
@@ -32,22 +32,22 @@ export class OrderPage implements OnInit {
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
       storeId: this.user.preferred_username,
-      page:i
+      page: i
     }).subscribe(porders => {
       porders.content.forEach(o => {
         this.orders.push(o);
       });
-      
+
       i++;
-      
-      if(limit === false) {
+
+      if (limit === false) {
         // Load All Pages Recursively
-        if(i < porders.totalPages) {
+        if (i < porders.totalPages) {
           this.getOrders(i , limit);
-        }       
+        }
       }
 
-      if(i === porders.totalPages) {
+      if (i === porders.totalPages) {
 
         // Disable infinite Scroll
         console.log('All Pages Retrieved PageCount' , porders.totalPages);

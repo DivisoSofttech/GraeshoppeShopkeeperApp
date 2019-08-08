@@ -25,6 +25,7 @@ export class ImageSelectorComponent implements OnInit {
     this.cropperSettings.canvasWidth = 400;
     this.cropperSettings.canvasHeight = 300;
     this.cropperSettings.noFileInput = true;
+    this.cropperSettings.compressRatio = 1.6;
   }
 
   ngOnInit() {}

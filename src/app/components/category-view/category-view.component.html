@@ -1,0 +1,16 @@
+<ion-content>
+    <div class="close">
+        <ion-icon (click)="dismiss()" class="icon-size" name="close"></ion-icon>
+    </div>
+    <img [src]="'data:' + category.imageContentType + ';base64,' + category.image" />
+    <ion-card>
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-text>{{category.name}}</ion-text>
+      </ion-item>
+      <ion-item>
+          <ion-label>Description</ion-label>
+          <ion-text>{{category.description}}</ion-text>
+        </ion-item>
+    </ion-card>
+</ion-content>
