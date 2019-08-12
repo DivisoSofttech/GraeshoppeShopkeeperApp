@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  storeBundle: StoreBundleDTO;
+  store: Store;
   constructor(
     private queryService: QueryResourceService,
     private storage: Storage
@@ -41,14 +41,14 @@ export class SettingsPage implements OnInit {
   ];
 
   ngOnInit() {
-    // this.storage.get('user').then(
-    //   data => {
-    //     this.queryService.getStoreBundleUsingGET({regNo: data}).subscribe(
-    //       res => {
-    //         this.storeBundle = res;
-    //       }
-    //     );
-    //   }
-    // );
+    this.storage.get('user').then(
+      data => {
+        this.queryService.findStoreByRegNoUsingGET(data.preferred_username).subscribe(
+          res => {
+            this.store = res;
+          }
+        );
+      }
+    );
   }
 }

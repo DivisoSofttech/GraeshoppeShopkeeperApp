@@ -1,6 +1,10 @@
 .store-image {
     border-radius: 5px;
     box-shadow: 1px 2px 5px #888888;
+    height: 15vw;
+    width: 15vw;
+    min-width: 125px;
+    min-height: 125px;
 }
 
 .wrap-whitespace {

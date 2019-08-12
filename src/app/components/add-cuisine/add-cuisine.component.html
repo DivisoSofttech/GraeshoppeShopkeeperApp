@@ -1,5 +1,5 @@
 <ion-item>
   <ion-label position="floating">Cuisine</ion-label>
-  <ion-input [(ngModel)]="storetype.name" ></ion-input>
+  <ion-input #input autofocus="true" [(ngModel)]="storetype.name" ></ion-input>
 </ion-item>
 <ion-button expand="block" (click)="dismiss()">Save</ion-button>

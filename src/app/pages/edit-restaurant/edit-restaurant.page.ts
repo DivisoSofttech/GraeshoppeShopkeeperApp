@@ -39,6 +39,7 @@ export class EditRestaurantPage implements OnInit {
 
   deliveryChecked: boolean;
   collectionChecked: boolean;
+  orderIsAuto = true;
 
   deliveryInfo: DeliveryInfoDTO;
   collectionInfo: DeliveryInfoDTO;
@@ -54,7 +55,8 @@ export class EditRestaurantPage implements OnInit {
         .getStoreBundleUsingGET({ regNo: user.preferred_username })
         .subscribe(res => {
           this.storeBundleDTO = res;
-          this.setDeliveryInfo();
+          this.setDeliveryTypes();
+          this.setOrderAcceptTypes();
         });
     });
   }
@@ -68,23 +70,38 @@ export class EditRestaurantPage implements OnInit {
       this.storeBundleDTO.store.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );
-      this.storeBundleDTO.store.imageContentType = data.data.imageType;
+      this.storeBundleDTO.store.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
+      console.log(this.storeBundleDTO.store.imageContentType, 'jyuftuu');
     });
     return await modal.present();
   }
 
-  setDeliveryInfo() {
-    this.storeBundleDTO.types.forEach(type => {
-      if (type.name.toLowerCase() === 'delivery') {
-        this.delivery = type;
-        this.deliveryChecked = true;
-        this.deliveryIndex = this.storeBundleDTO.types.indexOf(type);
-      } else if (type.name.toLowerCase() === 'collection') {
-        this.collection = type;
-        this.collectionChecked = true;
-        this.collectionIndex = this.storeBundleDTO.types.indexOf(type);
+  setDeliveryTypes() {
+    this.storeBundleDTO.types.forEach(
+      type => {
+        if (type.name.toLowerCase() === 'delivery') {
+          this.deliveryChecked = true;
+          this.delivery = type;
+          this.deliveryIndex = this.storeBundleDTO.types.indexOf(type);
+          this.deliveryInfo = this.getInfo(type.id);
+        } else if (type.name.toLowerCase() === 'collection') {
+          this.collectionChecked = true;
+          this.collection = type;
+          this.collectionIndex = this.storeBundleDTO.types.indexOf(type);
+          this.collectionInfo = this.getInfo(type.id);
+        }
       }
-    });
+    );
+  }
+
+  getInfo(id): DeliveryInfoDTO {
+    if (this.storeBundleDTO.deliveryInfos.length >= 1) {
+      if (this.storeBundleDTO.deliveryInfos[0].typeId === id) {
+        return this.storeBundleDTO.deliveryInfos[0];
+      } else if (this.storeBundleDTO.deliveryInfos.length >= 2 && this.storeBundleDTO.deliveryInfos[1].typeId === id) {
+        return this.storeBundleDTO.deliveryInfos[1];
+      }
+    }
   }
 
   async addCuisine() {
@@ -95,8 +112,9 @@ export class EditRestaurantPage implements OnInit {
     });
     await pop.present();
     pop.onDidDismiss().then(data => {
-      console.log(data);
-      this.storeBundleDTO.storeType.push(data.data);
+      if (data.data.name !== undefined && data.data.name !== null && data.data.name !== '') {
+        this.storeBundleDTO.storeType.push(data.data);
+      }
     });
   }
 
@@ -157,14 +175,6 @@ export class EditRestaurantPage implements OnInit {
           startingTime: ''
         };
       }
-    } else {
-      if (info === 'delivery' && this.delivery !== undefined) {
-        this.delivery = undefined;
-        this.deliveryInfo = undefined;
-      } else if (info === 'collection' && this.collection !== undefined) {
-        this.collection = undefined;
-        this.collectionInfo = undefined;
-      }
     }
   }
 
@@ -176,42 +186,45 @@ export class EditRestaurantPage implements OnInit {
     this.connectDeliveryInfo();
     this.storeBundleDTO.types = [];
     this.storeBundleDTO.deliveryInfos = [];
-    if (this.deliveryChecked) {
-      this.storeBundleDTO.types.push(this.delivery);
-      if (this.delivery.id !== null && this.delivery.id !== undefined) {
-        this.commandService.updateTypeUsingPUT(this.delivery).subscribe(res => {
-          this.deliveryInfo.typeId = res.id;
-          this.storeBundleDTO.deliveryInfos.push(this.deliveryInfo);
+    this.includeOrExcludeDeliveryInfo(this.deliveryChecked, this.delivery, this.deliveryInfo);
+    this.includeOrExcludeDeliveryInfo(this.collectionChecked, this.collection, this.collectionInfo);
+  }
+
+  includeOrExcludeDeliveryInfo(checkVal: boolean, type: TypeDTO, info: DeliveryInfoDTO) {
+    if (checkVal) {
+      this.storeBundleDTO.types.push(type);
+      if (type.id !== null && type.id !== undefined) {
+        this.commandService.updateTypeUsingPUT(type).subscribe(res => {
+          info.typeId = res.id;
+          this.storeBundleDTO.deliveryInfos.push(info);
+          this.saveOrUpdateDeliveryInfo(info);
         });
       } else {
-        this.commandService.createTypeUsingPOST(this.delivery).subscribe(res => {
-          this.deliveryInfo.typeId = res.id;
-          this.storeBundleDTO.deliveryInfos.push(this.deliveryInfo);
+        this.commandService.createTypeUsingPOST(type).subscribe(res => {
+          info.typeId = res.id;
+          this.storeBundleDTO.deliveryInfos.push(info);
+          this.saveOrUpdateDeliveryInfo(info);
         });
       }
-    }
-    if (this.collectionChecked) {
-      this.storeBundleDTO.types.push(this.collection);
-      if (this.collection.id !== null && this.collection.id !== undefined) {
-        this.commandService.updateTypeUsingPUT(this.collection).subscribe(res => {
-          this.collectionInfo.typeId = res.id;
-          this.storeBundleDTO.deliveryInfos.push(this.collectionInfo);
-        });
-      } else {
-        this.commandService.createTypeUsingPOST(this.collection).subscribe(res => {
-          this.collectionInfo.typeId = res.id;
-          this.storeBundleDTO.deliveryInfos.push(this.collectionInfo);
-        });
-      }
+    } else if (info.id !== null && info.id !== undefined) {
+        this.commandService.deleteDeliveryInfoUsingDELETE(info.id).subscribe();
+        info = undefined;
+        this.commandService.deleteTypeUsingDELETE(type.id).subscribe();
+        type = undefined;
     }
   }
 
-  async updateStoreBundle() {
-    await this.saveUpdates().then(
-      () => {
-        this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
-      }
-    );
+  saveOrUpdateDeliveryInfo(info: DeliveryInfoDTO) {
+    if (info.id !== null && info.id !== undefined) {
+      this.commandService.updateDeliveryInfoUsingPUT(info).subscribe();
+    } else {
+      this.commandService.createDeliveryInfoUsingPOST(info).subscribe();
+    }
+  }
+
+  updateStoreBundle() {
+    this.saveUpdates();
+    this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
   }
 
   connectDeliveryInfo() {
@@ -231,6 +244,35 @@ export class EditRestaurantPage implements OnInit {
         this.collection.id = this.storeBundleDTO.deliveryInfos[
           this.collectionIndex
         ].typeId;
+      }
+    }
+  }
+
+  setOrderAcceptTypes() {
+    if (this.storeBundleDTO.storeSettings.orderAcceptType !== null) {
+      this.orderIsAuto = this.storeBundleDTO.storeSettings.orderAcceptType.toLowerCase() === 'automatic' ? true : false;
+    } else {
+      this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
+    }
+  }
+
+  onChangeOrderAcceptType(autoOrManual: string, event) {
+    console.log(this.orderIsAuto);
+    if (autoOrManual === 'auto') {
+      if (event.detail.checked) {
+        this.orderIsAuto = true;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
+      } else {
+        this.orderIsAuto = false;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
+      }
+    } else {
+      if (event.detail.checked) {
+        this.orderIsAuto = false;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
+      } else {
+        this.orderIsAuto = true;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       }
     }
   }
