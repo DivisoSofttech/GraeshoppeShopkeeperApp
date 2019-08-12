@@ -24,6 +24,11 @@ export class SettingsPage implements OnInit {
       route: '/edit-restaurant'
     },
     {
+      title: 'Edit Banner',
+      icon: 'image',
+      route: '/view-edit-banner'
+    },
+    {
       title: 'Change Password',
       icon: 'lock',
       route: '/password-reset'
@@ -32,7 +37,7 @@ export class SettingsPage implements OnInit {
       title: 'Delete Account',
       icon: 'trash',
       route: '/delete-account'
-    },
+    }
   ];
 
   ngOnInit() {

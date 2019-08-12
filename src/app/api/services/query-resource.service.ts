@@ -33,6 +33,7 @@ import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
 import { PageOfSale } from '../models/page-of-sale';
 import { StockEntryDTO } from '../models/stock-entry-dto';
+import { PageOfBanner } from '../models/page-of-banner';
 import { StoreDTO } from '../models/store-dto';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { Store } from '../models/store';
@@ -87,6 +88,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOneStockEntryUsingGETPath = '/api/query/stock-entries/{id}';
   static readonly findAllStockDiariesUsingGETPath = '/api/query/stock-entries/{storeId}';
   static readonly getAllStockCurrentsByIDPcodeUsingGETPath = '/api/query/stockcurrentByIDPcode/{iDPcode}';
+  static readonly findBannerByStoreIdUsingGETPath = '/api/query/store-banners/{storeId}';
   static readonly findStoreUsingGETPath = '/api/query/store/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/storeBundle/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
@@ -1994,6 +1996,42 @@ class QueryResourceService extends __BaseService {
   getAllStockCurrentsByIDPcodeUsingGET(params: QueryResourceService.GetAllStockCurrentsByIDPcodeUsingGETParams): __Observable<PageOfStockCurrent> {
     return this.getAllStockCurrentsByIDPcodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStockCurrent)
+    );
+  }
+
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findBannerByStoreIdUsingGETResponse(storeId: string): __Observable<__StrictHttpResponse<PageOfBanner>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/store-banners/${storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfBanner>;
+      })
+    );
+  }
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findBannerByStoreIdUsingGET(storeId: string): __Observable<PageOfBanner> {
+    return this.findBannerByStoreIdUsingGETResponse(storeId).pipe(
+      __map(_r => _r.body as PageOfBanner)
     );
   }
 

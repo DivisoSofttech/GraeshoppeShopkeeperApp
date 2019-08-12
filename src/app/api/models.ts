@@ -25,6 +25,7 @@ export { Note } from './models/note';
 export { Order } from './models/order';
 export { OrderLine } from './models/order-line';
 export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
+export { PageOfBanner } from './models/page-of-banner';
 export { PageOfCategory } from './models/page-of-category';
 export { PageOfCustomer } from './models/page-of-customer';
 export { PageOfOrder } from './models/page-of-order';

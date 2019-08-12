@@ -39,7 +39,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     PasswordResetComponent,
     AddComponent,
     ProductViewComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
   ],
 
   imports: [
@@ -66,7 +66,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     PasswordResetComponent,
     AddComponent,
     ProductViewComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
@@ -76,7 +76,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     ProductViewComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
   ]
 })
 export class ComponentsModule { }

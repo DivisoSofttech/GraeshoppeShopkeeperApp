@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'password-reset', component: PasswordResetComponent, canActivate: [AuthGuardService] },
   { path: 'order', loadChildren: './pages/order/order.module#OrderPageModule' },
   { path: 'reports', loadChildren: './pages/reports/reports.module#ReportsPageModule' },
+  { path: 'view-edit-banner', loadChildren: './pages/view-edit-banner/view-edit-banner.module#ViewEditBannerPageModule' },
 ];
 
 @NgModule({

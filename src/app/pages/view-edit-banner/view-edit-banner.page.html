@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Banner</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div *ngFor="let banner of banners">
+<ion-card>
+  <ion-img [src]="'data:' + banner.fileContentType + ';base64,' + banner.file"></ion-img>
+</ion-card>
+</div>
+</ion-content>
