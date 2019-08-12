@@ -1,5 +1,4 @@
 import { CropperSettings } from 'ngx-img-cropper';
-import { AddBannerComponent } from './../../components/add-banner/add-banner.component';
 import { ModalController } from '@ionic/angular';
 import { BannerDTO } from './../../api/models/banner-dto';
 import { Banner } from './../../api/models/banner';

@@ -28,6 +28,7 @@ import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
+import { ProductBundle } from '../models/product-bundle';
 import { ProductDTO } from '../models/product-dto';
 import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
@@ -78,6 +79,7 @@ class QueryResourceService extends __BaseService {
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
+  static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
   static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
   static readonly findAllSaleAggregatesUsingGETPath = '/api/query/sales/combined/{storeId}';
@@ -1510,6 +1512,42 @@ class QueryResourceService extends __BaseService {
   findProductByIdUsingGET(id: number): __Observable<Product> {
     return this.findProductByIdUsingGETResponse(id).pipe(
       __map(_r => _r.body as Product)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  getProductBundleUsingGETResponse(id: number): __Observable<__StrictHttpResponse<ProductBundle>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/productBundle/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ProductBundle>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  getProductBundleUsingGET(id: number): __Observable<ProductBundle> {
+    return this.getProductBundleUsingGETResponse(id).pipe(
+      __map(_r => _r.body as ProductBundle)
     );
   }
 

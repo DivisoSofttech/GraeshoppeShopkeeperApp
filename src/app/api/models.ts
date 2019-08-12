@@ -36,6 +36,7 @@ export { PageOfStockCurrent } from './models/page-of-stock-current';
 export { PageOfUOM } from './models/page-of-uom';
 export { PdfDTO } from './models/pdf-dto';
 export { Product } from './models/product';
+export { ProductBundle } from './models/product-bundle';
 export { ProductDTO } from './models/product-dto';
 export { Propreitor } from './models/propreitor';
 export { Reason } from './models/reason';

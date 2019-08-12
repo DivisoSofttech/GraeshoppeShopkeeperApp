@@ -1,5 +1,4 @@
 import { ComponentsModule } from 'src/app/components/components.module';
-import { AddBannerComponent } from './../../components/add-banner/add-banner.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +24,5 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [ViewEditBannerPage],
-  entryComponents: [AddBannerComponent]
 })
 export class ViewEditBannerPageModule {}
