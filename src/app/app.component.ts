@@ -29,6 +29,11 @@ export class AppComponent {
       icon: 'list-box'
     },
     {
+      title: 'Order Summary',
+      url: '/order-summary',
+      icon: 'browsers'
+    },
+    {
       title: 'UOM',
       url: '/uom',
       icon: 'speedometer'
@@ -38,6 +43,7 @@ export class AppComponent {
       url: '/settings',
       icon: 'settings'
     },
+    
   ];
 
   constructor(

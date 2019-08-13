@@ -6,21 +6,30 @@
 </ion-header>
 
 <ion-content>
-    
-  <ion-grid>
-      <ion-row>
-        
-        <ion-col *ngFor="let order  of orders"  size-lg="3" size-sm="4" size="6" size-md="3">
-          <app-order-card></app-order-card>
-        </ion-col>
+  <!--Segment Button Container Start-->
+  <div *ngIf="orders.length !== 0">
+      <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
+        <ion-segment-button value="delivery">
+          <ion-label>Delivery</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="collections">
+          <ion-label>Collections</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <!--Segment Button Container End-->
+    <ion-slides  #slides (ionSlideDidChange)="slideChange()">
+        <ion-slide>
+          <ion-list>
+        <div *ngFor="let order  of orders" >
+          <app-order-card [order]="order"></app-order-card>
+        </div>
+      </ion-list>
+        </ion-slide>
+        <ion-slide>
 
-        <ion-col>
-
-        </ion-col>
-
-      </ion-row>
-    </ion-grid>
-
+        </ion-slide>
+        </ion-slides>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreOrders($event)">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"

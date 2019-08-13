@@ -225,6 +225,8 @@ export class EditRestaurantPage implements OnInit {
   updateStoreBundle() {
     this.saveUpdates();
     this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
+    console.log('time',this.storeBundleDTO.store.closingTime);
+    
   }
 
   connectDeliveryInfo() {

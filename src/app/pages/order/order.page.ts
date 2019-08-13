@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Order } from 'src/app/api/models';
+import { IonInfiniteScroll, IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-order',
@@ -13,9 +14,11 @@ export class OrderPage implements OnInit {
   user;
 
   orders: Order[] = [];
-
+  currentPage = 'delivery';
   pageCount = 0;
 
+  @ViewChild(IonInfiniteScroll,null) ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild('slides',null) slides: IonSlides;
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage
@@ -57,14 +60,32 @@ export class OrderPage implements OnInit {
   }
 
   toggleInfiniteScroll() {
-
+    this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
   }
 
   loadMoreOrders() {
+  
     this.pageCount++;
     this.getOrders(this.pageCount , true);
   }
 
-
+  segmentChange(ev) {
+    if (ev.detail.value === 'delivery') {
+      this.slides.slideTo(0);
+    } else if (ev.detail.value === 'collections') {
+      this.slides.slideTo(1);
+    }
+  }
+  slideChange() {
+    let index: any;
+    this.slides.getActiveIndex().then(num => {
+      index = num;
+      if (index === 0) {
+        this.currentPage = 'delivery';
+      } else if (index === 1) {
+        this.currentPage = 'collections';
+      }   
+     });
+    }
 
 }

@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'order', loadChildren: './pages/order/order.module#OrderPageModule' },
   { path: 'reports', loadChildren: './pages/reports/reports.module#ReportsPageModule' },
   { path: 'view-edit-banner', loadChildren: './pages/view-edit-banner/view-edit-banner.module#ViewEditBannerPageModule' },
+  { path: 'order-summary', loadChildren: './pages/order-summary/order-summary.module#OrderSummaryPageModule' },
 ];
 
 @NgModule({

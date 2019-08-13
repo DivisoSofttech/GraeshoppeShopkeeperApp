@@ -1,13 +1,14 @@
-<!-- <ion-card>
-    <div (click) = "presentActionSheet()" class="blank-content">
-      <ion-icon slot="icon-only" name="more" class="rotate void-button pointer" float-right></ion-icon>
-    </div>
-    <ion-img [src]="'data:' + category.imageContentType + ';base64,' + category.image" class="imageShow"></ion-img>
-    <div class="overlay" text-center>
-      <ion-text class="stock-name">{{category.name}}</ion-text>
-    </div>
-  </ion-card> -->
 
   <ion-card>
-    
+    <ion-list padding>
+        <ion-text>
+          <p>Order id : {{order.orderId}}</p>
+          <p>Customer id : {{order.customerId}}</p>
+          
+            <p>Status : {{order.status}}</p>
+          
+          <p>Date : {{order.date |  date:'short'}}</p>
+          <p>Amount : {{'&#8364; '+(order.grandTotal | number:'1.1-2')}}</p>
+        </ion-text>
+  </ion-list>
   </ion-card>

@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { UOMDTO } from './../../api/models/uomdto';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
@@ -22,10 +23,13 @@ export class CreateEditUomComponent implements OnInit {
   constructor(
     private commandResource: CommandResourceService,
     private modalController: ModalController,
-    private util: Util
+    private util: Util,
+    private storage: Storage
   ) { }
 
   ngOnInit() {
+    this.storage.get('user')
+    .then(user => this.storeIdpcode = user.preferred_username);
     console.log("Mode = ",this.mode);
     if(this.storeIdpcode === undefined && this.mode === 'create') {
       console.log('Server Error : idpcode');
@@ -37,11 +41,15 @@ export class CreateEditUomComponent implements OnInit {
 
 
   createUom() {
+    console.log('Storeidpcode' , this.storeIdpcode)
+    this.uom.idpcode = this.storeIdpcode;
     this.util.createLoader()
     .then(loader => {
       loader.present();
       this.commandResource.createUOMUsingPOST(this.uom)
       .subscribe(uom => {
+          console.log("uom",uom);
+          
         if(this.throughProduct=='false'){
           this.dismiss(uom);
           }

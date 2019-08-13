@@ -79,11 +79,11 @@ export class CreateEditProductComponent implements OnInit {
       this.slides.slideTo(1);
     } else if (this.value === 'uom') {
       this.slides.slideTo(2);
-      this.getUOM();
     } else {
       this.slides.slideTo(0);
       this.value = 'none';
       this.getCategories();
+      this.getUOM();
     }
   }
 

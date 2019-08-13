@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="throughProduct=='false'">
   <ion-toolbar>
     <ion-buttons>
       <div *ngIf="throughProduct=='false'">
@@ -32,7 +32,7 @@
       <ion-input type="text" [(ngModel)]="categoryDTO.name"></ion-input>
     </ion-item>
     <ion-item margin>
-      <ion-label position="floating">Descriptin</ion-label>
+      <ion-label position="floating">Description</ion-label>
       <ion-textarea [(ngModel)]="categoryDTO.description"></ion-textarea>
     </ion-item>
   </ion-card>
