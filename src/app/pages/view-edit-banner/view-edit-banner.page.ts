@@ -69,6 +69,7 @@ export class ViewEditBannerPage implements OnInit {
     this.storage.get('user').then(user => {
       this.query.findBannerByStoreIdUsingGET(user.preferred_username)
         .subscribe(res => {
+          console.log("banners",res.content);
           res.content.forEach(p => {
             this.banners.push(p);
           });

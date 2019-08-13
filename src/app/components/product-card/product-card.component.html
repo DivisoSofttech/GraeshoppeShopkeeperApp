@@ -15,7 +15,7 @@
       <ion-row>
         <ion-col size="12" text-start>
           <ion-text class="stock-name" (click)="viewProductModal()" >{{product.name}}</ion-text>
-          <ion-text text-start class="display-list"><strong *ngIf="product.unit!=null">{{product.unit.unit}} </strong><strong>{{product.sellingPrice}}</strong></ion-text>
+          <ion-text><br><strong>&euro;{{product.sellingPrice}}</strong></ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -119,7 +119,6 @@ export class ProductPage implements OnInit {
   onAddProduct(product) {
     this.queryService.findProductByIdUsingGET(product.id)
         .subscribe(productDomain => this.products.push(productDomain))
-    this.products.push(product);
   }
   
   //Infinite Scroll and refresh
