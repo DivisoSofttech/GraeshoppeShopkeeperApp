@@ -1,3 +1,4 @@
+import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
@@ -40,6 +41,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     AddComponent,
     ProductViewComponent,
     CategoryViewComponent,
+    MapComponent
   ],
 
   imports: [
@@ -66,6 +68,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     PasswordResetComponent,
     AddComponent,
     ProductViewComponent,
+    MapComponent,
     CategoryViewComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
