@@ -1,19 +1,27 @@
 <ion-header>
   <ion-toolbar>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-    <ion-title>Order</ion-title>
+        <ion-title>Order</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="funnel"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
   <!--Segment Button Container Start-->
-  <div *ngIf="orders.length !== 0">
+  <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
-        <ion-segment-button value="delivery">
-          <ion-label>Delivery</ion-label>
+        <ion-segment-button value="pending">
+          <ion-label>Pending</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="collections">
-          <ion-label>Collections</ion-label>
+        <ion-segment-button value="confirmed">
+          <ion-label>Confirmed</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completed">
+          <ion-label>Completed</ion-label>
         </ion-segment-button>
       </ion-segment>
     </div>
@@ -25,6 +33,9 @@
           <app-order-card [order]="order"></app-order-card>
         </div>
       </ion-list>
+        </ion-slide>
+        <ion-slide>
+
         </ion-slide>
         <ion-slide>
 

@@ -14,7 +14,7 @@ export class OrderPage implements OnInit {
   user;
 
   orders: Order[] = [];
-  currentPage = 'delivery';
+  currentPage = 'pending';
   pageCount = 0;
 
   @ViewChild(IonInfiniteScroll,null) ionInfiniteScroll: IonInfiniteScroll;
@@ -70,10 +70,12 @@ export class OrderPage implements OnInit {
   }
 
   segmentChange(ev) {
-    if (ev.detail.value === 'delivery') {
+    if (ev.detail.value === 'pending') {
       this.slides.slideTo(0);
-    } else if (ev.detail.value === 'collections') {
+    } else if (ev.detail.value === 'confirmed') {
       this.slides.slideTo(1);
+    } else if (ev.detail.value === 'completed') {
+    this.slides.slideTo(2);
     }
   }
   slideChange() {
@@ -81,10 +83,12 @@ export class OrderPage implements OnInit {
     this.slides.getActiveIndex().then(num => {
       index = num;
       if (index === 0) {
-        this.currentPage = 'delivery';
+        this.currentPage = 'pending';
       } else if (index === 1) {
-        this.currentPage = 'collections';
-      }   
+        this.currentPage = 'confirmed';
+      } else if (index === 2) {
+        this.currentPage = 'completed';
+      }  
      });
     }
 
