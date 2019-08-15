@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+      
+      <ion-buttons>
+        <ion-button  (click) = "dismiss()">
+        <ion-icon name = "close" ></ion-icon>
+        </ion-button>
+        <ion-title>Order Details</ion-title>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-toolbar color="danger">
+          <ion-card-title color="light" text-center>
+           <strong> Delivery Info </strong>
+          </ion-card-title>
+        </ion-toolbar>
+            <ion-card-content>
+              <ion-text>
+                <p> Customer Id : {{order.customerId}}</p>
+                <p> Order Id : {{order.orderId}}</p>
+                <p> Date : {{order.date | date:'short'}}</p>
+                <div *ngIf = "order.deliveryInfo != null">
+                <p> Address : {{order.deliveryInfo.deliveryAddress}}</p>
+                </div>
+                <div *ngIf = "order.status != null">
+                  <p> Payment  : {{order.status}}</p>
+                </div>
+                <p> Grand Total : {{ '&#8364; '+(order.grandTotal | number:'1.1-2')}}</p>
+              </ion-text>
+              <ion-card>
+                <ion-card-title color="primary" text-center padding>
+                    <strong> Info </strong>
+                  </ion-card-title>
+                  <ion-card-content>
+                      <ion-text>
+                        <p>Add Less Spice</p>
+                      </ion-text>
+                  </ion-card-content>
+              </ion-card>
+              </ion-card-content>
+              </ion-card>
+</ion-content>

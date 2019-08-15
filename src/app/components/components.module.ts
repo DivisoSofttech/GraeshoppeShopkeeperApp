@@ -1,3 +1,4 @@
+import { OrderViewComponent } from './order-view/order-view.component';
 import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
@@ -41,6 +42,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     AddComponent,
     ProductViewComponent,
     CategoryViewComponent,
+    OrderViewComponent,
     MapComponent
   ],
 
@@ -70,6 +72,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     ProductViewComponent,
     MapComponent,
     CategoryViewComponent,
+    OrderViewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
