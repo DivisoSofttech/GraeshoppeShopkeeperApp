@@ -29,8 +29,8 @@
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
         <ion-slide>
           <ion-list>
-        <div *ngFor="let order  of pendingOrders" >
-          <app-order-card [order]="order"></app-order-card>
+        <div *ngFor="let order  of orders" >
+          <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card>
         </div>
       </ion-list>
         </ion-slide>

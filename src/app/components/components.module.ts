@@ -1,4 +1,5 @@
 import { OrderViewComponent } from './order-view/order-view.component';
+import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { AddCuisineComponent } from './add-cuisine/add-cuisine.component';
@@ -41,7 +42,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
     AddComponent,
     ProductViewComponent,
     CategoryViewComponent,
-    OrderViewComponent
+    OrderViewComponent,
+    MapComponent
   ],
 
   imports: [
@@ -68,6 +70,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     PasswordResetComponent,
     AddComponent,
     ProductViewComponent,
+    MapComponent,
     CategoryViewComponent,
     OrderViewComponent
   ],

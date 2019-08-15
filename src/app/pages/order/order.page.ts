@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Order } from 'src/app/api/models';
-import { IonInfiniteScroll, IonSlides, ActionSheetController } from '@ionic/angular';
+import { IonInfiniteScroll, IonSlides, ActionSheetController, ModalController } from '@ionic/angular';
+import { OrderViewComponent } from 'src/app/components/order-view/order-view.component';
 
 @Component({
   selector: 'app-order',
@@ -13,7 +14,10 @@ export class OrderPage implements OnInit {
 
   user;
 
-  orders: Order[] = [];
+  orders: Order[] = [{
+    customerId: '564654',
+    
+  }];
   pendingOrders: Order[] = [];
 
   currentPage = 'pending';
@@ -24,7 +28,8 @@ export class OrderPage implements OnInit {
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -35,6 +40,13 @@ export class OrderPage implements OnInit {
       this.getPendingOrders();
      });
   }
+  async viewOrderViewModal(order){
+    const modal = await this.modalController.create({
+      component: OrderViewComponent,
+      componentProps: {order: order}
+    });
+    return await modal.present();
+   }
   async filterActionsheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Filter',

@@ -1,3 +1,4 @@
+import { MapComponent } from './../../components/map/map.component';
 import { AddCuisineComponent } from './../../components/add-cuisine/add-cuisine.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ImageSelectorComponent } from './../../components/image-selector/image-selector.component';
@@ -26,6 +27,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [EditRestaurantPage],
-  entryComponents: [ImageSelectorComponent, AddCuisineComponent]
+  entryComponents: [ImageSelectorComponent, AddCuisineComponent, MapComponent]
 })
 export class EditRestaurantPageModule {}
