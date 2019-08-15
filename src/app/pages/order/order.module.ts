@@ -1,3 +1,4 @@
+import { OrderViewComponent } from './../../components/order-view/order-view.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +26,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [OrderPage],
-  entryComponents: [OrderCardComponent]
+  entryComponents: [OrderCardComponent,OrderViewComponent]
 })
 export class OrderPageModule {}

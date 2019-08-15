@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Order } from 'src/app/api/models';
-import { IonInfiniteScroll, IonSlides } from '@ionic/angular';
+import { IonInfiniteScroll, IonSlides, ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order',
@@ -14,6 +14,8 @@ export class OrderPage implements OnInit {
   user;
 
   orders: Order[] = [];
+  pendingOrders: Order[] = [];
+
   currentPage = 'pending';
   pageCount = 0;
 
@@ -21,7 +23,8 @@ export class OrderPage implements OnInit {
   @ViewChild('slides',null) slides: IonSlides;
   constructor(
     private queryResource: QueryResourceService,
-    private storage: Storage
+    private storage: Storage,
+    public actionSheetController: ActionSheetController
   ) { }
 
   ngOnInit() {
@@ -29,9 +32,55 @@ export class OrderPage implements OnInit {
     .then((data) => {
       this.user = data;
       this.getOrders(0 , true);
+      this.getPendingOrders();
      });
   }
+  async filterActionsheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Filter',
+      cssClass: 'action-sheets',
+      buttons: [{
+        text: 'Collection',
+        cssClass: 'action-sheets',
+        handler: () => {
+          console.log('Collection clicked');
+        }
+      }, {
+        text: 'Delivery',
+        handler: () => {
+          console.log('Delivery clicked');
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+  getPendingOrders(){
+        this.queryResource.getTasksUsingGET({
+          assignee: 'sulthan',
+          name:'',
+          nameLike:'',
+          assigneeLike:'',
+          candidateGroup:'',
+          candidateGroups:'',
+          candidateUser:'',
+          createdAfter:'',
+          createdBefore:'',
+          createdOn:''
+        }).subscribe(orders => {
+          this.pendingOrders = orders;
+          console.log("pending orders",orders);
+          
+        });
 
+      
+  }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
       storeId: this.user.preferred_username,

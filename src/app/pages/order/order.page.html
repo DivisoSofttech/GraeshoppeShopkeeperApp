@@ -7,7 +7,7 @@
 
 <ion-content>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
+        <ion-fab-button (click)="filterActionsheet()">
             <ion-icon name="funnel"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -29,7 +29,7 @@
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
         <ion-slide>
           <ion-list>
-        <div *ngFor="let order  of orders" >
+        <div *ngFor="let order  of pendingOrders" >
           <app-order-card [order]="order"></app-order-card>
         </div>
       </ion-list>

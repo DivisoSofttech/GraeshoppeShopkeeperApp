@@ -1,0 +1,31 @@
+/* tslint:disable */
+import { ReportOrderLine } from './report-order-line';
+export interface OrderMaster {
+  orderAcceptedAt?: string;
+  addressType?: string;
+  city?: string;
+  customerId?: string;
+  customersOrder?: number;
+  deliveryCharge?: number;
+  dueDate?: string;
+  dueTime?: string;
+  houseNoOrBuildingName?: string;
+  landmark?: string;
+  methodOfOrder?: string;
+  name?: string;
+  notes?: string;
+  alternatePhone?: number;
+  orderFromCustomer?: number;
+  orderLine?: Array<ReportOrderLine>;
+  orderNumber?: string;
+  orderPlaceAt?: string;
+  orderStatus?: string;
+  phone?: number;
+  pincode?: number;
+  roadNameAreaOrStreet?: string;
+  serviceCharge?: number;
+  state?: string;
+  storeName?: string;
+  storePhone?: number;
+  totalDue?: number;
+}

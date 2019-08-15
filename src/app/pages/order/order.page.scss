@@ -19,3 +19,9 @@ ion-fab-button[data-desc] {
 
   :host { right: 15px; bottom: 15px; }
   :host ion-fab { position: fixed; }
+
+.action-sheets{
+  .action-sheet-button-inner .sc-ion-action-sheet-md{
+  font-size: 20px;
+  }
+}
