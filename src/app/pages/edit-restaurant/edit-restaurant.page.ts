@@ -225,8 +225,6 @@ export class EditRestaurantPage implements OnInit {
   updateStoreBundle() {
     this.saveUpdates();
     this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
-    console.log('time',this.storeBundleDTO.store.closingTime);
-    
   }
 
   connectDeliveryInfo() {
@@ -277,5 +275,10 @@ export class EditRestaurantPage implements OnInit {
         this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       }
     }
+  }
+
+  locationChanged(event) {
+    this.storeBundleDTO.store.location = event.lat + ',' + event.lng;
+    console.log(this.storeBundleDTO.store.location);
   }
 }

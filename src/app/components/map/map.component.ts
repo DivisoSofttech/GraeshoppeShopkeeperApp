@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   GoogleMaps,
   GoogleMap,
@@ -18,6 +18,8 @@ import {
 export class MapComponent implements OnInit {
   map: GoogleMap;
   marker: Marker;
+  @Output()
+  locationChange = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
@@ -68,5 +70,6 @@ export class MapComponent implements OnInit {
       position: latLng,
       animation: GoogleMapsAnimation.DROP
     });
+    this.locationChange.emit(latLng);
   }
 }
