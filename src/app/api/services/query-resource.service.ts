@@ -26,6 +26,7 @@ import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
+import { OrderMaster } from '../models/order-master';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
@@ -38,6 +39,7 @@ import { PageOfBanner } from '../models/page-of-banner';
 import { StoreDTO } from '../models/store-dto';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { Store } from '../models/store';
+import { Order } from '../models/order';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TicketLine } from '../models/ticket-line';
 import { UOMDTO } from '../models/uomdto';
@@ -64,6 +66,7 @@ class QueryResourceService extends __BaseService {
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/delivery-Types/{storeId}';
   static readonly findAllEntryLineItemsUsingGETPath = '/api/query/entryLineItem/{storeId}';
+  static readonly exportOrderDocketUsingGETPath = '/api/query/exportDocket/{orderMasterId}';
   static readonly findAllCategoriesWithOutImageUsingGETPath = '/api/query/findAllCategoriesWithOutImage/{iDPcode}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCateogories/{storeId}';
   static readonly findAllCustomersUsingGETPath = '/api/query/findAllCustomer/{searchTerm}';
@@ -76,7 +79,9 @@ class QueryResourceService extends __BaseService {
   static readonly findStockCurrentByProductIdUsingGETPath = '/api/query/findStockCurrentByProductId/{productId}/{storeId}';
   static readonly findStockCurrentDTOByProductIdUsingGETPath = '/api/query/findStockCurrentDTOByProductId/{productId}';
   static readonly findStockEntryByProductIdUsingGETPath = '/api/query/findStockEntryByProductId/{productId}/{storeId}';
+  static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
+  static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
@@ -94,6 +99,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreUsingGETPath = '/api/query/store/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/storeBundle/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
+  static readonly getTasksUsingGETPath = '/api/query/tasks';
   static readonly findAllTicketlinesUsingGETPath = '/api/query/ticket-lines';
   static readonly findOneTicketLinesUsingGETPath = '/api/query/ticket-lines/{id}';
   static readonly findAllTicketLinesBySaleIdUsingGETPath = '/api/query/ticket-lines/{saleId}';
@@ -699,6 +705,42 @@ class QueryResourceService extends __BaseService {
   findAllEntryLineItemsUsingGET(params: QueryResourceService.FindAllEntryLineItemsUsingGETParams): __Observable<Array<EntryLineItem>> {
     return this.findAllEntryLineItemsUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<EntryLineItem>)
+    );
+  }
+
+  /**
+   * @param orderMasterId orderMasterId
+   * @return OK
+   */
+  exportOrderDocketUsingGETResponse(orderMasterId: number): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/exportDocket/${orderMasterId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderMasterId orderMasterId
+   * @return OK
+   */
+  exportOrderDocketUsingGET(orderMasterId: number): __Observable<string> {
+    return this.exportOrderDocketUsingGETResponse(orderMasterId).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
@@ -1366,6 +1408,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param orderMasterId orderMasterId
+   * @return OK
+   */
+  getOrderDocketUsingGETResponse(orderMasterId: number): __Observable<__StrictHttpResponse<PdfDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getOrderDocket/${orderMasterId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PdfDTO>;
+      })
+    );
+  }
+  /**
+   * @param orderMasterId orderMasterId
+   * @return OK
+   */
+  getOrderDocketUsingGET(orderMasterId: number): __Observable<PdfDTO> {
+    return this.getOrderDocketUsingGETResponse(orderMasterId).pipe(
+      __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetNotAuxNotComboProductsByIDPcodeUsingGETParams` containing the following parameters:
    *
    * - `iDPcode`: iDPcode
@@ -1419,6 +1497,63 @@ class QueryResourceService extends __BaseService {
   getNotAuxNotComboProductsByIDPcodeUsingGET(params: QueryResourceService.GetNotAuxNotComboProductsByIDPcodeUsingGETParams): __Observable<PageOfProduct> {
     return this.getNotAuxNotComboProductsByIDPcodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfProduct)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `sort`: sort
+   *
+   * - `size`: size
+   *
+   * - `page`: page
+   *
+   * @return OK
+   */
+  findOrderMasterByOrderIdUsingGETResponse(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<__StrictHttpResponse<OrderMaster>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderMaster/${params.orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OrderMaster>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `sort`: sort
+   *
+   * - `size`: size
+   *
+   * - `page`: page
+   *
+   * @return OK
+   */
+  findOrderMasterByOrderIdUsingGET(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<OrderMaster> {
+    return this.findOrderMasterByOrderIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as OrderMaster)
     );
   }
 
@@ -2203,6 +2338,93 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.GetTasksUsingGETParams` containing the following parameters:
+   *
+   * - `nameLike`: nameLike
+   *
+   * - `name`: name
+   *
+   * - `createdOn`: createdOn
+   *
+   * - `createdBefore`: createdBefore
+   *
+   * - `createdAfter`: createdAfter
+   *
+   * - `candidateUser`: candidateUser
+   *
+   * - `candidateGroups`: candidateGroups
+   *
+   * - `candidateGroup`: candidateGroup
+   *
+   * - `assigneeLike`: assigneeLike
+   *
+   * - `assignee`: assignee
+   *
+   * @return OK
+   */
+  getTasksUsingGETResponse(params: QueryResourceService.GetTasksUsingGETParams): __Observable<__StrictHttpResponse<Array<Order>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.nameLike != null) __params = __params.set('nameLike', params.nameLike.toString());
+    if (params.name != null) __params = __params.set('name', params.name.toString());
+    if (params.createdOn != null) __params = __params.set('createdOn', params.createdOn.toString());
+    if (params.createdBefore != null) __params = __params.set('createdBefore', params.createdBefore.toString());
+    if (params.createdAfter != null) __params = __params.set('createdAfter', params.createdAfter.toString());
+    if (params.candidateUser != null) __params = __params.set('candidateUser', params.candidateUser.toString());
+    if (params.candidateGroups != null) __params = __params.set('candidateGroups', params.candidateGroups.toString());
+    if (params.candidateGroup != null) __params = __params.set('candidateGroup', params.candidateGroup.toString());
+    if (params.assigneeLike != null) __params = __params.set('assigneeLike', params.assigneeLike.toString());
+    if (params.assignee != null) __params = __params.set('assignee', params.assignee.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/tasks`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<Order>>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetTasksUsingGETParams` containing the following parameters:
+   *
+   * - `nameLike`: nameLike
+   *
+   * - `name`: name
+   *
+   * - `createdOn`: createdOn
+   *
+   * - `createdBefore`: createdBefore
+   *
+   * - `createdAfter`: createdAfter
+   *
+   * - `candidateUser`: candidateUser
+   *
+   * - `candidateGroups`: candidateGroups
+   *
+   * - `candidateGroup`: candidateGroup
+   *
+   * - `assigneeLike`: assigneeLike
+   *
+   * - `assignee`: assignee
+   *
+   * @return OK
+   */
+  getTasksUsingGET(params: QueryResourceService.GetTasksUsingGETParams): __Observable<Array<Order>> {
+    return this.getTasksUsingGETResponse(params).pipe(
+      __map(_r => _r.body as Array<Order>)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindAllTicketlinesUsingGETParams` containing the following parameters:
    *
    * - `sort`: sort
@@ -2804,6 +3026,32 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for findOrderMasterByOrderIdUsingGET
+   */
+  export interface FindOrderMasterByOrderIdUsingGETParams {
+
+    /**
+     * orderId
+     */
+    orderId: string;
+
+    /**
+     * sort
+     */
+    sort?: Array<string>;
+
+    /**
+     * size
+     */
+    size?: number;
+
+    /**
+     * page
+     */
+    page?: number;
+  }
+
+  /**
    * Parameters for findOrderLineByStoreIdUsingGET
    */
   export interface FindOrderLineByStoreIdUsingGETParams {
@@ -3009,6 +3257,62 @@ module QueryResourceService {
      * page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for getTasksUsingGET
+   */
+  export interface GetTasksUsingGETParams {
+
+    /**
+     * nameLike
+     */
+    nameLike: string;
+
+    /**
+     * name
+     */
+    name: string;
+
+    /**
+     * createdOn
+     */
+    createdOn: string;
+
+    /**
+     * createdBefore
+     */
+    createdBefore: string;
+
+    /**
+     * createdAfter
+     */
+    createdAfter: string;
+
+    /**
+     * candidateUser
+     */
+    candidateUser: string;
+
+    /**
+     * candidateGroups
+     */
+    candidateGroups: string;
+
+    /**
+     * candidateGroup
+     */
+    candidateGroup: string;
+
+    /**
+     * assigneeLike
+     */
+    assigneeLike: string;
+
+    /**
+     * assignee
+     */
+    assignee: string;
   }
 
   /**
