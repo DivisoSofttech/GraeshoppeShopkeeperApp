@@ -1,3 +1,4 @@
+import { ModalController } from '@ionic/angular';
 import { Order } from 'src/app/api/models';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,8 +10,13 @@ import { Component, OnInit } from '@angular/core';
 export class OrderViewComponent implements OnInit {
 
   order: Order = {};
-  constructor() { }
+  constructor(
+    private modalController: ModalController
+  ) { }
 
   ngOnInit() {}
 
+  dismiss(){
+    this.modalController.dismiss();
+  }
 }
