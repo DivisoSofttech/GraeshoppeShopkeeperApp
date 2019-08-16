@@ -1,3 +1,4 @@
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ImageCropperModule } from 'ngx-img-cropper';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthInterceptor } from './services/security/auth-interceptor';
@@ -18,6 +19,7 @@ import { Util } from './services/util';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,12 +37,18 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     AppRoutingModule,
     ComponentsModule,
     OAuthModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
+      libraries: ['places', 'geometry']
+    })
   ],
   providers: [
     Camera,
     StatusBar,
     Util,
     SplashScreen,
+    Geolocation,
+    GoogleMapsAPIWrapper,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,

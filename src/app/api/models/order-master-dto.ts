@@ -1,6 +1,5 @@
 /* tslint:disable */
 export interface OrderMasterDTO {
-  notes?: string;
   addressType?: string;
   city?: string;
   customerId?: string;

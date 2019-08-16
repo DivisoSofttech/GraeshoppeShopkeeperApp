@@ -15,12 +15,12 @@
         </ion-col>
         <ion-col size="6">
           <ion-card-title>
-            Restarant Name
+            {{store.name | uppercase}}
           </ion-card-title>
           <ion-label>Cuisines</ion-label>
           <ion-card-subtitle class="wrap-whitespace">
             <ion-icon name="pin" color="medium"></ion-icon>
-            locality, city, province
+            {{store.locationName}}
           </ion-card-subtitle>
         </ion-col>
       </ion-row>

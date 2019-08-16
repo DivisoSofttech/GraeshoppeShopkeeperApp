@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { Offer } from './offer';
-import { DeliveryInfo } from './delivery-info';
 import { ApprovalDetails } from './approval-details';
+import { DeliveryInfo } from './delivery-info';
 import { OrderLine } from './order-line';
 import { Status } from './status';
 export interface Order {

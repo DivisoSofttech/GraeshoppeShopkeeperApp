@@ -27,6 +27,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [EditRestaurantPage],
-  entryComponents: [ImageSelectorComponent, AddCuisineComponent, MapComponent]
+  entryComponents: [ImageSelectorComponent, AddCuisineComponent]
 })
 export class EditRestaurantPageModule {}

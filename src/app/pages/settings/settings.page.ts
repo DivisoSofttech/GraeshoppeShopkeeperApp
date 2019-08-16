@@ -29,6 +29,11 @@ export class SettingsPage implements OnInit {
       route: '/view-edit-banner'
     },
     {
+      title: 'Change Location',
+      icon: 'pin',
+      route: '/restaurant-location'
+    },
+    {
       title: 'Change Password',
       icon: 'lock',
       route: '/password-reset'
