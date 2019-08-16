@@ -1,3 +1,4 @@
+import { StoreAddressDTO } from './../../api/models/store-address-dto';
 import { DeliveryInfoDTO } from './../../api/models/delivery-info-dto';
 import { DeliveryInfo } from './../../api/models/delivery-info';
 import { TypeDTO } from './../../api/models/type-dto';
@@ -224,6 +225,13 @@ export class EditRestaurantPage implements OnInit {
 
   updateStoreBundle() {
     this.saveUpdates();
+    const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
+    this.storeBundleDTO.store.locationName =
+      address.houseNoOrBuildingName + ', ' +
+      address.roadNameAreaOrStreet + ', ' +
+      address.city + ', ' +
+      address.state + ', ' +
+      address.pincode;
     this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
   }
 
@@ -257,7 +265,6 @@ export class EditRestaurantPage implements OnInit {
   }
 
   onChangeOrderAcceptType(autoOrManual: string, event) {
-    console.log(this.orderIsAuto);
     if (autoOrManual === 'auto') {
       if (event.detail.checked) {
         this.orderIsAuto = true;
@@ -275,10 +282,5 @@ export class EditRestaurantPage implements OnInit {
         this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       }
     }
-  }
-
-  locationChanged(event) {
-    this.storeBundleDTO.store.location = event.lat + ',' + event.lng;
-    console.log(this.storeBundleDTO.store.location);
   }
 }

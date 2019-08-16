@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.7",
     "@angular/common": "~8.1.2",
     "@angular/compiler": "~8.1.2",
     "@angular/core": "~8.1.2",
@@ -22,6 +23,7 @@
     "@angular/router": "~8.1.2",
     "@ionic-native/camera": "^5.11.0",
     "@ionic-native/core": "^5.0.0",
+    "@ionic-native/geolocation": "^5.12.0",
     "@ionic-native/google-maps": "^5.0.0-beta.27",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
@@ -32,6 +34,7 @@
     "cordova-browser": "5.0.4",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
@@ -92,7 +95,8 @@
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o",
         "API_KEY_FOR_IOS": "AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o"
-      }
+      },
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android",

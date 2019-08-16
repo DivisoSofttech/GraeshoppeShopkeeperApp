@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   GoogleMaps,
   GoogleMap,
@@ -7,7 +7,8 @@ import {
   Marker,
   Environment,
   MyLocation,
-  GoogleMapsAnimation
+  GoogleMapsAnimation,
+  LatLng
 } from '@ionic-native/google-maps';
 
 @Component({
@@ -15,15 +16,25 @@ import {
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
   map: GoogleMap;
   marker: Marker;
+  @Input()
+  latLng: LatLng = null;
   @Output()
   locationChange = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
-    this.loadMap();
+    if (this.latLng === null) {
+      this.loadMap();
+    } else {
+
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.loadMapAtInputLocation(changes.latLng.currentValue);
   }
 
   loadMap() {
@@ -58,7 +69,6 @@ export class MapComponent implements OnInit {
 
     this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe(
       res => {
-        console.log(res);
         this.moveMarker(res[0]);
       }
     );
@@ -71,5 +81,29 @@ export class MapComponent implements OnInit {
       animation: GoogleMapsAnimation.DROP
     });
     this.locationChange.emit(latLng);
+  }
+
+  loadMapAtInputLocation(latLng) {
+    if (this.map !== undefined && this.map !== null) {
+      this.map.remove();
+    }
+    if (this.marker !== undefined && this.marker !== null) {
+      this.marker.remove();
+    }
+
+    Environment.setEnv({
+      API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
+      API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o'
+    });
+
+    const mapOptions: GoogleMapOptions = {
+      camera: {
+        target: latLng,
+        zoom: 18,
+        tilt: 30
+       }
+    };
+
+    this.map = GoogleMaps.create('map_canvas', mapOptions);
   }
 }

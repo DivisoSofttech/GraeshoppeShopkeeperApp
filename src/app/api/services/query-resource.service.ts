@@ -26,7 +26,7 @@ import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
-import { OrderMaster } from '../models/order-master';
+import { OrderMasterDTO } from '../models/order-master-dto';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
@@ -98,6 +98,7 @@ class QueryResourceService extends __BaseService {
   static readonly findBannerByStoreIdUsingGETPath = '/api/query/store-banners/{storeId}';
   static readonly findStoreUsingGETPath = '/api/query/store/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/storeBundle/{regNo}';
+  static readonly findStoreDTOByRegNoUsingGETPath = '/api/query/storeDTO/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
   static readonly getTasksUsingGETPath = '/api/query/tasks';
   static readonly findAllTicketlinesUsingGETPath = '/api/query/ticket-lines';
@@ -1513,7 +1514,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findOrderMasterByOrderIdUsingGETResponse(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<__StrictHttpResponse<OrderMaster>> {
+  findOrderMasterByOrderIdUsingGETResponse(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<__StrictHttpResponse<OrderMasterDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -1534,7 +1535,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<OrderMaster>;
+        return _r as __StrictHttpResponse<OrderMasterDTO>;
       })
     );
   }
@@ -1551,9 +1552,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findOrderMasterByOrderIdUsingGET(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<OrderMaster> {
+  findOrderMasterByOrderIdUsingGET(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<OrderMasterDTO> {
     return this.findOrderMasterByOrderIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as OrderMaster)
+      __map(_r => _r.body as OrderMasterDTO)
     );
   }
 
@@ -2298,6 +2299,42 @@ class QueryResourceService extends __BaseService {
   getStoreBundleUsingGET(params: QueryResourceService.GetStoreBundleUsingGETParams): __Observable<StoreBundleDTO> {
     return this.getStoreBundleUsingGETResponse(params).pipe(
       __map(_r => _r.body as StoreBundleDTO)
+    );
+  }
+
+  /**
+   * @param regNo regNo
+   * @return OK
+   */
+  findStoreDTOByRegNoUsingGETResponse(regNo: string): __Observable<__StrictHttpResponse<StoreDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/storeDTO/${regNo}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StoreDTO>;
+      })
+    );
+  }
+  /**
+   * @param regNo regNo
+   * @return OK
+   */
+  findStoreDTOByRegNoUsingGET(regNo: string): __Observable<StoreDTO> {
+    return this.findStoreDTOByRegNoUsingGETResponse(regNo).pipe(
+      __map(_r => _r.body as StoreDTO)
     );
   }
 
@@ -3267,52 +3304,52 @@ module QueryResourceService {
     /**
      * nameLike
      */
-    nameLike: string;
+    nameLike?: string;
 
     /**
      * name
      */
-    name: string;
+    name?: string;
 
     /**
      * createdOn
      */
-    createdOn: string;
+    createdOn?: string;
 
     /**
      * createdBefore
      */
-    createdBefore: string;
+    createdBefore?: string;
 
     /**
      * createdAfter
      */
-    createdAfter: string;
+    createdAfter?: string;
 
     /**
      * candidateUser
      */
-    candidateUser: string;
+    candidateUser?: string;
 
     /**
      * candidateGroups
      */
-    candidateGroups: string;
+    candidateGroups?: string;
 
     /**
      * candidateGroup
      */
-    candidateGroup: string;
+    candidateGroup?: string;
 
     /**
      * assigneeLike
      */
-    assigneeLike: string;
+    assigneeLike?: string;
 
     /**
      * assignee
      */
-    assignee: string;
+    assignee?: string;
   }
 
   /**

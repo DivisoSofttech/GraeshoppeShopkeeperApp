@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-searchbar debounce="500" placeholder="Search places..." (ionChange)="searchLocation($event)"></ion-searchbar>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card *ngIf="places.length > 0">
+    <ion-list>
+      <ion-item *ngFor="let place of places" (click)="selectPlace(place)">{{ place.description }}</ion-item>
+    </ion-list>
+  </ion-card>
+</ion-header>
+
+<ion-content>
+  <div id="map_canvas"></div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" (click)="saveStore()" >Save</ion-button>
+</ion-footer>
