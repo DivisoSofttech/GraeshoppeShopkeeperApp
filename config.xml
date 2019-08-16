@@ -107,6 +107,7 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
     </plugin>
+    <plugin name="cordova-plugin-file" spec="^6.0.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
     <engine name="android" spec="^7.1.4" />
     <engine name="browser" spec="5.0.4" />

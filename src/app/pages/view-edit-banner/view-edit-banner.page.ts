@@ -16,7 +16,7 @@ import { ImageSelectorComponent } from 'src/app/components/image-selector/image-
 export class ViewEditBannerPage implements OnInit {
 
   store: Store
-  banners: Banner[] =[];;
+  banners: Banner[] =[];
   bannerDTO: BannerDTO ={};
   cropperSettings: CropperSettings
   constructor(
@@ -80,5 +80,13 @@ export class ViewEditBannerPage implements OnInit {
         })
     })
   }
+  deleteBanner(banner){
+    this.command.deleteBannerUsingDELETE(banner.id)
+        .subscribe(data => {
+          console.log('banner deleted');
+          this.banners = this.banners.filter(b => b.id != banner.id);
+        });
+  }
+
   
 }

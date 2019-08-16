@@ -1,14 +1,32 @@
 
-  <ion-card>
-    <ion-list padding>
-        <ion-text>
-          <p>Order id : {{order.orderId}}</p>
-          <p>Customer id : {{order.customerId}}</p>
-          
-            <p>Status : {{order.status}}</p>
-          
-          <p>Date : {{order.date |  date:'short'}}</p>
-          <p>Amount : {{'&#8364; '+(order.grandTotal | number:'1.1-2')}}</p>
-        </ion-text>
-  </ion-list>
-  </ion-card>
+  <ion-card  class="order-card-view">
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+            <ion-text>#{{order.orderId}}</ion-text>
+        </ion-col>
+        <ion-col>
+        <ion-text>C#{{order.customerId}}</ion-text>
+      </ion-col>
+        <ion-col>
+          <ion-label>Order time</ion-label>
+          <ion-text color="danger">{{order.deliveryInfo.startingTime}}</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+            <ion-text color="primary">{{order.paymentRef}}</ion-text>
+        </ion-col>
+        <ion-col>
+            <ion-icon name="pin"></ion-icon>
+            <ion-text>{{order.deliveryInfo.deliveryAddress.addressLine1}}</ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-button color="success">Accept</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+  </ion-item>
+</ion-card>

@@ -134,10 +134,10 @@
             </ion-item>
             <ion-item *ngIf="aux==true">
                 <ion-card class="scroll"> 
-                    <ion-list>
+                    <ion-list *ngIf="loaded==true">
                       <ion-item lines="none" *ngFor="let data of auxilaryProduct">
                         <ion-label>{{data.name}}</ion-label>
-                        <ion-checkbox slot="end" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
+                            <ion-checkbox slot="end" [checked]="checkAux(data)" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
                       </ion-item>
                     </ion-list>
                     </ion-card>
@@ -157,7 +157,7 @@
                     <ion-list>
                       <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts">
                         <ion-label>{{data.name}}</ion-label>
-                        <ion-checkbox slot="end" (ionChange)="selectedComboItem(data,$event)"></ion-checkbox>
+                        <ion-checkbox slot="end" [checked]="checkCombo(data)" (ionChange)="selectedComboItem(data,$event)" ></ion-checkbox>
                       </ion-item>
                     </ion-list>
                     </ion-card>

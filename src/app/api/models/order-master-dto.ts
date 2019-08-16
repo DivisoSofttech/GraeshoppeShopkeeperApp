@@ -1,7 +1,6 @@
 /* tslint:disable */
 export interface OrderMasterDTO {
   addressType?: string;
-  alternatePhone?: number;
   city?: string;
   customerId?: string;
   customerOrder?: number;
@@ -13,7 +12,7 @@ export interface OrderMasterDTO {
   landmark?: string;
   methodOfOrder?: string;
   name?: string;
-  notes?: string;
+  alternatePhone?: number;
   orderAcceptedAt?: string;
   orderFromCustomer?: number;
   orderNumber?: string;
