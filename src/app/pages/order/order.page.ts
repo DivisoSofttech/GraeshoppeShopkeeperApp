@@ -14,17 +14,14 @@ export class OrderPage implements OnInit {
 
   user;
 
-  orders: Order[] = [{
-    customerId: '564654',
-    
-  }];
+  orders: Order[] = [];
   pendingOrders: Order[] = [];
 
   currentPage = 'pending';
   pageCount = 0;
 
-  @ViewChild(IonInfiniteScroll,null) ionInfiniteScroll: IonInfiniteScroll;
-  @ViewChild('slides',null) slides: IonSlides;
+  @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild('slides', null) slides: IonSlides;
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage,
@@ -40,10 +37,10 @@ export class OrderPage implements OnInit {
       this.getPendingOrders();
      });
   }
-  async viewOrderViewModal(order){
+  async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
       component: OrderViewComponent,
-      componentProps: {order: order}
+      componentProps: {order}
     });
     return await modal.present();
    }
@@ -73,25 +70,25 @@ export class OrderPage implements OnInit {
     });
     await actionSheet.present();
   }
-  getPendingOrders(){
+  getPendingOrders() {
         this.queryResource.getTasksUsingGET({
           assignee: 'sulthan',
-          name:'',
-          nameLike:'',
-          assigneeLike:'',
-          candidateGroup:'',
-          candidateGroups:'',
-          candidateUser:'',
-          createdAfter:'',
-          createdBefore:'',
-          createdOn:''
+          name: '',
+          nameLike: '',
+          assigneeLike: '',
+          candidateGroup: '',
+          candidateGroups: '',
+          candidateUser: '',
+          createdAfter: '',
+          createdBefore: '',
+          createdOn: ''
         }).subscribe(orders => {
           this.pendingOrders = orders;
-          console.log("pending orders",orders);
-          
+          console.log('pending orders', orders);
+
         });
 
-      
+
   }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
@@ -125,7 +122,7 @@ export class OrderPage implements OnInit {
   }
 
   loadMoreOrders() {
-  
+
     this.pageCount++;
     this.getOrders(this.pageCount , true);
   }
@@ -149,8 +146,21 @@ export class OrderPage implements OnInit {
         this.currentPage = 'confirmed';
       } else if (index === 2) {
         this.currentPage = 'completed';
-      }  
+      }
      });
+    }
+
+    getOrderMaster(orderId) {
+      console.log(orderId);
+      this.queryResource.findOrderMasterByOrderIdUsingGET({orderId}).subscribe(
+        orderMaster => {
+          this.queryResource.exportOrderDocketUsingGET(orderMaster.id).subscribe(
+            orderDocket => {
+              console.log(orderDocket);
+            }
+          );
+        }
+      );
     }
 
 }

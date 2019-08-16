@@ -27,7 +27,6 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: './pages/login-signup/login-signup.module#LoginSignupPageModule',
-    canActivate: [AuthGuardService]
   },
   {
     path: 'settings',

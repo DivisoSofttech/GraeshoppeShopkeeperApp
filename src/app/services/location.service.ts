@@ -1,13 +1,13 @@
-import { Injectable, NgZone } from "@angular/core";
-import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { MapsAPILoader, GoogleMapsAPIWrapper } from "@agm/core";
-import { Observable } from "rxjs";
-import { LatLng } from "@ionic-native/google-maps";
+import { Injectable, NgZone } from '@angular/core';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
+import { Observable } from 'rxjs';
+import { LatLng } from '@ionic-native/google-maps';
 
 declare var google: any;
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class LocationService {
   autoCompleteService: any;
@@ -65,7 +65,7 @@ export class LocationService {
       let latlon: number[];
       this.geocoder = new google.maps.Geocoder();
       this.geocoder.geocode({ placeId }, async (results, status) => {
-        if (status !== "OK") {
+        if (status !== 'OK') {
           return;
         }
         latlon = [
@@ -79,7 +79,7 @@ export class LocationService {
 
   async getCurrentLoactionAddress(func) {
     return this.getCurrentLocation().then(data => {
-      const latLng = data.coords.latitude + "," + data.coords.longitude;
+      const latLng = data.coords.latitude + ',' + data.coords.longitude;
       this.mapsAPILoader.load().then(() => {
         const googleMapPos = new google.maps.LatLng(
           data.coords.latitude,
