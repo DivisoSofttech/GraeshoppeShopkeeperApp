@@ -13,7 +13,12 @@
 <ion-content>
 <div *ngFor="let banner of banners">
 <ion-card>
-  <ion-img [src]="'data:' + banner.fileContentType + ';base64,' + banner.file"></ion-img>
+    <div class="close">
+        <ion-icon (click)="deleteBanner(banner)" class="icon-size" name="close"></ion-icon>
+    </div>
+  <ion-img [src]="'data:' + banner.fileContentType + ';base64,' + banner.file">
+      
+  </ion-img>
 </ion-card>
 </div>
 </ion-content>

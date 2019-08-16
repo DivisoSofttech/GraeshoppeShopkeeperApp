@@ -15,7 +15,16 @@ export class OrderPage implements OnInit {
   user;
 
   orders: Order[] = [{
+    orderId: '78',
     customerId: '564654',
+    deliveryInfo: {
+      startingTime : '12.30Am',
+      deliveryAddress: {
+        addressLine1 : '1/123,pathiripala'
+      }
+    },
+    paymentRef: 'cash'
+
     
   }];
   pendingOrders: Order[] = [];
@@ -75,16 +84,8 @@ export class OrderPage implements OnInit {
   }
   getPendingOrders(){
         this.queryResource.getTasksUsingGET({
-          assignee: 'sulthan',
-          name:'',
-          nameLike:'',
-          assigneeLike:'',
-          candidateGroup:'',
-          candidateGroups:'',
-          candidateUser:'',
-          createdAfter:'',
-          createdBefore:'',
-          createdOn:''
+          assignee: this.user.preferred_username,
+          name:'Accept Order'
         }).subscribe(orders => {
           this.pendingOrders = orders;
           console.log("pending orders",orders);

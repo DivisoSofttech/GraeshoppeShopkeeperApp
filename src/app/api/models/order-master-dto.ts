@@ -1,22 +1,21 @@
 /* tslint:disable */
-import { ReportOrderLine } from './report-order-line';
-export interface OrderMaster {
+export interface OrderMasterDTO {
+  notes?: string;
   addressType?: string;
-  alternatePhone?: number;
   city?: string;
   customerId?: string;
-  customersOrder?: number;
+  customerOrder?: number;
   deliveryCharge?: number;
   dueDate?: string;
   dueTime?: string;
   houseNoOrBuildingName?: string;
+  id?: number;
   landmark?: string;
   methodOfOrder?: string;
   name?: string;
-  notes?: string;
+  alternatePhone?: number;
   orderAcceptedAt?: string;
   orderFromCustomer?: number;
-  orderLine?: Array<ReportOrderLine>;
   orderNumber?: string;
   orderPlaceAt?: string;
   orderStatus?: string;

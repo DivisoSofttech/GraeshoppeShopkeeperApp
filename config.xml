@@ -107,6 +107,7 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o" />
     </plugin>
+    <plugin name="cordova-plugin-file" spec="^6.0.2" />
     <engine name="android" spec="^7.1.4" />
     <engine name="browser" spec="5.0.4" />
 </widget>

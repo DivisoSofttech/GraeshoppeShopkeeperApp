@@ -25,3 +25,8 @@ ion-fab-button[data-desc] {
   font-size: 20px;
   }
 }
+.order-card-view{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

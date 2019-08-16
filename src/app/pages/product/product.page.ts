@@ -65,24 +65,31 @@ export class ProductPage implements OnInit {
     })
     
   }
+  
   getProducts(i , limit?: Boolean , success?) {
+    
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
       this.queryService.findAllProductsUsingGET({iDPcode,page: i})
       .subscribe(res => {
-
         success != undefined?success(res):null;
         
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
+          this.queryService.getProductBundleUsingGET(p.id)
+              .subscribe(productBundle => {
+                p.comboLineItems = productBundle.comboLineItems;
+                p.auxilaryLineItems = productBundle.auxilaryLineItems;
+                // p.comboLineItems.forEach(p => {
+                //   if(productBundle.comboLineItems !== null)
+                   console.log('product',productBundle.auxilaryLineItems)
+                // });
+                
+              });
           this.products.push(p);
         });
         i++;
-
-        // Should load more pages or not 
-        // limit === false load all pages at once
-        // limit === true load only the first page
         if(limit === false) {
           if(i < res.totalPages) {
             this.getProducts(i , limit);  

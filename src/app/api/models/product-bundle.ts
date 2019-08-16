@@ -1,9 +1,9 @@
 /* tslint:disable */
-import { AuxilaryLineItemDTO } from './auxilary-line-item-dto';
-import { ComboLineItemDTO } from './combo-line-item-dto';
-import { ProductDTO } from './product-dto';
+import { AuxilaryLineItem } from './auxilary-line-item';
+import { ComboLineItem } from './combo-line-item';
+import { Product } from './product';
 export interface ProductBundle {
-  auxilaryLineItems?: Array<AuxilaryLineItemDTO>;
-  comboLineItems?: Array<ComboLineItemDTO>;
-  productDto?: ProductDTO;
+  auxilaryLineItems?: Array<AuxilaryLineItem>;
+  comboLineItems?: Array<ComboLineItem>;
+  product?: Product;
 }

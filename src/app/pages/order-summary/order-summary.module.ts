@@ -1,3 +1,5 @@
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [OrderSummaryPage]
+  declarations: [OrderSummaryPage],
+  providers: [File,FileOpener]
 })
 export class OrderSummaryPageModule {}
