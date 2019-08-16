@@ -158,9 +158,9 @@ export class OrderPage implements OnInit {
       console.log(orderId);
       this.queryResource.findOrderMasterByOrderIdUsingGET({orderId}).subscribe(
         orderMaster => {
-          this.queryResource.exportOrderDocketUsingGET(orderMaster.id).subscribe(
+          this.queryResource.getOrderDocketUsingGET(orderMaster.id).subscribe(
             orderDocket => {
-              console.log(orderDocket);
+              console.log(orderDocket.pdf, orderDocket.contentType);
             }
           );
         }
