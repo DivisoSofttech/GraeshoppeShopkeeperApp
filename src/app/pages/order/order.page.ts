@@ -1,3 +1,5 @@
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
@@ -25,20 +27,21 @@ export class OrderPage implements OnInit {
     },
     paymentRef: 'cash'
 
-    
+
   }];
   pendingOrders: Order[] = [];
 
   currentPage = 'pending';
   pageCount = 0;
 
-  @ViewChild(IonInfiniteScroll,null) ionInfiniteScroll: IonInfiniteScroll;
-  @ViewChild('slides',null) slides: IonSlides;
+  @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild('slides', null) slides: IonSlides;
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage,
     public actionSheetController: ActionSheetController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private file: File, private fileOpener: FileOpener
   ) { }
 
   ngOnInit() {
@@ -49,10 +52,10 @@ export class OrderPage implements OnInit {
       this.getPendingOrders();
      });
   }
-  async viewOrderViewModal(order){
+  async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
       component: OrderViewComponent,
-      componentProps: {order: order}
+      componentProps: {order}
     });
     return await modal.present();
    }
@@ -82,17 +85,17 @@ export class OrderPage implements OnInit {
     });
     await actionSheet.present();
   }
-  getPendingOrders(){
+  getPendingOrders() {
         this.queryResource.getTasksUsingGET({
           assignee: this.user.preferred_username,
-          name:'Accept Order'
+          name: 'Accept Order'
         }).subscribe(orders => {
           this.pendingOrders = orders;
-          console.log("pending orders",orders);
-          
+          console.log('pending orders', orders);
+
         });
 
-      
+
   }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
@@ -126,7 +129,7 @@ export class OrderPage implements OnInit {
   }
 
   loadMoreOrders() {
-  
+
     this.pageCount++;
     this.getOrders(this.pageCount , true);
   }
@@ -150,8 +153,55 @@ export class OrderPage implements OnInit {
         this.currentPage = 'confirmed';
       } else if (index === 2) {
         this.currentPage = 'completed';
-      }  
+      }
      });
+    }
+
+    getOrderMaster(orderId) {
+      console.log(orderId);
+      this.queryResource.findOrderMasterByOrderIdUsingGET({orderId}).subscribe(
+        orderMaster => {
+          this.queryResource.getOrderDocketUsingGET(orderMaster.id).subscribe(
+            orderDocket => {
+              console.log(orderDocket.pdf, orderDocket.contentType);
+              const byteCharacters = atob(orderDocket.pdf);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: orderDocket.contentType });
+              console.log('blob is' + blob);
+              this.fileCreation(blob,orderDocket);
+            }
+          );
+        }
+      );
+    }
+    fileCreation(blob, result)
+    {
+      this.file
+      .createFile(this.file.externalCacheDirectory, 'items.pdf', true)
+      .then(() => {
+        console.log('file created' + blob);
+
+        this.file
+          .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
+            replace: true
+          })
+          .then(value => {
+            console.log('file writed' + value);
+            this.fileOpener
+              .showOpenWithDialog(
+                this.file.externalCacheDirectory + 'items.pdf',
+                result.contentType
+              )
+              .then(() => console.log('File is opened'))
+              .catch(e => console.log('Error opening file', e));
+            // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
+            // {print: {enabled: true}, openWith: {enabled: true}});
+          });
+      });
     }
 
 }

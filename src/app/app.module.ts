@@ -1,3 +1,5 @@
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ImageCropperModule } from 'ngx-img-cropper';
 import { OAuthModule } from 'angular-oauth2-oidc';
@@ -49,6 +51,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     SplashScreen,
     Geolocation,
     GoogleMapsAPIWrapper,
+    File,
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,

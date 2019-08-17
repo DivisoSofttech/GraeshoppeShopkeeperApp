@@ -30,7 +30,8 @@
         <ion-slide>
           <ion-list class="order-card-view">
         <div *ngFor="let order  of pendingOrders" >
-          <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card>
+          <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
+          <app-order-card (click)="getOrderMaster('GR-6')" [order]="order"></app-order-card>
         </div>
       </ion-list>
         </ion-slide>
