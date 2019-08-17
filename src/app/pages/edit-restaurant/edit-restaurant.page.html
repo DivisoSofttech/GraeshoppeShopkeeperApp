@@ -26,9 +26,13 @@
         </ion-fab-button>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-text>{{this.storeBundleDTO.store.info}}</ion-text>
+    <ion-row class="ion-padding-top">
+      <ion-col class="vertical-align-center move-up">
+        <ion-text class="info-text duration animated" [ngClass]="!editInfo?'slideInRight':'hidden'" >{{storeBundleDTO.store.info}}</ion-text>
+        <ion-item color="transparent" [ngClass]="editInfo?'slideInRight':'hidden'" class="width-75 animated duration">
+          <ion-input text-center #info (ionBlur)="toggleEdit()" [(ngModel)]="storeBundleDTO.store.info"></ion-input>
+        </ion-item>
+        <ion-icon [ngClass]="!editInfo?'slideInRight':'hidden'" name="create" class="pointer duration animated" (click)="toggleEdit()"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
