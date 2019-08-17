@@ -47,3 +47,16 @@ ion-badge {
 .initial {
     transition-duration: 0.3s;
 }
+
+.info-text {
+    color: gray;
+}
+
+.transparent {
+    background: transparent;
+}
+
+.duration {
+    animation-duration: 200ms;
+    animation-delay: 0s;
+}

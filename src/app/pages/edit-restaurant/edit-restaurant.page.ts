@@ -9,12 +9,13 @@ import {
   QueryResourceService,
   CommandResourceService
 } from 'src/app/api/services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import {
   ModalController,
   PopoverController,
-  AlertController
+  AlertController,
+  IonInput
 } from '@ionic/angular';
 import { StoreTypeDTO } from 'src/app/api/models';
 
@@ -37,6 +38,8 @@ export class EditRestaurantPage implements OnInit {
 
   private delivery: TypeDTO = undefined;
   private collection: TypeDTO = undefined;
+  @ViewChild('info', {static: false}) private  infoInput: IonInput;
+  editInfo = false;
 
   deliveryChecked: boolean;
   collectionChecked: boolean;
@@ -102,6 +105,15 @@ export class EditRestaurantPage implements OnInit {
       } else if (this.storeBundleDTO.deliveryInfos.length >= 2 && this.storeBundleDTO.deliveryInfos[1].typeId === id) {
         return this.storeBundleDTO.deliveryInfos[1];
       }
+    }
+  }
+
+  toggleEdit() {
+    this.editInfo = !this.editInfo;
+    if (this.editInfo) {
+      setTimeout(() => {
+        this.infoInput.setFocus();
+   }, 100);
     }
   }
 
