@@ -37,7 +37,8 @@ export class CreateEditProductComponent implements OnInit {
   aux = false;
   auxSelected: boolean;
   loaded: boolean =false;
-
+  checkComboArray: boolean[] =[];
+  checkAuxArray: boolean[] =[];
   comboLineItems: ComboLineItemDTO[] = [];
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
@@ -50,15 +51,17 @@ export class CreateEditProductComponent implements OnInit {
 
   ngOnInit() {
     console.log('Mode = ', this.mode);
-    if (this.mode === 'update') {
-      this.getProductDtoUsingProduct();
-    }
+    
     this.getCategories();
     this.getAuxilaryItems();
     this.getUOM();
     this.getNonComboNonAuxilaryProduct();
-    this.getProductAuxCombo();
-
+    if (this.mode === 'update') {
+      this.getProductDtoUsingProduct();
+      
+      
+      
+    }
   }
   showCombo() {
     if (this.combo === true) {
@@ -92,7 +95,7 @@ export class CreateEditProductComponent implements OnInit {
     }
   }
 
-  getProductAuxCombo(){
+  getProductAux(){
     this.query.getProductBundleUsingGET(this.product.id)
         .subscribe(productBundle => {
           productBundle.auxilaryLineItems.forEach(aux =>{
@@ -103,38 +106,54 @@ export class CreateEditProductComponent implements OnInit {
                   this.auxilaryLineItemDTOs.push(auxDto);
                 })
           });
+          this.auxilaryProduct.forEach(data => {
+            this.checkAuxArray.push(this.checkAux(data));
+          });
+          console.log('push chitha aux array',this.checkAuxArray);
+        });
+  }
+
+  getProductCombo(){
+    this.query.getProductBundleUsingGET(this.product.id)
+        .subscribe(productBundle => {
           productBundle.comboLineItems.forEach(combo =>{
             this.query.findCombolineItemUsingGET(combo.id)
                 .subscribe(comboDto =>{
                   this.comboLineItems.push(comboDto);
                 })
           });
+          
+          this.nonAuxNonComboProducts.forEach(data => {
+            this.checkComboArray.push(this.checkCombo(data));
+          });
+          console.log('push chitha combo array',this.checkComboArray);
         });
-    this.loaded = true
   }
   checkCombo(data): boolean{
     console.log('blah blah',this.comboLineItems);
     
     this.comboLineItems.forEach(
       com => {
+        console.log('abc',com.comboItemId,data.id);
         if(com.comboItemId==data.id){
           
           return true;
         }
-        console.log('abc',com.comboItemId,data.id);
+        
       }
     );
     return false;
   }
   checkAux(data): boolean{
-    console.log('blu blu',this.comboLineItems);
+    console.log('blu blu',this.auxilaryLineItemDTOs);
     this.auxilaryLineItemDTOs.forEach(
       aux => {
-        if(aux.auxilaryItemId==data.id){
-          
+        console.log('abc',aux.auxilaryItemId,aux.auxilaryItemId==data.id);
+
+        if(aux.auxilaryItemId===data.id){
+
           return true;
         }
-        console.log('abc',aux.auxilaryItemId,aux.auxilaryItemId==data.id);
       }
     );
     return false;
@@ -205,6 +224,9 @@ export class CreateEditProductComponent implements OnInit {
     this.storage.get('user').then(user => {
       this.query.getNotAuxNotComboProductsByIDPcodeUsingGET({iDPcode: user.preferred_username}).subscribe(res => {
         this.nonAuxNonComboProducts = res.content;
+        if (this.mode === 'update') {
+          this.getProductCombo();
+        }
       });
     });
   }
@@ -212,13 +234,16 @@ export class CreateEditProductComponent implements OnInit {
     this.storage.get('user').then(user => {
       this.query.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(res => {
         this.auxilaryProduct = res.content;
+        if (this.mode === 'update') {
+          this.getProductAux();
+        }
         console.log('aux', res.content);
 
       });
     });
   }
   selectedComboItem(item, toggle) {
-
+    
     const combo: ComboLineItemDTO = {
       comboItemId: item.id
     };
@@ -255,5 +280,11 @@ export class CreateEditProductComponent implements OnInit {
                 )
     );
 
+  }
+  mandatoryFields(): boolean {
+    if(this.productDTO.sellingPrice!==null && this.productDTO.categoryId !== null){
+      return true
+    }
+    return false
   }
 }

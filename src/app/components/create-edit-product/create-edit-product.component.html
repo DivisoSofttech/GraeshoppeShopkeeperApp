@@ -135,9 +135,9 @@
             <ion-item *ngIf="aux==true">
                 <ion-card class="scroll"> 
                     <ion-list *ngIf="loaded==true">
-                      <ion-item lines="none" *ngFor="let data of auxilaryProduct">
+                      <ion-item lines="none" *ngFor="let data of auxilaryProduct; let i = index">
                         <ion-label>{{data.name}}</ion-label>
-                            <ion-checkbox slot="end" [checked]="checkAux(data)" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
+                            <ion-checkbox slot="end" [checked]="checkAuxArray[i]" (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
                       </ion-item>
                     </ion-list>
                     </ion-card>
@@ -155,9 +155,9 @@
                 
                   <ion-card class="scroll"> 
                     <ion-list>
-                      <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts">
+                      <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts; let i = index">
                         <ion-label>{{data.name}}</ion-label>
-                        <ion-checkbox slot="end" [checked]="checkCombo(data)" (ionChange)="selectedComboItem(data,$event)" ></ion-checkbox>
+                        <ion-checkbox slot="end" [checked]="checkComboArray[i]" (ionChange)="selectedComboItem(data,$event)" ></ion-checkbox>
                       </ion-item>
                     </ion-list>
                     </ion-card>
@@ -189,9 +189,9 @@
 </ion-content>
 <ion-footer *ngIf="value!='category'&&value!='uom'">
   <div *ngIf="mode=='update'">
-    <ion-button margin expand="block" color="primary" (click)="updateProduct()">Update</ion-button>
+    <ion-button disabled="mandatoryFields()" margin expand="block" color="primary" (click)="updateProduct()">Update</ion-button>
   </div>
   <div *ngIf="mode=='create'">
-    <ion-button margin expand="block" color="primary" (click)="createProduct()">Create</ion-button>
+    <ion-button [disabled]="mandatoryFields()" margin expand="block" color="primary" (click)="createProduct()">Create</ion-button>
   </div>
 </ion-footer>
