@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ImageSelectorComponent } from './../image-selector/image-selector.component';
 import { Category } from './../../api/models/category';
@@ -12,7 +13,7 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./create-edit-category.component.scss'],
 })
 export class CreateEditCategoryComponent implements OnInit {
-
+  loader: HTMLIonLoadingElement;
   category: Category = {
 
   };
@@ -25,7 +26,8 @@ export class CreateEditCategoryComponent implements OnInit {
     private modalController: ModalController,
     private commandResource: CommandResourceService,
     private storage: Storage,
-    private query: QueryResourceService
+    private query: QueryResourceService,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -63,8 +65,14 @@ export class CreateEditCategoryComponent implements OnInit {
   }
 
   addCategory() {
+    this.util.createLoader()
+    .then(loader => {
+      this.loader = loader;
+      this.loader.present();
+    });
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
+          this.loader.dismiss();
           console.log('Category Added', data);
           if(this.throughProduct=='false'){
           this.dismiss(data);
@@ -77,8 +85,14 @@ export class CreateEditCategoryComponent implements OnInit {
 
   }
   updateCategory() {
+    this.util.createLoader()
+    .then(loader => {
+      this.loader = loader;
+      this.loader.present();
+    });
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
+      this.loader.dismiss();
       console.log('Category Updated', data);
       this.dismiss(data);
     }

@@ -83,7 +83,6 @@ export class ProductPage implements OnInit {
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
                 // p.comboLineItems.forEach(p => {
                 //   if(productBundle.comboLineItems !== null)
-                   console.log('product',productBundle.auxilaryLineItems)
                 // });
                 
               });

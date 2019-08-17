@@ -1,9 +1,9 @@
 
-  <ion-card  class="order-card-view">
+  <ion-card *ngIf="order != null" class="order-card-view">
   <ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-col >
             <ion-text>#{{order.orderId}}</ion-text>
         </ion-col>
         <ion-col>

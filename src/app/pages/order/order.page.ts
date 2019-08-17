@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -15,7 +16,7 @@ import { OrderViewComponent } from 'src/app/components/order-view/order-view.com
 export class OrderPage implements OnInit {
 
   user;
-
+  loader: HTMLIonLoadingElement;
   orders: Order[] = [{
     orderId: '78',
     customerId: '564654',
@@ -41,7 +42,8 @@ export class OrderPage implements OnInit {
     private storage: Storage,
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private file: File, private fileOpener: FileOpener
+    private file: File, private fileOpener: FileOpener,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -86,11 +88,17 @@ export class OrderPage implements OnInit {
     await actionSheet.present();
   }
   getPendingOrders() {
+    this.util.createLoader()
+    .then(loader => {
+      this.loader = loader;
+      this.loader.present();
+    });
         this.queryResource.getTasksUsingGET({
           assignee: this.user.preferred_username,
           name: 'Accept Order'
         }).subscribe(orders => {
           this.pendingOrders = orders;
+          this.loader.dismiss();
           console.log('pending orders', orders);
 
         });
