@@ -43,8 +43,8 @@ export class CreateEditProductComponent implements OnInit {
   checkAuxArray: boolean[] = [];
   comboLineItems: ComboLineItemDTO[] = [];
   @ViewChild('slides', { static: false }) slides: IonSlides;
-  deleteAuxilaries: AuxilaryLineItemDTO[]=[];
-  deleteCombos: ComboLineItemDTO[]=[];
+  deleteAuxilaries: AuxilaryLineItemDTO[] = [];
+  deleteCombos: ComboLineItemDTO[] = [];
   oldAux: number = 0;
   oldCombo: number = 0;
   constructor(
@@ -64,9 +64,9 @@ export class CreateEditProductComponent implements OnInit {
     if (this.mode === 'update') {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleUsingGET(this.product.id)
-      .subscribe(productBundle => {
-        this.productbundle = productBundle;
-      });
+        .subscribe(productBundle => {
+          this.productbundle = productBundle;
+        });
 
 
     }
@@ -112,7 +112,8 @@ export class CreateEditProductComponent implements OnInit {
               this.auxilaryLineItemDTOs.push(auxDto);
               this.oldAux++;
               this.auxilaryProduct.forEach(data => {
-                if(data.id === auxDto.auxilaryItemId){
+                if (data.id === auxDto.auxilaryItemId) {
+                  this.oldAux++;
                   this.checkAuxArray[this.auxilaryProduct.indexOf(data)] = true;
                 }
               })
@@ -130,8 +131,9 @@ export class CreateEditProductComponent implements OnInit {
               this.comboLineItems.push(comboDto);
               this.oldCombo++;
               this.nonAuxNonComboProducts.forEach(data => {
-                if(data.id === comboDto.comboItemId){
-                  this.checkComboArray[this.nonAuxNonComboProducts.indexOf(data)]=true;
+                if (data.id === comboDto.comboItemId) {
+                  this.oldCombo++;
+                  this.checkComboArray[this.nonAuxNonComboProducts.indexOf(data)] = true;
                 }
               });
             })
@@ -194,15 +196,36 @@ export class CreateEditProductComponent implements OnInit {
       });
     this.commandResource.updateProductUsingPUT(this.productDTO)
       .subscribe(data => {
-        this.comboLineItems.forEach(
-          ci => ci.productId = data.id
-        );
+        this.productbundle.comboLineItems.forEach(combo =>
+          this.query.findCombolineItemUsingGET(combo.id)
+            .subscribe(comboDto =>
+              this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId!=comboDto.comboItemId)
+            )
+        )
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
-        this.saveAuxilary();
-        this.saveCombo();
-        this.deleteAuxilaries.forEach(aux => 
+        this.comboLineItems.forEach(
+          ci => ci.productId = data.id
+        );
+        console.log(this.oldAux);
+        console.log('aa',this.auxilaryLineItemDTOs);
+        
+            for(let i = this.oldAux; i < this.auxilaryLineItemDTOs.length; i++) {
+              this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
+                .subscribe(data => console.log('auxilary', data)
+                  , err => console.log('error creating Auxilary')
+                )
+            }
+            for (let i = this.oldCombo; i < this.comboLineItems.length; i++) {
+                  this.commandResource.createComboLineItemUsingPOST(this.comboLineItems[i])
+                    .subscribe(data => console.log('combo', data)
+                      , err => console.log('error creating Combo')
+                    )
+                }
+       
+    
+        this.deleteAuxilaries.forEach(aux =>
           this.commandResource.deleteAuxilaryLineIteamUsingDELETE(aux.id).subscribe()
         )
         this.deleteCombos.forEach(com =>
@@ -244,7 +267,7 @@ export class CreateEditProductComponent implements OnInit {
       this.query.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(res => {
         this.auxilaryProduct = res.content;
         this.checkAuxArray.push(false);
-        console.log('aux',res.content);
+        console.log('aux', res.content);
         if (this.mode === 'update') {
           this.getProductAux();
         }
@@ -264,8 +287,8 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteCombos.push(item);
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
-    console.log('delete combo',this.deleteCombos);
-    
+    console.log('delete combo', this.deleteCombos);
+
   }
   selectedAuxilaryItem(item, toggle) {
     const aux: AuxilaryLineItemDTO = {
@@ -278,45 +301,32 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteAuxilaries.push(item);
       this.auxilaryLineItemDTOs = this.auxilaryLineItemDTOs.filter(ai => ai.id !== item.id);
     }
-    console.log('delete aux',this.deleteAuxilaries);
-    
+    console.log('delete aux', this.deleteAuxilaries);
+
   }
 
   saveAuxilary() {
+    console.log('mode', this.mode);
+    console.log('auxilaries', this.auxilaryLineItemDTOs);
 
-    if(this.mode==='update'){
-      for(let i=this.oldAux;i<this.auxilaryLineItemDTOs.length;i++){
-        this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
-        .subscribe(data => console.log('auxilary', data)
-        )
-      }
-    }
-    else{
       this.auxilaryLineItemDTOs.forEach(
         ai => this.commandResource.createAuxilaryLineItemUsingPOST(ai)
           .subscribe(data => console.log('auxilary', data)
+            , err => console.log('error creating auxilary')
+
           )
       );
-    }
+  
   }
   saveCombo() {
+    console.log('mode', this.mode);
+    console.log('combos', this.comboLineItems);
 
-    if(this.mode==='update'){
-      console.log(this.oldCombo);
-      
-      for(let i=this.oldCombo;i<this.comboLineItems.length;i++){
-        this.commandResource.createComboLineItemUsingPOST(this.comboLineItems[i])
-            .subscribe(data => console.log('combo', data)
-            )
-      }
-    }
-    else{
       this.comboLineItems.forEach(
         ci => this.commandResource.createComboLineItemUsingPOST(ci)
           .subscribe(data => console.log('combo', data)
+            , err => console.log('error creating combo')
           )
       );
-    }
-
   }
 }
