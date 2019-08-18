@@ -6,8 +6,12 @@
       <ion-button (click)="toggleSearchbar()" *ngIf="showSearchbar==false">
         <ion-icon  name="search"></ion-icon>
       </ion-button>
+      <ion-button (click)="openNotificationModal()">
+        <ion-icon  name="notifications"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-searchbar animated (ionChange)="searchProducts(0)" (ionCancel)="toggleSearchbar()" showCancelButton="always" placeholder="find products..." *ngIf="showSearchbar==true"></ion-searchbar>
+    <ion-searchbar  animated (ionChange)="searchProducts(0)" (ionCancel)="toggleSearchbar()" showCancelButton="always" placeholder="find products..." debounce="500" *ngIf="showSearchbar==true"[(ngModel)]="searchTerm"></ion-searchbar>
+   
   </ion-toolbar>
 </ion-header>
 

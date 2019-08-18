@@ -23,6 +23,7 @@ export { Label } from './models/label';
 export { Location } from './models/location';
 export { Manufacturer } from './models/manufacturer';
 export { Note } from './models/note';
+export { Notification } from './models/notification';
 export { Offer } from './models/offer';
 export { Order } from './models/order';
 export { OrderLine } from './models/order-line';

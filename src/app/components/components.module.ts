@@ -20,6 +20,7 @@ import { AddComponent } from './add/add.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { RouterModule } from '@angular/router';
 import { OrderCardComponent } from './order-card/order-card.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 
@@ -43,7 +44,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
     ProductViewComponent,
     CategoryViewComponent,
     OrderViewComponent,
-    MapComponent
+    MapComponent,
+    NotificationComponent
   ],
 
   imports: [
@@ -72,7 +74,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
     ProductViewComponent,
     MapComponent,
     CategoryViewComponent,
-    OrderViewComponent
+    OrderViewComponent,
+    NotificationComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

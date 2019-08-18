@@ -1,3 +1,4 @@
+import { NotificationComponent } from './../../components/notification/notification.component';
 import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { CreateEditUomComponent } from './../../components/create-edit-uom/create-edit-uom.component';
 import { CreateEditProductComponent } from './../../components/create-edit-product/create-edit-product.component';
@@ -32,7 +33,8 @@ const routes: Routes = [
     ProductCardComponent,
     CreateEditProductComponent,
     CreateEditUomComponent,
-    CreateEditCategoryComponent
+    CreateEditCategoryComponent,
+    NotificationComponent
   ]
 })
 export class ProductPageModule {}

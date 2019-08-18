@@ -5,7 +5,8 @@ import { Component,  OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
 import { Product } from '../../api/models/product';
 import { Util } from 'src/app/services/util';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-product',
@@ -26,7 +27,8 @@ export class ProductPage implements OnInit {
   constructor(
     private storage: Storage,
     private util: Util,
-    private queryService: QueryResourceService
+    private queryService: QueryResourceService,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -39,6 +41,7 @@ export class ProductPage implements OnInit {
   }
   toggleSearchbar(){
     this.showSearchbar = !this.showSearchbar;
+    this.products=this.tempProducts;
   }
   searchProducts(i){
     let storeId;
@@ -63,7 +66,6 @@ export class ProductPage implements OnInit {
             }
           });
     })
-    
   }
   
   getProducts(i , limit?: Boolean , success?) {
@@ -81,9 +83,6 @@ export class ProductPage implements OnInit {
               .subscribe(productBundle => {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
-                // p.comboLineItems.forEach(p => {
-                //   if(productBundle.comboLineItems !== null)
-                // });
                 
               });
           this.products.push(p);
@@ -152,5 +151,11 @@ export class ProductPage implements OnInit {
       }
     });
   }
-
+  async openNotificationModal() {
+    const modal = await this.modalController.create({
+      component: NotificationComponent,
+      cssClass: 'half-height'
+    });
+    return await modal.present();
+  }
 }

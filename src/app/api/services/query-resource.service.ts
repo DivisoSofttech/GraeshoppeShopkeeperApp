@@ -26,6 +26,7 @@ import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
+import { Notification } from '../models/notification';
 import { OrderMasterDTO } from '../models/order-master-dto';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
@@ -81,6 +82,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockEntryByProductIdUsingGETPath = '/api/query/findStockEntryByProductId/{productId}/{storeId}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
+  static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
@@ -1498,6 +1500,42 @@ class QueryResourceService extends __BaseService {
   getNotAuxNotComboProductsByIDPcodeUsingGET(params: QueryResourceService.GetNotAuxNotComboProductsByIDPcodeUsingGETParams): __Observable<PageOfProduct> {
     return this.getNotAuxNotComboProductsByIDPcodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfProduct)
+    );
+  }
+
+  /**
+   * @param receiverId receiverId
+   * @return OK
+   */
+  findNotificationByReceiverIdUsingGETResponse(receiverId: string): __Observable<__StrictHttpResponse<Notification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/notification/${receiverId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Notification>;
+      })
+    );
+  }
+  /**
+   * @param receiverId receiverId
+   * @return OK
+   */
+  findNotificationByReceiverIdUsingGET(receiverId: string): __Observable<Notification> {
+    return this.findNotificationByReceiverIdUsingGETResponse(receiverId).pipe(
+      __map(_r => _r.body as Notification)
     );
   }
 
