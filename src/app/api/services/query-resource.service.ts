@@ -26,7 +26,7 @@ import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
-import { Notification } from '../models/notification';
+import { PageOfNotification } from '../models/page-of-notification';
 import { OrderMasterDTO } from '../models/order-master-dto';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
@@ -1504,17 +1504,29 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param receiverId receiverId
+   * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
    * @return OK
    */
-  findNotificationByReceiverIdUsingGETResponse(receiverId: string): __Observable<__StrictHttpResponse<Notification>> {
+  findNotificationByReceiverIdUsingGETResponse(params: QueryResourceService.FindNotificationByReceiverIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfNotification>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/notification/${receiverId}`,
+      this.rootUrl + `/api/query/notification/${params.receiverId}`,
       __body,
       {
         headers: __headers,
@@ -1525,17 +1537,26 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Notification>;
+        return _r as __StrictHttpResponse<PageOfNotification>;
       })
     );
   }
   /**
-   * @param receiverId receiverId
+   * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
    * @return OK
    */
-  findNotificationByReceiverIdUsingGET(receiverId: string): __Observable<Notification> {
-    return this.findNotificationByReceiverIdUsingGETResponse(receiverId).pipe(
-      __map(_r => _r.body as Notification)
+  findNotificationByReceiverIdUsingGET(params: QueryResourceService.FindNotificationByReceiverIdUsingGETParams): __Observable<PageOfNotification> {
+    return this.findNotificationByReceiverIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfNotification)
     );
   }
 
@@ -3083,6 +3104,32 @@ module QueryResourceService {
      * iDPcode
      */
     iDPcode: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findNotificationByReceiverIdUsingGET
+   */
+  export interface FindNotificationByReceiverIdUsingGETParams {
+
+    /**
+     * receiverId
+     */
+    receiverId: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

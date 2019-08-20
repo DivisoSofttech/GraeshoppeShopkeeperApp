@@ -11,6 +11,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CategoryPage } from './category.page';
 import { CategoryCardComponent } from '../../components/category-card/category-card.component';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,6 @@ const routes: Routes = [
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
-  entryComponents: [CategoryCardComponent,CreateEditCategoryComponent]
+  entryComponents: [CategoryCardComponent,CreateEditCategoryComponent,NotificationComponent]
 })
 export class CategoryPageModule {}

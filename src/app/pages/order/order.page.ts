@@ -1,3 +1,4 @@
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -210,6 +211,13 @@ export class OrderPage implements OnInit {
             // {print: {enabled: true}, openWith: {enabled: true}});
           });
       });
+    }
+    async openNotificationModal() {
+      const modal = await this.modalController.create({
+        component: NotificationComponent,
+        cssClass: 'half-height'
+      });
+      return await modal.present();
     }
 
 }

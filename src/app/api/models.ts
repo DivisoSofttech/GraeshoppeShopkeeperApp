@@ -32,6 +32,7 @@ export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
 export { PageOfBanner } from './models/page-of-banner';
 export { PageOfCategory } from './models/page-of-category';
 export { PageOfCustomer } from './models/page-of-customer';
+export { PageOfNotification } from './models/page-of-notification';
 export { PageOfOrder } from './models/page-of-order';
 export { PageOfProduct } from './models/page-of-product';
 export { PageOfSale } from './models/page-of-sale';

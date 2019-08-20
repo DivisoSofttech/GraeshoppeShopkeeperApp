@@ -163,6 +163,9 @@ export class CreateEditProductComponent implements OnInit {
     });
   }
   createProduct() {
+    if(this.productDTO.isAuxilaryItem==true){
+      this.productDTO.categoryId=null;
+    }
     this.util.createLoader()
       .then(loader => {
         this.loader = loader;
@@ -189,6 +192,9 @@ export class CreateEditProductComponent implements OnInit {
 
   }
   updateProduct() {
+    if(this.productDTO.isAuxilaryItem==true){
+      this.productDTO.categoryId=null;
+    }
     this.util.createLoader()
       .then(loader => {
         this.loader = loader;
@@ -282,9 +288,12 @@ export class CreateEditProductComponent implements OnInit {
     };
     if (toggle.detail.checked === true) {
       this.comboLineItems.push(combo);
-      this.deleteCombos = this.deleteCombos.filter(ci => ci.id !== item.id);
+      this.deleteCombos = this.deleteCombos.filter(ci => ci.comboItemId !== item.id);
     } else {
-      this.deleteCombos.push(item);
+      this.comboLineItems.forEach(data => {
+        if(data.comboItemId==item.id && data.id != null){
+          this.deleteCombos.push(data);        }
+      })
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
     console.log('delete combo', this.deleteCombos);
@@ -296,9 +305,13 @@ export class CreateEditProductComponent implements OnInit {
     };
     if (toggle.detail.checked === true) {
       this.auxilaryLineItemDTOs.push(aux);
-      this.deleteAuxilaries = this.deleteAuxilaries.filter(ai => ai.id !== item.id);
+      this.deleteAuxilaries = this.deleteAuxilaries.filter(ai => ai.auxilaryItemId !== item.id);
     } else {
-      this.deleteAuxilaries.push(item);
+      this.auxilaryLineItemDTOs.forEach(data => {
+        if(data.auxilaryItemId==item.id && data.id != null){
+          this.deleteAuxilaries.push(data);
+        }
+      })
       this.auxilaryLineItemDTOs = this.auxilaryLineItemDTOs.filter(ai => ai.id !== item.id);
     }
     console.log('delete aux', this.deleteAuxilaries);
