@@ -214,9 +214,6 @@ export class CreateEditProductComponent implements OnInit {
         this.comboLineItems.forEach(
           ci => ci.productId = data.id
         );
-        console.log(this.oldAux);
-        console.log('aa',this.auxilaryLineItemDTOs);
-        
             for(let i = this.oldAux; i < this.auxilaryLineItemDTOs.length; i++) {
               this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
                 .subscribe(data => console.log('auxilary', data)
@@ -273,7 +270,6 @@ export class CreateEditProductComponent implements OnInit {
       this.query.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(res => {
         this.auxilaryProduct = res.content;
         this.checkAuxArray.push(false);
-        console.log('aux', res.content);
         if (this.mode === 'update') {
           this.getProductAux();
         }
@@ -296,7 +292,6 @@ export class CreateEditProductComponent implements OnInit {
       })
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
-    console.log('delete combo', this.deleteCombos);
 
   }
   selectedAuxilaryItem(item, toggle) {
@@ -314,14 +309,10 @@ export class CreateEditProductComponent implements OnInit {
       })
       this.auxilaryLineItemDTOs = this.auxilaryLineItemDTOs.filter(ai => ai.id !== item.id);
     }
-    console.log('delete aux', this.deleteAuxilaries);
 
   }
 
   saveAuxilary() {
-    console.log('mode', this.mode);
-    console.log('auxilaries', this.auxilaryLineItemDTOs);
-
       this.auxilaryLineItemDTOs.forEach(
         ai => this.commandResource.createAuxilaryLineItemUsingPOST(ai)
           .subscribe(data => console.log('auxilary', data)
@@ -332,9 +323,6 @@ export class CreateEditProductComponent implements OnInit {
   
   }
   saveCombo() {
-    console.log('mode', this.mode);
-    console.log('combos', this.comboLineItems);
-
       this.comboLineItems.forEach(
         ci => this.commandResource.createComboLineItemUsingPOST(ci)
           .subscribe(data => console.log('combo', data)

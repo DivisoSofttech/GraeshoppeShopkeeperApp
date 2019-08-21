@@ -32,9 +32,7 @@ export class CreateEditUomComponent implements OnInit {
     .then(user => this.storeIdpcode = user.preferred_username);
     console.log("Mode = ",this.mode);
     if(this.storeIdpcode === undefined && this.mode === 'create') {
-      console.log('Server Error : idpcode');
     } else if(this.mode !== 'update') {
-      console.log('Storeidpcode' , this.storeIdpcode)
       this.uom.idpcode = this.storeIdpcode;
     }
   }
@@ -47,9 +45,7 @@ export class CreateEditUomComponent implements OnInit {
     .then(loader => {
       loader.present();
       this.commandResource.createUOMUsingPOST(this.uom)
-      .subscribe(uom => {
-          console.log("uom",uom);
-          
+      .subscribe(uom => {          
         if(this.throughProduct=='false'){
           this.dismiss(uom);
           }

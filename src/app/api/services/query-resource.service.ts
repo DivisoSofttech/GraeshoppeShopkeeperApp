@@ -83,7 +83,7 @@ class QueryResourceService extends __BaseService {
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
-  static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}';
+  static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}/{status}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
@@ -1563,6 +1563,8 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
    *
+   * - `statusName`: statusName
+   *
    * - `orderId`: orderId
    *
    * - `sort`: sort
@@ -1578,12 +1580,13 @@ class QueryResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/orderMaster/${params.orderId}`,
+      this.rootUrl + `/api/query/orderMaster/${params.orderId}/${params.status}`,
       __body,
       {
         headers: __headers,
@@ -1600,6 +1603,8 @@ class QueryResourceService extends __BaseService {
   }
   /**
    * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
    *
    * - `orderId`: orderId
    *
@@ -3151,6 +3156,11 @@ module QueryResourceService {
    * Parameters for findOrderMasterByOrderIdUsingGET
    */
   export interface FindOrderMasterByOrderIdUsingGETParams {
+
+    /**
+     * statusName
+     */
+    status: string;
 
     /**
      * orderId

@@ -39,7 +39,7 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotifications(i){
-    this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode})
+    this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode,page: i})
         .subscribe(res => {
           res.content.forEach(data => this.notifications.push(data));
           console.log('notification',this.notifications);

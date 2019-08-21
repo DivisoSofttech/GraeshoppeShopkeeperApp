@@ -107,8 +107,14 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
     </plugin>
-    <plugin name="cordova-plugin-file" spec="^6.0.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
-    <engine name="android" spec="^7.1.4" />
+    <plugin name="cordova-plugin-crop" spec="^0.4.0" />
+    <plugin name="cordova-plugin-file" spec="^6.0.2" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.3" />
+    <plugin name="com-badrit-base64" spec="^0.2.0" />
+    <plugin name="cordova-android-support-gradle-release" spec="^3.0.1">
+        <variable name="ANDROID_SUPPORT_VERSION" value="27.+" />
+    </plugin>
     <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="^8.0.0" />
 </widget>

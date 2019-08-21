@@ -38,9 +38,6 @@ export class CreateEditCategoryComponent implements OnInit {
     if (this.category.id != null) {
       this.getcategoryDTOUsingCategory();
     }
-    console.log('Mode = ', this.mode);
-    console.log('Cate = ', this.category);
-
   }
   async selectImage() {
 

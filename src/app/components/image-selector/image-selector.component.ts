@@ -1,7 +1,10 @@
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { CropperSettings, ImageCropperComponent } from 'ngx-img-cropper';
+import { Crop } from '@ionic-native/crop/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-image-selector',
@@ -14,8 +17,11 @@ export class ImageSelectorComponent implements OnInit {
   cropper: ImageCropperComponent;
   cropperSettings: CropperSettings;
   constructor(
+    private imagePicker: ImagePicker,
+    private crop: Crop,
     private camera: Camera,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private base64: Base64
   ) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.width = 300;
@@ -28,17 +34,16 @@ export class ImageSelectorComponent implements OnInit {
     this.cropperSettings.compressRatio = 1.6;
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onChange($event: any) {
     const image: any = new Image();
     const file: File = $event.target.files[0];
     const myReader: FileReader = new FileReader();
-    myReader.addEventListener('loadend', (loadEvent: any) => {
+    myReader.onloadend = (loadEvent: any) => {
       image.src = loadEvent.target.result;
       this.cropper.setImage(image);
-    });
-
+    };
     myReader.readAsDataURL(file);
   }
 
@@ -48,16 +53,5 @@ export class ImageSelectorComponent implements OnInit {
   save() {
     this.modalController.dismiss(this.data);
   }
-
-  fileChangeListener(event: any) {
-    const image: any = new Image();
-    const file: File = event.target.files[0];
-    const myReader: FileReader = new FileReader();
-    myReader.onloadend = (loadEvent: any) => {
-      image.src = loadEvent.target.result;
-      this.cropper.setImage(image);
-    };
-
-    myReader.readAsDataURL(file);
-  }
+  
 }
