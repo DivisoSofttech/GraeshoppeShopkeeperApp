@@ -103,10 +103,6 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-sqlite-storage" spec="^3.2.1" />
     <plugin name="cordova-plugin-camera" spec="^4.1.0" />
-    <plugin name="cordova-plugin-googlemaps" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps">
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk" />
-    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <plugin name="cordova-plugin-file" spec="^6.0.2" />
