@@ -77,13 +77,14 @@ export class CategoryPage implements OnInit {
   }
 
   updateCategory(category){
-    console.log('product', category);
-    this.queryService.findCategoryByIdUsingGET(category.id)
+    if(category.data!=undefined){
+    this.queryService.findCategoryByIdUsingGET(category.data.id)
         .subscribe(category => {
           const categoryDomain: Category = category;
           const index = this.categories.findIndex(p => p.id === category.id);
           this.categories.splice(index, 1, categoryDomain);
         })
+      }
   }
 
   deleteCategory(category: Category){

@@ -12,7 +12,7 @@
         <ion-col >
           <ion-label>Order time</ion-label>
           <ion-text color="danger">{{order.date | date: 'shortDate'}}</ion-text><br>
-          <ion-text color="danger">{{order.date | date: 'mediumTime'}}</ion-text>
+          <ion-text color="danger">{{order.date | date: 'shortTime'}}</ion-text>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -29,7 +29,7 @@
         <ion-col size="4">
             <ion-item>
                 <ion-label *ngIf="deliveryTime == null">Delivery Time</ion-label>
-                <ion-datetime displayFormat="HH:mm" [(ngModel)]="deliveryTime"></ion-datetime>
+                <ion-datetime displayFormat="HH:mm" max="06:00" [(ngModel)]="deliveryTime"></ion-datetime>
               </ion-item>
         </ion-col>
         <ion-col size ="2">

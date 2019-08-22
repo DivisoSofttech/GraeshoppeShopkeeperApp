@@ -1,3 +1,4 @@
+import { Util } from 'src/app/services/util';
 import { CategoryViewComponent } from './../category-view/category-view.component';
 import { CommandResourceService } from 'src/app/api/services';
 import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
@@ -15,7 +16,8 @@ export class CategoryCardComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private actionSheetController: ActionSheetController,
-    private command: CommandResourceService
+    private command: CommandResourceService,
+    private util: Util
   ) { }
   @Input()
   category: Category;
@@ -56,7 +58,12 @@ export class CategoryCardComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.command.deleteCategoryUsingDELETE(this.category.id)
-              .subscribe(data =>  this.delete.emit())
+              .subscribe(data =>  {
+                this.delete.emit();
+                this.util.createToast("Category Deletion Success",'checkmark');
+              },err => {
+                this.util.createToast("Category Deletion Error",'alert');
+              })
           console.log('Delete clicked');
         }
       },

@@ -57,8 +57,9 @@ export class CreateEditCategoryComponent implements OnInit {
   // modal() {
   //     this.slides.slideTo(0);
   // }
-  dismiss(data) {
-      this.modalController.dismiss(data);
+
+  dismiss() {
+      this.modalController.dismiss();
   }
 
   addCategory() {
@@ -70,15 +71,18 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
           this.loader.dismiss();
-          console.log('Category Added', data);
+          this.util.createToast("Category Created",'checkmark');
           if(this.throughProduct=='false'){
-          this.dismiss(data);
+            this.modalController.dismiss(data);
           }
           else{
             this.onSlide.emit();
           }
         }
-        , err => console.log('Error Creating Category', err));
+        , err => {
+          console.log('Error Creating Category', err);
+          this.util.createToast("Category Creation Error",'alert');
+      });
 
   }
   updateCategory() {
@@ -90,10 +94,13 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
       this.loader.dismiss();
-      console.log('Category Updated', data);
-      this.dismiss(data);
+      this.util.createToast("Category Updated",'checkmark');
+      this.modalController.dismiss(data);
     }
-    , err => console.log('Error Updating Category', err));
+    , err => {
+      console.log('Error Updating Category', err);
+      this.util.createToast("Category Updation Error",'alert');
+    });
 
   }
   getcategoryDTOUsingCategory() {

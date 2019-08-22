@@ -182,11 +182,13 @@ export class CreateEditProductComponent implements OnInit {
         );
         this.saveAuxilary();
         this.saveCombo();
+        this.util.createToast("Product Creation Success",'checkmark');
         this.loader.dismiss();
       },
         err => {
           console.log('error creating product', err);
           this.loader.dismiss();
+          this.util.createToast("Product Creation Error",'alert');
         }
       );
 
@@ -235,7 +237,10 @@ export class CreateEditProductComponent implements OnInit {
           this.commandResource.deleteComboLineItemUsingDELETE(com.id).subscribe()
         )
         this.dismiss(data);
+        this.util.createToast("Product Updation Success",'checkmark');
         this.loader.dismiss();
+      },err => {
+        this.util.createToast("Product Updation Error",'alert');
       });
   }
   async selectImage() {
