@@ -93,7 +93,7 @@ export class OrderPage implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
-        this.queryResource.getTasksUsingGET({
+    this.queryResource.getTasksUsingGET({
           assignee: this.user.preferred_username,
           name: 'Accept Order'
         }).subscribe(orders => {
@@ -180,14 +180,13 @@ export class OrderPage implements OnInit {
               const byteArray = new Uint8Array(byteNumbers);
               const blob = new Blob([byteArray], { type: orderDocket.contentType });
               console.log('blob is' + blob);
-              this.fileCreation(blob,orderDocket);
+              this.fileCreation(blob, orderDocket);
             }
           );
         }
       );
     }
-    fileCreation(blob, result)
-    {
+    fileCreation(blob, result) {
       this.file
       .createFile(this.file.externalCacheDirectory, 'items.pdf', true)
       .then(() => {
