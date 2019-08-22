@@ -5,7 +5,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { Order } from 'src/app/api/models';
+import { Order, Store } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSlides, ActionSheetController, ModalController } from '@ionic/angular';
 import { OrderViewComponent } from 'src/app/components/order-view/order-view.component';
 
@@ -16,6 +16,7 @@ import { OrderViewComponent } from 'src/app/components/order-view/order-view.com
 })
 export class OrderPage implements OnInit {
 
+  store: Store;
   user;
   loader: HTMLIonLoadingElement;
   orders: Order[] = [{
@@ -54,9 +55,18 @@ export class OrderPage implements OnInit {
     .then((data) => {
       this.user = data;
       //this.getOrders(0 , true);
-      this.getPendingOrders();
-      this.getConfirmedOrders(0);
-      this.getCompletedOrders(0);
+      this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
+          .subscribe(store =>{
+            this.store = store;
+            console.log(store.storeSettings.orderAcceptType);
+            
+            if(store.storeSettings.orderAcceptType!='automatic'){
+              this.getPendingOrders();
+            }
+            this.getConfirmedOrders(0);
+            this.getCompletedOrders(0);
+          })
+     
      });
   }
   async filterActionsheet() {

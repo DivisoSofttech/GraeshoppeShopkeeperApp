@@ -4,6 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CreateEditProductComponent } from './../create-edit-product/create-edit-product.component';
 import {  ActionSheetController, ModalController } from '@ionic/angular';
 import { Product } from '../../api/models/product';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-product-card',
@@ -21,7 +22,8 @@ export class ProductCardComponent implements OnInit {
   constructor(
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private commandResource: CommandResourceService
+    private commandResource: CommandResourceService,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -57,7 +59,12 @@ export class ProductCardComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.commandResource.deleteProductUsingDELETE(this.product.id)
-              .subscribe(data =>  this.delete.emit());
+              .subscribe(data =>  {
+                this.delete.emit();
+                this.util.createToast("Product Deletion Success",'checkmark');
+              },err => {
+                this.util.createToast("Product Deletion Error",'alert');
+              });
         }
       },
       {
