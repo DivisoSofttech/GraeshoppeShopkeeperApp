@@ -84,6 +84,7 @@ class QueryResourceService extends __BaseService {
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}/{status}';
+  static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
@@ -1563,7 +1564,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
    *
-   * - `statusName`: statusName
+   * - `status`: status
    *
    * - `orderId`: orderId
    *
@@ -1604,7 +1605,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
    *
-   * - `statusName`: statusName
+   * - `status`: status
    *
    * - `orderId`: orderId
    *
@@ -1619,6 +1620,63 @@ class QueryResourceService extends __BaseService {
   findOrderMasterByOrderIdUsingGET(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<OrderMasterDTO> {
     return this.findOrderMasterByOrderIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as OrderMasterDTO)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindOrderByStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrderByStatusNameUsingGETResponse(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrder>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderStatus/${params.statusName}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrder>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrderByStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrderByStatusNameUsingGET(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<PageOfOrder> {
+    return this.findOrderByStatusNameUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrder)
     );
   }
 
@@ -3158,7 +3216,7 @@ module QueryResourceService {
   export interface FindOrderMasterByOrderIdUsingGETParams {
 
     /**
-     * statusName
+     * status
      */
     status: string;
 
@@ -3179,6 +3237,32 @@ module QueryResourceService {
 
     /**
      * page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findOrderByStatusNameUsingGET
+   */
+  export interface FindOrderByStatusNameUsingGETParams {
+
+    /**
+     * statusName
+     */
+    statusName: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
      */
     page?: number;
   }

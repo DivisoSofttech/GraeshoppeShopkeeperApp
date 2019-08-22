@@ -2,28 +2,39 @@
   <ion-card *ngIf="order != null" class="order-card-view">
   <ion-item>
     <ion-grid>
-      <ion-row>
+      <ion-row (click)="viewOrderViewModal()">
         <ion-col >
             <ion-text>#{{order.orderId}}</ion-text>
         </ion-col>
         <ion-col>
-        <ion-text>C#{{order.customerId}}</ion-text>
+        <ion-text>{{order.customerId}}</ion-text>
       </ion-col>
-        <ion-col>
+        <ion-col >
           <ion-label>Order time</ion-label>
-          <ion-text color="danger">{{order.deliveryInfo.startingTime}}</ion-text>
+          <ion-text color="danger">{{order.date | date: 'shortDate'}}</ion-text><br>
+          <ion-text color="danger">{{order.date | date: 'mediumTime'}}</ion-text>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <!-- <ion-col>
             <ion-text color="primary">{{order.paymentRef}}</ion-text>
-        </ion-col>
-        <ion-col>
+        </ion-col> -->
+        <ion-col (click)="viewOrderViewModal()" size="4">
             <ion-icon name="pin"></ion-icon>
-            <ion-text>{{order.deliveryInfo.deliveryAddress.addressLine1}}</ion-text>
+            <ion-text>
+                {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}},
+                {{order.deliveryInfo.deliveryAddress.city}}...
+            </ion-text>
         </ion-col>
-        <ion-col>
-          <ion-button color="success">Accept</ion-button>
+        <ion-col size="4">
+            <ion-item>
+                <ion-label *ngIf="deliveryTime == null">Delivery Time</ion-label>
+                <ion-datetime displayFormat="HH:mm" [(ngModel)]="deliveryTime"></ion-datetime>
+              </ion-item>
+        </ion-col>
+        <ion-col size ="2">
+          <ion-button *ngIf="orderType=='confirmed'" color="success">Done</ion-button>
+          <ion-button (click)="acceptOrder()" *ngIf="orderType=='pending'"color="success">Accept</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

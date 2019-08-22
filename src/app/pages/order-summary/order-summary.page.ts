@@ -13,15 +13,13 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 export class OrderSummaryPage implements OnInit {
 
   constructor(
-    private file: File,
-    private fileOpener: FileOpener,
-    public toastController: ToastController,
+    
     private queryResource: QueryResourceService,
-    private platform: Platform,
     private modalController: ModalController
   ) { }
 
   ngOnInit() {
+    
   }
 
   

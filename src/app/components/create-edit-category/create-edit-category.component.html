@@ -15,7 +15,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<div margin>
+
+<ion-scroll scrollY="true" margin >
   <ion-card>
     <ion-item text-center *ngIf="categoryDTO.image == undefined">
         <ion-label>
@@ -36,7 +37,7 @@
       <ion-textarea [(ngModel)]="categoryDTO.description"></ion-textarea>
     </ion-item>
   </ion-card>
-</div>
+</ion-scroll>
 
 <ion-footer>
   <div *ngIf="mode=='update'">

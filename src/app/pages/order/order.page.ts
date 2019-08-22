@@ -55,17 +55,10 @@ export class OrderPage implements OnInit {
       this.user = data;
       //this.getOrders(0 , true);
       this.getPendingOrders();
-      this.getConfirmedOrders();
-      this.getCompletedOrders();
+      this.getConfirmedOrders(0);
+      this.getCompletedOrders(0);
      });
   }
-  async viewOrderViewModal(order) {
-    const modal = await this.modalController.create({
-      component: OrderViewComponent,
-      componentProps: {order}
-    });
-    return await modal.present();
-   }
   async filterActionsheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Filter',
@@ -108,25 +101,27 @@ export class OrderPage implements OnInit {
 
         });
   }
-  getConfirmedOrders(){
-    this.queryResource.getTasksUsingGET({
-      assignee: this.user.preferred_username,
-      name:'payment-processed'
-    }).subscribe(orders =>{
-      this.confirmedOrders = orders;
-      console.log('confirmed orders',orders);
-      
-    });
+  getConfirmedOrders(i){
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i})
+        .subscribe(res => {
+          res.content.forEach(data => this.confirmedOrders.push(data));
+          console.log('confirmed orders',res.content);
+          i++;
+          if(i < res.totalPages){
+            this.getConfirmedOrders(i);
+          }
+        })
   }
-  getCompletedOrders(){
-    this.queryResource.getTasksUsingGET({
-      assignee: this.user.preferred_username,
-      name:'delivered'
-    }).subscribe(orders =>{
-      this.completedOrders = orders;
-      console.log('completed orders',orders);
-      
-    });
+  getCompletedOrders(i){
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i})
+        .subscribe(res =>{
+          res.content.forEach(data => this.completedOrders.push(data));
+          console.log('completed orders',res.content);
+          i++;
+          if(i<res.totalPages){
+            this.getCompletedOrders(i);
+          }
+        })
   }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({

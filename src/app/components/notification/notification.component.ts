@@ -1,8 +1,9 @@
+import { CommandResource } from './../../api/models/command-resource';
 import { Util } from 'src/app/services/util';
-import { QueryResourceService } from 'src/app/api/services';
-import { ModalController } from '@ionic/angular';
+import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { Notification } from 'src/app/api/models';
+import { Notification, NotificationDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -13,36 +14,50 @@ import { Storage } from '@ionic/storage';
 export class NotificationComponent implements OnInit {
 
   loader: HTMLIonLoadingElement;
-
+  show= false;
   IdpCode: string;
   //pageCount = 0;
   notifications: Notification[] = [];
+  notification: NotificationDTO
+  clickedNotification: Notification;
   constructor(
     private modal: ModalController,
     private query: QueryResourceService,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private command: CommandResourceService
   ) { }
  
   ngOnInit() {
-    this.storage.get('user').then(user => this.IdpCode = user.preferred_username);
     this.util.createLoader()
     .then(loader => {
+    this.storage.get('user').then(user => {
+      this.IdpCode = user.preferred_username;
+      this.getNotifications(0);
+    });
       this.loader = loader;
       this.loader.present();
-      this.getNotifications(0);
     });
   }
    
   dismiss(){
     this.modal.dismiss();
   }
-
+  onClick(notification: Notification){
+    console.log();
+    this.clickedNotification = notification;
+    this.show = !this.show;
+    if(notification.status=='unread'){
+      this.updateNotification(notification);
+    }
+  }
   getNotifications(i){
     this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode,page: i})
         .subscribe(res => {
+          console.log(this.IdpCode);
+          
           res.content.forEach(data => this.notifications.push(data));
-          console.log('notification',this.notifications);
+          console.log('notification',res.content);
           i++;
           if(i < res.totalPages) {
             this.getNotifications(i);  
@@ -50,5 +65,24 @@ export class NotificationComponent implements OnInit {
             this.loader.dismiss();
           }
         });
+  }
+  updateNotification(notification: Notification){
+    const notificationDto: Notification ={
+      id : notification.id,
+      date: notification.date,
+      image: notification.image,
+      imageContentType: notification.imageContentType,
+      message: notification.message,
+      receiverId: notification.receiverId,
+      status: 'read',
+      targetId: notification.targetId,
+      title: notification.title,
+      type: notification.type
+    }
+    this.command.updateNotificationUsingPUT(notificationDto)
+        .subscribe(notificationDto => {
+          const index = this.notifications.indexOf(notification)
+          this.notifications[index] = notificationDto;
+        })
   }
 }

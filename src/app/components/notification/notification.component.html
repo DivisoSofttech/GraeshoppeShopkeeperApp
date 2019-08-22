@@ -1,14 +1,45 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons>
-      <ion-button>
         <ion-button (click)="dismiss()">
           <ion-icon name="close"></ion-icon>
         </ion-button>
-      </ion-button>
       <ion-title>
       Notifications
       </ion-title>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+        <ion-list>
+          <ion-card *ngFor="let notification of notifications">
+            <ion-card-header (click)="onClick(notification)">
+                <ion-item >
+                    <ion-avatar *ngIf="notification.status=='unread'" margin> 
+                      <ion-img [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
+                    </ion-avatar>
+                    <ion-avatar *ngIf="notification.status=='read'" margin> 
+                        <ion-img class="read-img" [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
+                      </ion-avatar>
+                    <ion-text *ngIf="notification.status=='unread'">
+                      <p><strong>{{notification.title}}</strong></p>
+                      <p>{{notification.date | date:'shortDate'}}</p>
+                      <p>{{notification.date | date:'shortTime'}}</p>
+                    </ion-text>
+                    <ion-text  *ngIf="notification.status=='read'">
+                        <p class = "read"><strong>{{notification.title}}</strong></p>
+                        <p class = "read">{{notification.date | date:'shortDate'}}</p>
+                        <p class = "read">{{notification.date | date:'shortTime'}}</p>
+                      </ion-text>
+                    
+                  </ion-item>
+            </ion-card-header>
+            <ion-card-content *ngIf="show==true && notification == clickedNotification">
+              <ion-item>
+                  <ion-text><p>#{{notification.targetId}}</p>
+                    <p>{{notification.message}}</p></ion-text>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+</ion-content>
