@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { UomPage } from './uom.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { AddComponent } from 'src/app/components/add/add.component';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [UomPage],
-  entryComponents: [AddComponent]
+  entryComponents: [AddComponent,NotificationComponent]
 })
 export class UomPageModule {}

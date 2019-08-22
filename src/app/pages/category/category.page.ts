@@ -21,6 +21,7 @@ export class CategoryPage implements OnInit {
   pageCount = 0;
 
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
+  notificationCount: number;
 
   constructor(
     private queryService: QueryResourceService,
@@ -38,6 +39,7 @@ export class CategoryPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
+      this.getNoticationCount();
       this.getCategories(0 , true);
     });
   }
@@ -120,6 +122,12 @@ export class CategoryPage implements OnInit {
       cssClass: 'half-height'
     });
     return await modal.present();
+  }
+  getNoticationCount(){
+    this.storage.get('user').then(user => {
+      this.queryService.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+          .subscribe(num => this.notificationCount=num);
+    });
   }
 
 }

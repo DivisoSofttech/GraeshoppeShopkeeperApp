@@ -41,6 +41,7 @@ export class OrderPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', null) slides: IonSlides;
+  notificationCount: any;
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage,
@@ -54,16 +55,18 @@ export class OrderPage implements OnInit {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      //this.getOrders(0 , true);
       this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
           .subscribe(store =>{
-            this.store = store;            
+            this.store = store; 
+            this.getNoticationCount();        
             if(store.storeSettings.orderAcceptType!='automatic'){
               this.getPendingOrders();
             }
             this.getConfirmedOrders(0);
             this.getCompletedOrders(0);
-            this.slides.slideTo(1);
+            if(store.storeSettings.orderAcceptType=='automatic'){
+              this.slides.slideTo(1);
+            }
           })
      
      });
@@ -100,21 +103,30 @@ export class OrderPage implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
-    this.queryResource.getTasksUsingGET({
-          assignee: this.user.preferred_username,
-          name: 'Accept Order'
-        }).subscribe(orders => {
-          this.pendingOrders = orders;
-          this.loader.dismiss();
-          console.log('pending orders', orders);
+    // this.queryResource.getTasksUsingGET({
+    //       assignee: this.user.preferred_username,
+    //       name: 'Accept Order'
+    //     }).subscribe(orders => {
+    //       this.pendingOrders = orders;
+    //       this.loader.dismiss();
+    //       console.log('pending orders', orders);
 
-        });
+    //     });
+
+    this.queryResource.getOpenTasksUsingGET({
+      assignee: this.user.preferred_username,
+      name: 'Accept Order'
+    }).subscribe(listOfTasks => {
+      listOfTasks.forEach( opentask =>{
+        this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
+            .subscribe(order => this.pendingOrders.push(order));
+      })
+    });
   }
   getConfirmedOrders(i){
     this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i})
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
-          console.log('confirmed orders',res.content);
           i++;
           if(i < res.totalPages){
             this.getConfirmedOrders(i);
@@ -125,7 +137,6 @@ export class OrderPage implements OnInit {
     this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i})
         .subscribe(res =>{
           res.content.forEach(data => this.completedOrders.push(data));
-          console.log('completed orders',res.content);
           i++;
           if(i<res.totalPages){
             this.getCompletedOrders(i);
@@ -243,6 +254,12 @@ export class OrderPage implements OnInit {
         cssClass: 'half-height'
       });
       return await modal.present();
+    }
+    getNoticationCount(){
+      this.storage.get('user').then(user => {
+        this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+            .subscribe(num => this.notificationCount=num);
+      });
     }
 
 }
