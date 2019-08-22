@@ -10,7 +10,7 @@
     </ion-toolbar>
   </ion-header>
 <ion-content>
-<div [ngClass]="data.image?'':'hidden'" >
+<div>
     <img-cropper  #cropper [image]="data"  [settings]="cropperSettings"></img-cropper>
 </div>
 <ion-item>

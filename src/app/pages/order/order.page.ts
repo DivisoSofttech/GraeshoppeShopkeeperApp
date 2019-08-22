@@ -1,3 +1,4 @@
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -31,6 +32,8 @@ export class OrderPage implements OnInit {
 
   }];
   pendingOrders: Order[] = [];
+  confirmedOrders: Order[] = [];
+  completedOrders: Order[] = [];
 
   currentPage = 'pending';
   pageCount = 0;
@@ -50,8 +53,10 @@ export class OrderPage implements OnInit {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      this.getOrders(0 , true);
+      //this.getOrders(0 , true);
       this.getPendingOrders();
+      this.getConfirmedOrders();
+      this.getCompletedOrders();
      });
   }
   async viewOrderViewModal(order) {
@@ -102,8 +107,26 @@ export class OrderPage implements OnInit {
           console.log('pending orders', orders);
 
         });
-
-
+  }
+  getConfirmedOrders(){
+    this.queryResource.getTasksUsingGET({
+      assignee: this.user.preferred_username,
+      name:'payment-processed'
+    }).subscribe(orders =>{
+      this.confirmedOrders = orders;
+      console.log('confirmed orders',orders);
+      
+    });
+  }
+  getCompletedOrders(){
+    this.queryResource.getTasksUsingGET({
+      assignee: this.user.preferred_username,
+      name:'delivered'
+    }).subscribe(orders =>{
+      this.completedOrders = orders;
+      console.log('completed orders',orders);
+      
+    });
   }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
@@ -165,9 +188,9 @@ export class OrderPage implements OnInit {
      });
     }
 
-    getOrderMaster(orderId) {
+    getOrderMaster(orderId,statusName) {
       console.log(orderId);
-      this.queryResource.findOrderMasterByOrderIdUsingGET({orderId}).subscribe(
+      this.queryResource.findOrderMasterByOrderIdUsingGET({orderId: orderId,status: statusName}).subscribe(
         orderMaster => {
           this.queryResource.getOrderDocketUsingGET(orderMaster.id).subscribe(
             orderDocket => {
@@ -209,6 +232,13 @@ export class OrderPage implements OnInit {
             // {print: {enabled: true}, openWith: {enabled: true}});
           });
       });
+    }
+    async openNotificationModal() {
+      const modal = await this.modalController.create({
+        component: NotificationComponent,
+        cssClass: 'half-height'
+      });
+      return await modal.present();
     }
 
 }

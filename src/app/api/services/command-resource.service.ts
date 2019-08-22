@@ -7,6 +7,8 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { CommandResource } from '../models/command-resource';
+import { ApprovalDetailsDTO } from '../models/approval-details-dto';
 import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { BannerDTO } from '../models/banner-dto';
 import { CategoryDTO } from '../models/category-dto';
@@ -15,6 +17,7 @@ import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { CustomerAggregator } from '../models/customer-aggregator';
 import { DeliveryInfoDTO } from '../models/delivery-info-dto';
+import { NotificationDTO } from '../models/notification-dto';
 import { ProductDTO } from '../models/product-dto';
 import { ReplyDTO } from '../models/reply-dto';
 import { ReviewDTO } from '../models/review-dto';
@@ -34,6 +37,7 @@ import { UserRatingDTO } from '../models/user-rating-dto';
   providedIn: 'root',
 })
 class CommandResourceService extends __BaseService {
+  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}';
   static readonly createAuxilaryLineItemUsingPOSTPath = '/api/command/auxilarylineitem';
   static readonly updateAuxilaryLineItemUsingPUTPath = '/api/command/auxilarylineitem';
   static readonly deleteAuxilaryLineIteamUsingDELETEPath = '/api/command/auxilarylineitem/{id}';
@@ -53,6 +57,8 @@ class CommandResourceService extends __BaseService {
   static readonly createDeliveryInfoUsingPOSTPath = '/api/command/delivery-infos';
   static readonly updateDeliveryInfoUsingPUTPath = '/api/command/delivery-infos';
   static readonly deleteDeliveryInfoUsingDELETEPath = '/api/command/delivery-infos/{id}';
+  static readonly markOrderAsDeliveredUsingPOSTPath = '/api/command/markAsDelivered/{orderId}';
+  static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly createProductCategoryUsingPOSTPath = '/api/command/productCategory';
   static readonly createProductUsingPOSTPath = '/api/command/products';
   static readonly updateProductUsingPUTPath = '/api/command/products';
@@ -91,6 +97,53 @@ class CommandResourceService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param params The `CommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+   *
+   * - `taskId`: taskId
+   *
+   * - `approvalDetailsDTO`: approvalDetailsDTO
+   *
+   * @return OK
+   */
+  acceptOrderUsingPOSTResponse(params: CommandResourceService.AcceptOrderUsingPOSTParams): __Observable<__StrictHttpResponse<CommandResource>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.approvalDetailsDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/acceptOrder/${params.taskId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<CommandResource>;
+      })
+    );
+  }
+  /**
+   * @param params The `CommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+   *
+   * - `taskId`: taskId
+   *
+   * - `approvalDetailsDTO`: approvalDetailsDTO
+   *
+   * @return OK
+   */
+  acceptOrderUsingPOST(params: CommandResourceService.AcceptOrderUsingPOSTParams): __Observable<CommandResource> {
+    return this.acceptOrderUsingPOSTResponse(params).pipe(
+      __map(_r => _r.body as CommandResource)
+    );
   }
 
   /**
@@ -760,6 +813,76 @@ class CommandResourceService extends __BaseService {
   deleteDeliveryInfoUsingDELETE(id: number): __Observable<null> {
     return this.deleteDeliveryInfoUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param orderId orderId
+   */
+  markOrderAsDeliveredUsingPOSTResponse(orderId: string): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/markAsDelivered/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   */
+  markOrderAsDeliveredUsingPOST(orderId: string): __Observable<null> {
+    return this.markOrderAsDeliveredUsingPOSTResponse(orderId).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param notificationDTO notificationDTO
+   * @return OK
+   */
+  updateNotificationUsingPUTResponse(notificationDTO: NotificationDTO): __Observable<__StrictHttpResponse<NotificationDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = notificationDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/notifications`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<NotificationDTO>;
+      })
+    );
+  }
+  /**
+   * @param notificationDTO notificationDTO
+   * @return OK
+   */
+  updateNotificationUsingPUT(notificationDTO: NotificationDTO): __Observable<NotificationDTO> {
+    return this.updateNotificationUsingPUTResponse(notificationDTO).pipe(
+      __map(_r => _r.body as NotificationDTO)
     );
   }
 
@@ -1897,6 +2020,22 @@ class CommandResourceService extends __BaseService {
 }
 
 module CommandResourceService {
+
+  /**
+   * Parameters for acceptOrderUsingPOST
+   */
+  export interface AcceptOrderUsingPOSTParams {
+
+    /**
+     * taskId
+     */
+    taskId: string;
+
+    /**
+     * approvalDetailsDTO
+     */
+    approvalDetailsDTO: ApprovalDetailsDTO;
+  }
 }
 
 export { CommandResourceService }

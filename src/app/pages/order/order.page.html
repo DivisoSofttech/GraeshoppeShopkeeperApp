@@ -2,6 +2,11 @@
   <ion-toolbar>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
         <ion-title>Order</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="openNotificationModal()">
+            <ion-icon  name="notifications"></ion-icon>
+          </ion-button>
+        </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -31,15 +36,25 @@
           <ion-list class="order-card-view">
         <div *ngFor="let order  of pendingOrders" >
           <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-          <app-order-card (click)="getOrderMaster('GR-1009')" [order]="order"></app-order-card>
+          <app-order-card  [order]="order"></app-order-card>
         </div>
       </ion-list>
         </ion-slide>
         <ion-slide>
-
+          <ion-list class="order-card-view">
+            <div *ngFor="let order  of confirmedOrders" >
+              <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
+              <app-order-card (click)="getOrderMaster(order.orderId)" [order]="order"></app-order-card>
+            </div>
+          </ion-list>
         </ion-slide>
         <ion-slide>
-
+          <ion-list class="order-card-view">
+            <div *ngFor="let order  of completedOrders" >
+              <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
+              <app-order-card [order]="order"></app-order-card>
+            </div>
+          </ion-list>
         </ion-slide>
         </ion-slides>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreOrders($event)">

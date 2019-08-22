@@ -2,6 +2,11 @@
   <ion-toolbar>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
     <ion-title>Order Summary</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openNotificationModal()">
+        <ion-icon  name="notifications"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

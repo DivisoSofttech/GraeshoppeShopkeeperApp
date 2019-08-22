@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { StoreAddressDTO } from './../../api/models/store-address-dto';
 import { DeliveryInfoDTO } from './../../api/models/delivery-info-dto';
 import { DeliveryInfo } from './../../api/models/delivery-info';
@@ -31,8 +32,10 @@ export class EditRestaurantPage implements OnInit {
     private modalCtrl: ModalController,
     private commandService: CommandResourceService,
     private alertCtrl: AlertController,
-    private poOverCtrl: PopoverController
+    private poOverCtrl: PopoverController,
+    private util: Util
   ) {}
+  loader: HTMLIonLoadingElement;
 
   storeBundleDTO: StoreBundleDTO;
 
@@ -236,6 +239,11 @@ export class EditRestaurantPage implements OnInit {
   }
 
   updateStoreBundle() {
+    this.util.createLoader()
+      .then(loader => {
+        this.loader = loader;
+        this.loader.present();
+      });
     this.saveUpdates();
     const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
     this.storeBundleDTO.store.locationName =
@@ -244,7 +252,8 @@ export class EditRestaurantPage implements OnInit {
       address.city + ', ' +
       address.state + ', ' +
       address.pincode;
-    this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO).subscribe();
+    this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO)
+        .subscribe(data => this.loader.dismiss());
   }
 
   connectDeliveryInfo() {

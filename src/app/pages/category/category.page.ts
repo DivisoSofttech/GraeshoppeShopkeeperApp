@@ -1,3 +1,4 @@
+import { NotificationComponent } from './../../components/notification/notification.component';
 import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { ActionSheetController, ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Category } from './../../api/models/category';
@@ -24,7 +25,8 @@ export class CategoryPage implements OnInit {
   constructor(
     private queryService: QueryResourceService,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private modalController: ModalController
   ) { }
 
   onAddCategory(category) {
@@ -110,6 +112,13 @@ export class CategoryPage implements OnInit {
         event.target.disabled = true;
       }
     });
+  }
+  async openNotificationModal() {
+    const modal = await this.modalController.create({
+      component: NotificationComponent,
+      cssClass: 'half-height'
+    });
+    return await modal.present();
   }
 
 }

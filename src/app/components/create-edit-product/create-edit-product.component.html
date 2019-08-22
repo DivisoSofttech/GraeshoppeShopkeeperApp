@@ -57,21 +57,26 @@
                 <ion-icon name="barcode" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-item> -->
-              <ion-item>
+              <ion-item *ngIf="productDTO.isAuxilaryItem==false">
                 <span slot="start">
                     <ion-label>Category</ion-label>
                 </span>
                 <span slot="start">
                  
-                  <ion-select [(ngModel)]="productDTO.categoryId">
+                  <ion-select  [(ngModel)]="productDTO.categoryId">
                     <ion-select-option *ngFor="let category of categories" value="{{category.id}}" required>
                       {{category.name}}
                     </ion-select-option>
-                  </ion-select>
+                  </ion-select>  
                 </span>
+                
                 <span slot="end">
                   <ion-icon name="add" (click)="slide('category')"></ion-icon>
                 </span>
+              </ion-item>
+              <ion-item margin *ngIf="productDTO.isAuxilaryItem==true">
+                <ion-icon padding class="icon-size" name="information-circle-outline"></ion-icon>
+                <ion-text>Auxilary item can't be added to category</ion-text>
               </ion-item>
               <!-- <ion-item>
                 <ion-text slot="start" >Tax Category</ion-text>
@@ -188,10 +193,16 @@
   </ion-slides>
 </ion-content>
 <ion-footer *ngIf="value!='category'&&value!='uom'">
-  <div *ngIf="mode=='update'">
+  <div *ngIf="mode=='update' && productDTO.isAuxilaryItem==false" >
     <ion-button [disabled]="productDTO.sellingPrice == null || productDTO.categoryId ==null" margin expand="block" color="primary" (click)="updateProduct()">Update</ion-button>
   </div>
-  <div *ngIf="mode=='create'">
+  <div *ngIf="mode=='update' && productDTO.isAuxilaryItem==true"> 
+    <ion-button [disabled]="productDTO.sellingPrice == null" margin expand="block" color="primary" (click)="updateProduct()">Update</ion-button>
+  </div>
+  <div *ngIf="mode=='create' && productDTO.isAuxilaryItem==false">
     <ion-button [disabled]="productDTO.sellingPrice == null || productDTO.categoryId ==null" margin expand="block" color="primary" (click)="createProduct()">Create</ion-button>
+  </div>
+  <div *ngIf="mode=='create' && productDTO.isAuxilaryItem==true">
+    <ion-button [disabled]="productDTO.sellingPrice == null" margin expand="block" color="primary" (click)="createProduct()">Create</ion-button>
   </div>
 </ion-footer>

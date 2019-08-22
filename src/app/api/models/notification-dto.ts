@@ -1,5 +1,5 @@
 /* tslint:disable */
-export interface Notification {
+export interface NotificationDTO {
   date?: string;
   id?: number;
   image?: string;

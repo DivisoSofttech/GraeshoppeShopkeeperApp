@@ -1,3 +1,4 @@
+import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -8,6 +9,9 @@ import { ConfigsModule } from './configs/configs.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
+
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -45,6 +49,9 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     })
   ],
   providers: [
+    Base64,
+    Crop,
+    ImagePicker,
     Camera,
     StatusBar,
     Util,

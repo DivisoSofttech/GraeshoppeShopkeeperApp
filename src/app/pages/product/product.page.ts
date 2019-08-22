@@ -37,24 +37,25 @@ export class ProductPage implements OnInit {
       this.loader = loader;
       this.loader.present();
       this.getProducts(0 , true);
+      this.tempProducts = this.products;
     });
   }
   toggleSearchbar(){
     this.showSearchbar = !this.showSearchbar;
+    // this.products = [];
+    // this.tempProducts.forEach(tp => this.products.push(tp));
     this.products=this.tempProducts;
+    console.log(this.products);
+    
   }
   searchProducts(i){
+    
     let storeId;
     this.storage.get('user').then(user => {
       storeId = user.preferred_username;
       this.queryService.findAllProductBySearchTermUsingGET({storeId,page: i,searchTerm: this.searchTerm})
           .subscribe(res => {
-            this.tempProducts = this.products
-            this.products = [];
-            console.log("search term",this.searchTerm);
-            console.log("searched products",res.content);
-            
-            
+          this.products = [];
             res.content.forEach(p => {
               this.products.push(p);
             });

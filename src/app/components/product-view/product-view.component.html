@@ -43,7 +43,7 @@
                 <ion-item>
                     <ion-label>Auxilary items</ion-label>
                 </ion-item>
-                <ion-card class="scroll" *ngIf="product.auxilaryLineItems!=null">
+                <ion-card class="scroll" *ngIf=" product.comboLineItems !=null ">
                     <ion-list>
                         <ion-item lines="none" *ngFor="let data of product.auxilaryLineItems">
                             <ion-text>{{data.auxilaryItem.name}}</ion-text>
@@ -53,7 +53,7 @@
                 <ion-item>
                     <ion-label>Combo items</ion-label>
                 </ion-item>
-                <ion-card class="scroll" *ngIf="product.comboLineItems!=null">
+                <ion-card class="scroll" *ngIf="product.comboLineItems !=null ">
                     <ion-list>
                         <ion-item lines="none" *ngFor="let data of product.comboLineItems">
                             <ion-text>{{data.comboItem.name}}</ion-text>
