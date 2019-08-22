@@ -57,14 +57,13 @@ export class OrderPage implements OnInit {
       //this.getOrders(0 , true);
       this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
           .subscribe(store =>{
-            this.store = store;
-            console.log(store.storeSettings.orderAcceptType);
-            
+            this.store = store;            
             if(store.storeSettings.orderAcceptType!='automatic'){
               this.getPendingOrders();
             }
             this.getConfirmedOrders(0);
             this.getCompletedOrders(0);
+            this.slides.slideTo(1);
           })
      
      });
