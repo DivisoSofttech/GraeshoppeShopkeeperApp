@@ -76,7 +76,7 @@ export class RestaurantLocationPage implements OnInit {
         zoom: 14,
         tilt: 30
       });
-      this.marker = this.map.addMarkerSync({
+      this.map.addMarkerSync({
         position: location.latLng,
         animation: GoogleMapsAnimation.DROP
       });
@@ -95,12 +95,11 @@ export class RestaurantLocationPage implements OnInit {
   }
 
   moveMarker(latLng: LatLng) {
-    if (this.marker !== undefined) {
-      this.marker.remove();
-    }
-    this.marker = this.map.addMarkerSync({
-      position: latLng,
-      animation: GoogleMapsAnimation.DROP
+    this.map.clear().then( () => {
+      this.map.addMarkerSync({
+        position: latLng,
+        animation: GoogleMapsAnimation.DROP
+      });
     });
     this.selectedLocation = latLng;
     this.store.location = latLng.lat + ',' + latLng.lng;

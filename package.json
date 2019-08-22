@@ -104,10 +104,6 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o",
-        "API_KEY_FOR_IOS": "AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o"
-      },
       "cordova-plugin-file": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-crop": {},
@@ -115,7 +111,8 @@
       "com-badrit-base64": {},
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-googlemaps": {}
     },
     "platforms": [
       "browser",
