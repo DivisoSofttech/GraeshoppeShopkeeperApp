@@ -2,7 +2,7 @@
   <ion-card *ngIf="order != null" class="order-card-view">
   <ion-item>
     <ion-grid>
-      <ion-row (click)="viewOrderViewModal()">
+      <ion-row (click)="getOrderMaster()" (click)="viewOrderViewModal()">
         <ion-col >
             <ion-text>#{{order.orderId}}</ion-text>
         </ion-col>
@@ -19,7 +19,7 @@
         <!-- <ion-col>
             <ion-text color="primary">{{order.paymentRef}}</ion-text>
         </ion-col> -->
-        <ion-col (click)="viewOrderViewModal()" size="4">
+        <ion-col (click)="getOrderMaster()" (click)="viewOrderViewModal()" size="4">
             <ion-icon name="pin"></ion-icon>
             <ion-text>
                 {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}},

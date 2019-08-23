@@ -1,3 +1,4 @@
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -49,6 +50,7 @@ export class OrderPage implements OnInit {
     private modalController: ModalController,
     private file: File, private fileOpener: FileOpener,
     private util: Util,
+    private keycloakService: KeycloakService,
     private command: CommandResourceService
   ) { }
 
@@ -56,7 +58,10 @@ export class OrderPage implements OnInit {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
+        this.keycloakService.getCurrentUserDetails().then(user => {
+          this.storage.set('user', user);
+          this.user = user;
+          this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
           .subscribe(store =>{
             this.store = store; 
             this.getNoticationCount();        
@@ -69,6 +74,10 @@ export class OrderPage implements OnInit {
               this.slides.slideTo(1);
             }
           })
+        });
+        
+      
+      
      
      });
   }
@@ -103,20 +112,21 @@ export class OrderPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
+      this.queryResource.getOpenTasksUsingGET({
+        assignee: this.user.preferred_username,
+        name: 'Accept Order'
+      }).subscribe(listOfTasks => {
+        
+        listOfTasks.forEach( opentask =>{
+          this.tasks.push(opentask);
+          this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
+              .subscribe(order => this.pendingOrders.push(order));
+        });
+        this.loader.dismiss();
+      },err => this.loader.dismiss());
     });
    
-    this.queryResource.getOpenTasksUsingGET({
-      assignee: this.user.preferred_username,
-      name: 'Accept Order'
-    }).subscribe(listOfTasks => {
-      
-      listOfTasks.forEach( opentask =>{
-        this.tasks.push(opentask);
-        this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
-            .subscribe(order => this.pendingOrders.push(order));
-      });
-      this.loader.dismiss();
-    });
+    
   }
   getConfirmedOrders(i){
     this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i ,storeId: this.user.preferred_username})
@@ -261,7 +271,8 @@ export class OrderPage implements OnInit {
       this.pendingOrders = this.pendingOrders.filter(po => po.orderId != order.orderId);
     }
     orderCompleted(order){
-      this.confirmedOrders = this.pendingOrders.filter(co => co.orderId != order.orderId);
+      this.confirmedOrders = this.confirmedOrders.filter(co => co.orderId != order.orderId);
+      this.completedOrders.push(order);
     }
 
 }
