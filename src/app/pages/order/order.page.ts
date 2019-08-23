@@ -3,9 +3,9 @@ import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QueryResourceService } from 'src/app/api/services';
+import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { Order, Store } from 'src/app/api/models';
+import { Order, Store, OpenTask } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSlides, ActionSheetController, ModalController } from '@ionic/angular';
 import { OrderViewComponent } from 'src/app/components/order-view/order-view.component';
 
@@ -15,9 +15,9 @@ import { OrderViewComponent } from 'src/app/components/order-view/order-view.com
   styleUrls: ['./order.page.scss'],
 })
 export class OrderPage implements OnInit {
-
   store: Store;
   user;
+  tasks: OpenTask[] =[];
   loader: HTMLIonLoadingElement;
   orders: Order[] = [{
     orderId: '78',
@@ -48,7 +48,8 @@ export class OrderPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
     private file: File, private fileOpener: FileOpener,
-    private util: Util
+    private util: Util,
+    private command: CommandResourceService
   ) { }
 
   ngOnInit() {
@@ -103,24 +104,18 @@ export class OrderPage implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
-    // this.queryResource.getTasksUsingGET({
-    //       assignee: this.user.preferred_username,
-    //       name: 'Accept Order'
-    //     }).subscribe(orders => {
-    //       this.pendingOrders = orders;
-    //       this.loader.dismiss();
-    //       console.log('pending orders', orders);
-
-    //     });
-
+   
     this.queryResource.getOpenTasksUsingGET({
       assignee: this.user.preferred_username,
       name: 'Accept Order'
     }).subscribe(listOfTasks => {
+      
       listOfTasks.forEach( opentask =>{
+        this.tasks.push(opentask);
         this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
             .subscribe(order => this.pendingOrders.push(order));
-      })
+      });
+      this.loader.dismiss();
     });
   }
   getConfirmedOrders(i){
@@ -133,6 +128,7 @@ export class OrderPage implements OnInit {
           }
         })
   }
+
   getCompletedOrders(i){
     this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i})
         .subscribe(res =>{
@@ -260,6 +256,12 @@ export class OrderPage implements OnInit {
         this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
             .subscribe(num => this.notificationCount=num);
       });
+    }
+    orderAccepted(order){
+      this.pendingOrders = this.pendingOrders.filter(po => po.orderId != order.orderId);
+    }
+    orderCompleted(order){
+      this.confirmedOrders = this.pendingOrders.filter(co => co.orderId != order.orderId);
     }
 
 }
