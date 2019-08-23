@@ -54,18 +54,18 @@ export class OrderPage implements OnInit {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      //this.getOrders(0 , true);
+      // this.getOrders(0 , true);
       this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
-          .subscribe(store =>{
-            this.store = store;            
-            if(store.storeSettings.orderAcceptType!='automatic'){
+          .subscribe(store => {
+            this.store = store;
+            if (store.storeSettings.orderAcceptType !== 'automatic') {
               this.getPendingOrders();
             }
             this.getConfirmedOrders(0);
             this.getCompletedOrders(0);
             this.slides.slideTo(1);
-          })
-     
+          });
+
      });
   }
   async filterActionsheet() {
@@ -110,27 +110,27 @@ export class OrderPage implements OnInit {
 
         });
   }
-  getConfirmedOrders(i){
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i})
+  getConfirmedOrders(i) {
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed', page: i})
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
-          console.log('confirmed orders',res.content);
+          console.log('confirmed orders', res.content);
           i++;
-          if(i < res.totalPages){
+          if (i < res.totalPages) {
             this.getConfirmedOrders(i);
           }
-        })
+        });
   }
-  getCompletedOrders(i){
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i})
-        .subscribe(res =>{
+  getCompletedOrders(i) {
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered', page: i})
+        .subscribe(res => {
           res.content.forEach(data => this.completedOrders.push(data));
-          console.log('completed orders',res.content);
+          console.log('completed orders', res.content);
           i++;
-          if(i<res.totalPages){
+          if (i < res.totalPages) {
             this.getCompletedOrders(i);
           }
-        })
+        });
   }
   getOrders(i , limit: boolean) {
     this.queryResource.findOrderLineByStoreIdUsingGET({
@@ -192,26 +192,26 @@ export class OrderPage implements OnInit {
      });
     }
 
-    getOrderMaster(orderId,statusName) {
+    getOrderMaster(orderId, statusName) {
       console.log(orderId);
-      this.queryResource.findOrderMasterByOrderIdUsingGET({orderId: orderId,status: statusName}).subscribe(
-        orderMaster => {
-          this.queryResource.getOrderDocketUsingGET(orderMaster.id).subscribe(
-            orderDocket => {
-              console.log(orderDocket.pdf, orderDocket.contentType);
-              const byteCharacters = atob(orderDocket.pdf);
-              const byteNumbers = new Array(byteCharacters.length);
-              for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-              }
-              const byteArray = new Uint8Array(byteNumbers);
-              const blob = new Blob([byteArray], { type: orderDocket.contentType });
-              console.log('blob is' + blob);
-              this.fileCreation(blob, orderDocket);
-            }
-          );
+      // this.queryResource.findOrderMasterByOrderIdUsingGET({orderId, status: statusName}).subscribe(
+      //   orderMaster => {
+      this.queryResource.getOrderDocketUsingGET(1).subscribe(
+        orderDocket => {
+          console.log(orderDocket.pdf, orderDocket.contentType);
+          const byteCharacters = atob(orderDocket.pdf);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: orderDocket.contentType });
+          console.log('blob is' + blob);
+          this.fileCreation(blob, orderDocket);
         }
       );
+        // }
+      // );
     }
     fileCreation(blob, result) {
       this.file
