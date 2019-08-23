@@ -1,0 +1,15 @@
+.order-card-view {
+    width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .order-card-view {
+        width: 100%;
+    }
+}
+
+.buttons-right {
+    position: absolute;
+    top:0;
+    right: 0;
+}

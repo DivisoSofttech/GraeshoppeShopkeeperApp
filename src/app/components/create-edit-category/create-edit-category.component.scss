@@ -1,3 +1,16 @@
-.srcoll{
-    overflow-y: scroll;
-}
+div[scrollx=true], div[scrolly=true] {
+    position: relative;
+    overflow: hidden;
+  
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  div[scrollx=true] {
+    overflow-x: auto;
+  }
+  
+  div[scrolly=true] {
+    overflow-y: auto;
+  }

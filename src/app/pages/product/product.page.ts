@@ -21,6 +21,7 @@ export class ProductPage implements OnInit {
   showSearchbar: boolean = false;
   products: Product[] = [];
   tempProducts: Product[] =[];
+  notificationCount: number;
 
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
 
@@ -36,6 +37,7 @@ export class ProductPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
+      this.getNoticationCount();
       this.getProducts(0 , true);
       this.tempProducts = this.products;
     });
@@ -150,6 +152,12 @@ export class ProductPage implements OnInit {
         )
         event.target.disabled = true;
       }
+    });
+  }
+  getNoticationCount(){
+    this.storage.get('user').then(user => {
+      this.queryService.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+          .subscribe(num => this.notificationCount=num);
     });
   }
   async openNotificationModal() {

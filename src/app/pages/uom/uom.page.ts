@@ -1,3 +1,4 @@
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { UOM } from './../../api/models/uom';
 import { Component, OnInit } from '@angular/core';
 import { UOMDTO, StoreDTO, Store } from 'src/app/api/models';
@@ -19,6 +20,7 @@ export class UomPage implements OnInit {
   uoms: UOMDTO[] = [];
 
   loader: HTMLIonLoadingElement = undefined;
+  notificationCount: number;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -37,7 +39,8 @@ export class UomPage implements OnInit {
         this.util.createLoader()
         .then(loader => {
           this.loader = loader;
-          console.log('UOM PAGE loader created');          
+          console.log('UOM PAGE loader created'); 
+          this.getNoticationCount();         
           this.getUoms(0)      
         });
     })
@@ -86,6 +89,19 @@ export class UomPage implements OnInit {
   onUpdateUOM(uom) {
     const index = this.uoms.findIndex(u => u.id === uom.id);
     this.uoms.splice(index , 1 , uom);
-  } 
+  }
+  async openNotificationModal() {
+    const modal = await this.modalController.create({
+      component: NotificationComponent,
+      cssClass: 'half-height'
+    });
+    return await modal.present();
+  }
+  getNoticationCount(){
+    this.storage.get('user').then(user => {
+      this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+          .subscribe(num => this.notificationCount=num);
+    });
+  }
 
 }

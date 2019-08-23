@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastController, Platform, ModalController } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-order-summary',
@@ -11,15 +12,17 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
   styleUrls: ['./order-summary.page.scss'],
 })
 export class OrderSummaryPage implements OnInit {
+  notificationCount: number;
 
   constructor(
     
     private queryResource: QueryResourceService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private storage: Storage
   ) { }
 
   ngOnInit() {
-    
+    this.getNoticationCount();
   }
 
   
@@ -31,4 +34,10 @@ async openNotificationModal() {
   return await modal.present();
 }
 
+getNoticationCount(){
+  this.storage.get('user').then(user => {
+    this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+        .subscribe(num => this.notificationCount=num);
+  });
+}
 }

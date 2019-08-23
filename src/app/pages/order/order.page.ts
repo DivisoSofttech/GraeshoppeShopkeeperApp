@@ -3,9 +3,9 @@ import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QueryResourceService } from 'src/app/api/services';
+import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { Order, Store } from 'src/app/api/models';
+import { Order, Store, OpenTask } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSlides, ActionSheetController, ModalController } from '@ionic/angular';
 import { OrderViewComponent } from 'src/app/components/order-view/order-view.component';
 
@@ -15,9 +15,9 @@ import { OrderViewComponent } from 'src/app/components/order-view/order-view.com
   styleUrls: ['./order.page.scss'],
 })
 export class OrderPage implements OnInit {
-
   store: Store;
   user;
+  tasks: OpenTask[] = [];
   loader: HTMLIonLoadingElement;
   orders: Order[] = [{
     orderId: '78',
@@ -41,29 +41,33 @@ export class OrderPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', null) slides: IonSlides;
+  notificationCount: any;
   constructor(
     private queryResource: QueryResourceService,
     private storage: Storage,
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
     private file: File, private fileOpener: FileOpener,
-    private util: Util
+    private util: Util,
+    private command: CommandResourceService
   ) { }
 
   ngOnInit() {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      // this.getOrders(0 , true);
       this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
           .subscribe(store => {
             this.store = store;
+            this.getNoticationCount();
             if (store.storeSettings.orderAcceptType !== 'automatic') {
               this.getPendingOrders();
             }
             this.getConfirmedOrders(0);
             this.getCompletedOrders(0);
-            this.slides.slideTo(1);
+            if (store.storeSettings.orderAcceptType === 'automatic') {
+              this.slides.slideTo(1);
+            }
           });
 
      });
@@ -100,32 +104,35 @@ export class OrderPage implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
-    this.queryResource.getTasksUsingGET({
-          assignee: this.user.preferred_username,
-          name: 'Accept Order'
-        }).subscribe(orders => {
-          this.pendingOrders = orders;
-          this.loader.dismiss();
-          console.log('pending orders', orders);
 
-        });
+    this.queryResource.getOpenTasksUsingGET({
+      assignee: this.user.preferred_username,
+      name: 'Accept Order'
+    }).subscribe(listOfTasks => {
+
+      listOfTasks.forEach( opentask => {
+        this.tasks.push(opentask);
+        this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
+            .subscribe(order => this.pendingOrders.push(order));
+      });
+      this.loader.dismiss();
+    });
   }
   getConfirmedOrders(i) {
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed', page: i})
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed', page: i , storeId: this.user.preferred_username})
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
-          console.log('confirmed orders', res.content);
           i++;
           if (i < res.totalPages) {
             this.getConfirmedOrders(i);
           }
         });
   }
+
   getCompletedOrders(i) {
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered', page: i})
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered', page: i, storeId: this.user.preferred_username})
         .subscribe(res => {
           res.content.forEach(data => this.completedOrders.push(data));
-          console.log('completed orders', res.content);
           i++;
           if (i < res.totalPages) {
             this.getCompletedOrders(i);
@@ -243,6 +250,18 @@ export class OrderPage implements OnInit {
         cssClass: 'half-height'
       });
       return await modal.present();
+    }
+    getNoticationCount() {
+      this.storage.get('user').then(user => {
+        this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status: 'unread', receiverId: user.preferred_username})
+            .subscribe(num => this.notificationCount = num);
+      });
+    }
+    orderAccepted(order) {
+      this.pendingOrders = this.pendingOrders.filter(po => po.orderId !== order.orderId);
+    }
+    orderCompleted(order) {
+      this.confirmedOrders = this.pendingOrders.filter(co => co.orderId !== order.orderId);
     }
 
 }

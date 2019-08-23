@@ -4,8 +4,9 @@
         <ion-title>Order</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="openNotificationModal()">
-            <ion-icon  name="notifications"></ion-icon>
+            <ion-icon class="icon" name="notifications"></ion-icon>
           </ion-button>
+          <ion-badge *ngIf="notificationCount != 0" id="notifications-badge" color="danger">{{notificationCount}}</ion-badge>
         </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -33,26 +34,26 @@
     <!--Segment Button Container End-->
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
         <ion-slide>
-          <ion-list class="order-card-view">
-        <div *ngFor="let order  of pendingOrders" >
+          <ion-list class="order-card-view" justify-content-center>
+        <div *ngFor="let order  of pendingOrders; let i = index"  justify-content-center>
           <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-          <app-order-card [orderType]='"pending"'  [order]="order"></app-order-card>
+          <app-order-card class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order)" [taskId]="tasks[i].taskId"  [order]="order"></app-order-card>
         </div>
       </ion-list>
         </ion-slide>
         <ion-slide>
-          <ion-list class="order-card-view">
-            <div *ngFor="let order  of confirmedOrders" >
+          <ion-list class="order-card-view" justify-content-center>
+            <div *ngFor="let order  of confirmedOrders" justify-content-center>
               <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-              <app-order-card [orderType]='"confirmed"' (click)="getOrderMaster(order.orderId,'payment-processed')" [order]="order"></app-order-card>
+              <app-order-card class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(order)" (click)="getOrderMaster(order.orderId,'payment-processed')" [order]="order"></app-order-card>
             </div>
           </ion-list>
         </ion-slide>
         <ion-slide>
-          <ion-list class="order-card-view">
-            <div *ngFor="let order  of completedOrders" >
+          <ion-list class="order-card-view" justify-content-center>
+            <div *ngFor="let order  of completedOrders" justify-content-center>
               <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-              <app-order-card [orderType]='"completed"' [order]="order"></app-order-card>
+              <app-order-card class="vertical-align-center" [orderType]='"completed"' [order]="order"></app-order-card>
             </div>
           </ion-list>
         </ion-slide>
