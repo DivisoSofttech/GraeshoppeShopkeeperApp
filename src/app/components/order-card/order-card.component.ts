@@ -58,11 +58,11 @@ export class OrderCardComponent implements OnInit {
       this.accept.emit();
     });
   }
-  async viewOrderViewModal(order) {
+  async viewOrderViewModal() {
     if (this.orderType === 'pending') {
       const modal = await this.modalController.create({
         component: OrderViewComponent,
-        componentProps: {order}
+        componentProps: {order: this.order}
       });
       return await modal.present();
     } else {

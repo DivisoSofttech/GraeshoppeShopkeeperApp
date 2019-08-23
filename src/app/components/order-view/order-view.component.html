@@ -23,10 +23,10 @@
                 <p> Order Id : {{order.orderId}}</p>
                 <p> Date : {{order.date | date:'short'}}</p>
                 <div *ngIf = "order.deliveryInfo != null">
-                <p> Address : {{order.deliveryInfo.deliveryAddress}}</p>
-                </div>
-                <div *ngIf = "order.status != null">
-                  <p> Payment  : {{order.status}}</p>
+                <p> Address : {{order.deliveryInfo.deliveryAddress.name}}
+                  ,{{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}},
+                  {{order.deliveryInfo.deliveryAddress.cityOrTown}}
+                </p>
                 </div>
                 <p> Grand Total : {{ '&#8364; '+(order.grandTotal | number:'1.1-2')}}</p>
               </ion-text>
