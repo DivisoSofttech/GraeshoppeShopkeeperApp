@@ -119,7 +119,7 @@ export class OrderPage implements OnInit {
     });
   }
   getConfirmedOrders(i){
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i})
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed',page: i ,storeId: this.user.preferred_username})
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
           i++;
@@ -130,7 +130,7 @@ export class OrderPage implements OnInit {
   }
 
   getCompletedOrders(i){
-    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i})
+    this.queryResource.findOrderByStatusNameUsingGET({statusName: 'delivered',page: i,storeId: this.user.preferred_username})
         .subscribe(res =>{
           res.content.forEach(data => this.completedOrders.push(data));
           i++;

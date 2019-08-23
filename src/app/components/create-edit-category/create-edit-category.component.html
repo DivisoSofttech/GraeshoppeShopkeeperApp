@@ -16,7 +16,8 @@
   </ion-toolbar>
 </ion-header>
 
-  <ion-card class="scroll">
+<div>
+  <ion-card>
     <ion-item text-center *ngIf="categoryDTO.image == undefined">
         <ion-label>
       <ion-img (click)="selectImage()" src="assets/images/camera.png"></ion-img>
@@ -36,6 +37,7 @@
       <ion-textarea [(ngModel)]="categoryDTO.description"></ion-textarea>
     </ion-item>
   </ion-card>
+</div>
 
 <ion-footer>
   <div *ngIf="mode=='update'">
