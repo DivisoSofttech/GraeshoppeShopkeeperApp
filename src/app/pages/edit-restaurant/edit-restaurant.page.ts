@@ -57,14 +57,18 @@ export class EditRestaurantPage implements OnInit {
   showAddress = false;
 
   ngOnInit() {
-    this.storage.get('user').then(user => {
-      this.queryService
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.storage.get('user').then(user => {
+        this.queryService
         .getStoreBundleUsingGET({ regNo: user.preferred_username })
         .subscribe(res => {
           this.storeBundleDTO = res;
           this.setDeliveryTypes();
           this.setOrderAcceptTypes();
+          loader.dismiss();
         });
+      });
     });
   }
 
@@ -253,7 +257,10 @@ export class EditRestaurantPage implements OnInit {
       address.state + ', ' +
       address.pincode;
     this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO)
-        .subscribe(data => this.loader.dismiss());
+        .subscribe(data => {
+           this.loader.dismiss();
+           this.ngOnInit();
+        });
   }
 
   connectDeliveryInfo() {

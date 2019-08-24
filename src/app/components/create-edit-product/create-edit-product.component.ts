@@ -182,7 +182,7 @@ export class CreateEditProductComponent implements OnInit {
         );
         this.saveAuxilary();
         this.saveCombo();
-        this.util.createToast("Product Creation Success",'checkmark');
+        this.util.createToast("Product Created Successfully",'checkmark');
         this.loader.dismiss();
       },
         err => {

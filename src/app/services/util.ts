@@ -1,6 +1,8 @@
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { Injectable } from '@angular/core';
 import { LoadingController, ToastController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class Util {
@@ -9,7 +11,9 @@ export class Util {
         private loadingController: LoadingController,
         private toastController: ToastController,
         private navController: NavController,
-    ) {}
+        private storage: Storage,
+        //private keycloakService: KeycloakService
+    ) { }
 
     async createLoader() {
 
@@ -18,22 +22,22 @@ export class Util {
         });
     }
 
-    createToast(msg: string , iconName?: string) {
-     this.toastController.create({
-            message: msg ,
+    createToast(msg: string, iconName?: string) {
+        this.toastController.create({
+            message: msg,
             duration: 2000,
             color: 'dark',
             position: 'bottom',
-            showCloseButton : true,
+            showCloseButton: true,
             keyboardClose: true,
             buttons: [
-              {
-                side: 'start',
-                icon: iconName !== undefined?iconName:'information-circle-outline',
-              }]
-          }).then(data => {
-              data.present();
-          });
+                {
+                    side: 'start',
+                    icon: iconName !== undefined ? iconName : 'information-circle-outline',
+                }]
+        }).then(data => {
+            data.present();
+        });
     }
 
     navigateRoot() {
@@ -44,5 +48,13 @@ export class Util {
     navigateToLogin() {
         this.navController.navigateRoot('login');
     }
+
+    // getUsername(): any {
+    //     this.keycloakService.getCurrentUserDetails().then(user =>{
+    //         this.storage.set('user', user);
+    //         return user
+    //     });
+    // }
+
 
 }

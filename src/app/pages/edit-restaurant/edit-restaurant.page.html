@@ -5,7 +5,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="updateStoreBundle()" >SAVE</ion-button>
+      <ion-button (click)="updateStoreBundle()" [disabled]="storeBundleDTO==null || storeBundleDTO.store.image==null" >SAVE</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

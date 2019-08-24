@@ -1,3 +1,4 @@
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -49,6 +50,7 @@ export class OrderPage implements OnInit {
     private modalController: ModalController,
     private file: File, private fileOpener: FileOpener,
     private util: Util,
+    private keycloakService: KeycloakService,
     private command: CommandResourceService
   ) { }
 
@@ -56,7 +58,10 @@ export class OrderPage implements OnInit {
     this.storage.get('user')
     .then((data) => {
       this.user = data;
-      this.queryResource.findStoreByRegNoUsingGET(data.preferred_username)
+      this.keycloakService.getCurrentUserDetails().then(user => {
+          this.storage.set('user', user);
+          this.user = user;
+          this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
           .subscribe(store => {
             this.store = store;
             this.getNoticationCount();
@@ -69,6 +74,10 @@ export class OrderPage implements OnInit {
               this.slides.slideTo(1);
             }
           });
+        });
+
+
+
 
      });
   }
@@ -103,20 +112,21 @@ export class OrderPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
+      this.queryResource.getOpenTasksUsingGET({
+        assignee: this.user.preferred_username,
+        name: 'Accept Order'
+      }).subscribe(listOfTasks => {
+
+        listOfTasks.forEach( opentask => {
+          this.tasks.push(opentask);
+          this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
+              .subscribe(order => this.pendingOrders.push(order));
+        });
+        this.loader.dismiss();
+      }, err => this.loader.dismiss());
     });
 
-    this.queryResource.getOpenTasksUsingGET({
-      assignee: this.user.preferred_username,
-      name: 'Accept Order'
-    }).subscribe(listOfTasks => {
 
-      listOfTasks.forEach( opentask => {
-        this.tasks.push(opentask);
-        this.queryResource.findOrderByOrderIdUsingGET(opentask.orderId)
-            .subscribe(order => this.pendingOrders.push(order));
-      });
-      this.loader.dismiss();
-    });
   }
   getConfirmedOrders(i) {
     this.queryResource.findOrderByStatusNameUsingGET({statusName: 'payment-processed', page: i , storeId: this.user.preferred_username})
@@ -199,51 +209,6 @@ export class OrderPage implements OnInit {
      });
     }
 
-    getOrderMaster(orderId, statusName) {
-      console.log(orderId);
-      // this.queryResource.findOrderMasterByOrderIdUsingGET({orderId, status: statusName}).subscribe(
-      //   orderMaster => {
-      this.queryResource.getOrderDocketUsingGET(1).subscribe(
-        orderDocket => {
-          console.log(orderDocket.pdf, orderDocket.contentType);
-          const byteCharacters = atob(orderDocket.pdf);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
-          const blob = new Blob([byteArray], { type: orderDocket.contentType });
-          console.log('blob is' + blob);
-          this.fileCreation(blob, orderDocket);
-        }
-      );
-        // }
-      // );
-    }
-    fileCreation(blob, result) {
-      this.file
-      .createFile(this.file.externalCacheDirectory, 'items.pdf', true)
-      .then(() => {
-        console.log('file created' + blob);
-
-        this.file
-          .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
-            replace: true
-          })
-          .then(value => {
-            console.log('file writed' + value);
-            this.fileOpener
-              .showOpenWithDialog(
-                this.file.externalCacheDirectory + 'items.pdf',
-                result.contentType
-              )
-              .then(() => console.log('File is opened'))
-              .catch(e => console.log('Error opening file', e));
-            // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
-            // {print: {enabled: true}, openWith: {enabled: true}});
-          });
-      });
-    }
     async openNotificationModal() {
       const modal = await this.modalController.create({
         component: NotificationComponent,
@@ -261,7 +226,8 @@ export class OrderPage implements OnInit {
       this.pendingOrders = this.pendingOrders.filter(po => po.orderId !== order.orderId);
     }
     orderCompleted(order) {
-      this.confirmedOrders = this.pendingOrders.filter(co => co.orderId !== order.orderId);
+      this.confirmedOrders = this.confirmedOrders.filter(co => co.orderId !== order.orderId);
+      this.completedOrders.push(order);
     }
 
 }

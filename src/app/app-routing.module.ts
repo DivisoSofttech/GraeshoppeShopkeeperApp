@@ -6,7 +6,7 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'product',
+    redirectTo: 'order',
     pathMatch: 'full'
   },
   {

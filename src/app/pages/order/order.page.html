@@ -44,8 +44,7 @@
         <ion-slide>
           <ion-list class="order-card-view" justify-content-center>
             <div *ngFor="let order  of confirmedOrders" justify-content-center>
-              <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-              <app-order-card class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(order)" (click)="getOrderMaster(order.orderId,'payment-processed')" [order]="order"></app-order-card>
+              <app-order-card class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(order)" [order]="order"></app-order-card>
             </div>
           </ion-list>
         </ion-slide>

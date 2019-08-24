@@ -7,9 +7,9 @@
 
 <ion-content no-padding>
 
-  <ion-card *ngIf="store">
+  <ion-card>
     <ion-grid>
-      <ion-row class="ion-align-items-center">
+      <ion-row class="ion-align-items-center" *ngIf="store" >
         <ion-col size-sm="4" size="5" size-lg="3" size-md="4">
             <img [src]="'data:' + store.imageContentType + ';base64,' + store.image" class="store-image">
         </ion-col>
@@ -24,6 +24,25 @@
           </ion-card-subtitle>
         </ion-col>
       </ion-row>
+      <ion-row class="ion-align-items-center" *ngIf="!store" >
+          <ion-col size-sm="4" size="5" size-lg="3" size-md="4">
+             <ion-thumbnail>
+               <ion-skeleton-text animated></ion-skeleton-text>
+             </ion-thumbnail>
+          </ion-col>
+          <ion-col size="6">
+            <ion-card-title>
+               <ion-skeleton-text animated></ion-skeleton-text>
+               <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-card-title>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-card-subtitle class="wrap-whitespace">
+              <ion-skeleton-text animated></ion-skeleton-text>              
+            </ion-card-subtitle>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
     </ion-grid>
   </ion-card>
 
