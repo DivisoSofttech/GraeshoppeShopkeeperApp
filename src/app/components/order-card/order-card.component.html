@@ -24,7 +24,7 @@
       </ion-text>
       </ion-col>
     </ion-row>
-    <ion-row no-padding no-margin>
+    <ion-row no-padding no-margin *ngIf="orderType === 'pending'" >
       <ion-col no-padding no-margin size="9" size-md="10" size-lg="10">
         <ion-item no-padding no-margin>
           <ion-label *ngIf="deliveryTime == null">Delivery Time</ion-label>

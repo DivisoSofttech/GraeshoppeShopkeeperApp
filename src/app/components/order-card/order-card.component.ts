@@ -65,6 +65,7 @@ export class OrderCardComponent implements OnInit {
       });
       return await modal.present();
    }
+
    getOrderMaster() {
      if (this.orderType === 'confirmed') {
     // this.queryResource.findOrderMasterByOrderIdUsingGET({orderId: this.order.orderId,status: payment-processed}).subscribe(
