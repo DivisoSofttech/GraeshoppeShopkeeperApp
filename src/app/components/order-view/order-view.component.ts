@@ -16,7 +16,7 @@ export class OrderViewComponent implements OnInit {
 
   ngOnInit() {}
 
-  dismiss(){
+  dismiss() {
     this.modalController.dismiss();
   }
 }

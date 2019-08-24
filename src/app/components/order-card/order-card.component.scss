@@ -13,3 +13,9 @@
     top:0;
     right: 0;
 }
+
+.wrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

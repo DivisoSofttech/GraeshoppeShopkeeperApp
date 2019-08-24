@@ -259,7 +259,11 @@ export class EditRestaurantPage implements OnInit {
     this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO)
         .subscribe(data => {
            this.loader.dismiss();
+           this.util.createToast('Store successfully updated', 'checkmark');
            this.ngOnInit();
+          }, err => {
+            this.util.createToast('Error occured while updating store');
+            this.ngOnInit();
         });
   }
 

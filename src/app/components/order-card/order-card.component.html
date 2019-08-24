@@ -1,7 +1,7 @@
 <ion-card *ngIf="order != null" class="order-card-view">
   <ion-grid>
     <ion-row>
-      <ion-col text-left size="6" size-lg="4" size-md="4">
+      <ion-col text-left size="4" size-lg="4" size-md="4">
         <ion-text float-left>
           <ion-icon name="paper"></ion-icon>
           #{{order.orderId}}
@@ -14,7 +14,7 @@
         </span>
       </ion-text>
       </ion-col>
-      <ion-col size="6" size-lg="4" size-md="4" text-left>
+      <ion-col size="4" size-lg="4" size-md="4" text-left>
       <ion-text color="danger" float-left>
         <ion-icon name="time"></ion-icon>
         {{order.date | date: 'shortDate'}}
@@ -24,9 +24,9 @@
       </ion-text>
       </ion-col>
     </ion-row>
-    <ion-row no-padding no-margin *ngIf="orderType === 'pending'" >
-      <ion-col no-padding no-margin size="9" size-md="10" size-lg="10">
-        <ion-item no-padding no-margin>
+    <ion-row no-padding no-margin *ngIf="orderType !== 'completed'" >
+      <ion-col no-padding no-margin size="9" size-md="10" size-lg="10" >
+        <ion-item no-padding no-margin *ngIf="orderType === 'pending'">
           <ion-label *ngIf="deliveryTime == null">Delivery Time</ion-label>
           <ion-datetime displayFormat="HH:mm" max="06:00" [(ngModel)]="deliveryTime"></ion-datetime>
         </ion-item>

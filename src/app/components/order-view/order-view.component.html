@@ -1,45 +1,51 @@
 <ion-header>
   <ion-toolbar>
-      
-      <ion-buttons>
-        <ion-button  (click) = "dismiss()">
-        <ion-icon name = "close" ></ion-icon>
-        </ion-button>
-        <ion-title>Order Details</ion-title>
-      </ion-buttons>
+
+    <ion-buttons>
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-title>Delivery Info</ion-title>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-    <ion-card>
-        <ion-toolbar color="primary">
-          <ion-card-title color="light" text-center>
-           <strong> Delivery Info </strong>
-          </ion-card-title>
-        </ion-toolbar>
-            <ion-card-content>
-              <ion-text>
-                <p> Customer Id : {{order.customerId}}</p>
-                <p> Order Id : {{order.orderId}}</p>
-                <p> Date : {{order.date | date:'short'}}</p>
-                <div *ngIf = "order.deliveryInfo != null">
-                <p> Address : {{order.deliveryInfo.deliveryAddress.name}}
-                  ,{{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}},
-                  {{order.deliveryInfo.deliveryAddress.cityOrTown}}
-                </p>
-                </div>
-                <p> Grand Total : {{ '&#8364; '+(order.grandTotal | number:'1.1-2')}}</p>
-              </ion-text>
-              <ion-card>
-                <ion-card-title color="primary" text-center padding>
-                    <strong> Info </strong>
-                  </ion-card-title>
-                  <ion-card-content>
-                      <ion-text>
-                        <p>Add Less Spice</p>
-                      </ion-text>
-                  </ion-card-content>
-              </ion-card>
-              </ion-card-content>
-              </ion-card>
+    <ion-card padding-bottom>
+      <ion-item>
+        <ion-text>
+          <p>Customer Id</p>
+          {{order.customerId}}
+        </ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-text>
+          <p>Order Id</p>
+          {{order.orderId}}
+        </ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-text>
+          <p>Date</p>
+          {{order.date | date:'short'}}
+        </ion-text>
+      </ion-item>
+      <ion-item *ngIf="order.deliveryInfo != null">
+        <ion-text>
+          <p>Address</p>
+          {{order.deliveryInfo.deliveryAddress.name+  ', ' +order.deliveryInfo.deliveryAddress.houseNoOrBuildingName+  ', ' +order.deliveryInfo.deliveryAddress.cityOrTown}}
+        </ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-text>
+          <p>Grand Total</p>
+          {{order.grandTotal | number:'1.1-2'}}
+        </ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-text>
+          <p>Serving recommendations</p>
+          Add Less Spice
+        </ion-text>
+      </ion-item>
+    </ion-card>
 </ion-content>
