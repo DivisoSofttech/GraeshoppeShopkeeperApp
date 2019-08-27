@@ -16,6 +16,7 @@ import {
 import { Product, ProductBundle } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { disconnect } from 'cluster';
 
 @Component({
   selector: 'app-create-edit-product',
@@ -210,7 +211,6 @@ export class CreateEditProductComponent implements OnInit {
               this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId!=comboDto.comboItemId)
             )
         )
-        
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
