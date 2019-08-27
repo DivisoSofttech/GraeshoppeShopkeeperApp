@@ -1,12 +1,9 @@
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
-import { File } from '@ionic-native/file/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   QueryResourceService,
-  CommandResourceService
 } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Order, Store, OpenTask } from 'src/app/api/models';
@@ -14,9 +11,8 @@ import {
   IonInfiniteScroll,
   IonSlides,
   ActionSheetController,
-  ModalController
+  ModalController,
 } from '@ionic/angular';
-import { OrderViewComponent } from 'src/app/components/order-view/order-view.component';
 
 @Component({
   selector: 'app-order',
@@ -48,6 +44,7 @@ export class OrderPage implements OnInit {
   currentPage = 'pending';
   pageCount = 0;
 
+
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', null) slides: IonSlides;
   notificationCount: any;
@@ -56,16 +53,16 @@ export class OrderPage implements OnInit {
     private storage: Storage,
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private file: File,
-    private fileOpener: FileOpener,
     private util: Util,
     private keycloakService: KeycloakService,
-    private command: CommandResourceService
   ) {}
 
   ngOnInit() {
     this.util.createLoader().then(
       loader => {
+        this.pendingOrders = [];
+        this.completedOrders = [];
+        this.confirmedOrders = [];
         loader.present();
         this.storage
         .get('user')

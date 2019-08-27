@@ -2,7 +2,7 @@ import { CommandResourceService } from '../../api/services/command-resource.serv
 import { Util } from './../../services/util';
 import { StoreDTO } from './../../api/models/store-dto';
 import { KeycloakService } from './../../services/security/keycloak.service';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, NavController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
 
@@ -24,7 +24,8 @@ export class LoginSignupPage implements OnInit {
     private keycloakService: KeycloakService,
     private util: Util,
     private queryResource: QueryResourceService,
-    private commandResource: CommandResourceService
+    private commandResource: CommandResourceService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -40,7 +41,6 @@ export class LoginSignupPage implements OnInit {
         { username: this.username, password: this.password },
         () => {
           loader.dismiss();
-          this.util.navigateRoot();
           this.createStore(this.username);
           this.util.createToast('Logged in successfully' , 'checkmark-circle-outline');
         },
@@ -97,7 +97,10 @@ export class LoginSignupPage implements OnInit {
           if (res === null) {
             this.commandResource.createStoreUsingPOST(store).subscribe(data => {
               this.util.createToast('Registration Successful');
+              this.navCtrl.navigateRoot('/edit-restaurant');
             });
+          } else {
+            this.util.navigateRoot();
           }
         },
         err => {

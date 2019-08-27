@@ -43,7 +43,6 @@ export class AppComponent {
       url: '/settings',
       icon: 'settings'
     },
-    
   ];
 
   constructor(
@@ -67,5 +66,14 @@ export class AppComponent {
   logout() {
     this.keycloakService.logout();
     this.util.createToast('You\'ve been logged out');
+  }
+
+  exitApp() {
+    this.util.createAlert('Exit App', 'Are you sure?',
+    (confirm) => {
+      // tslint:disable-next-line: no-string-literal
+      navigator['app'].exitApp();
+    }, (deny) => {
+    });
   }
 }

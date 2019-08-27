@@ -16,7 +16,8 @@ import {
   ModalController,
   PopoverController,
   AlertController,
-  IonInput
+  IonInput,
+  NavController,
 } from '@ionic/angular';
 import { StoreTypeDTO } from 'src/app/api/models';
 
@@ -33,7 +34,8 @@ export class EditRestaurantPage implements OnInit {
     private commandService: CommandResourceService,
     private alertCtrl: AlertController,
     private poOverCtrl: PopoverController,
-    private util: Util
+    private util: Util,
+    private navCtrl: NavController
   ) {}
   loader: HTMLIonLoadingElement;
 
@@ -260,7 +262,7 @@ export class EditRestaurantPage implements OnInit {
         .subscribe(data => {
            this.loader.dismiss();
            this.util.createToast('Store successfully updated', 'checkmark');
-           this.ngOnInit();
+           this.navCtrl.navigateBack('/settings');
           }, err => {
             this.util.createToast('Error occured while updating store');
             this.ngOnInit();

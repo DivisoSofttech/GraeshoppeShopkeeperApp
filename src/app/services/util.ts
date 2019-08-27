@@ -1,6 +1,6 @@
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { Injectable } from '@angular/core';
-import { LoadingController, ToastController, NavController } from '@ionic/angular';
+import { LoadingController, ToastController, NavController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 
@@ -12,6 +12,7 @@ export class Util {
         private toastController: ToastController,
         private navController: NavController,
         private storage: Storage,
+        private alertCtrl: AlertController,
         //private keycloakService: KeycloakService
     ) { }
 
@@ -55,6 +56,28 @@ export class Util {
     //         return user
     //     });
     // }
+
+    async createAlert(header: string, message: string, onConfirm: any, onDeny: any) {
+        const alert = await this.alertCtrl.create({
+            header,
+            message,
+            buttons : [
+                {
+                    text: 'Cancel',
+                    handler: () => {
+                        onDeny();
+                    }
+                },
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        onConfirm();
+                    }
+                }
+            ]
+        });
+        await alert.present();
+    }
 
 
 }
