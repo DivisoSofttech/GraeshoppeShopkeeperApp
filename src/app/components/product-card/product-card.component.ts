@@ -61,9 +61,9 @@ export class ProductCardComponent implements OnInit {
           this.commandResource.deleteProductUsingDELETE(this.product.id)
               .subscribe(data =>  {
                 this.delete.emit();
-                this.util.createToast("Product Deletion Success",'checkmark');
-              },err => {
-                this.util.createToast("Product Deletion Error",'alert');
+                this.util.createToast('Product Deletion Success', 'checkmark');
+              }, err => {
+                this.util.createToast('Product Deletion Error', 'alert');
               });
         }
       },
@@ -78,7 +78,7 @@ export class ProductCardComponent implements OnInit {
     });
     await actionSheet.present();
   }
-  async viewProductModal(){
+  async viewProductModal() {
     const modal = await this.modalController.create({
       component: ProductViewComponent,
       componentProps: {product: this.product}

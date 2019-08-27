@@ -1,5 +1,7 @@
+import { Util } from './../../services/util';
+import { QueryResourceService } from 'src/app/api/services';
 import { ModalController } from '@ionic/angular';
-import { Order } from 'src/app/api/models';
+import { Order, Product } from 'src/app/api/models';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,11 +12,24 @@ import { Component, OnInit } from '@angular/core';
 export class OrderViewComponent implements OnInit {
 
   order: Order = {};
+  products: Product[];
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
+    private queryService: QueryResourceService,
+    private util: Util
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.order.orderLines) {
+      this.util.createLoader().then(loader => {
+        this.order.orderLines.forEach(orderLine => {
+          this.queryService.findProductByIdUsingGET(orderLine.productId).subscribe(res => {
+            this.products.push(res);
+          });
+        });
+      });
+    }
+  }
 
   dismiss() {
     this.modalController.dismiss();

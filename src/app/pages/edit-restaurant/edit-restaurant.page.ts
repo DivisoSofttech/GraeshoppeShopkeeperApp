@@ -17,7 +17,7 @@ import {
   PopoverController,
   AlertController,
   IonInput,
-  NavController,
+  NavController
 } from '@ionic/angular';
 import { StoreTypeDTO } from 'src/app/api/models';
 
@@ -43,7 +43,7 @@ export class EditRestaurantPage implements OnInit {
 
   private delivery: TypeDTO = undefined;
   private collection: TypeDTO = undefined;
-  @ViewChild('info', {static: false}) private  infoInput: IonInput;
+  @ViewChild('info', { static: false }) private infoInput: IonInput;
   editInfo = false;
 
   deliveryChecked: boolean;
@@ -63,13 +63,13 @@ export class EditRestaurantPage implements OnInit {
       loader.present();
       this.storage.get('user').then(user => {
         this.queryService
-        .getStoreBundleUsingGET({ regNo: user.preferred_username })
-        .subscribe(res => {
-          this.storeBundleDTO = res;
-          this.setDeliveryTypes();
-          this.setOrderAcceptTypes();
-          loader.dismiss();
-        });
+          .getStoreBundleUsingGET({ regNo: user.preferred_username })
+          .subscribe(res => {
+            this.storeBundleDTO = res;
+            this.setDeliveryTypes();
+            this.setOrderAcceptTypes();
+            loader.dismiss();
+          });
       });
     });
   }
@@ -83,35 +83,39 @@ export class EditRestaurantPage implements OnInit {
       this.storeBundleDTO.store.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );
-      this.storeBundleDTO.store.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
+      this.storeBundleDTO.store.imageContentType = data.data.image.slice(
+        data.data.image.indexOf(':') + 1,
+        data.data.image.indexOf(';')
+      );
       console.log(this.storeBundleDTO.store.imageContentType, 'jyuftuu');
     });
     return await modal.present();
   }
 
   setDeliveryTypes() {
-    this.storeBundleDTO.types.forEach(
-      type => {
-        if (type.name.toLowerCase() === 'delivery') {
-          this.deliveryChecked = true;
-          this.delivery = type;
-          this.deliveryIndex = this.storeBundleDTO.types.indexOf(type);
-          this.deliveryInfo = this.getInfo(type.id);
-        } else if (type.name.toLowerCase() === 'collection') {
-          this.collectionChecked = true;
-          this.collection = type;
-          this.collectionIndex = this.storeBundleDTO.types.indexOf(type);
-          this.collectionInfo = this.getInfo(type.id);
-        }
+    this.storeBundleDTO.types.forEach(type => {
+      if (type.name.toLowerCase() === 'delivery') {
+        this.deliveryChecked = true;
+        this.delivery = type;
+        this.deliveryIndex = this.storeBundleDTO.types.indexOf(type);
+        this.deliveryInfo = this.getInfo(type.id);
+      } else if (type.name.toLowerCase() === 'collection') {
+        this.collectionChecked = true;
+        this.collection = type;
+        this.collectionIndex = this.storeBundleDTO.types.indexOf(type);
+        this.collectionInfo = this.getInfo(type.id);
       }
-    );
+    });
   }
 
   getInfo(id): DeliveryInfoDTO {
     if (this.storeBundleDTO.deliveryInfos.length >= 1) {
       if (this.storeBundleDTO.deliveryInfos[0].typeId === id) {
         return this.storeBundleDTO.deliveryInfos[0];
-      } else if (this.storeBundleDTO.deliveryInfos.length >= 2 && this.storeBundleDTO.deliveryInfos[1].typeId === id) {
+      } else if (
+        this.storeBundleDTO.deliveryInfos.length >= 2 &&
+        this.storeBundleDTO.deliveryInfos[1].typeId === id
+      ) {
         return this.storeBundleDTO.deliveryInfos[1];
       }
     }
@@ -122,7 +126,7 @@ export class EditRestaurantPage implements OnInit {
     if (this.editInfo) {
       setTimeout(() => {
         this.infoInput.setFocus();
-   }, 100);
+      }, 100);
     }
   }
 
@@ -134,7 +138,11 @@ export class EditRestaurantPage implements OnInit {
     });
     await pop.present();
     pop.onDidDismiss().then(data => {
-      if (data.data.name !== undefined && data.data.name !== null && data.data.name !== '') {
+      if (
+        data.data.name !== undefined &&
+        data.data.name !== null &&
+        data.data.name !== ''
+      ) {
         this.storeBundleDTO.storeType.push(data.data);
       }
     });
@@ -208,11 +216,23 @@ export class EditRestaurantPage implements OnInit {
     this.connectDeliveryInfo();
     this.storeBundleDTO.types = [];
     this.storeBundleDTO.deliveryInfos = [];
-    this.includeOrExcludeDeliveryInfo(this.deliveryChecked, this.delivery, this.deliveryInfo);
-    this.includeOrExcludeDeliveryInfo(this.collectionChecked, this.collection, this.collectionInfo);
+    this.includeOrExcludeDeliveryInfo(
+      this.deliveryChecked,
+      this.delivery,
+      this.deliveryInfo
+    );
+    this.includeOrExcludeDeliveryInfo(
+      this.collectionChecked,
+      this.collection,
+      this.collectionInfo
+    );
   }
 
-  includeOrExcludeDeliveryInfo(checkVal: boolean, type: TypeDTO, info: DeliveryInfoDTO) {
+  includeOrExcludeDeliveryInfo(
+    checkVal: boolean,
+    type: TypeDTO,
+    info: DeliveryInfoDTO
+  ) {
     if (checkVal) {
       this.storeBundleDTO.types.push(type);
       if (type.id !== null && type.id !== undefined) {
@@ -228,11 +248,11 @@ export class EditRestaurantPage implements OnInit {
           this.saveOrUpdateDeliveryInfo(info);
         });
       }
-    } else if (info.id !== null && info.id !== undefined) {
-        this.commandService.deleteDeliveryInfoUsingDELETE(info.id).subscribe();
-        info = undefined;
-        this.commandService.deleteTypeUsingDELETE(type.id).subscribe();
-        type = undefined;
+    } else if (info && info.id !== null && info.id !== undefined) {
+      this.commandService.deleteDeliveryInfoUsingDELETE(info.id).subscribe();
+      info = undefined;
+      this.commandService.deleteTypeUsingDELETE(type.id).subscribe();
+      type = undefined;
     }
   }
 
@@ -245,30 +265,39 @@ export class EditRestaurantPage implements OnInit {
   }
 
   updateStoreBundle() {
-    this.util.createLoader()
-      .then(loader => {
+    if (this.hasValidContents()) {
+      this.util.createLoader().then(loader => {
         this.loader = loader;
         this.loader.present();
       });
-    this.saveUpdates();
-    const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
-    this.storeBundleDTO.store.locationName =
-      address.houseNoOrBuildingName + ', ' +
-      address.roadNameAreaOrStreet + ', ' +
-      address.city + ', ' +
-      address.state + ', ' +
-      address.pincode;
-    this.commandService.createStoreBundleUsingPOST(this.storeBundleDTO)
-        .subscribe(data => {
-           this.loader.dismiss();
-           this.util.createToast('Store successfully updated', 'checkmark');
-           this.navCtrl.navigateBack('/settings');
-          }, err => {
+      this.saveUpdates();
+      const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
+      this.storeBundleDTO.store.locationName =
+        address.houseNoOrBuildingName +
+        ', ' +
+        (address.roadNameAreaOrStreet !== null ? address.roadNameAreaOrStreet + ', ' : '') +
+        address.city +
+        ', ' +
+        address.state +
+        ', ' +
+        address.pincode;
+      this.commandService
+        .createStoreBundleUsingPOST(this.storeBundleDTO)
+        .subscribe(
+          data => {
+            this.loader.dismiss();
+            this.util.createToast('Store successfully updated', 'checkmark');
+            this.navCtrl.navigateBack('/settings');
+          },
+          err => {
             this.util.createToast('Error occured while updating store');
             this.ngOnInit();
-        });
+          }
+        );
+    } else {
+      this.util.createAlert('Can\'t save', 'You skipped some mandatory fields, mandatory fields are marked with a \'*\' mark ');
+    }
   }
-
   connectDeliveryInfo() {
     if (this.storeBundleDTO.deliveryInfos.length > 0) {
       if (this.deliveryIndex !== 99) {
@@ -292,7 +321,11 @@ export class EditRestaurantPage implements OnInit {
 
   setOrderAcceptTypes() {
     if (this.storeBundleDTO.storeSettings.orderAcceptType !== null) {
-      this.orderIsAuto = this.storeBundleDTO.storeSettings.orderAcceptType.toLowerCase() === 'automatic' ? true : false;
+      this.orderIsAuto =
+        this.storeBundleDTO.storeSettings.orderAcceptType.toLowerCase() ===
+        'automatic'
+          ? true
+          : false;
     } else {
       this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
     }
@@ -316,5 +349,36 @@ export class EditRestaurantPage implements OnInit {
         this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       }
     }
+  }
+
+  hasValidContents(): boolean {
+    if (
+      !(
+        this.storeBundleDTO.store.image &&
+        this.storeBundleDTO.store.name &&
+        this.storeBundleDTO.store.email &&
+        this.storeBundleDTO.store.contactNo &&
+        this.storeBundleDTO.store.openingTime &&
+        this.storeBundleDTO.store.closingTime &&
+        this.storeBundleDTO.storeAddress.name &&
+        this.storeBundleDTO.storeAddress.houseNoOrBuildingName &&
+        this.storeBundleDTO.storeAddress.city &&
+        this.storeBundleDTO.storeAddress.pincode &&
+        this.storeBundleDTO.storeAddress.state
+      )
+    ) {
+      return false;
+    }
+    if (this.deliveryChecked) {
+      if (!(this.deliveryInfo.startingTime && this.deliveryInfo.endTime)) {
+        return false;
+      }
+    }
+    if (this.collectionChecked) {
+      if (!(this.collectionInfo.startingTime && this.collectionInfo.endTime)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
