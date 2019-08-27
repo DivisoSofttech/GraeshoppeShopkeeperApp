@@ -81,10 +81,6 @@
     </ion-item>
     <ion-card [ngClass]="showAddress?'slideInDown':'hidden'" class="full-width animated transition-props" lines="none">
       <ion-item>
-        <ion-label position="floating">Type</ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.addressType"></ion-input>
-      </ion-item>
-      <ion-item>
         <ion-label position="floating">Name</ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.name"></ion-input>
       </ion-item>
@@ -220,5 +216,24 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+  </ion-card>
+
+  <ion-card class="ion-padding-top">
+      <ion-label position="fixed" class="ion-padding-start">
+          <ion-icon name="cog"></ion-icon>
+          Advanced
+        </ion-label>
+        <ion-item>
+            <ion-label slot="start">Inventory Required</ion-label>
+            <ion-toggle slot="end" ></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label slot="start">Pre-order Available</ion-label>
+            <ion-toggle slot="end" ></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label slot="start">Active</ion-label>
+            <ion-toggle slot="end" ></ion-toggle>
+        </ion-item>
   </ion-card>
 </ion-content>

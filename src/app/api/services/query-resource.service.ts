@@ -77,6 +77,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAllProductsUsingGETPath = '/api/query/findAllProducts/{iDPcode}';
   static readonly findAllStockCurrentByProductNameUsingGETPath = '/api/query/findAllStockCurrentByProductName/{name}/{storeId}';
   static readonly findAllStockCurrentByCategoryUsingGETPath = '/api/query/findAllStockCurrentsByCategoryId/{categoryId}/{storeId}';
+  static readonly findAllCategoryBySearchTermUsingGETPath = '/api/query/findCategoryBySearchTerm/{searchTerm}/{storeId}';
   static readonly findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}/{storeId}';
   static readonly findStockCurrentByProductIdUsingGETPath = '/api/query/findStockCurrentByProductId/{productId}/{storeId}';
   static readonly findStockCurrentDTOByProductIdUsingGETPath = '/api/query/findStockCurrentDTOByProductId/{productId}';
@@ -1221,6 +1222,68 @@ class QueryResourceService extends __BaseService {
   findAllStockCurrentByCategoryUsingGET(params: QueryResourceService.FindAllStockCurrentByCategoryUsingGETParams): __Observable<PageOfStockCurrent> {
     return this.findAllStockCurrentByCategoryUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStockCurrent)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindAllCategoryBySearchTermUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `searchTerm`: searchTerm
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAllCategoryBySearchTermUsingGETResponse(params: QueryResourceService.FindAllCategoryBySearchTermUsingGETParams): __Observable<__StrictHttpResponse<PageOfCategory>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findCategoryBySearchTerm/${params.searchTerm}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfCategory>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindAllCategoryBySearchTermUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `searchTerm`: searchTerm
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAllCategoryBySearchTermUsingGET(params: QueryResourceService.FindAllCategoryBySearchTermUsingGETParams): __Observable<PageOfCategory> {
+    return this.findAllCategoryBySearchTermUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfCategory)
     );
   }
 
@@ -3301,6 +3364,37 @@ module QueryResourceService {
      * categoryId
      */
     categoryId: number;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findAllCategoryBySearchTermUsingGET
+   */
+  export interface FindAllCategoryBySearchTermUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * searchTerm
+     */
+    searchTerm: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

@@ -6,7 +6,7 @@
       <ion-button (click)="toggleSearchbar()" *ngIf="showSearchbar==false">
         <ion-icon  name="search"></ion-icon>
       </ion-button>
-      <ion-button (click)="openNotificationModal()" id="notification-button">
+      <ion-button (click)="openNotificationModal()" >
         <ion-icon class="icon" name="notifications"></ion-icon>
       </ion-button>
       <ion-badge *ngIf="notificationCount != 0" id="notifications-badge" color="danger">{{notificationCount}}</ion-badge>
@@ -17,6 +17,17 @@
 </ion-header>
 
 <ion-content no-padding>
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button>
+            <ion-icon name="funnel"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="end">
+            <ion-button shape="round" (click)="getAll()">All
+            </ion-button>
+            <ion-button shape="round" (click)="getAuxilaries()">Extras
+            </ion-button>
+          </ion-fab-list>
+      </ion-fab>
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let product of products" size-lg="3" size-sm="4" size="6" size-md="3">

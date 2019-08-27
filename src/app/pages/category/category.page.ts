@@ -18,7 +18,13 @@ export class CategoryPage implements OnInit {
 
   categories: Category[] = [];
 
+  tempCategories: Category[] = [];
+
   pageCount = 0;
+
+  showSearchbar: boolean = false;
+
+  searchTerm: string;
 
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
   notificationCount: number;
@@ -29,11 +35,7 @@ export class CategoryPage implements OnInit {
     private util: Util,
     private modalController: ModalController
   ) { }
-
-  onAddCategory(category) {
-    this.queryService.findCategoryByIdUsingGET(category.id)
-    .subscribe(categoryDomain => this.categories.push(categoryDomain))
-   }
+  
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
@@ -43,6 +45,42 @@ export class CategoryPage implements OnInit {
       this.getCategories(0 , true);
     });
   }
+  toggleSearchbar(){
+    this.showSearchbar = !this.showSearchbar;
+    this.categories=this.tempCategories;
+    console.log(this.categories);
+  }
+
+  searchCategories(i){
+    this.storage.get('user').then(user => {
+    this.queryService.findAllCategoryBySearchTermUsingGET({
+      storeId: user.preferred_username,
+      searchTerm: this.searchTerm,
+      page: i
+    }).subscribe(res =>
+      {
+        this.categories = [];
+        res.content.forEach(category => this.categories.push(category));
+        console.log('searchterm : ',this.searchTerm);
+        console.log('searched : ',res.content);
+        
+        
+        i++;
+        if(i < res.totalPages) {
+          this.searchCategories(i);  
+        } else {
+          this.loader.dismiss();
+        }
+      })
+      
+    });
+  }
+
+  onAddCategory(category) {
+    this.queryService.findCategoryByIdUsingGET(category.id)
+    .subscribe(categoryDomain => this.categories.push(categoryDomain))
+   }
+  
 
   getCategories(i , limit?:Boolean , success?) {
     let iDPcode;
@@ -56,6 +94,7 @@ export class CategoryPage implements OnInit {
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(c => {
           this.categories.push(c);
+          this.tempCategories.push(c);
         });
         i++;
 
