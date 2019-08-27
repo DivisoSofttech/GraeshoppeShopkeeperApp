@@ -44,11 +44,28 @@ export class ProductPage implements OnInit {
   }
   toggleSearchbar(){
     this.showSearchbar = !this.showSearchbar;
-    // this.products = [];
-    // this.tempProducts.forEach(tp => this.products.push(tp));
     this.products=this.tempProducts;
     console.log(this.products);
-    
+  }
+
+  getAuxilaries(){
+      this.util.createLoader()
+      .then(loader => {
+      this.loader = loader;
+      this.loader.present();
+      this.storage.get('user').then(user => {
+        this.queryService.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(auxilaries => {
+          this.products = [];
+          auxilaries.content.forEach(auxilary => this.products.push(auxilary));
+          this.loader.dismiss();
+        });
+      });
+    })
+  }
+
+  getAll(){
+    this.products = [];
+    this.products = this.tempProducts;
   }
   searchProducts(i){
     

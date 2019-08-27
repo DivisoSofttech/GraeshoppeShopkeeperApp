@@ -1,13 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-    <ion-title>Category</ion-title>
+    <ion-title *ngIf="showSearchbar==false">Category</ion-title>
     <ion-buttons slot="end">
+        <ion-button (click)="toggleSearchbar()" *ngIf="showSearchbar==false">
+            <ion-icon  name="search"></ion-icon>
+          </ion-button>
       <ion-button (click)="openNotificationModal()">
         <ion-icon class="icon" name="notifications"></ion-icon>
       </ion-button>
       <ion-badge *ngIf="notificationCount != 0" id="notifications-badge" color="danger">{{notificationCount}}</ion-badge>
     </ion-buttons>
+    <ion-searchbar  animated (ionChange)="searchCategories(0)" (ionCancel)="toggleSearchbar()" showCancelButton="always" placeholder="find categories..." debounce="500" *ngIf="showSearchbar==true"[(ngModel)]="searchTerm"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
