@@ -90,7 +90,8 @@ export class LoginSignupPage implements OnInit {
 
     createStore(userName) {
       const store: StoreDTO = {
-        regNo: userName
+        regNo: userName,
+        email: this.email
       };
       this.queryResource.findStoreByRegNoUsingGET(userName).subscribe(
         res => {

@@ -57,7 +57,7 @@ export class Util {
     //     });
     // }
 
-    async createAlert(header: string, message: string, onConfirm: any, onDeny: any) {
+    async createAlert(header: string, message: string, onConfirm?: any, onDeny?: any) {
         const alert = await this.alertCtrl.create({
             header,
             message,
@@ -65,13 +65,17 @@ export class Util {
                 {
                     text: 'Cancel',
                     handler: () => {
-                        onDeny();
+                        if (onDeny) {
+                            onDeny();
+                        }
                     }
                 },
                 {
                     text: 'Okay',
                     handler: () => {
-                        onConfirm();
+                        if (onConfirm) {
+                            onConfirm();
+                        }
                     }
                 }
             ]

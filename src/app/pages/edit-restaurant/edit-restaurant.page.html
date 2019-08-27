@@ -14,9 +14,15 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8" class="vertical-align-center hide-overflow">
-        <ion-img class="image hide-overflow"
+        <ion-img *ngIf="storeBundleDTO.store.image"  class="image hide-overflow"
           [src]="'data:' + storeBundleDTO.store.imageContentType + ';base64,' + storeBundleDTO.store.image">
         </ion-img>
+        <ion-img *ngIf="!storeBundleDTO.store.image" class="image hide-overflow"
+          src="assets/images/placeholder.png">
+        </ion-img>
+        <ion-text color="danger" class="text-size">
+          *
+        </ion-text>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -28,7 +34,8 @@
     </ion-row>
     <ion-row class="ion-padding-top">
       <ion-col class="vertical-align-center move-up">
-        <ion-text class="info-text duration animated" [ngClass]="!editInfo?'slideInRight':'hidden'" >{{storeBundleDTO.store.info}}</ion-text>
+        <ion-text class="info-text duration animated" *ngIf="storeBundleDTO.store.info"  [ngClass]="!editInfo?'slideInRight':'hidden'" >{{storeBundleDTO.store.info}}</ion-text>
+        <ion-text class="info-text duration animated" *ngIf="!storeBundleDTO.store.info"  [ngClass]="!editInfo?'slideInRight':'hidden'" >info</ion-text>
         <ion-item color="transparent" [ngClass]="editInfo?'slideInRight':'hidden'" class="width-75 animated duration">
           <ion-input text-center #info (ionBlur)="toggleEdit()" [(ngModel)]="storeBundleDTO.store.info"></ion-input>
         </ion-item>
@@ -44,28 +51,28 @@
       General
     </ion-label>
     <ion-item>
-      <ion-label position="floating">Name</ion-label>
+      <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
       <ion-input [(ngModel)]="storeBundleDTO.store.name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Email</ion-label>
+      <ion-label position="floating">Email <ion-text color="danger" class="text-size">*</ion-text></ion-label>
       <ion-input [(ngModel)]="storeBundleDTO.store.email"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Contact</ion-label>
+      <ion-label position="floating">Contact <ion-text color="danger" class="text-size">*</ion-text></ion-label>
       <ion-input [(ngModel)]="storeBundleDTO.store.contactNo"></ion-input>
     </ion-item>
     <ion-grid>
       <ion-row>
         <ion-col size="6">
           <ion-item>
-            <ion-label position="floating">Open</ion-label>
+            <ion-label position="floating">Open <ion-text color="danger" class="text-size">*</ion-text></ion-label>
             <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.openingTime"></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col size="6">
           <ion-item>
-            <ion-label position="floating">Closing</ion-label>
+            <ion-label position="floating">Closing <ion-text color="danger" class="text-size">*</ion-text></ion-label>
             <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.closingTime"></ion-datetime>
           </ion-item>
         </ion-col>
@@ -74,18 +81,18 @@
 
     <!-- address -->
     <ion-item class="ion-margin-bottom">
-      <ion-label>Address</ion-label>
+      <ion-label>Address <ion-text color="danger" class="text-size">*</ion-text></ion-label>
       <ion-button (click)="toggleAddress()" fill="none">
         <ion-icon name="arrow-dropdown" slot="icon-only" class="initial" [ngClass]="showAddress?'rotate':''"></ion-icon>
       </ion-button>
     </ion-item>
     <ion-card [ngClass]="showAddress?'slideInDown':'hidden'" class="full-width animated transition-props" lines="none">
       <ion-item>
-        <ion-label position="floating">Name</ion-label>
+        <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Building name or number</ion-label>
+        <ion-label position="floating">Building name or number <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.houseNoOrBuildingName"></ion-input>
       </ion-item>
       <ion-item>
@@ -93,7 +100,7 @@
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.roadNameAreaOrStreet"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">City</ion-label>
+        <ion-label position="floating">City <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.city"></ion-input>
       </ion-item>
       <ion-item>
@@ -101,11 +108,11 @@
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.landmark"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">State</ion-label>
+        <ion-label position="floating">State <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.state"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Zip code</ion-label>
+        <ion-label position="floating">Zip code <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.pincode"></ion-input>
       </ion-item>
     </ion-card>
@@ -145,7 +152,7 @@
       <ion-label position="stacked" class="no-wrap">Max delivery time</ion-label>
       <ion-datetime [(ngModel)]="storeBundleDTO.store.maxDeliveryTime" displayFormat="mm"></ion-datetime>
     </ion-item>
-    <ion-label position="stacked" class="ion-padding-start ion-margin-top">Delivery types</ion-label>
+    <ion-label position="stacked" class="ion-padding-start ion-margin-top">Delivery types <ion-text color="danger" class="text-size">*</ion-text></ion-label>
     <ion-item>
       <ion-checkbox [(ngModel)]="deliveryChecked"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('delivery', $event)"></ion-checkbox>
       <ion-label>Delivery</ion-label>

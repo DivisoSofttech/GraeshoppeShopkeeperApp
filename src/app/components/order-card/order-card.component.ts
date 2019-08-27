@@ -6,7 +6,7 @@ import {
 } from 'src/app/api/services';
 import { CommandResource } from './../../api/models/command-resource';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Order } from 'src/app/api/models';
+import { Order, Product } from 'src/app/api/models';
 import * as moment from 'moment/moment';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -36,7 +36,8 @@ export class OrderCardComponent implements OnInit {
     private util: Util
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   completeOrder(order: Order) {
     this.util.createLoader().then(
