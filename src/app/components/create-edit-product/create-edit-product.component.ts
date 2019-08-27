@@ -1,3 +1,4 @@
+import { DiscountDTO } from './../../api/models/discount-dto';
 import { Util } from 'src/app/services/util';
 import { ComboLineItemDTO } from './../../api/models/combo-line-item-dto';
 import { ImageSelectorComponent } from './../image-selector/image-selector.component';
@@ -45,6 +46,7 @@ export class CreateEditProductComponent implements OnInit {
   @ViewChild('slides', { static: false }) slides: IonSlides;
   deleteAuxilaries: AuxilaryLineItemDTO[] = [];
   deleteCombos: ComboLineItemDTO[] = [];
+  discount: DiscountDTO;
   oldAux: number = 0;
   oldCombo: number = 0;
   constructor(
@@ -56,7 +58,6 @@ export class CreateEditProductComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.getCategories();
     this.getAuxilaryItems();
     this.getUOM();
@@ -67,8 +68,6 @@ export class CreateEditProductComponent implements OnInit {
         .subscribe(productBundle => {
           this.productbundle = productBundle;
         });
-
-
     }
   }
   showCombo() {
@@ -180,6 +179,7 @@ export class CreateEditProductComponent implements OnInit {
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
+        this.commandResource.createDiscountUsingPOST(this.discount).subscribe();
         this.saveAuxilary();
         this.saveCombo();
         this.util.createToast("Product Created Successfully",'checkmark');
@@ -210,6 +210,7 @@ export class CreateEditProductComponent implements OnInit {
               this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId!=comboDto.comboItemId)
             )
         )
+        
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
@@ -334,5 +335,18 @@ export class CreateEditProductComponent implements OnInit {
             , err => console.log('error creating combo')
           )
       );
+  }
+  createDisabled(){
+    if(this.productDTO.sellingPrice == null || this.productDTO.categoryId ==null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == ''){
+      return true
+    }
+    return false;
+  }
+
+  createAuxilaryDisabled(){
+    if(this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == ''){
+      return true
+    }
+    return false;
   }
 }

@@ -20,6 +20,7 @@ export { CustomerDTO } from './models/customer-dto';
 export { DeliveryInfo } from './models/delivery-info';
 export { DeliveryInfoDTO } from './models/delivery-info-dto';
 export { Discount } from './models/discount';
+export { DiscountDTO } from './models/discount-dto';
 export { EntryLineItem } from './models/entry-line-item';
 export { Label } from './models/label';
 export { Location } from './models/location';

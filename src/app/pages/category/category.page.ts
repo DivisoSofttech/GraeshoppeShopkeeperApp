@@ -88,7 +88,10 @@ export class CategoryPage implements OnInit {
       iDPcode = user.preferred_username;
       this.queryService.findAllCategoriesUsingGET({storeId: iDPcode})
       .subscribe(res => {
-
+        this.infiniteScroll.complete();
+        if(i==res.totalPages){
+          this.toggleInfiniteScroll();
+        }
         success != undefined?success(res):null;
         
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
@@ -167,6 +170,9 @@ export class CategoryPage implements OnInit {
       this.queryService.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
           .subscribe(num => this.notificationCount=num);
     });
+  }
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
 }

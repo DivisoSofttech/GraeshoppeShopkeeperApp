@@ -38,7 +38,7 @@
     </ion-row>
   </ion-grid>
   <ion-buttons class="buttons-right">
-    <ion-button (click)="getOrderMaster()">
+    <ion-button *ngIf="orderType=='confirmed'" (click)="getOrderMaster()">
       <ion-icon slot="icon-only" name="print" ></ion-icon>
     </ion-button>
     <ion-button  (click)="viewOrderViewModal()">

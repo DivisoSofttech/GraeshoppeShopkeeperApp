@@ -39,7 +39,7 @@
   <app-add (productAdd)="onAddProduct($event)"></app-add>
 
   <!--Infinite Scroll-->
-  <ion-infinite-scroll threshold="600px" (ionInfinite)="loadMoreProducts($event)">
+  <ion-infinite-scroll threshold="600px" (infiniteScroll)="loadMoreProducts($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
