@@ -93,19 +93,30 @@ export class LoginSignupPage implements OnInit {
         regNo: userName,
         email: this.email
       };
-      this.queryResource.findStoreByRegNoUsingGET(userName).subscribe(
-        res => {
-          if (res === null) {
-            this.commandResource.createStoreUsingPOST(store).subscribe(data => {
-              this.util.createToast('Registration Successful');
-              this.navCtrl.navigateRoot('/edit-restaurant');
-            });
-          } else {
-            this.util.navigateRoot();
-          }
-        },
-        err => {
-        });
+      this.util.createLoader().then(loader => {
+        loader.present();
+        this.queryResource.findStoreByRegNoUsingGET(userName).subscribe(
+          res => {
+            if (res === null) {
+              this.commandResource.createStoreUsingPOST(store).subscribe(data => {
+                loader.dismiss();
+                this.util.createToast('Registration Successful');
+                this.navCtrl.navigateRoot('/edit-restaurant');
+              }, err => {
+                this.util.createToast('Error reaching server');
+                loader.dismiss();
+                this.keycloakService.logout();
+              });
+            } else {
+              loader.dismiss();
+              this.util.navigateRoot();
+            }
+          },
+          err => {
+            loader.dismiss();
+            this.keycloakService.logout();
+          });
+      });
       }
 
       // View Related Methods
