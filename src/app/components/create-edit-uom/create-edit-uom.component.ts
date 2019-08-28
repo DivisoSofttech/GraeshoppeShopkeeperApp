@@ -79,4 +79,11 @@ export class CreateEditUomComponent implements OnInit {
     this.modalController.dismiss(data);
   }
 
+  uomDisabled(){
+    if(this.uom.unit==null){
+      return true;
+    }
+    return false;
+  }
+
 }

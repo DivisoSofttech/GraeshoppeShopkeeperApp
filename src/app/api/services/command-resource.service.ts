@@ -17,6 +17,7 @@ import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { CustomerAggregator } from '../models/customer-aggregator';
 import { DeliveryInfoDTO } from '../models/delivery-info-dto';
+import { DiscountDTO } from '../models/discount-dto';
 import { NotificationDTO } from '../models/notification-dto';
 import { ProductDTO } from '../models/product-dto';
 import { ReplyDTO } from '../models/reply-dto';
@@ -57,6 +58,7 @@ class CommandResourceService extends __BaseService {
   static readonly createDeliveryInfoUsingPOSTPath = '/api/command/delivery-infos';
   static readonly updateDeliveryInfoUsingPUTPath = '/api/command/delivery-infos';
   static readonly deleteDeliveryInfoUsingDELETEPath = '/api/command/delivery-infos/{id}';
+  static readonly createDiscountUsingPOSTPath = '/api/command/discount';
   static readonly markOrderAsDeliveredUsingPOSTPath = '/api/command/markAsDelivered/{orderId}';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly createProductCategoryUsingPOSTPath = '/api/command/productCategory';
@@ -813,6 +815,42 @@ class CommandResourceService extends __BaseService {
   deleteDeliveryInfoUsingDELETE(id: number): __Observable<null> {
     return this.deleteDeliveryInfoUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param discountDTO discountDTO
+   * @return OK
+   */
+  createDiscountUsingPOSTResponse(discountDTO: DiscountDTO): __Observable<__StrictHttpResponse<DiscountDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = discountDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/discount`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<DiscountDTO>;
+      })
+    );
+  }
+  /**
+   * @param discountDTO discountDTO
+   * @return OK
+   */
+  createDiscountUsingPOST(discountDTO: DiscountDTO): __Observable<DiscountDTO> {
+    return this.createDiscountUsingPOSTResponse(discountDTO).pipe(
+      __map(_r => _r.body as DiscountDTO)
     );
   }
 

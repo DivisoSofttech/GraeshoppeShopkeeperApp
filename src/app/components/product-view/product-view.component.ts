@@ -21,6 +21,7 @@ export class ProductViewComponent implements OnInit {
     this.query.getProductBundleUsingGET(this.product.id).subscribe(productBundle =>{
       this.product.auxilaryLineItems = productBundle.auxilaryLineItems;
       this.product.comboLineItems = productBundle.comboLineItems;
+      this.product.discount = productBundle.discount;
     })
     console.log(this.product);
     

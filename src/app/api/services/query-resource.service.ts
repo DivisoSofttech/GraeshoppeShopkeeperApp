@@ -28,9 +28,9 @@ import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntry } from '../models/stock-entry';
 import { PageOfNotification } from '../models/page-of-notification';
 import { OpenTask } from '../models/open-task';
+import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
 import { OrderMasterDTO } from '../models/order-master-dto';
-import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
 import { ProductDTO } from '../models/product-dto';
@@ -87,11 +87,11 @@ class QueryResourceService extends __BaseService {
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly getNotificationCountByReceiveridAndStatusUsingGETPath = '/api/query/notification/{status}/{receiverId}';
   static readonly getOpenTasksUsingGETPath = '/api/query/opentasks';
+  static readonly findOrdersByDeliveryTypeUsingGETPath = '/api/query/order/findbydeliverytype/{deliverytype}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}/{status}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}/{storeId}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
-  static readonly OrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
   static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
@@ -1764,6 +1764,68 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindOrdersByDeliveryTypeUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `deliverytype`: deliverytype
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrdersByDeliveryTypeUsingGETResponse(params: QueryResourceService.FindOrdersByDeliveryTypeUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrder>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/order/findbydeliverytype/${params.deliverytype}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrder>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrdersByDeliveryTypeUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `deliverytype`: deliverytype
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrdersByDeliveryTypeUsingGET(params: QueryResourceService.FindOrdersByDeliveryTypeUsingGETParams): __Observable<PageOfOrder> {
+    return this.findOrdersByDeliveryTypeUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
    * @param orderId orderId
    * @return OK
    */
@@ -1977,49 +2039,6 @@ class QueryResourceService extends __BaseService {
   findOrderLineByStoreIdUsingGET(params: QueryResourceService.FindOrderLineByStoreIdUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderLineByStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.OrderSummaryUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `date`: date
-   */
-  OrderSummaryUsingGETResponse(params: QueryResourceService.OrderSummaryUsingGETParams): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/ordersummary/${params.date}/${params.storeId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.OrderSummaryUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `date`: date
-   */
-  OrderSummaryUsingGET(params: QueryResourceService.OrderSummaryUsingGETParams): __Observable<null> {
-    return this.OrderSummaryUsingGETResponse(params).pipe(
-      __map(_r => _r.body as null)
     );
   }
 
@@ -3600,6 +3619,37 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for findOrdersByDeliveryTypeUsingGET
+   */
+  export interface FindOrdersByDeliveryTypeUsingGETParams {
+
+    /**
+     * orderId
+     */
+    orderId: string;
+
+    /**
+     * deliverytype
+     */
+    deliverytype: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
    * Parameters for findOrderMasterByOrderIdUsingGET
    */
   export interface FindOrderMasterByOrderIdUsingGETParams {
@@ -3685,22 +3735,6 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
-  }
-
-  /**
-   * Parameters for OrderSummaryUsingGET
-   */
-  export interface OrderSummaryUsingGETParams {
-
-    /**
-     * storeId
-     */
-    storeId: string;
-
-    /**
-     * date
-     */
-    date: string;
   }
 
   /**

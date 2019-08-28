@@ -95,6 +95,7 @@ export class ProductPage implements OnInit {
       iDPcode = user.preferred_username;
       this.queryService.findAllProductsUsingGET({iDPcode,page: i})
       .subscribe(res => {
+        this.infiniteScroll.complete();
         success != undefined?success(res):null;
         
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
@@ -108,6 +109,9 @@ export class ProductPage implements OnInit {
           this.products.push(p);
         });
         i++;
+        if(i==res.totalPages){
+          this.toggleInfiniteScroll();
+        }
         if(limit === false) {
           if(i < res.totalPages) {
             this.getProducts(i , limit);  
@@ -183,5 +187,8 @@ export class ProductPage implements OnInit {
       cssClass: 'half-height'
     });
     return await modal.present();
+  }
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 }

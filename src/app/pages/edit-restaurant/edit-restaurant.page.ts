@@ -355,7 +355,6 @@ export class EditRestaurantPage implements OnInit {
     if (
       !(
         this.storeBundleDTO.store.image &&
-        this.storeBundleDTO.store.name &&
         this.storeBundleDTO.store.email &&
         this.storeBundleDTO.store.contactNo &&
         this.storeBundleDTO.store.openingTime &&
