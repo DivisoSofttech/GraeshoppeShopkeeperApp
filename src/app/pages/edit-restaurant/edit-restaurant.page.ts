@@ -354,12 +354,12 @@ export class EditRestaurantPage implements OnInit {
   hasValidContents(): boolean {
     if (
       !(
+        this.storeBundleDTO.store.name &&
         this.storeBundleDTO.store.image &&
         this.storeBundleDTO.store.email &&
         this.storeBundleDTO.store.contactNo &&
         this.storeBundleDTO.store.openingTime &&
         this.storeBundleDTO.store.closingTime &&
-        this.storeBundleDTO.storeAddress.name &&
         this.storeBundleDTO.storeAddress.houseNoOrBuildingName &&
         this.storeBundleDTO.storeAddress.city &&
         this.storeBundleDTO.storeAddress.pincode &&
