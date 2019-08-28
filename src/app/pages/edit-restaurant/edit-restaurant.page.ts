@@ -275,7 +275,7 @@ export class EditRestaurantPage implements OnInit {
       this.storeBundleDTO.store.locationName =
         address.houseNoOrBuildingName +
         ', ' +
-        (address.roadNameAreaOrStreet !== null ? address.roadNameAreaOrStreet + ', ' : '') +
+        (address.roadNameAreaOrStreet ? address.roadNameAreaOrStreet + ', ' : '') +
         address.city +
         ', ' +
         address.state +
