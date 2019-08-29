@@ -53,25 +53,6 @@
                 <ion-icon name="barcode" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-item> -->
-<<<<<<< HEAD
-              <ion-item *ngIf="productDTO.isAuxilaryItem==false">
-                <span slot="start">
-                  <ion-label>Category</ion-label>
-                </span>
-                <span slot="start">
-
-                  <ion-select [(ngModel)]="productDTO.categoryId">
-                    <ion-select-option *ngFor="let category of categories" value="{{category.id}}" required>
-                      {{category.name}}
-                    </ion-select-option>
-                  </ion-select>
-                </span>
-
-                <span slot="end">
-                  <ion-icon name="add" (click)="slide('category')"></ion-icon>
-                </span>
-              </ion-item>
-=======
               <ion-grid no-padding no-margin>
                 <ion-row no-padding no-margin>
                   <ion-item no-padding no-margin class="full-width">
@@ -95,7 +76,6 @@
                   </ion-item>
                 </ion-row>
               </ion-grid>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
               <ion-item margin *ngIf="productDTO.isAuxilaryItem==true">
                 <ion-icon padding class="icon-size" name="information-circle-outline"></ion-icon>
                 <ion-text>Auxilary item can't be added to category</ion-text>
@@ -107,22 +87,6 @@
                 </ion-select>
                 <ion-icon slot="end" name="add"></ion-icon>
             </ion-item> -->
-<<<<<<< HEAD
-              <ion-item>
-                <span slot="start">
-                  <ion-label>Unit</ion-label>
-                </span>
-                <span slot="start">
-                  <ion-select [(ngModel)]="productDTO.unitId">
-                    <ion-select-option *ngFor="let uom of uoms" value="{{uom.id}}" required>{{uom.unit}}
-                    </ion-select-option>
-                  </ion-select>
-                </span>
-                <span slot="end">
-                  <ion-icon name="add" (click)="slide('uom')"></ion-icon>
-                </span>
-              </ion-item>
-=======
               <ion-grid no-padding no-margin padding-bottom>
                 <ion-row no-padding no-margin>
                   <ion-item class="full-width" no-padding no-margin>
@@ -145,7 +109,6 @@
                   </ion-item>
                 </ion-row>
               </ion-grid>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
             </ion-card-content>
           </ion-card>
           <ion-card>
@@ -159,21 +122,13 @@
             </ion-item>
             <ion-item>
               <ion-label position="floating">Discount</ion-label>
-<<<<<<< HEAD
               <ion-input type="number" [(ngModel)]="discount.rate"></ion-input>
-=======
-              <ion-input type="number"></ion-input>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
             </ion-item>
           </ion-card>
           <ion-card>
             <ion-item>
               <span slot="start">
-<<<<<<< HEAD
                 <ion-label slot="start">Is Extra</ion-label>
-=======
-                <ion-label slot="start">Auxilary Item</ion-label>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
               </span>
               <span slot="end">
                 <ion-checkbox slot="end" [(ngModel)]="productDTO.isAuxilaryItem"></ion-checkbox>
@@ -182,11 +137,7 @@
             </ion-item>
             <ion-item *ngIf="productDTO.isAuxilaryItem==false">
               <span slot="start">
-<<<<<<< HEAD
-                <ion-label>Add Extras</ion-label>
-=======
                 <ion-label position="floating">Add Extras</ion-label>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
               </span>
               <span slot="end">
                 <!-- <ion-select multiple [(ngModel)]="auxilaryItem.productId">
@@ -204,11 +155,7 @@
               <ion-card class="scroll">
                 <ion-list>
                   <ion-item lines="none" *ngFor="let data of auxilaryProduct; let i = index">
-<<<<<<< HEAD
                     <ion-label>{{data.name}}</ion-label>
-=======
-                    <ion-label position="floating">{{data.name}}</ion-label>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
                     <ion-checkbox slot="end" [checked]="checkAuxArray[i]"
                       (ionChange)="selectedAuxilaryItem(data,$event)"></ion-checkbox>
                   </ion-item>
@@ -217,11 +164,7 @@
             </ion-item>
             <ion-item *ngIf="productDTO.isAuxilaryItem==false">
               <span slot="start">
-<<<<<<< HEAD
-                <ion-label>Add Combo Items</ion-label>
-=======
                 <ion-label position="floating">Add Combo Items</ion-label>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
               </span>
               <span slot="end">
                 <ion-icon name="add" (click)="showCombo()"></ion-icon>
@@ -233,11 +176,7 @@
               <ion-card class="scroll">
                 <ion-list>
                   <ion-item lines="none" *ngFor="let data of nonAuxNonComboProducts; let i = index">
-<<<<<<< HEAD
                     <ion-label>{{data.name}}</ion-label>
-=======
-                    <ion-label position="floating">{{data.name}}</ion-label>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
                     <ion-checkbox slot="end" [checked]="checkComboArray[i]"
                       (ionChange)="selectedComboItem(data,$event)"></ion-checkbox>
                   </ion-item>
@@ -271,7 +210,6 @@
 </ion-content>
 <ion-footer *ngIf="value!='category'&&value!='uom'">
   <div *ngIf="mode=='update' && productDTO.isAuxilaryItem==false">
-<<<<<<< HEAD
     <ion-button [disabled]="createDisabled()" margin expand="block" color="primary" (click)="updateProduct()">Update
     </ion-button>
   </div>
@@ -286,21 +224,5 @@
   <div *ngIf="mode=='create' && productDTO.isAuxilaryItem==true">
     <ion-button [disabled]="createAuxilaryDisabled()" margin expand="block" color="primary" (click)="createProduct()">
       Create</ion-button>
-=======
-    <ion-button [disabled]="productDTO.sellingPrice == null || productDTO.categoryId ==null" margin expand="block"
-      color="primary" (click)="updateProduct()">Update</ion-button>
-  </div>
-  <div *ngIf="mode=='update' && productDTO.isAuxilaryItem==true">
-    <ion-button [disabled]="productDTO.sellingPrice == null" margin expand="block" color="primary"
-      (click)="updateProduct()">Update</ion-button>
-  </div>
-  <div *ngIf="mode=='create' && productDTO.isAuxilaryItem==false">
-    <ion-button [disabled]="productDTO.sellingPrice == null || productDTO.categoryId ==null" margin expand="block"
-      color="primary" (click)="createProduct()">Create</ion-button>
-  </div>
-  <div *ngIf="mode=='create' && productDTO.isAuxilaryItem==true">
-    <ion-button [disabled]="productDTO.sellingPrice == null" margin expand="block" color="primary"
-      (click)="createProduct()">Create</ion-button>
->>>>>>> 24c433a4791edcda6ca95d8698b1ab6076ce9161
   </div>
 </ion-footer>
