@@ -31,6 +31,10 @@
                 <ion-label>Buy price</ion-label>
                 <ion-text><strong>{{product.buyPrice}}</strong></ion-text>
             </ion-item>
+            <ion-item margin *ngIf="product.discount.rate">
+                <ion-label>Discount</ion-label>
+                <ion-text><strong>{{product.discount.rate}}</strong></ion-text>
+            </ion-item>
         </ion-card>
         <ion-card>
             <div *ngIf="product.isAuxilaryItem==true">

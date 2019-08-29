@@ -1,0 +1,58 @@
+.cart {
+    font-size: 75vw;
+    opacity: 0.5;
+}
+
+@media only screen and (min-width: 640px) {
+    .cart {
+        font-size: 23vw;
+        opacity: 0.5;
+    }
+}
+
+
+.overlay-cart-icon {
+    font-size: 25px;
+}
+
+.h35 {
+    height: 40vh;
+}
+
+.cl-red {
+    color: orangered;
+}
+
+.bg-grey {
+    background: lightgray;
+}
+
+.fntbig-cursive {
+    font-size: 30px;
+
+}
+
+.info-icon {
+    font-size: 30px;
+    margin: 0px;
+    margin-right: 10px;
+}
+
+.fntbig {
+    font-size: 37px;
+    margin: 10px;
+}
+
+.grey {
+    color: grey;
+}
+
+textarea {
+    width: 95%;
+    height: 100px;
+}
+
+.highlight {
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -39,6 +39,11 @@ export class AppComponent {
       icon: 'speedometer'
     },
     {
+      title: 'Sale',
+      url: '/sale',
+      icon: 'pricetags'
+    },
+    {
       title: 'Settings',
       url: '/settings',
       icon: 'settings'

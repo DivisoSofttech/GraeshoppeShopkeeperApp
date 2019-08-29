@@ -45,7 +45,7 @@ export class CreateEditProductComponent implements OnInit {
   @ViewChild('slides', { static: false }) slides: IonSlides;
   deleteAuxilaries: AuxilaryLineItemDTO[] = [];
   deleteCombos: ComboLineItemDTO[] = [];
-  discount: DiscountDTO;
+  discount: DiscountDTO = {};
   oldAux: number = 0;
   oldCombo: number = 0;
   constructor(
@@ -161,40 +161,43 @@ export class CreateEditProductComponent implements OnInit {
     });
   }
   createProduct() {
-    if(this.productDTO.isAuxilaryItem==true){
-      this.productDTO.categoryId=null;
+    if (this.productDTO.isAuxilaryItem == true) {
+      this.productDTO.categoryId = null;
     }
     this.util.createLoader()
       .then(loader => {
         this.loader = loader;
         this.loader.present();
       });
-    this.commandResource.createProductUsingPOST(this.productDTO)
-      .subscribe(data => {
-        this.dismiss(data);
-        this.comboLineItems.forEach(
-          ci => ci.productId = data.id
-        );
-        this.auxilaryLineItemDTOs.forEach(
-          ai => ai.productId = data.id
-        );
-        this.commandResource.createDiscountUsingPOST(this.discount).subscribe();
-        this.saveAuxilary();
-        this.saveCombo();
-        this.util.createToast("Product Created Successfully",'checkmark');
-        this.loader.dismiss();
-      },
-        err => {
-          console.log('error creating product', err);
+    this.commandResource.createDiscountUsingPOST(this.discount).subscribe(discount => {
+      this.productDTO.discountId = discount.id;
+      this.commandResource.createProductUsingPOST(this.productDTO)
+        .subscribe(data => {
+          this.dismiss(data);
+          this.comboLineItems.forEach(
+            ci => ci.productId = data.id
+          );
+          this.auxilaryLineItemDTOs.forEach(
+            ai => ai.productId = data.id
+          );
+
+          this.saveAuxilary();
+          this.saveCombo();
+          this.util.createToast("Product Created Successfully", 'checkmark');
           this.loader.dismiss();
-          this.util.createToast("Product Creation Error",'alert');
-        }
-      );
+        },
+          err => {
+            console.log('error creating product', err);
+            this.loader.dismiss();
+            this.util.createToast("Product Creation Error", 'alert');
+          }
+        );
+    });
 
   }
   updateProduct() {
-    if(this.productDTO.isAuxilaryItem==true){
-      this.productDTO.categoryId=null;
+    if (this.productDTO.isAuxilaryItem == true) {
+      this.productDTO.categoryId = null;
     }
     this.util.createLoader()
       .then(loader => {
@@ -206,29 +209,30 @@ export class CreateEditProductComponent implements OnInit {
         this.productbundle.comboLineItems.forEach(combo =>
           this.query.findCombolineItemUsingGET(combo.id)
             .subscribe(comboDto =>
-              this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId!=comboDto.comboItemId)
+              this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId != comboDto.comboItemId)
             )
         )
+        this.commandResource.createDiscountUsingPOST(this.discount).subscribe();
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
         this.comboLineItems.forEach(
           ci => ci.productId = data.id
         );
-            for(let i = this.oldAux; i < this.auxilaryLineItemDTOs.length; i++) {
-              this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
-                .subscribe(data => console.log('auxilary', data)
-                  , err => console.log('error creating Auxilary')
-                )
-            }
-            for (let i = this.oldCombo; i < this.comboLineItems.length; i++) {
-                  this.commandResource.createComboLineItemUsingPOST(this.comboLineItems[i])
-                    .subscribe(data => console.log('combo', data)
-                      , err => console.log('error creating Combo')
-                    )
-                }
-       
-    
+        for (let i = this.oldAux; i < this.auxilaryLineItemDTOs.length; i++) {
+          this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
+            .subscribe(data => console.log('auxilary', data)
+              , err => console.log('error creating Auxilary')
+            )
+        }
+        for (let i = this.oldCombo; i < this.comboLineItems.length; i++) {
+          this.commandResource.createComboLineItemUsingPOST(this.comboLineItems[i])
+            .subscribe(data => console.log('combo', data)
+              , err => console.log('error creating Combo')
+            )
+        }
+
+
         this.deleteAuxilaries.forEach(aux =>
           this.commandResource.deleteAuxilaryLineIteamUsingDELETE(aux.id).subscribe()
         )
@@ -236,10 +240,10 @@ export class CreateEditProductComponent implements OnInit {
           this.commandResource.deleteComboLineItemUsingDELETE(com.id).subscribe()
         )
         this.dismiss(data);
-        this.util.createToast("Product Updation Success",'checkmark');
+        this.util.createToast("Product Updation Success", 'checkmark');
         this.loader.dismiss();
-      },err => {
-        this.util.createToast("Product Updation Error",'alert');
+      }, err => {
+        this.util.createToast("Product Updation Error", 'alert');
       });
   }
   async selectImage() {
@@ -291,8 +295,9 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteCombos = this.deleteCombos.filter(ci => ci.comboItemId !== item.id);
     } else {
       this.comboLineItems.forEach(data => {
-        if(data.comboItemId==item.id && data.id != null){
-          this.deleteCombos.push(data);        }
+        if (data.comboItemId == item.id && data.id != null) {
+          this.deleteCombos.push(data);
+        }
       })
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
@@ -307,7 +312,7 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteAuxilaries = this.deleteAuxilaries.filter(ai => ai.auxilaryItemId !== item.id);
     } else {
       this.auxilaryLineItemDTOs.forEach(data => {
-        if(data.auxilaryItemId==item.id && data.id != null){
+        if (data.auxilaryItemId == item.id && data.id != null) {
           this.deleteAuxilaries.push(data);
         }
       })
@@ -317,32 +322,32 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   saveAuxilary() {
-      this.auxilaryLineItemDTOs.forEach(
-        ai => this.commandResource.createAuxilaryLineItemUsingPOST(ai)
-          .subscribe(data => console.log('auxilary', data)
-            , err => console.log('error creating auxilary')
+    this.auxilaryLineItemDTOs.forEach(
+      ai => this.commandResource.createAuxilaryLineItemUsingPOST(ai)
+        .subscribe(data => console.log('auxilary', data)
+          , err => console.log('error creating auxilary')
 
-          )
-      );
-  
+        )
+    );
+
   }
   saveCombo() {
-      this.comboLineItems.forEach(
-        ci => this.commandResource.createComboLineItemUsingPOST(ci)
-          .subscribe(data => console.log('combo', data)
-            , err => console.log('error creating combo')
-          )
-      );
+    this.comboLineItems.forEach(
+      ci => this.commandResource.createComboLineItemUsingPOST(ci)
+        .subscribe(data => console.log('combo', data)
+          , err => console.log('error creating combo')
+        )
+    );
   }
-  createDisabled(){
-    if(this.productDTO.sellingPrice == null || this.productDTO.categoryId ==null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == ''){
+  createDisabled() {
+    if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
       return true
     }
     return false;
   }
 
-  createAuxilaryDisabled(){
-    if(this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == ''){
+  createAuxilaryDisabled() {
+    if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
       return true
     }
     return false;

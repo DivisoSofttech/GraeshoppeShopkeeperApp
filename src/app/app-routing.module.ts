@@ -67,6 +67,10 @@ const routes: Routes = [
     loadChildren: './pages/restaurant-location/restaurant-location.module#RestaurantLocationPageModule',
     canActivate: [AuthGuardService]
   },
+  { path: 'sale',
+    loadChildren: './pages/sale/sale.module#SalePageModule',
+    canActivate: [AuthGuardService] 
+  },
 
 ];
 
