@@ -71,6 +71,10 @@ const routes: Routes = [
     loadChildren: './pages/sale/sale.module#SalePageModule',
     canActivate: [AuthGuardService] 
   },
+  { path: 'dashboard',
+   loadChildren: './pages/dashboard/dashboard.module#DashboardPageModule',
+   canActivate: [AuthGuardService]
+   },
 
 ];
 

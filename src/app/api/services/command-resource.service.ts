@@ -59,6 +59,8 @@ class CommandResourceService extends __BaseService {
   static readonly updateDeliveryInfoUsingPUTPath = '/api/command/delivery-infos';
   static readonly deleteDeliveryInfoUsingDELETEPath = '/api/command/delivery-infos/{id}';
   static readonly createDiscountUsingPOSTPath = '/api/command/discount';
+  static readonly updateDiscountUsingPUTPath = '/api/command/discount';
+  static readonly deleteDiscountUsingDELETEPath = '/api/command/discount/{id}';
   static readonly markOrderAsDeliveredUsingPOSTPath = '/api/command/markAsDelivered/{orderId}';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly createProductCategoryUsingPOSTPath = '/api/command/productCategory';
@@ -851,6 +853,76 @@ class CommandResourceService extends __BaseService {
   createDiscountUsingPOST(discountDTO: DiscountDTO): __Observable<DiscountDTO> {
     return this.createDiscountUsingPOSTResponse(discountDTO).pipe(
       __map(_r => _r.body as DiscountDTO)
+    );
+  }
+
+  /**
+   * @param discountDTO discountDTO
+   * @return OK
+   */
+  updateDiscountUsingPUTResponse(discountDTO: DiscountDTO): __Observable<__StrictHttpResponse<DiscountDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = discountDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/discount`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<DiscountDTO>;
+      })
+    );
+  }
+  /**
+   * @param discountDTO discountDTO
+   * @return OK
+   */
+  updateDiscountUsingPUT(discountDTO: DiscountDTO): __Observable<DiscountDTO> {
+    return this.updateDiscountUsingPUTResponse(discountDTO).pipe(
+      __map(_r => _r.body as DiscountDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteDiscountUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/discount/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteDiscountUsingDELETE(id: number): __Observable<null> {
+    return this.deleteDiscountUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 

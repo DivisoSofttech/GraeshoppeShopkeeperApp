@@ -66,6 +66,8 @@ export class CreateEditProductComponent implements OnInit {
       this.query.getProductBundleUsingGET(this.product.id)
         .subscribe(productBundle => {
           this.productbundle = productBundle;
+          this.productDTO.discountId = productBundle.discount.id;
+          this.discount = productBundle.discount;
         });
     }
   }
@@ -212,7 +214,13 @@ export class CreateEditProductComponent implements OnInit {
               this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId != comboDto.comboItemId)
             )
         )
-        this.commandResource.createDiscountUsingPOST(this.discount).subscribe();
+        if(this.discount.rate == null){
+          this.commandResource.deleteDiscountUsingDELETE(this.discount.id).subscribe();
+        }
+        else{
+          this.commandResource.updateDiscountUsingPUT(this.discount).subscribe();
+        }
+        
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
