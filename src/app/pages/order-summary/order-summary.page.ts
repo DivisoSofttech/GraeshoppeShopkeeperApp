@@ -5,6 +5,8 @@ import { ToastController, Platform, ModalController } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Storage } from '@ionic/storage';
+import { formatDate } from '@angular/common';
+import { ReportSummary } from 'src/app/api/models';
 
 @Component({
   selector: 'app-order-summary',
@@ -14,6 +16,12 @@ import { Storage } from '@ionic/storage';
 export class OrderSummaryPage implements OnInit {
   notificationCount: number;
 
+  user;
+
+  date: string;
+
+  orderSummary: ReportSummary = {};
+
   constructor(
     
     private queryResource: QueryResourceService,
@@ -22,7 +30,12 @@ export class OrderSummaryPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getNoticationCount();
+    this.date = formatDate(new Date(),'yyyy-MM-dd','en');
+    this.storage.get('user').then(user => {
+      this.user = user;
+      this.getNoticationCount();
+      this.getOrderSummary();
+    })
   }
 
   
@@ -35,9 +48,20 @@ async openNotificationModal() {
 }
 
 getNoticationCount(){
-  this.storage.get('user').then(user => {
-    this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
+    this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: this.user.preferred_username})
         .subscribe(num => this.notificationCount=num);
-  });
+}
+
+getOrderSummary(){
+  this.queryResource.createReportSummaryUsingGET({storeId: this.user.preferred_username, date: this.date}).subscribe(orderSummary =>{
+    this.orderSummary = orderSummary;
+    console.log('date',this.date);
+    console.log('summary',this.orderSummary);
+  },err => {
+    console.log(err);
+    
+    console.log('date',this.date);
+    console.log('summary',this.orderSummary);
+  })
 }
 }

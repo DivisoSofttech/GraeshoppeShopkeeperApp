@@ -1,3 +1,4 @@
+import { CreateEditStockDairyComponent } from './create-edit-stock-dairy/create-edit-stock-dairy.component';
 import { OrderViewComponent } from './order-view/order-view.component';
 import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
@@ -45,7 +46,8 @@ import { NotificationComponent } from './notification/notification.component';
     CategoryViewComponent,
     OrderViewComponent,
     MapComponent,
-    NotificationComponent
+    NotificationComponent,
+    CreateEditStockDairyComponent
   ],
 
   imports: [
@@ -75,7 +77,8 @@ import { NotificationComponent } from './notification/notification.component';
     MapComponent,
     CategoryViewComponent,
     OrderViewComponent,
-    NotificationComponent
+    NotificationComponent,
+    CreateEditStockDairyComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

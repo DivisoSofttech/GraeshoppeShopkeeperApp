@@ -30,6 +30,11 @@ export class AppComponent {
       icon: 'filing'
     },
     {
+      title: 'Stock Dairy',
+      url: '/stock-dairy',
+      icon: 'book'
+    },
+    {
       title: 'Order',
       url: '/order',
       icon: 'list-box'

@@ -16,6 +16,7 @@ import { Base64 } from '@ionic-native/base64/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +36,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     BrowserModule,
     HttpClientModule,
     ConfigsModule,
+    ChartsModule,
     IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']

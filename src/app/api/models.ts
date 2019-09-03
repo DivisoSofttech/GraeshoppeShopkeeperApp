@@ -52,6 +52,7 @@ export { Propreitor } from './models/propreitor';
 export { Reason } from './models/reason';
 export { Reply } from './models/reply';
 export { ReplyDTO } from './models/reply-dto';
+export { ReportSummary } from './models/report-summary';
 export { Review } from './models/review';
 export { ReviewDTO } from './models/review-dto';
 export { RouteVM } from './models/route-vm';

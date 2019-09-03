@@ -34,6 +34,7 @@ import { OrderMasterDTO } from '../models/order-master-dto';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
 import { ProductDTO } from '../models/product-dto';
+import { ReportSummary } from '../models/report-summary';
 import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
 import { PageOfSale } from '../models/page-of-sale';
@@ -96,6 +97,7 @@ class QueryResourceService extends __BaseService {
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
   static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
+  static readonly createReportSummaryUsingGETPath = '/api/query/reportsummary/{date}/{storeId}';
   static readonly findAllSaleAggregatesUsingGETPath = '/api/query/sales/combined/{storeId}';
   static readonly findSaleByIdUsingGETPath = '/api/query/sales/{id}';
   static readonly findSalesUsingGETPath = '/api/query/sales/{storeId}';
@@ -2208,6 +2210,53 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  createReportSummaryUsingGETResponse(params: QueryResourceService.CreateReportSummaryUsingGETParams): __Observable<__StrictHttpResponse<ReportSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/reportsummary/${params.date}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ReportSummary>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  createReportSummaryUsingGET(params: QueryResourceService.CreateReportSummaryUsingGETParams): __Observable<ReportSummary> {
+    return this.createReportSummaryUsingGETResponse(params).pipe(
+      __map(_r => _r.body as ReportSummary)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindAllSaleAggregatesUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -3761,6 +3810,22 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for createReportSummaryUsingGET
+   */
+  export interface CreateReportSummaryUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * date
+     */
+    date: string;
   }
 
   /**

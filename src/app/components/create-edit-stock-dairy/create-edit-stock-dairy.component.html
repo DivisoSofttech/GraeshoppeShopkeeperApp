@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons *ngIf="currentSlide != '1'">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <div *ngIf="mode=='update'">
+        <ion-title>Update Stock Dairy</ion-title>
+      </div>
+      <div *ngIf="mode=='create'">
+        <ion-title>Create Stock Dairy</ion-title>
+      </div>
+    </ion-buttons>
+    <ion-buttons *ngIf="currentSlide == '1'">
+      <ion-button (click)="slide('0')">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </ion-button>
+      <ion-title>Add Items</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #slides class="swiper-no-swiping">
+
+    <ion-slide class="full-width">
+      <ion-card class="full-width">
+        <ion-card-content no-padding>
+          <ion-item>
+            <ion-label position="floating">#Ref</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input></ion-input>
+          </ion-item>
+
+
+
+
+          <ion-grid no-padding no-margin>
+            <ion-row no-padding no-margin>
+              <ion-col size="10" no-padding no-margin>
+                <ion-item>
+                  <ion-label position="floating">Reason</ion-label>
+                  <ion-select>
+                    <ion-select-option></ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col no-padding no-margin>
+                <ion-buttons text-center>
+                  <ion-button (click)="toggleAddReason()">
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-card *ngIf="reason">
+            <ion-item margin>
+              <ion-label position="floating">Name</ion-label>
+              <ion-input></ion-input>
+            </ion-item>
+            <ion-item margin>
+              <ion-label position="floating">Description</ion-label>
+              <ion-input></ion-input>
+            </ion-item>
+            <ion-item margin>
+              <ion-button slot="end" text center>
+                submit
+              </ion-button>
+            </ion-item>
+          </ion-card>
+
+          <ion-grid no-padding no-margin>
+            <ion-row no-padding no-margin>
+              <ion-col size="10" no-padding no-margin>
+                <ion-item>
+                  <ion-label position="floating">Location</ion-label>
+                  <ion-select>
+                    <ion-select-option></ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+              <ion-col no-padding no-margin>
+                <ion-buttons text-center>
+                  <ion-button (click)="toggleAddLocation()">
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-card *ngIf="location">
+            <ion-item margin>
+              <ion-label position="floating">Location</ion-label>
+              <ion-input></ion-input>
+            </ion-item>
+            <ion-item margin>
+              <ion-label position="floating">Description</ion-label>
+              <ion-input></ion-input>
+            </ion-item>
+            <ion-item margin>
+              <ion-button slot="end" text center>
+                submit
+              </ion-button>
+            </ion-item>
+          </ion-card>
+
+          <ion-item margin-top>
+            <ion-label>Item</ion-label>
+            <ion-buttons text-center>
+            <ion-button  (click)="slide('1')">
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <ion-card>
+        
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer>
+  <ion-item *ngIf="currentSlide != '1'">
+    <ion-buttons slot="start" margin>
+      <ion-button color="success">Save Entry</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" margin>
+      <ion-button (click)="dismiss()" color="danger">Cancel</ion-button>
+    </ion-buttons>
+  </ion-item>
+  <ion-item *ngIf="currentSlide == '1'">
+      <ion-buttons slot="start" margin>
+        <ion-button color="success">Add Item</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end" margin>
+        <ion-button (click)="slide('0')" color="danger">Cancel</ion-button>
+      </ion-buttons>
+    </ion-item>
+
+</ion-footer>
