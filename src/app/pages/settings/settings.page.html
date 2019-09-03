@@ -17,7 +17,13 @@
           <ion-card-title>
             {{store.name | uppercase}}
           </ion-card-title>
-          <ion-label>Cuisines</ion-label>
+          <span *ngFor="let cuisine of store.storeTypes">
+              <ion-badge color="dark" margin-right>
+                <ion-text>
+                  {{cuisine.name}}
+                </ion-text>
+              </ion-badge>
+            </span>
           <ion-card-subtitle class="wrap-whitespace">
             <ion-icon name="pin" color="medium"></ion-icon>
             {{store.locationName}}

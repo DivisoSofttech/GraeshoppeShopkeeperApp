@@ -64,13 +64,7 @@ export class OrderSummaryPage implements OnInit {
       console.log('summary', this.orderSummary);
     })
   }
-
-  datePicked(event) {
-    const ISODate: string = event.detail.value;
-    this.date = ISODate.slice(0,ISODate.indexOf('T'))
-    console.log(this.date);
-    //this.getOrderSummary();
-  }
+  
   dateSelected(){
     this.date = this.date.slice(0,this.date.indexOf('T'));
     this.getOrderSummary();

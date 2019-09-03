@@ -17,7 +17,7 @@ export class SettingsPage implements OnInit {
     private storage: Storage
   ) { }
 
-  options: {title: string, icon: string, route: string}[] = [
+  options: { title: string, icon: string, route: string }[] = [
     {
       title: 'Edit Restaurant',
       icon: 'create',
@@ -46,11 +46,14 @@ export class SettingsPage implements OnInit {
   ];
 
   ngOnInit() {
+
     this.storage.get('user').then(
       data => {
-        this.queryService.findStoreByRegNoUsingGET(data.preferred_username).subscribe(
+        this.queryService.getStoreBundleUsingGET({ regNo: data.preferred_username }).subscribe(
           res => {
-            this.store = res;
+            this.store = res.store;
+            this.store.storeTypes = res.storeType;
+            console.log(this.store);
           }
         );
       }
