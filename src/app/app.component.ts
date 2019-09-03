@@ -14,11 +14,11 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 export class AppComponent {
   public appPages = [
-    {
-      title: 'Dashboard',
-      url: '/dashboard',
-      icon: 'analytics'
-    },
+    // {
+    //   title: 'Dashboard',
+    //   url: '/dashboard',
+    //   icon: 'analytics'
+    // },
     {
       title: 'Product',
       url: '/product',
@@ -29,11 +29,11 @@ export class AppComponent {
       url: '/category',
       icon: 'filing'
     },
-    {
-      title: 'Stock Dairy',
-      url: '/stock-dairy',
-      icon: 'book'
-    },
+    // {
+    //   title: 'Stock Dairy',
+    //   url: '/stock-dairy',
+    //   icon: 'book'
+    // },
     {
       title: 'Order',
       url: '/order',
@@ -49,11 +49,11 @@ export class AppComponent {
       url: '/uom',
       icon: 'speedometer'
     },
-    {
-      title: 'Sale',
-      url: '/sale',
-      icon: 'pricetags'
-    },
+    // {
+    //   title: 'Sale',
+    //   url: '/sale',
+    //   icon: 'pricetags'
+    // },
     {
       title: 'Settings',
       url: '/settings',

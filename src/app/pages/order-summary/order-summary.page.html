@@ -12,6 +12,20 @@
 </ion-header>
 
 <ion-content>
+  <ion-card class="half-width">
+    <ion-buttons>
+      <ion-button>
+          <ion-icon slot="icon-only" name="calendar"></ion-icon>
+      </ion-button>
+      <ion-button>
+          <ion-datetime displayFormat="YYYY-MM-DD" min="2005" max="2030" [(ngModel)]="date"></ion-datetime>
+      </ion-button>
+      <ion-button (click)="dateSelected()">
+          <ion-icon  color="success" slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+      
+  </ion-card>
   <ion-card>
       <ion-row padding>
           <ion-col padding>
@@ -28,20 +42,44 @@
       <ion-col padding>
         <ion-text><Strong>Total</Strong></ion-text>
       </ion-col>
+      <ion-col padding>
+          <ion-text><Strong>{{orderSummary.typeAllCount}}</Strong></ion-text>
+      </ion-col>
+      <ion-col padding>
+          <ion-text><Strong>{{orderSummary.typeAllTotal}}</Strong></ion-text>
+      </ion-col>
     </ion-row>
     <ion-row padding>
         <ion-col padding>
           <ion-text><Strong>Collection</Strong></ion-text>
+        </ion-col>
+        <ion-col padding>
+            <ion-text><Strong>{{orderSummary.typeCollectionCount}}</Strong></ion-text>
+        </ion-col>
+        <ion-col padding>
+            <ion-text><Strong>{{orderSummary.typeCollectionTotal}}</Strong></ion-text>
         </ion-col>
       </ion-row>
       <ion-row padding>
           <ion-col padding>
             <ion-text><strong>Delivery</strong></ion-text>
           </ion-col>
+          <ion-col padding>
+              <ion-text><Strong>{{orderSummary.typeDeliveryCount}}</Strong></ion-text>
+          </ion-col>
+          <ion-col padding>
+              <ion-text><Strong>{{orderSummary.typeDeliveryTotal}}</Strong></ion-text>
+          </ion-col>
         </ion-row>
         <ion-row padding>
             <ion-col padding>
               <ion-text><strong>Cash</strong></ion-text>
+            </ion-col>
+            <ion-col padding>
+                <ion-text><Strong>{{orderSummary.typeCashCount}}</Strong></ion-text>
+            </ion-col>
+            <ion-col padding>
+                <ion-text><Strong>{{orderSummary.typeCashTotal}}</Strong></ion-text>
             </ion-col>
           </ion-row>
   </ion-card>

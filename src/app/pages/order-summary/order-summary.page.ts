@@ -23,14 +23,14 @@ export class OrderSummaryPage implements OnInit {
   orderSummary: ReportSummary = {};
 
   constructor(
-    
+
     private queryResource: QueryResourceService,
     private modalController: ModalController,
     private storage: Storage
   ) { }
 
   ngOnInit() {
-    this.date = formatDate(new Date(),'yyyy-MM-dd','en');
+    this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.storage.get('user').then(user => {
       this.user = user;
       this.getNoticationCount();
@@ -38,30 +38,42 @@ export class OrderSummaryPage implements OnInit {
     })
   }
 
+
+  async openNotificationModal() {
+    const modal = await this.modalController.create({
+      component: NotificationComponent,
+      cssClass: 'half-height'
+    });
+    return await modal.present();
+  }
+
+  getNoticationCount() {
+    this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({ status: 'unread', receiverId: this.user.preferred_username })
+      .subscribe(num => this.notificationCount = num);
+  }
+
+  getOrderSummary() {
+    this.queryResource.createReportSummaryUsingGET({ storeId: this.user.preferred_username, date: this.date }).subscribe(orderSummary => {
+      this.orderSummary = orderSummary;
+      console.log('date', this.date);
+      console.log('summary', this.orderSummary);
+    }, err => {
+      console.log(err);
+
+      console.log('date', this.date);
+      console.log('summary', this.orderSummary);
+    })
+  }
+
+  datePicked(event) {
+    const ISODate: string = event.detail.value;
+    this.date = ISODate.slice(0,ISODate.indexOf('T'))
+    console.log(this.date);
+    //this.getOrderSummary();
+  }
+  dateSelected(){
+    this.date = this.date.slice(0,this.date.indexOf('T'));
+    this.getOrderSummary();
+  }
   
-async openNotificationModal() {
-  const modal = await this.modalController.create({
-    component: NotificationComponent,
-    cssClass: 'half-height'
-  });
-  return await modal.present();
-}
-
-getNoticationCount(){
-    this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: this.user.preferred_username})
-        .subscribe(num => this.notificationCount=num);
-}
-
-getOrderSummary(){
-  this.queryResource.createReportSummaryUsingGET({storeId: this.user.preferred_username, date: this.date}).subscribe(orderSummary =>{
-    this.orderSummary = orderSummary;
-    console.log('date',this.date);
-    console.log('summary',this.orderSummary);
-  },err => {
-    console.log(err);
-    
-    console.log('date',this.date);
-    console.log('summary',this.orderSummary);
-  })
-}
 }
