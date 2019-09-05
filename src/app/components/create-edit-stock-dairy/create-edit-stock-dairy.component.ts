@@ -147,7 +147,9 @@ export class CreateEditStockDairyComponent implements OnInit {
     this.entryLineItems.push(this.entryLineItemDTO);
   }
   createReason(){
-    this.commandService.createReasonUsingPOST(this.reasonDTO).subscribe();
+    this.commandService.createReasonUsingPOST(this.reasonDTO).subscribe(reasonDTO => {
+      this.stockEntry.reasonId = reasonDTO.id;
+    });
   }
 
   createLocation(){
