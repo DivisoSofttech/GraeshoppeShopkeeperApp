@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="dismiss()">
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-title>Stock Dairy</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+      <ion-item>
+          <ion-text>
+            <p>Reference</p>
+            {{stockEntry.reference}}
+          </ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-text>
+            <p>Description</p>
+            {{stockEntry.description}}
+          </ion-text>
+        </ion-item>
+        <ion-item>
+          <ion-text>
+            <p>Reason</p>
+            {{stockEntry.reason.name}}
+          </ion-text>
+        </ion-item>
+  </ion-card>
+</ion-content>

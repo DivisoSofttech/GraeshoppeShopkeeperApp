@@ -147,9 +147,10 @@ export class OrderPage implements OnInit {
                 .subscribe(order => this.pendingOrders.push(order));
             });
             this.loader.dismiss();
-          },
-          err => this.loader.dismiss()
-        );
+          },err => {
+            this.loader.dismiss();
+            this.util.createToast('Error getting Confirmed Orders','information-circle');
+          });
     });
   }
   getConfirmedOrders(i) {
@@ -168,6 +169,9 @@ export class OrderPage implements OnInit {
             this.getConfirmedOrders(i);
           }
           loader.dismiss();
+        },err=> {
+          loader.dismiss();
+          this.util.createToast('Error getting Confirmed Orders','information-circle');
         });
     });
   }
@@ -188,6 +192,9 @@ export class OrderPage implements OnInit {
             this.getCompletedOrders(i);
           }
           loader.dismiss();
+        },err=> {
+          loader.dismiss();
+          this.util.createToast('Error getting Completed Orders','information-circle');
         });
     });
   }

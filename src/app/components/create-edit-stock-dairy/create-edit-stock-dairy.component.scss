@@ -1,4 +1,11 @@
 .but-pos{
-    margin-top: 12px;
-    margin-left: 5px;
+    padding-top: 35px
+}
+.transition-props {
+    animation-duration: 0s;
+    animation-delay: 0s;
+}
+
+.initial {
+    transition-duration: 0.3s;
 }

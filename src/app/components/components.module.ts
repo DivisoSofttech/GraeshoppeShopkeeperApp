@@ -22,6 +22,8 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { RouterModule } from '@angular/router';
 import { OrderCardComponent } from './order-card/order-card.component';
 import { NotificationComponent } from './notification/notification.component';
+import { StockDairyCardComponent } from './stock-dairy-card/stock-dairy-card.component';
+import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.component';
 
 
 
@@ -47,7 +49,9 @@ import { NotificationComponent } from './notification/notification.component';
     OrderViewComponent,
     MapComponent,
     NotificationComponent,
-    CreateEditStockDairyComponent
+    CreateEditStockDairyComponent,
+    StockDairyCardComponent,
+    StockDairyViewComponent
   ],
 
   imports: [
@@ -78,7 +82,9 @@ import { NotificationComponent } from './notification/notification.component';
     CategoryViewComponent,
     OrderViewComponent,
     NotificationComponent,
-    CreateEditStockDairyComponent
+    CreateEditStockDairyComponent,
+    StockDairyCardComponent,
+    StockDairyViewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

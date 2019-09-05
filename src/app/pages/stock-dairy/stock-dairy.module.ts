@@ -1,3 +1,4 @@
+import { StockDairyViewComponent } from 'src/app/components/stock-dairy-view/stock-dairy-view.component';
 import { CreateEditStockDairyComponent } from './../../components/create-edit-stock-dairy/create-edit-stock-dairy.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,6 +26,6 @@ const routes: Routes = [
     ComponentsModule
   ],
   declarations: [StockDairyPage],
-  entryComponents: [CreateEditStockDairyComponent]
+  entryComponents: [CreateEditStockDairyComponent,StockDairyViewComponent]
 })
 export class StockDairyPageModule {}

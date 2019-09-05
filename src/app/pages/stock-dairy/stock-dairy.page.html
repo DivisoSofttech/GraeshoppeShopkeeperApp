@@ -6,6 +6,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <div *ngFor="let entry of stockEntry">
+      <app-stock-dairy-card (click)="openStockDairyViewModal(entry)" [stockEntry]='entry'></app-stock-dairy-card>
+    </div>
+  </ion-list>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button (click)="createStockDairyModal()">
             <ion-icon name="add"></ion-icon>

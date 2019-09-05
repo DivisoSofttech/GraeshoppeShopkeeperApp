@@ -39,6 +39,7 @@ import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { SaleDTO } from '../models/sale-dto';
 import { PageOfSale } from '../models/page-of-sale';
 import { StockEntryDTO } from '../models/stock-entry-dto';
+import { StockEntryBundle } from '../models/stock-entry-bundle';
 import { PageOfBanner } from '../models/page-of-banner';
 import { StoreDTO } from '../models/store-dto';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
@@ -105,6 +106,8 @@ class QueryResourceService extends __BaseService {
   static readonly findOneStockCurrentUsingGETPath = '/api/query/stock-currents/{id}';
   static readonly findOneStockEntryUsingGETPath = '/api/query/stock-entries/{id}';
   static readonly findAllStockDiariesUsingGETPath = '/api/query/stock-entries/{storeId}';
+  static readonly findStockEntryByIdUsingGETPath = '/api/query/stock-entry/{Id}';
+  static readonly getStockEntryBundleUsingGETPath = '/api/query/stockEntryBundle/{id}';
   static readonly getAllStockCurrentsByIDPcodeUsingGETPath = '/api/query/stockcurrentByIDPcode/{iDPcode}';
   static readonly findBannerByStoreIdUsingGETPath = '/api/query/store-banners/{storeId}';
   static readonly findStoreUsingGETPath = '/api/query/store/{id}';
@@ -2589,6 +2592,78 @@ class QueryResourceService extends __BaseService {
   findAllStockDiariesUsingGET(params: QueryResourceService.FindAllStockDiariesUsingGETParams): __Observable<Array<StockEntry>> {
     return this.findAllStockDiariesUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<StockEntry>)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findStockEntryByIdUsingGETResponse(id?: number): __Observable<__StrictHttpResponse<StockEntryDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (id != null) __params = __params.set('id', id.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/stock-entry/${Id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StockEntryDTO>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findStockEntryByIdUsingGET(id?: number): __Observable<StockEntryDTO> {
+    return this.findStockEntryByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as StockEntryDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  getStockEntryBundleUsingGETResponse(id: number): __Observable<__StrictHttpResponse<StockEntryBundle>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/stockEntryBundle/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StockEntryBundle>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  getStockEntryBundleUsingGET(id: number): __Observable<StockEntryBundle> {
+    return this.getStockEntryBundleUsingGETResponse(id).pipe(
+      __map(_r => _r.body as StockEntryBundle)
     );
   }
 
