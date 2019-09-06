@@ -1,3 +1,6 @@
+import { AddressDTO } from './../../api/models/address-dto';
+import { filter } from 'rxjs/operators';
+import { Address } from './../../api/models/address';
 import { LocationDTO } from './../../api/models/location-dto';
 import { StockEntryDTO } from './../../api/models/stock-entry-dto';
 import { EntryLineItemDTO } from './../../api/models/entry-line-item-dto';
@@ -8,7 +11,7 @@ import { ModalController, IonSlides, IonInfiniteScroll } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { ReasonDTO, Reason } from 'src/app/api/models';
+import { ReasonDTO, Reason, Location } from 'src/app/api/models';
 
 @Component({
   selector: 'app-create-edit-stock-dairy',
@@ -21,6 +24,7 @@ export class CreateEditStockDairyComponent implements OnInit {
   reasons: Reason[] = []
   locations: Location[] = [];
   locationDTO: LocationDTO = {};
+  address: AddressDTO = {};
   stockEntry: StockEntryDTO = {};
   mode: string = 'create';
   pageCount = 0;
@@ -33,7 +37,7 @@ export class CreateEditStockDairyComponent implements OnInit {
   currentProduct: Product = {};
   entryLineItemDTO: EntryLineItemDTO = {};
   entryLineItems: EntryLineItemDTO[] = [];
-
+  selectedProducts: Product[] = [];
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
@@ -74,6 +78,8 @@ export class CreateEditStockDairyComponent implements OnInit {
       this.slides.slideTo(0);
     }
   }
+
+
 
   getProducts(i , limit?: Boolean , success?) {
     
@@ -144,15 +150,34 @@ export class CreateEditStockDairyComponent implements OnInit {
 
   addEntryLineItem(){
     this.entryLineItemDTO.productId = this.currentProduct.id;
+    this.selectedProducts.push(this.currentProduct);
     this.entryLineItems.push(this.entryLineItemDTO);
+  }
+
+  removeStockEntry(product){
+    this.entryLineItems = this.entryLineItems.filter(e => e.productId != product.id);
+    this.selectedProducts = this.selectedProducts.filter(sp => sp.id != product.id);
   }
   createReason(){
     this.commandService.createReasonUsingPOST(this.reasonDTO).subscribe(reasonDTO => {
-      this.stockEntry.reasonId = reasonDTO.id;
+      this.reasons.push(reasonDTO);
     });
   }
 
   createLocation(){
+    this.commandService.createProductAddressUsingPOST(this.address).subscribe(address=> {
+      this.locationDTO.addressId = address.id;
+      this.commandService.createLocationUsingPOST(this.locationDTO).subscribe(locationDTO =>{
+        this.locations.push(locationDTO);
+      });
+    });
     
+  }
+
+  getLocations(){
+    
+  }
+  getReasons(){
+
   }
 }

@@ -8,7 +8,7 @@
         <span><br>
           <ion-icon name="person"></ion-icon>
           {{order.customerId}}</span>
-        <span class="wrap"><br>
+        <span class="wrap" *ngIf="order.deliveryInfo.deliveryAddress"><br>
           <ion-icon name="pin"></ion-icon>
           {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ', ' + order.deliveryInfo.deliveryAddress.city}}
         </span>

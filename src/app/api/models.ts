@@ -1,4 +1,5 @@
 export { Address } from './models/address';
+export { AddressDTO } from './models/address-dto';
 export { ApprovalDetails } from './models/approval-details';
 export { ApprovalDetailsDTO } from './models/approval-details-dto';
 export { AuxilaryLineItem } from './models/auxilary-line-item';

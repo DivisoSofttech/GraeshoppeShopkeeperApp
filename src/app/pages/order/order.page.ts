@@ -165,6 +165,7 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
           i++;
+          console.log("confirmed orders",res.content);
           if (i < res.totalPages) {
             this.getConfirmedOrders(i);
           }
@@ -187,6 +188,7 @@ export class OrderPage implements OnInit {
         })
         .subscribe(res => {
           res.content.forEach(data => this.completedOrders.push(data));
+          console.log("completed orders",res.content);
           i++;
           if (i < res.totalPages) {
             this.getCompletedOrders(i);

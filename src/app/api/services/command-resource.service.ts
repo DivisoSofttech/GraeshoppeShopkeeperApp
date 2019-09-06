@@ -21,6 +21,7 @@ import { DiscountDTO } from '../models/discount-dto';
 import { EntryLineItemDTO } from '../models/entry-line-item-dto';
 import { LocationDTO } from '../models/location-dto';
 import { NotificationDTO } from '../models/notification-dto';
+import { AddressDTO } from '../models/address-dto';
 import { ProductDTO } from '../models/product-dto';
 import { ReasonDTO } from '../models/reason-dto';
 import { ReplyDTO } from '../models/reply-dto';
@@ -73,6 +74,9 @@ class CommandResourceService extends __BaseService {
   static readonly deleteLocationUsingDELETEPath = '/api/command/location/{id}';
   static readonly markOrderAsDeliveredUsingPOSTPath = '/api/command/markAsDelivered/{orderId}';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
+  static readonly createProductAddressUsingPOSTPath = '/api/command/product/address';
+  static readonly updateProductAddressUsingPUTPath = '/api/command/product/address';
+  static readonly deleteProductAddressUsingDELETEPath = '/api/command/product/address/{id}';
   static readonly createProductCategoryUsingPOSTPath = '/api/command/productCategory';
   static readonly createProductUsingPOSTPath = '/api/command/products';
   static readonly updateProductUsingPUTPath = '/api/command/products';
@@ -1221,6 +1225,112 @@ class CommandResourceService extends __BaseService {
   updateNotificationUsingPUT(notificationDTO: NotificationDTO): __Observable<NotificationDTO> {
     return this.updateNotificationUsingPUTResponse(notificationDTO).pipe(
       __map(_r => _r.body as NotificationDTO)
+    );
+  }
+
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  createProductAddressUsingPOSTResponse(addressDTO: AddressDTO): __Observable<__StrictHttpResponse<AddressDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = addressDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/product/address`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AddressDTO>;
+      })
+    );
+  }
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  createProductAddressUsingPOST(addressDTO: AddressDTO): __Observable<AddressDTO> {
+    return this.createProductAddressUsingPOSTResponse(addressDTO).pipe(
+      __map(_r => _r.body as AddressDTO)
+    );
+  }
+
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  updateProductAddressUsingPUTResponse(addressDTO: AddressDTO): __Observable<__StrictHttpResponse<AddressDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = addressDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/product/address`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AddressDTO>;
+      })
+    );
+  }
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  updateProductAddressUsingPUT(addressDTO: AddressDTO): __Observable<AddressDTO> {
+    return this.updateProductAddressUsingPUTResponse(addressDTO).pipe(
+      __map(_r => _r.body as AddressDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteProductAddressUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/product/address/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteProductAddressUsingDELETE(id: number): __Observable<null> {
+    return this.deleteProductAddressUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 

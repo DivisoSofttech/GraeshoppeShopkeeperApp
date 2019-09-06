@@ -2606,7 +2606,7 @@ class QueryResourceService extends __BaseService {
     if (id != null) __params = __params.set('id', id.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/stock-entry/${Id}`,
+      this.rootUrl + `/api/query/stock-entry/${id}`,
       __body,
       {
         headers: __headers,
