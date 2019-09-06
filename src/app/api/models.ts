@@ -35,7 +35,6 @@ export { Offer } from './models/offer';
 export { OpenTask } from './models/open-task';
 export { Order } from './models/order';
 export { OrderLine } from './models/order-line';
-export { OrderMasterDTO } from './models/order-master-dto';
 export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
 export { PageOfBanner } from './models/page-of-banner';
 export { PageOfCategory } from './models/page-of-category';

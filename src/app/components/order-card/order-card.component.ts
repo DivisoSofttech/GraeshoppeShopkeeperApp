@@ -112,6 +112,10 @@ export class OrderCardComponent implements OnInit {
           console.log('blob is' + blob);
           this.fileCreation(blob, orderDocket);
           loader.dismiss();
+        },err => {
+          console.log(err);
+          loader.dismiss();
+          this.util.createToast('Error Loading Pdf','alert');
         });
       });
     }

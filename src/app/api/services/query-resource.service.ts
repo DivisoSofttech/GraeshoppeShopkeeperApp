@@ -31,7 +31,6 @@ import { PageOfNotification } from '../models/page-of-notification';
 import { OpenTask } from '../models/open-task';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
-import { OrderMasterDTO } from '../models/order-master-dto';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
 import { ProductDTO } from '../models/product-dto';
@@ -94,7 +93,6 @@ class QueryResourceService extends __BaseService {
   static readonly getOpenTasksUsingGETPath = '/api/query/opentasks';
   static readonly findOrdersByDeliveryTypeUsingGETPath = '/api/query/order/findbydeliverytype/{deliverytype}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
-  static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMaster/{orderId}/{status}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}/{storeId}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
@@ -1907,68 +1905,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
-   *
-   * - `status`: status
-   *
-   * - `orderId`: orderId
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findOrderMasterByOrderIdUsingGETResponse(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<__StrictHttpResponse<OrderMasterDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/orderMaster/${params.orderId}/${params.status}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<OrderMasterDTO>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindOrderMasterByOrderIdUsingGETParams` containing the following parameters:
-   *
-   * - `status`: status
-   *
-   * - `orderId`: orderId
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findOrderMasterByOrderIdUsingGET(params: QueryResourceService.FindOrderMasterByOrderIdUsingGETParams): __Observable<OrderMasterDTO> {
-    return this.findOrderMasterByOrderIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as OrderMasterDTO)
-    );
-  }
-
-  /**
    * @param params The `QueryResourceService.FindOrderByStatusNameUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -2682,7 +2618,7 @@ class QueryResourceService extends __BaseService {
     if (id != null) __params = __params.set('id', id.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/stock-entry/${Id}`,
+      this.rootUrl + `/api/query/stock-entry/${id}`,
       __body,
       {
         headers: __headers,
@@ -3845,37 +3781,6 @@ module QueryResourceService {
 
     /**
      * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
-   * Parameters for findOrderMasterByOrderIdUsingGET
-   */
-  export interface FindOrderMasterByOrderIdUsingGETParams {
-
-    /**
-     * status
-     */
-    status: string;
-
-    /**
-     * orderId
-     */
-    orderId: string;
-
-    /**
-     * sort
-     */
-    sort?: Array<string>;
-
-    /**
-     * size
-     */
-    size?: number;
-
-    /**
-     * page
      */
     page?: number;
   }

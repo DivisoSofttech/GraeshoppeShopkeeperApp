@@ -39,11 +39,11 @@ export class AppComponent {
       url: '/order',
       icon: 'list-box'
     },
-    {
-      title: 'Order Summary',
-      url: '/order-summary',
-      icon: 'browsers'
-    },
+    // {
+    //   title: 'Order Summary',
+    //   url: '/order-summary',
+    //   icon: 'browsers'
+    // },
     {
       title: 'UOM',
       url: '/uom',
