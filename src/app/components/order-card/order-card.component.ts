@@ -100,9 +100,7 @@ export class OrderCardComponent implements OnInit {
     if (this.orderType === 'confirmed') {
       this.util.createLoader().then(loader => {
         loader.present();
-        this.queryResource.findOrderMasterByOrderIdUsingGET({orderId: this.order.orderId,status: 'payment-processed'}).subscribe(
-          orderMaster => {
-        this.queryResource.getOrderDocketUsingGET(orderMaster.id).subscribe(orderDocket => {
+        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
           console.log(orderDocket.pdf, orderDocket.contentType);
           const byteCharacters = atob(orderDocket.pdf);
           const byteNumbers = new Array(byteCharacters.length);
@@ -115,8 +113,6 @@ export class OrderCardComponent implements OnInit {
           this.fileCreation(blob, orderDocket);
           loader.dismiss();
         });
-        }
-        );
       });
     }
   }
