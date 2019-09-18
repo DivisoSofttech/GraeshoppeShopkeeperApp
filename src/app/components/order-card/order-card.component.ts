@@ -112,17 +112,18 @@ export class OrderCardComponent implements OnInit {
           console.log('blob is' + blob);
           this.fileCreation(blob, orderDocket);
           loader.dismiss();
-        },err => {
+        }, err => {
           console.log(err);
           loader.dismiss();
-          this.util.createToast('Error Loading Pdf','alert');
+          this.util.createToast('Error Loading Pdf', 'alert');
         });
       });
     }
   }
   fileCreation(blob, result) {
-    this.file
-      .createFile(this.file.externalCacheDirectory, 'items.pdf', true)
+    const res = this.file.createFile(this.file.externalCacheDirectory, 'items.pdf', true);
+    if (res !== undefined) {
+        res
       .then(() => {
         console.log('file created' + blob);
 
@@ -144,4 +145,6 @@ export class OrderCardComponent implements OnInit {
           });
       });
   }
+      }
+
 }

@@ -21,16 +21,16 @@ import { ReasonDTO, Reason, Location } from 'src/app/api/models';
 export class CreateEditStockDairyComponent implements OnInit {
 
   reasonDTO: ReasonDTO = {};
-  reasons: Reason[] = []
+  reasons: Reason[] = [];
   locations: Location[] = [];
   locationDTO: LocationDTO = {};
   address: AddressDTO = {};
   stockEntry: StockEntryDTO = {};
-  mode: string = 'create';
+  mode = 'create';
   pageCount = 0;
-  reason: boolean = false;
+  reason = false;
   products: Product[] = [];
-  location: boolean = false;
+  location = false;
   loader: HTMLIonLoadingElement;
   currentSlide: string;
   showDetail = false;
@@ -38,7 +38,7 @@ export class CreateEditStockDairyComponent implements OnInit {
   entryLineItemDTO: EntryLineItemDTO = {};
   entryLineItems: EntryLineItemDTO[] = [];
   selectedProducts: Product[] = [];
-  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
+  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
     private modal: ModalController,
@@ -53,28 +53,27 @@ export class CreateEditStockDairyComponent implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
-    this.getProducts(0 , true);
+      this.getProducts(0 , true);
     });
   }
 
-  dismiss(){
+  dismiss() {
     this.modal.dismiss();
   }
 
-  toggleAddReason(){
+  toggleAddReason() {
     this.reason = !this.reason;
   }
 
-  toggleAddLocation(){
+  toggleAddLocation() {
     this.location = !this.location;
   }
 
-  slide(value: string){
+  slide(value: string) {
     this.currentSlide = value;
-    if(value === '1'){
+    if (value === '1') {
       this.slides.slideTo(1);
-    }
-    else{
+    } else {
       this.slides.slideTo(0);
     }
   }
@@ -82,38 +81,38 @@ export class CreateEditStockDairyComponent implements OnInit {
 
 
   getProducts(i , limit?: Boolean , success?) {
-    
+
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode,page: i})
+      this.queryService.findAllProductsUsingGET({iDPcode, page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
-        success != undefined?success(res):null;
-        
+        success != undefined ? success(res) : null;
+
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
           this.queryService.getProductBundleUsingGET(p.id)
               .subscribe(productBundle => {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
-                
+
               });
           this.products.push(p);
         });
         i++;
-        if(i==res.totalPages){
+        if (i == res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        if(limit === false) {
-          if(i < res.totalPages) {
-            this.getProducts(i , limit);  
+        if (limit === false) {
+          if (i < res.totalPages) {
+            this.getProducts(i , limit);
           } else {
             this.loader.dismiss();
           }
         } else {
           this.loader.dismiss();
-        } 
+        }
       },
       err => {
         this.loader.dismiss();
@@ -127,13 +126,13 @@ export class CreateEditStockDairyComponent implements OnInit {
 
   loadMoreProducts(event) {
     this.pageCount++;
-    this.getProducts(this.pageCount , true , (data)=>{
+    this.getProducts(this.pageCount , true , (data) => {
 
       // Disable infinite scroll if all pages have been loaded
-      console.log(this.pageCount + 1,'==' , data.totalPages);
-      if(data.totalPages === this.pageCount + 1) {
+      console.log(this.pageCount + 1, '==' , data.totalPages);
+      if (data.totalPages === this.pageCount + 1) {
         console.log('InfiniteScroll Disabled'
-        )
+        );
         event.target.disabled = true;
       }
     });
@@ -143,41 +142,41 @@ export class CreateEditStockDairyComponent implements OnInit {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
-  toggleDetail(product){
+  toggleDetail(product) {
     this.currentProduct = product;
     this.showDetail = !this.showDetail;
   }
 
-  addEntryLineItem(){
+  addEntryLineItem() {
     this.entryLineItemDTO.productId = this.currentProduct.id;
     this.selectedProducts.push(this.currentProduct);
     this.entryLineItems.push(this.entryLineItemDTO);
   }
 
-  removeStockEntry(product){
+  removeStockEntry(product) {
     this.entryLineItems = this.entryLineItems.filter(e => e.productId != product.id);
     this.selectedProducts = this.selectedProducts.filter(sp => sp.id != product.id);
   }
-  createReason(){
+  createReason() {
     this.commandService.createReasonUsingPOST(this.reasonDTO).subscribe(reasonDTO => {
       this.reasons.push(reasonDTO);
     });
   }
 
-  createLocation(){
-    this.commandService.createProductAddressUsingPOST(this.address).subscribe(address=> {
+  createLocation() {
+    this.commandService.createProductAddressUsingPOST(this.address).subscribe(address => {
       this.locationDTO.addressId = address.id;
-      this.commandService.createLocationUsingPOST(this.locationDTO).subscribe(locationDTO =>{
+      this.commandService.createLocationUsingPOST(this.locationDTO).subscribe(locationDTO => {
         this.locations.push(locationDTO);
       });
     });
-    
+
   }
 
-  getLocations(){
-    
+  getLocations() {
+
   }
-  getReasons(){
+  getReasons() {
 
   }
 }

@@ -9,15 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockDairyViewComponent implements OnInit {
 
-  stockEntry: StockEntry;
+  stockEntry: StockEntry = {};
+
+  current: StockEntry = {};
+
+  showDetail = false;
+
   constructor(
     private modal: ModalController
   ) { }
 
   ngOnInit() {}
 
-  dismiss(){
+  dismiss() {
     this.modal.dismiss();
+  }
+
+  toggleDetail(entry) {
+    this.current = entry;
+    this.showDetail = ! this.showDetail;
   }
 
 }

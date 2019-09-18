@@ -1,10 +1,11 @@
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Camera } from '@ionic-native/camera/ngx';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { CropperSettings, ImageCropperComponent } from 'ngx-img-cropper';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { duration } from 'moment';
 
 @Component({
   selector: 'app-image-selector',
@@ -21,7 +22,8 @@ export class ImageSelectorComponent implements OnInit {
     private crop: Crop,
     private camera: Camera,
     private modalController: ModalController,
-    private base64: Base64
+    private base64: Base64,
+    private loadingController: LoadingController,
   ) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.width = 300;
@@ -34,7 +36,14 @@ export class ImageSelectorComponent implements OnInit {
     this.cropperSettings.compressRatio = 1.6;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadingController.create({
+      spinner: 'bubbles',
+      duration: 2000
+    }).then(loader => {
+      loader.present();
+    });
+   }
 
   onChange($event: any) {
     const image: any = new Image();
@@ -53,5 +62,4 @@ export class ImageSelectorComponent implements OnInit {
   save() {
     this.modalController.dismiss(this.data);
   }
-  
 }

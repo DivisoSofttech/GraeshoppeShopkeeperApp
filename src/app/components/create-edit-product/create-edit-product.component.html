@@ -35,12 +35,13 @@
             <ion-card-content no-padding>
               <ion-img *ngIf="!productDTO.image" class="vertical-align-center" (click)="selectImage()"
                 src="assets/images/camera.png"></ion-img>
+                <ion-text color="danger" class="text-size">*</ion-text>
               <ion-item text-center *ngIf="productDTO.image">
                 <img (click)="selectImage()"
                   [src]="'data:' + productDTO.imageContentType + ';base64,' + productDTO.image" />
               </ion-item>
               <ion-item>
-                <ion-label position="floating">Name</ion-label>
+                <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
                 <ion-input type="text" [(ngModel)]="productDTO.name"></ion-input>
               </ion-item>
               <ion-item >
@@ -57,7 +58,7 @@
                   <ion-item no-padding no-margin class="full-width">
                     <ion-col size="10" no-padding no-margin>
                       <ion-item  lines="none">
-                        <ion-label position="floating">Category</ion-label>
+                        <ion-label position="floating">Category <ion-text color="danger" class="text-size">*</ion-text></ion-label>
                         <ion-select [(ngModel)]="productDTO.categoryId">
                           <ion-select-option *ngFor="let category of categories" value="{{category.id}}" required>
                             {{category.name}}
@@ -112,7 +113,7 @@
           </ion-card>
           <ion-card>
             <ion-item>
-              <ion-label position="floating">Sell Price</ion-label>
+              <ion-label position="floating">Sell Price <ion-text color="danger" class="text-size">*</ion-text></ion-label>
               <ion-input type="number" [(ngModel)]="productDTO.sellingPrice"></ion-input>
             </ion-item>
             <ion-item>

@@ -112,29 +112,29 @@
                 <ion-input></ion-input>
               </ion-item>
               
-              <ion-item>
+              <!-- <ion-item>
                   <ion-label position="floating">Building name or number</ion-label>
                   <ion-input [(ngModel)]="address.houseNoOrBuildingName"></ion-input>
-                </ion-item>
+                </ion-item> -->
                 <ion-item>
-                  <ion-label position="floating">Area</ion-label>
-                  <ion-input [(ngModel)]="address.roadNameAreaOrStreet"></ion-input>
+                  <ion-label position="floating">address Line</ion-label>
+                  <ion-input [(ngModel)]="address.addressLine1"></ion-input>
                 </ion-item>
                 <ion-item>
                   <ion-label position="floating">City</ion-label>
-                  <ion-input [(ngModel)]="address.city"></ion-input>
+                  <ion-input [(ngModel)]="address.cityOrTown"></ion-input>
                 </ion-item>
-                <ion-item>
+                <!-- <ion-item>
                   <ion-label position="floating">Landmark</ion-label>
                   <ion-input [(ngModel)]="address.landmark"></ion-input>
-                </ion-item>
+                </ion-item> -->
                 <ion-item>
                   <ion-label position="floating">State</ion-label>
                   <ion-input [(ngModel)]="address.state"></ion-input>
                 </ion-item>
                 <ion-item>
                   <ion-label position="floating">Zip code </ion-label>
-                  <ion-input [(ngModel)]="address.pincode"></ion-input>
+                  <ion-input [(ngModel)]="address.zipcode"></ion-input>
                 </ion-item>
               <ion-item margin>
                 <ion-button (click)="createLocation()" slot="end" text center>
