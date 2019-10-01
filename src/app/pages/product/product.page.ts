@@ -96,15 +96,13 @@ export class ProductPage implements OnInit {
       this.queryService.findAllProductsUsingGET({iDPcode,page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
-        success != undefined?success(res):null;
-        
+        success !== undefined ? success(res) : null;
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
           this.queryService.getProductBundleUsingGET(p.id)
               .subscribe(productBundle => {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
-                
               });
           this.products.push(p);
         });

@@ -20,7 +20,8 @@
   <ion-card>
     <ion-item text-center *ngIf="categoryDTO.image == undefined">
         <ion-label>
-      <ion-img (click)="selectImage()" src="assets/images/camera.png"></ion-img>
+      <ion-img (click)="selectImage()" src="assets/images/camera.png">
+        <ion-text color="danger" class="text-size">*</ion-text></ion-img>
     </ion-label>
     </ion-item>
     <ion-item text-center  *ngIf="categoryDTO.image != undefined">
@@ -29,7 +30,7 @@
     </ion-label>
     </ion-item>
     <ion-item margin>
-      <ion-label position="floating">Name</ion-label>
+      <ion-label position="floating">Name<ion-text color="danger" class="text-size">*</ion-text></ion-label>
       <ion-input type="text" [(ngModel)]="categoryDTO.name"></ion-input>
     </ion-item>
     <ion-item margin>

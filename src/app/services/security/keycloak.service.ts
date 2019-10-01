@@ -34,7 +34,24 @@ export class KeycloakService {
       user.enabled = true;
 
       this.keycloakAdmin.users.create(user)
-        .then(res => {
+        .then(async res => {
+          await this.keycloakAdmin.roles
+            .findOneByName({
+              name: 'shopkeeper',
+              realm: 'graeshoppe'
+            })
+            .then(async role => {
+              await this.keycloakAdmin.users.addRealmRoleMappings({
+                id: res.id,
+                realm: 'graeshoppe',
+                roles: [
+                  {
+                    id: role.id,
+                    name: role.name
+                  }
+                ]
+              });
+            });
           success(res);
         })
         .catch(e => {
@@ -54,9 +71,18 @@ export class KeycloakService {
       credentials.username,
       credentials.password,
       new HttpHeaders()
-    ).then(data => {
+    ).then((data: any) => {
       this.storage.set('user' , data);
-      success();
+      this.checkUserInRole(data.sub)
+          .then(async hasRoleCustomer => {
+            if (hasRoleCustomer) {
+              success();
+            } else {
+              await this.oauthService.logOut();
+              err();
+            }
+          })
+          .catch(() => err());
     }).catch(e => {
       err();
     });
@@ -64,6 +90,35 @@ export class KeycloakService {
 
   async getCurrentUserDetails() {
     return await this.oauthService.loadUserProfile();
+  }
+
+  async checkUserInRole(user): Promise<boolean> {
+    return await new Promise<boolean>(async (resolve, reject) => {
+      await this.keycloakConfig
+        .refreshClient()
+        .then(async () => {
+          await this.keycloakConfig.kcAdminClient.users
+            .listRoleMappings({
+              id: user,
+              realm: 'graeshoppe'
+            })
+            .then(async roles => {
+              const rolesAvailable = await roles.realmMappings.filter(
+                mapping => {
+                  if (mapping.name === 'shopkeeper') {
+                    return true;
+                  }
+                }
+              );
+              if (rolesAvailable.length === 1) {
+                resolve(true);
+              } else {
+                resolve(false);
+              }
+            });
+        })
+        .catch(err => reject(false));
+    });
   }
 
   async updateCurrentUserDetails(keycloakUser: any): Promise<void> {

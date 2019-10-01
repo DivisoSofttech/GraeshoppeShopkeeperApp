@@ -54,7 +54,9 @@
                   <ion-item margin>
                     <ion-label position="floating">Reason</ion-label>
                     <ion-select [(ngModel)]="stockEntry.reasonId" >
-                      <ion-select-option *ngFor="let reason of reasons" value="{{reason.name}}"></ion-select-option>
+                      <ion-select-option *ngFor="let reason of reasons" value="{{reason.id}}">
+                        {{reason.name}}
+                      </ion-select-option>
                     </ion-select>
                   </ion-item>
                 </ion-col>
@@ -89,7 +91,9 @@
                   <ion-item margin>
                     <ion-label position="floating">Location</ion-label>
                     <ion-select [(ngModel)]="stockEntry.locationId">
-                      <ion-select-option *ngFor="let location of locations" value="{{location.name}}"></ion-select-option>
+                      <ion-select-option *ngFor="let location of locations" value="{{location.id}}">
+                        {{location.name}}
+                      </ion-select-option>
                     </ion-select>
                   </ion-item>
                 </ion-col>
@@ -220,7 +224,8 @@
 <ion-footer>
   <ion-item *ngIf="currentSlide != '1'">
     <ion-buttons slot="start" margin>
-      <ion-button color="success">Save Entry</ion-button>
+      <ion-button *ngIf="mode == 'create'" (click)="createStockEntry()" color="success">Save Entry</ion-button>
+      <ion-button *ngIf="mode == 'update'" (click)="createStockEntry()" color="success">Update Entry</ion-button>
     </ion-buttons>
     <ion-buttons slot="end" margin>
       <ion-button (click)="dismiss()" color="danger">Cancel</ion-button>

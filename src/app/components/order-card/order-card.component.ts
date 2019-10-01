@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { OrderViewComponent } from './../order-view/order-view.component';
 import { ModalController } from '@ionic/angular';
 import {
@@ -21,22 +22,29 @@ import { Util } from 'src/app/services/util';
 export class OrderCardComponent implements OnInit {
   @Input() order: Order;
   @Input() orderType: string;
-  @Input() taskId: string;
+  taskId: string;
 
   @Output() accept = new EventEmitter();
   @Output() completed = new EventEmitter();
 
   deliveryTime: string;
+  user;
   constructor(
     private command: CommandResourceService,
     private modalController: ModalController,
     private file: File,
     private fileOpener: FileOpener,
     private queryResource: QueryResourceService,
-    private util: Util
+    private util: Util,
+    private storage: Storage
   ) {}
 
   ngOnInit() {
+    this.storage
+        .get('user')
+        .then(data => {
+          this.user = data;
+        });
   }
 
   completeOrder(order: Order) {
@@ -53,40 +61,50 @@ export class OrderCardComponent implements OnInit {
     );
   }
   acceptOrder() {
-    this.util.createLoader().then(
-      loader => {
-        loader.present();
-        const date = new Date();
-        this.deliveryTime = date.toISOString();
-        const time: string = this.deliveryTime.slice(
-      this.deliveryTime.indexOf('T') + 1,
-      this.deliveryTime.indexOf('.')
-    );
-        const tempTime: string[] = time.split(':');
-        const newTime = moment(date)
-      .add(0, 'seconds')
-      .add(tempTime[1], 'minutes')
-      .add(tempTime[0], 'hours')
-      .toISOString();
-        console.log('task id', this.taskId);
+    this.queryResource.getTaskDetailsUsingGET({
+      taskName: 'Accept Order',
+      orderId: this.order.orderId,
+      storeId: this.user.preferred_username
+    }).subscribe(openTask => {
+      this.util.createLoader().then(
+        loader => {
+          loader.present();
+          const date = new Date();
+          this.deliveryTime = date.toISOString();
+          const time: string = this.deliveryTime.slice(
+        this.deliveryTime.indexOf('T') + 1,
+        this.deliveryTime.indexOf('.')
+      );
+          const tempTime: string[] = time.split(':');
+          const newTime = moment(date)
+        .add(0, 'seconds')
+        .add(tempTime[1], 'minutes')
+        .add(tempTime[0], 'hours')
+        .toISOString();
+          console.log('task id', openTask.taskId);
 
-        this.command
-      .acceptOrderUsingPOST({
-        taskId: this.taskId,
-        approvalDetailsDTO: {
-          acceptedAt: date.toISOString(),
-          customerId: this.order.customerId,
-          decision: 'accepted',
-          orderId: this.order.orderId,
-          expectedDelivery: newTime
+          this.command
+        .acceptOrderUsingPOST({
+          taskId: openTask.taskId,
+          approvalDetailsDTO: {
+            acceptedAt: date.toISOString(),
+            customerId: this.order.customerId,
+            decision: 'accepted',
+            orderId: this.order.orderId,
+            expectedDelivery: newTime
+          }
+        })
+        .subscribe(data => {
+          this.accept.emit();
+          this.util.createToast('Order Accepted', 'checkmark');
+          loader.dismiss();
+        }, err => {
+          console.log(err);
+          loader.dismiss();
+        });
         }
-      })
-      .subscribe(data => {
-        this.accept.emit();
-        loader.dismiss();
-      });
-      }
-    );
+      );
+    });
   }
   async viewOrderViewModal(order) {
     const modal = await this.modalController.create({

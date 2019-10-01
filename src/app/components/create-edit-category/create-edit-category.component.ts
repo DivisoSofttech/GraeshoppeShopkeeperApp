@@ -80,6 +80,7 @@ export class CreateEditCategoryComponent implements OnInit {
           }
         }
         , err => {
+          this.loader.dismiss();
           console.log('Error Creating Category', err);
           this.util.createToast("Category Creation Error",'alert');
       });

@@ -7,7 +7,7 @@ import { CreateEditCategoryComponent } from './../create-edit-category/create-ed
 import { UOMDTO } from './../../api/models/uomdto';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
-import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
+import { ModalController, PopoverController, IonSlides, IonContent } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   QueryResourceService,
@@ -48,6 +48,8 @@ export class CreateEditProductComponent implements OnInit {
   discount: DiscountDTO = {};
   oldAux: number = 0;
   oldCombo: number = 0;
+  @ViewChild('content', {static: false}) content: IonContent;
+
   constructor(
     private modalController: ModalController,
     private query: QueryResourceService,
@@ -93,8 +95,10 @@ export class CreateEditProductComponent implements OnInit {
     this.value = value;
     if (this.value === 'category') {
       this.slides.slideTo(1);
+      this.content.scrollToTop(0);
     } else if (this.value === 'uom') {
       this.slides.slideTo(2);
+      this.content.scrollToTop(0);
     } else {
       this.slides.slideTo(0);
       this.value = 'none';
@@ -116,7 +120,7 @@ export class CreateEditProductComponent implements OnInit {
                   this.oldAux++;
                   this.checkAuxArray[this.auxilaryProduct.indexOf(data)] = true;
                 }
-              })
+              });
             });
         });
       });
@@ -163,7 +167,7 @@ export class CreateEditProductComponent implements OnInit {
     });
   }
   createProduct() {
-    if (this.productDTO.isAuxilaryItem == true) {
+    if (this.productDTO.isAuxilaryItem === true) {
       this.productDTO.categoryId = null;
     }
     this.util.createLoader()

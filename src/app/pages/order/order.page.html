@@ -12,10 +12,20 @@
 </ion-header>
 
 <ion-content>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="filterActionsheet()">
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button >
             <ion-icon name="funnel"></ion-icon>
         </ion-fab-button>
+        <ion-fab-list side="end">
+          <ion-buttons>
+          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='all' }" (click)="filter('all')">All
+          </ion-button>
+          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='delivery' }" (click)="filter('delivery')" class="button-border">Delivery
+          </ion-button>
+          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='collection' }" (click)="filter('collection')" class="button-border">Collection
+          </ion-button>
+        </ion-buttons>
+        </ion-fab-list>
       </ion-fab>
   <!--Segment Button Container Start-->
   <div>
@@ -35,9 +45,9 @@
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
         <ion-slide>
           <ion-list class="order-card-view" justify-content-center>
-        <div *ngFor="let order  of pendingOrders; let i = index"  justify-content-center>
+        <div *ngFor="let order  of pendingOrders"  justify-content-center>
           <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-          <app-order-card class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order)" [taskId]="tasks[i].taskId"  [order]="order"></app-order-card>
+          <app-order-card class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order)"  [order]="order"></app-order-card>
         </div>
       </ion-list>
         </ion-slide>
@@ -57,12 +67,6 @@
           </ion-list>
         </ion-slide>
         </ion-slides>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreOrders($event)">
-        <ion-infinite-scroll-content
-          loadingSpinner="bubbles"
-          loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
       <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
         <ion-refresher-content
           pullingIcon="arrow-dropdown"
@@ -71,5 +75,11 @@
           refreshingText="Refreshing...">
         </ion-refresher-content>
       </ion-refresher>
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore()">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
   </ion-content>
   

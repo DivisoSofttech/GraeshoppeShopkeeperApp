@@ -1,19 +1,23 @@
 <ion-header>
   <ion-toolbar>
-      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+    <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
     <ion-title>stock-dairy</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <div *ngFor="let entry of stockEntry">
-      <app-stock-dairy-card (click)="openStockDairyViewModal(entry)" [stockEntry]='entry'></app-stock-dairy-card>
+    <div *ngFor="let entry of stockEntries">
+      <app-stock-dairy-card (delete)="deleteStockEntry(entry)" [stockEntry]='entry'></app-stock-dairy-card>
     </div>
   </ion-list>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="createStockDairyModal()">
-            <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createStockDairyModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreStockEntry($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
