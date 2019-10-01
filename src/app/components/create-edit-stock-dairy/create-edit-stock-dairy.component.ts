@@ -8,7 +8,7 @@ import { EntryLineItem } from './../../api/models/entry-line-item';
 import { Product } from './../../api/models/product';
 import { Util } from 'src/app/services/util';
 import { ModalController, IonSlides, IonInfiniteScroll } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { ReasonDTO, Reason, Location } from 'src/app/api/models';
@@ -38,6 +38,9 @@ export class CreateEditStockDairyComponent implements OnInit {
   entryLineItemDTO: EntryLineItemDTO = {};
   entryLineItems: EntryLineItemDTO[] = [];
   selectedProducts: Product[] = [];
+
+  @Input()edit = false;
+
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
@@ -45,7 +48,7 @@ export class CreateEditStockDairyComponent implements OnInit {
     private queryService: QueryResourceService,
     private storage: Storage,
     private util: Util,
-    private commandService: CommandResourceService
+    private commandService: CommandResourceService,
   ) { }
 
   ngOnInit() {
@@ -54,6 +57,8 @@ export class CreateEditStockDairyComponent implements OnInit {
       this.loader = loader;
       this.loader.present();
       this.getProducts(0 , true);
+      this.getReasons();
+      this.getLocations();
     });
   }
 
@@ -78,9 +83,29 @@ export class CreateEditStockDairyComponent implements OnInit {
     }
   }
 
+  createStockEntry() {
+    this.storage.get('user').then(user => {
+      this.stockEntry.date = new Date().toISOString();
+      this.stockEntry.iDPcode = user.preferred_username;
+      this.commandService.createStockEntryUsingPOST(this.stockEntry).subscribe(stockEntry => {
+      console.log('stock', stockEntry);
+      this.entryLineItems.forEach(entryLineitem => {
+        entryLineitem.stockEntryId = stockEntry.id;
+        this.commandService.createEntryLineItemUsingPOST(entryLineitem).subscribe(entry => {
+          console.log('entry', entry);
+        }, err => {
+          console.log('error', err);
+        });
+      });
+    }, err => console.log('error creating stockentry'));
+  });
+  }
 
+  updateStockEntry() {
 
-  getProducts(i , limit?: Boolean , success?) {
+  }
+
+  getProducts(i , limit?: boolean , success?) {
 
     let iDPcode;
     this.storage.get('user').then(user => {
@@ -88,7 +113,7 @@ export class CreateEditStockDairyComponent implements OnInit {
       this.queryService.findAllProductsUsingGET({iDPcode, page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
-        success != undefined ? success(res) : null;
+        success !== undefined ? success(res) : null;
 
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
@@ -101,7 +126,7 @@ export class CreateEditStockDairyComponent implements OnInit {
           this.products.push(p);
         });
         i++;
-        if (i == res.totalPages) {
+        if (i === res.totalPages) {
           this.toggleInfiniteScroll();
         }
         if (limit === false) {
@@ -151,32 +176,54 @@ export class CreateEditStockDairyComponent implements OnInit {
     this.entryLineItemDTO.productId = this.currentProduct.id;
     this.selectedProducts.push(this.currentProduct);
     this.entryLineItems.push(this.entryLineItemDTO);
+    this.showDetail = false;
   }
 
   removeStockEntry(product) {
-    this.entryLineItems = this.entryLineItems.filter(e => e.productId != product.id);
-    this.selectedProducts = this.selectedProducts.filter(sp => sp.id != product.id);
+    this.entryLineItems = this.entryLineItems.filter(e => e.productId !== product.id);
+    this.selectedProducts = this.selectedProducts.filter(sp => sp.id !== product.id);
   }
   createReason() {
+    this.storage.get('user').then(user => {
+    this.reasonDTO.iDPcode = user.preferred_username;
     this.commandService.createReasonUsingPOST(this.reasonDTO).subscribe(reasonDTO => {
       this.reasons.push(reasonDTO);
+      this.reason = false;
     });
+  });
   }
 
   createLocation() {
+    this.storage.get('user').then(user => {
     this.commandService.createProductAddressUsingPOST(this.address).subscribe(address => {
+      this.locationDTO.iDPcode = user.preferred_username;
       this.locationDTO.addressId = address.id;
       this.commandService.createLocationUsingPOST(this.locationDTO).subscribe(locationDTO => {
         this.locations.push(locationDTO);
+        this.location = false;
       });
     });
+  });
 
   }
 
   getLocations() {
-
+    this.storage.get('user').then(user => {
+      this.queryService.findLocationByRegNoUsingGET(user.preferred_username).subscribe(page => {
+        this.locations = page.content;
+      });
+    });
   }
   getReasons() {
-
+    this.storage.get('user').then(user => {
+      this.queryService.findReasonByRegNoUsingGET(user.preferred_username).subscribe(page => {
+        this.reasons = page.content;
+      });
+    });
   }
+
+  getEntryLineItems() {
+    // this.queryService.findAllEntryLineItemsUsingGET()
+  }
+
 }

@@ -23,7 +23,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <app-add (categoryAdd)="onAddCategory($event)"></app-add>
 
   <!--Infinite Scroll-->
   <ion-infinite-scroll threshold="600px" (ionInfinite)="loadMoreCategories($event)">
@@ -38,3 +37,4 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 </ion-content>
+<app-add (categoryAdd)="onAddCategory($event)"></app-add>

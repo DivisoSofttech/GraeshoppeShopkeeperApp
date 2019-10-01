@@ -68,7 +68,6 @@ export class DashboardPage implements OnInit {
       data: {
         labels: ['GROCERIES', 'VEGETABLES', 'COSMETICS', 'DETERGENTS', 'BOOKS'],
         datasets: [{
-          
           data: [50, 29, 15, 10, 7],
           backgroundColor: [
             'rgba(255, 159, 64, 0.2)',

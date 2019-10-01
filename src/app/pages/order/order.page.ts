@@ -40,9 +40,12 @@ export class OrderPage implements OnInit {
   pendingOrders: Order[] = [];
   confirmedOrders: Order[] = [];
   completedOrders: Order[] = [];
+  deliveryType = 'all';
 
   currentPage = 'pending';
-  pageCount = 0;
+  penCount = 0;
+  conCount = 0;
+  comcount = 0;
 
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
@@ -89,7 +92,7 @@ export class OrderPage implements OnInit {
       this.store = store;
       this.getNoticationCount();
       if (store.storeSettings.orderAcceptType !== 'automatic') {
-        this.getPendingOrders();
+        this.getPendingOrders(0);
       }
       this.getConfirmedOrders(0);
       this.getCompletedOrders(0);
@@ -99,60 +102,73 @@ export class OrderPage implements OnInit {
     });
   }
 
-  async filterActionsheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Filter',
-      cssClass: 'action-sheets',
-      buttons: [
-        {
-          text: 'Collection',
-          cssClass: 'action-sheets',
-          handler: () => {
-            console.log('Collection clicked');
-          }
-        },
-        {
-          text: 'Delivery',
-          handler: () => {
-            console.log('Delivery clicked');
-          }
-        },
-        {
-          text: 'Cancel',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    await actionSheet.present();
+  filter(filterBy) {
+    this.deliveryType = filterBy;
+    this.confirmedOrders = [];
+    this.getConfirmedOrders(0);
+    this.completedOrders = [];
+    this.getCompletedOrders(0);
+    this.pendingOrders = [];
+    this.getPendingOrders(0);
   }
-  getPendingOrders() {
+
+  color(type): string {
+    if (this.deliveryType === type) {
+      return 'primary';
+    }
+    return 'warning';
+  }
+
+  // getPendingOrders() {
+  //   this.util.createLoader().then(loader => {
+  //     this.loader = loader;
+  //     this.loader.present();
+  //     this.queryResource
+  //       .getOpenTasksUsingGET({
+  //         assignee: this.user.preferred_username,
+  //         name: 'Accept Order'
+  //       })
+  //       .subscribe(
+  //         listOfTasks => {
+  //           listOfTasks.forEach(opentask => {
+  //             this.tasks.push(opentask);
+  //             this.queryResource
+  //               .findOrderByOrderIdUsingGET(opentask.orderId)
+  //               .subscribe(order => this.pendingOrders.push(order));
+  //           });
+  //           this.loader.dismiss();
+  //         }, err => {
+  //           this.loader.dismiss();
+  //           this.util.createToast('Error getting Confirmed Orders', 'information-circle');
+  //         });
+  //   });
+  // }
+
+  getPendingOrders(i) {
     this.util.createLoader().then(loader => {
-      this.loader = loader;
-      this.loader.present();
+      loader.present();
       this.queryResource
-        .getOpenTasksUsingGET({
-          assignee: this.user.preferred_username,
-          name: 'Accept Order'
+        .findOrderByStatusNameUsingGET({
+          statusName: 'unapproved',
+          page: i,
+          storeId: this.user.preferred_username,
+          deliveryType: this.deliveryType
         })
-        .subscribe(
-          listOfTasks => {
-            listOfTasks.forEach(opentask => {
-              this.tasks.push(opentask);
-              this.queryResource
-                .findOrderByOrderIdUsingGET(opentask.orderId)
-                .subscribe(order => this.pendingOrders.push(order));
-            });
-            this.loader.dismiss();
-          },err => {
-            this.loader.dismiss();
-            this.util.createToast('Error getting Confirmed Orders','information-circle');
-          });
+        .subscribe(res => {
+          console.log('pending', res.content);
+          res.content.forEach(data => this.pendingOrders.push(data));
+          i++;
+          if (i === res.totalPages) {
+            this.toggleInfiniteScroll();
+          }
+          loader.dismiss();
+        }, err => {
+          loader.dismiss();
+          this.util.createToast('Error getting Pending Orders', 'information-circle');
+        });
     });
   }
+
   getConfirmedOrders(i) {
     this.util.createLoader().then(loader => {
       loader.present();
@@ -160,22 +176,24 @@ export class OrderPage implements OnInit {
         .findOrderByStatusNameUsingGET({
           statusName: 'payment-processed',
           page: i,
-          storeId: this.user.preferred_username
+          storeId: this.user.preferred_username,
+          deliveryType: this.deliveryType
         })
         .subscribe(res => {
+          console.log('confirmed', res.content);
           res.content.forEach(data => this.confirmedOrders.push(data));
           i++;
-          console.log("confirmed orders",res.content);
-          if (i < res.totalPages) {
-            this.getConfirmedOrders(i);
+          if (i === res.totalPages) {
+            this.toggleInfiniteScroll();
           }
           loader.dismiss();
-        },err=> {
+        }, err => {
           loader.dismiss();
-          this.util.createToast('Error getting Confirmed Orders','information-circle');
+          this.util.createToast('Error getting Confirmed Orders', 'information-circle');
         });
     });
   }
+
 
   getCompletedOrders(i) {
     this.util.createLoader().then(loader => {
@@ -184,17 +202,18 @@ export class OrderPage implements OnInit {
         .findOrderByStatusNameUsingGET({
           statusName: 'delivered',
           page: i,
-          storeId: this.user.preferred_username
+          storeId: this.user.preferred_username,
+          deliveryType: this.deliveryType
         })
         .subscribe(res => {
+          console.log('completed', res.content);
           res.content.forEach(data => this.completedOrders.push(data));
-          console.log("completed orders",res.content);
           i++;
-          if (i < res.totalPages) {
-            this.getCompletedOrders(i);
+          if (i === res.totalPages) {
+            this.toggleInfiniteScroll();
           }
           loader.dismiss();
-        },err=> {
+        }, err => {
           loader.dismiss();
           this.util.createToast('Error getting Completed Orders','information-circle');
         });
@@ -232,9 +251,17 @@ export class OrderPage implements OnInit {
     this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
   }
 
-  loadMoreOrders() {
-    this.pageCount++;
-    this.getOrders(this.pageCount, true);
+  loadMore() {
+    if (this.deliveryType === 'pending') {
+      this.penCount++;
+      this.getPendingOrders(this.penCount);
+    } else if (this.deliveryType === 'confirmed') {
+      this.conCount++;
+      this.getConfirmedOrders(this.conCount);
+    } else if (this.deliveryType === 'completed') {
+      this.comcount++;
+      this.getCompletedOrders(this.comcount);
+    }
   }
 
   segmentChange(ev) {

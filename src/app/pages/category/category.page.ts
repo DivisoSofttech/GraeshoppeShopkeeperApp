@@ -89,10 +89,10 @@ export class CategoryPage implements OnInit {
       this.queryService.findAllCategoriesUsingGET({storeId: iDPcode})
       .subscribe(res => {
         this.infiniteScroll.complete();
-        if(i==res.totalPages){
+        if (i === res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        success != undefined?success(res):null;
+        success !== undefined?success(res):null;
         
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(c => {
@@ -100,7 +100,9 @@ export class CategoryPage implements OnInit {
           this.tempCategories.push(c);
         });
         i++;
-
+        if(i==res.totalPages){
+          this.toggleInfiniteScroll();
+        }
         // Should load more pages or not 
         // limit === false load all pages at once
         // limit === true load only the first page
@@ -150,7 +152,7 @@ export class CategoryPage implements OnInit {
     this.getCategories(this.pageCount , true , (data)=>{
 
       // Disable infinite scroll if all pages have been loaded
-      console.log(this.pageCount + 1,'==' , data.totalPages);
+      console.log(this.pageCount + 1, '==' , data.totalPages);
       if(data.totalPages === this.pageCount + 1) {
         console.log('InfiniteScroll Disabled'
         )

@@ -22,10 +22,12 @@
             <ion-icon name="funnel"></ion-icon>
         </ion-fab-button>
         <ion-fab-list side="end">
-            <ion-button shape="round" (click)="getAll()">All
+          <ion-buttons>
+            <ion-button class="button-border" (click)="getAll()">All
             </ion-button>
-            <ion-button shape="round" (click)="getAuxilaries()">Extras
+            <ion-button class="button-border" (click)="getAuxilaries()">Extras
             </ion-button>
+          </ion-buttons>
           </ion-fab-list>
       </ion-fab>
   <ion-grid>
@@ -36,7 +38,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <app-add (productAdd)="onAddProduct($event)"></app-add>
+
 
   <!--Infinite Scroll-->
   <ion-infinite-scroll threshold="600px" (infiniteScroll)="loadMoreProducts($event)">
@@ -49,3 +51,4 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 </ion-content>
+<app-add (productAdd)="onAddProduct($event)"></app-add>
