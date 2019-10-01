@@ -27,6 +27,9 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +40,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     HttpClientModule,
     ConfigsModule,
     ChartsModule,
+    SocketIoModule.forRoot(config),
     IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -60,6 +64,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     SplashScreen,
     Geolocation,
     GoogleMapsAPIWrapper,
+    LocalNotifications,
     File,
     FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
