@@ -10,27 +10,26 @@
         </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
+<ion-fab data-desc="Category" (click)="showFoo()" vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button>
+      <ion-icon name="funnel"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="end">
+    <ion-buttons>
+    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='all' }" (click)="filter('all')">All
+    </ion-button>
+    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='delivery' }" (click)="filter('delivery')" class="button-border">Delivery
+    </ion-button>
+    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='collection' }" (click)="filter('collection')" class="button-border">Collection
+    </ion-button>
+  </ion-buttons>
+  </ion-fab-list>
+</ion-fab>
 <ion-content>
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-        <ion-fab-button >
-            <ion-icon name="funnel"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-list side="end">
-          <ion-buttons>
-          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='all' }" (click)="filter('all')">All
-          </ion-button>
-          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='delivery' }" (click)="filter('delivery')" class="button-border">Delivery
-          </ion-button>
-          <ion-button [ngClass]="{ 'btn-color' :deliveryType=='collection' }" (click)="filter('collection')" class="button-border">Collection
-          </ion-button>
-        </ion-buttons>
-        </ion-fab-list>
-      </ion-fab>
   <!--Segment Button Container Start-->
   <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
-        <ion-segment-button *ngIf="store != null && store.storeSettings.orderAcceptType!='automatic'" value="pending">
+        <ion-segment-button *ngIf="showPending" value="pending">
           <ion-label>Pending</ion-label>
         </ion-segment-button>
         <ion-segment-button value="confirmed">
@@ -82,4 +81,8 @@
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
   </ion-content>
+
+  <ion-footer *ngIf="showFooter"  class="hieght">
+    
+  </ion-footer>
   

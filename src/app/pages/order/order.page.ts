@@ -42,10 +42,12 @@ export class OrderPage implements OnInit {
   completedOrders: Order[] = [];
   deliveryType = 'all';
 
+  showPending = true;
   currentPage = 'pending';
   penCount = 0;
   conCount = 0;
   comcount = 0;
+  showFooter = false;
 
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
@@ -90,6 +92,7 @@ export class OrderPage implements OnInit {
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
     .subscribe(store => {
       this.store = store;
+      this.hidePending();
       this.getNoticationCount();
       if (store.storeSettings.orderAcceptType !== 'automatic') {
         this.getPendingOrders(0);
@@ -316,10 +319,22 @@ export class OrderPage implements OnInit {
     this.completedOrders.push(order);
   }
 
+  hidePending() {
+    if (this.store.storeSettings.orderAcceptType === 'automatic') {
+      this.showPending = false;
+    }
+  }
+
   refresh(event) {
     this.ngOnInit();
     setTimeout(() => {
       event.target.complete();
     }, 2000);
   }
+
+  showFoo() {
+    this.showFooter = !this.showFooter;
+  }
+
+
 }
