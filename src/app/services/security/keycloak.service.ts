@@ -1,3 +1,4 @@
+import { NotificationService } from './../notification.service';
 import { Util } from './../util';
 import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -18,7 +19,8 @@ export class KeycloakService {
     private oauthService: OAuthService,
     private keycloakConfig: KeycloakAdminConfig,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private notificationService: NotificationService
   ) {
 
 
@@ -76,6 +78,7 @@ export class KeycloakService {
       this.checkUserInRole(data.sub)
           .then(async hasRoleCustomer => {
             if (hasRoleCustomer) {
+              this.notificationService.subscribeToMyNotifications(credentials.username);
               success();
             } else {
               await this.oauthService.logOut();
@@ -156,13 +159,14 @@ export class KeycloakService {
         })
         .catch(e => {
           err(e);
-        })
+        });
       });
-  
-    })
+
+    });
   }
 
   logout() {
+    this.notificationService.disconnectToMyNotifications();
     this.oauthService.logOut();
     this.storage.clear();
     this.util.navigateToLogin();
