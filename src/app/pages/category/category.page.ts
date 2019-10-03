@@ -1,11 +1,11 @@
 import { NotificationComponent } from './../../components/notification/notification.component';
-import { CreateEditCategoryComponent } from './../../components/create-edit-category/create-edit-category.component';
 import { ActionSheetController, ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Category } from './../../api/models/category';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
 import { Storage } from '@ionic/storage';
 import { Util } from 'src/app/services/util';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-category',
@@ -22,20 +22,21 @@ export class CategoryPage implements OnInit {
 
   pageCount = 0;
 
-  showSearchbar: boolean = false;
+  showSearchbar = false;
 
   searchTerm: string;
 
-  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
+  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
   notificationCount: number;
 
   constructor(
     private queryService: QueryResourceService,
     private storage: Storage,
     private util: Util,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private notification: NotificationService
   ) { }
-  
+
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
@@ -45,44 +46,43 @@ export class CategoryPage implements OnInit {
       this.getCategories(0 , true);
     });
   }
-  toggleSearchbar(){
+  toggleSearchbar() {
     this.showSearchbar = !this.showSearchbar;
-    this.categories=this.tempCategories;
+    this.categories = this.tempCategories;
     console.log(this.categories);
   }
 
-  searchCategories(i){
+  searchCategories(i) {
     this.storage.get('user').then(user => {
     this.queryService.findAllCategoryBySearchTermUsingGET({
       storeId: user.preferred_username,
       searchTerm: this.searchTerm,
       page: i
-    }).subscribe(res =>
-      {
+    }).subscribe(res => {
         this.categories = [];
         res.content.forEach(category => this.categories.push(category));
-        console.log('searchterm : ',this.searchTerm);
-        console.log('searched : ',res.content);
-        
-        
+        console.log('searchterm : ', this.searchTerm);
+        console.log('searched : ', res.content);
+
+
         i++;
-        if(i < res.totalPages) {
-          this.searchCategories(i);  
+        if (i < res.totalPages) {
+          this.searchCategories(i);
         } else {
           this.loader.dismiss();
         }
-      })
-      
+      });
+
     });
   }
 
   onAddCategory(category) {
     this.queryService.findCategoryByIdUsingGET(category.id)
-    .subscribe(categoryDomain => this.categories.push(categoryDomain))
+    .subscribe(categoryDomain => this.categories.push(categoryDomain));
    }
-  
 
-  getCategories(i , limit?:Boolean , success?) {
+
+  getCategories(i , limit?: Boolean , success?) {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
@@ -92,23 +92,23 @@ export class CategoryPage implements OnInit {
         if (i === res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        success !== undefined?success(res):null;
-        
+        success !== undefined ? success(res) : null;
+
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(c => {
           this.categories.push(c);
           this.tempCategories.push(c);
         });
         i++;
-        if(i==res.totalPages){
+        if (i == res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        // Should load more pages or not 
+        // Should load more pages or not
         // limit === false load all pages at once
         // limit === true load only the first page
-        if(limit === false) {
-          if(i < res.totalPages) {
-            this.getCategories(i , limit);  
+        if (limit === false) {
+          if (i < res.totalPages) {
+            this.getCategories(i , limit);
           } else {
             this.loader.dismiss();
           }
@@ -116,32 +116,32 @@ export class CategoryPage implements OnInit {
           this.loader.dismiss();
         }
       }
-      ,err=>{
+      , err => {
         this.loader.dismiss();
       });
     });
   }
 
-  updateCategory(category){
-    if(category.data!=undefined){
+  updateCategory(category) {
+    if (category.data != undefined) {
     this.queryService.findCategoryByIdUsingGET(category.data.id)
         .subscribe(category => {
           const categoryDomain: Category = category;
           const index = this.categories.findIndex(p => p.id === category.id);
           this.categories.splice(index, 1, categoryDomain);
-        })
+        });
       }
   }
 
-  deleteCategory(category: Category){
-    this.categories = this.categories.filter(c=>c !== category)
+  deleteCategory(category: Category) {
+    this.categories = this.categories.filter(c => c !== category);
   }
 
   refresh(event) {
     this.categories = [];
     this.pageCount = 0;
     this.infiniteScroll.disabled = false;
-    this.getCategories(0 , true , ()=>{
+    this.getCategories(0 , true , () => {
       // Disable Refresh after Completion
       event.target.complete();
     });
@@ -149,13 +149,13 @@ export class CategoryPage implements OnInit {
 
   loadMoreCategories(event) {
     this.pageCount++;
-    this.getCategories(this.pageCount , true , (data)=>{
+    this.getCategories(this.pageCount , true , (data) => {
 
       // Disable infinite scroll if all pages have been loaded
       console.log(this.pageCount + 1, '==' , data.totalPages);
-      if(data.totalPages === this.pageCount + 1) {
+      if (data.totalPages === this.pageCount + 1) {
         console.log('InfiniteScroll Disabled'
-        )
+        );
         event.target.disabled = true;
       }
     });
@@ -167,11 +167,8 @@ export class CategoryPage implements OnInit {
     });
     return await modal.present();
   }
-  getNoticationCount(){
-    this.storage.get('user').then(user => {
-      this.queryService.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
-          .subscribe(num => this.notificationCount=num);
-    });
+  getNoticationCount() {
+    this.notificationCount = this.notification.notificationCount;
   }
   toggleInfiniteScroll() {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;

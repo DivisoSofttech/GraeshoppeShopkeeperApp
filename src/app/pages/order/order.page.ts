@@ -13,6 +13,7 @@ import {
   ActionSheetController,
   ModalController,
 } from '@ionic/angular';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-order',
@@ -60,6 +61,7 @@ export class OrderPage implements OnInit {
     private modalController: ModalController,
     private util: Util,
     private keycloakService: KeycloakService,
+    private notification: NotificationService
   ) {}
 
   ngOnInit() {
@@ -218,7 +220,7 @@ export class OrderPage implements OnInit {
           loader.dismiss();
         }, err => {
           loader.dismiss();
-          this.util.createToast('Error getting Completed Orders','information-circle');
+          this.util.createToast('Error getting Completed Orders', 'information-circle');
         });
     });
   }
@@ -298,14 +300,7 @@ export class OrderPage implements OnInit {
     return await modal.present();
   }
   getNoticationCount() {
-    this.storage.get('user').then(user => {
-      this.queryResource
-        .getNotificationCountByReceiveridAndStatusUsingGET({
-          status: 'unread',
-          receiverId: user.preferred_username
-        })
-        .subscribe(num => (this.notificationCount = num));
-    });
+    this.notificationCount = this.notification.notificationCount;
   }
   orderAccepted(order) {
     this.pendingOrders = this.pendingOrders.filter(

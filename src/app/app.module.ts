@@ -1,3 +1,4 @@
+import { MaterialModule } from './components/material.module';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -52,7 +53,8 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
       libraries: ['places', 'geometry']
-    })
+    }),
+    MaterialModule
   ],
   providers: [
     Base64,

@@ -1,3 +1,4 @@
+import { NotificationService } from './../../services/notification.service';
 import { ProductViewComponent } from './../../components/product-view/product-view.component';
 
 import { Storage } from '@ionic/storage';
@@ -18,18 +19,19 @@ export class ProductPage implements OnInit {
   loader: HTMLIonLoadingElement;
   searchTerm: string;
   pageCount = 0;
-  showSearchbar: boolean = false;
+  showSearchbar = false;
   products: Product[] = [];
-  tempProducts: Product[] =[];
+  tempProducts: Product[] = [];
   notificationCount: number;
 
-  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll
+  @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
 
   constructor(
     private storage: Storage,
     private util: Util,
     private queryService: QueryResourceService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private notification: NotificationService
   ) { }
 
   ngOnInit() {
@@ -42,13 +44,13 @@ export class ProductPage implements OnInit {
       this.tempProducts = this.products;
     });
   }
-  toggleSearchbar(){
+  toggleSearchbar() {
     this.showSearchbar = !this.showSearchbar;
-    this.products=this.tempProducts;
+    this.products = this.tempProducts;
     console.log(this.products);
   }
 
-  getAuxilaries(){
+  getAuxilaries() {
       this.util.createLoader()
       .then(loader => {
       this.loader = loader;
@@ -60,40 +62,40 @@ export class ProductPage implements OnInit {
           this.loader.dismiss();
         });
       });
-    })
+    });
   }
 
-  getAll(){
+  getAll() {
     this.products = [];
     this.products = this.tempProducts;
   }
-  searchProducts(i){
-    
+  searchProducts(i) {
+
     let storeId;
     this.storage.get('user').then(user => {
       storeId = user.preferred_username;
-      this.queryService.findAllProductBySearchTermUsingGET({storeId,page: i,searchTerm: this.searchTerm})
+      this.queryService.findAllProductBySearchTermUsingGET({storeId, page: i, searchTerm: this.searchTerm})
           .subscribe(res => {
           this.products = [];
-            res.content.forEach(p => {
+          res.content.forEach(p => {
               this.products.push(p);
             });
-            i++;
-            if(i < res.totalPages) {
-              this.searchProducts(i);  
+          i++;
+          if (i < res.totalPages) {
+              this.searchProducts(i);
             } else {
               this.loader.dismiss();
             }
           });
-    })
+    });
   }
-  
+
   getProducts(i , limit?: Boolean , success?) {
-    
+
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode,page: i})
+      this.queryService.findAllProductsUsingGET({iDPcode, page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
         success !== undefined ? success(res) : null;
@@ -107,18 +109,18 @@ export class ProductPage implements OnInit {
           this.products.push(p);
         });
         i++;
-        if(i==res.totalPages){
+        if (i == res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        if(limit === false) {
-          if(i < res.totalPages) {
-            this.getProducts(i , limit);  
+        if (limit === false) {
+          if (i < res.totalPages) {
+            this.getProducts(i , limit);
           } else {
             this.loader.dismiss();
           }
         } else {
           this.loader.dismiss();
-        } 
+        }
       },
       err => {
         this.loader.dismiss();
@@ -137,7 +139,7 @@ export class ProductPage implements OnInit {
           const productDomain: Product = product;
           const index = this.products.findIndex(p => p.id === product.id);
           this.products.splice(index, 1, productDomain);
-        })
+        });
   }
   deleteProduct(product: Product) {
     this.products = this.products.filter(p => p !== product);
@@ -145,16 +147,16 @@ export class ProductPage implements OnInit {
 
   onAddProduct(product) {
     this.queryService.findProductByIdUsingGET(product.id)
-        .subscribe(productDomain => this.products.push(productDomain))
+        .subscribe(productDomain => this.products.push(productDomain));
   }
-  
-  //Infinite Scroll and refresh
+
+  // Infinite Scroll and refresh
 
   refresh(event) {
     this.products = [];
     this.pageCount = 0;
     this.infiniteScroll.disabled = false;
-    this.getProducts(0 , true , ()=>{
+    this.getProducts(0 , true , () => {
       // Disable Refresh after Completion
       event.target.complete();
     });
@@ -162,22 +164,19 @@ export class ProductPage implements OnInit {
 
   loadMoreProducts(event) {
     this.pageCount++;
-    this.getProducts(this.pageCount , true , (data)=>{
+    this.getProducts(this.pageCount , true , (data) => {
 
       // Disable infinite scroll if all pages have been loaded
-      console.log(this.pageCount + 1,'==' , data.totalPages);
-      if(data.totalPages === this.pageCount + 1) {
+      console.log(this.pageCount + 1, '==' , data.totalPages);
+      if (data.totalPages === this.pageCount + 1) {
         console.log('InfiniteScroll Disabled'
-        )
+        );
         event.target.disabled = true;
       }
     });
   }
-  getNoticationCount(){
-    this.storage.get('user').then(user => {
-      this.queryService.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
-          .subscribe(num => this.notificationCount=num);
-    });
+  getNoticationCount() {
+    this.notificationCount = this.notification.notificationCount;
   }
   async openNotificationModal() {
     const modal = await this.modalController.create({

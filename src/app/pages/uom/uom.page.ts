@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Util } from 'src/app/services/util';
 import { ModalController } from '@ionic/angular';
 import { CreateEditUomComponent } from 'src/app/components/create-edit-uom/create-edit-uom.component';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-uom',
@@ -26,12 +27,13 @@ export class UomPage implements OnInit {
     private queryResource: QueryResourceService,
     private storage: Storage,
     private util: Util,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private notification: NotificationService
   ) { }
 
 
   ngOnInit() {
-    
+
     this.storage.get('user')
     .then(data => {
         this.user = data;
@@ -39,16 +41,16 @@ export class UomPage implements OnInit {
         this.util.createLoader()
         .then(loader => {
           this.loader = loader;
-          console.log('UOM PAGE loader created'); 
-          this.getNoticationCount();         
-          this.getUoms(0)      
+          console.log('UOM PAGE loader created');
+          this.getNoticationCount();
+          this.getUoms(0);
         });
-    })
+    });
   }
 
 
   getUoms(i) {
-    if(i === 0) {
+    if (i === 0) {
       // Present loader for the first page = 0 request only
       this.loader.present();
     }
@@ -58,9 +60,9 @@ export class UomPage implements OnInit {
       res => {
         res.content.forEach(uom => {
           this.uoms.push(uom);
-        })
+        });
         i++;
-        if(i < res.totalPages) {
+        if (i < res.totalPages) {
           this.getUoms(i);
         } else {
           // Dismiss Loader after All Pages have been loaded
@@ -68,8 +70,8 @@ export class UomPage implements OnInit {
         }
       },
       err => {
-        console.log('UOM PAGE unable to get uoms' , err);                  
-        this.util.createToast('Unable to get Uoms , Server Error')
+        console.log('UOM PAGE unable to get uoms' , err);
+        this.util.createToast('Unable to get Uoms , Server Error');
         this.loader.dismiss();
       }
     );
@@ -97,11 +99,8 @@ export class UomPage implements OnInit {
     });
     return await modal.present();
   }
-  getNoticationCount(){
-    this.storage.get('user').then(user => {
-      this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({status:'unread',receiverId: user.preferred_username})
-          .subscribe(num => this.notificationCount=num);
-    });
+  getNoticationCount() {
+    this.notificationCount = this.notification.notificationCount;
   }
 
 }

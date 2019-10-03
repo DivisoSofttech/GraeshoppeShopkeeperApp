@@ -92,13 +92,21 @@ export class NotificationService {
           status: 'unread',
           receiverId: user
         })
-        .subscribe(num => (this.notificationCount = num));
+        .subscribe(num => {
+          this.notificationCount = num;
+          console.log('not', num);
+
+        });
   }
 
 disconnectToMyNotifications() {
     console.log('Socket connection is disconnects');
-    this.connectSubscription.unsubscribe();
-    this.notificationListenSubscription.unsubscribe();
+    if (this.connectSubscription !== undefined) {
+      this.connectSubscription.unsubscribe();
+    }
+    if (this.notificationListenSubscription !== undefined) {
+      this.notificationListenSubscription.unsubscribe();
+    }
     this.socket.disconnect();
   }
 
