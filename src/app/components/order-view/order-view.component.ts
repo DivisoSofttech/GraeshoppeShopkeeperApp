@@ -12,7 +12,10 @@ import { Component, OnInit } from '@angular/core';
 export class OrderViewComponent implements OnInit {
 
   order: Order = {};
-  products: Product[];
+  products = {};
+  auxilaries = {};
+  combolineItems = {};
+
   constructor(
     private modalController: ModalController,
     private queryService: QueryResourceService,
@@ -20,15 +23,33 @@ export class OrderViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.order.orderLines) {
+    console.log('sjsjhsjhs');
+    if (this.order) {
       this.util.createLoader().then(loader => {
+       this.queryService.findOrderMasterByOrderIdUsingGET(this.order.orderId)
+       .subscribe(data => {
+         console.log('Data ' , data);
         this.order.orderLines.forEach(orderLine => {
           this.queryService.findProductByIdUsingGET(orderLine.productId).subscribe(res => {
-            this.products.push(res);
+            console.log(res);
+            this.products[orderLine.productId] = res;
+            this.auxilaries[orderLine.productId] = [];
+            this.combolineItems[orderLine.productId] = [];
           });
-        });
+        });           
+       },err=> {
+         console.error('Unable to fetch Order Master');
+       })
       });
     }
+  }
+
+  getAuxilaries(product) {
+
+  }
+
+  getCombolineItems(product) {
+
   }
 
   dismiss() {

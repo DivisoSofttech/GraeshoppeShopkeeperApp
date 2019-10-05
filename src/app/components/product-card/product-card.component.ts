@@ -18,6 +18,10 @@ export class ProductCardComponent implements OnInit {
   delete = new EventEmitter();
   @Output()
   update = new EventEmitter();
+  @Input()
+  type = 'full';
+  @Input()
+  auxilary;
 
   constructor(
     private actionSheetController: ActionSheetController,
