@@ -106,6 +106,7 @@ export class OrderCardComponent implements OnInit {
       );
     });
   }
+  
   async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
       component: OrderViewComponent,

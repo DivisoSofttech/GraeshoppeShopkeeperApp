@@ -31,6 +31,7 @@ import { PageOfLocation } from '../models/page-of-location';
 import { PageOfNotification } from '../models/page-of-notification';
 import { OpenTask } from '../models/open-task';
 import { Order } from '../models/order';
+import { OrderMaster } from '../models/order-master';
 import { PageOfOrder } from '../models/page-of-order';
 import { Product } from '../models/product';
 import { ProductBundle } from '../models/product-bundle';
@@ -88,6 +89,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockCurrentDTOByProductIdUsingGETPath = '/api/query/findStockCurrentDTOByProductId/{productId}';
   static readonly findStockEntryByProductIdUsingGETPath = '/api/query/findStockEntryByProductId/{productId}/{storeId}';
   static readonly findAllEntryLineItemsByStockEntryIdUsingGETPath = '/api/query/findallentrylineitems/{id}';
+  static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderNumber}';
   static readonly findLocationByRegNoUsingGETPath = '/api/query/location/{idpcode}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/not-aux-combo-products/{iDPcode}';
@@ -95,6 +97,7 @@ class QueryResourceService extends __BaseService {
   static readonly getNotificationCountByReceiveridAndStatusUsingGETPath = '/api/query/notification/{status}/{receiverId}';
   static readonly getOpenTasksUsingGETPath = '/api/query/opentasks';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
+  static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
@@ -1547,6 +1550,53 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `status`: status
+   *
+   * - `receiverId`: receiverId
+   *
+   * @return OK
+   */
+  findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.status != null) __params = __params.set('status', params.status.toString());
+    if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findnotificationcount/${params.receiverId}/${params.status}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `status`: status
+   *
+   * - `receiverId`: receiverId
+   *
+   * @return OK
+   */
+  findNotificationCountByReceiverIdAndStatusNameUsingGET(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<number> {
+    return this.findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params).pipe(
+      __map(_r => _r.body as number)
+    );
+  }
+
+  /**
    * @param orderNumber orderNumber
    * @return OK
    */
@@ -1920,6 +1970,42 @@ class QueryResourceService extends __BaseService {
   findOrderByOrderIdUsingGET(orderId: string): __Observable<Order> {
     return this.findOrderByOrderIdUsingGETResponse(orderId).pipe(
       __map(_r => _r.body as Order)
+    );
+  }
+
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderMasterByOrderIdUsingGETResponse(orderId: string): __Observable<__StrictHttpResponse<OrderMaster>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderMasterByOrderId/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OrderMaster>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderMasterByOrderIdUsingGET(orderId: string): __Observable<OrderMaster> {
+    return this.findOrderMasterByOrderIdUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as OrderMaster)
     );
   }
 
@@ -3751,6 +3837,22 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for findNotificationCountByReceiverIdAndStatusNameUsingGET
+   */
+  export interface FindNotificationCountByReceiverIdAndStatusNameUsingGETParams {
+
+    /**
+     * status
+     */
+    status?: string;
+
+    /**
+     * receiverId
+     */
+    receiverId?: string;
   }
 
   /**

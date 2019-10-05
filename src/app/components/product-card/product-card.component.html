@@ -1,4 +1,4 @@
-<ion-card>
+<ion-card *ngIf="type==='full'">
   <div class="overlay">
     <ion-buttons float-right>
       <!-- <ion-action-sheet-controller margin> </ion-action-sheet-controller> -->
@@ -21,3 +21,23 @@
     </ion-grid>
   </ion-card-content>
 </ion-card>
+
+<ion-item  *ngIf="product !== undefined && type === 'minimal'">
+  <ion-thumbnail class="img-small">
+      <ion-img
+        [src]="
+          'data:' +
+          product.imageContentType +
+          ';base64,' +
+          product.image
+        "
+        class="imageShow"
+      >
+      </ion-img>
+    </ion-thumbnail>
+    <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
+      <h1>{{product.name}}</h1>
+      <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
+      <span>{{'Total: &#8364;' + (orderLine.total |  number: "1.1-2")}}</span>
+    </ion-label>
+</ion-item>
