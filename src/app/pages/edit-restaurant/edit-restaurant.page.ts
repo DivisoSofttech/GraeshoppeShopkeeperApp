@@ -292,6 +292,7 @@ export class EditRestaurantPage implements OnInit {
           err => {
             this.util.createToast('Error occured while updating store');
             this.ngOnInit();
+            this.loader.dismiss();
           }
         );
     } else {

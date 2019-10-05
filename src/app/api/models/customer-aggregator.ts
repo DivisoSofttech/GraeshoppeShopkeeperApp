@@ -1,5 +1,9 @@
 /* tslint:disable */
 export interface CustomerAggregator {
-  mobileNumber?: string;
+  email?: string;
+  mobileNumber?: number;
   name?: string;
+  phoneCode?: number;
+  reference?: string;
+  searchKey?: string;
 }

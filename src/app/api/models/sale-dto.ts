@@ -4,4 +4,5 @@ export interface SaleDTO {
   date?: string;
   grandTotal?: number;
   id?: number;
+  userId?: string;
 }

@@ -1,12 +1,23 @@
 <ion-header>
   <ion-toolbar>
-      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-    <ion-title>sale</ion-title>
+    <ion-menu-button *ngIf="currentSlide == 0" slot="start" auto-hide="true"></ion-menu-button>
+    <ion-buttons>
+    <ion-button *ngIf="currentSlide == 1" (click)="slide(0)">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </ion-button>
+    <ion-title *ngIf="currentSlide == 0">sale</ion-title>
+    <ion-title *ngIf="currentSlide == 1">add items</ion-title>
+  </ion-buttons>
+  <ion-button (click)="customerModal()" slot="end" fill="none">
+      <ion-icon slot="icon-only" name="person-add"></ion-icon>
+  </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-grid  class="bg-grey">
+  <ion-slides #slides class="swiper-no-swiping">
+    <ion-slide class="full-width">
+      <!-- <ion-grid  class="bg-grey">
         <ion-row justify-content-center class="ion-margin-top ">
           <ion-col size="12" text-center>
             <ion-label class="fntbig-cursive">
@@ -31,5 +42,125 @@
             </ion-card>
           </ion-col>
         </ion-row>
+      </ion-grid> -->
+      <ion-grid>
+        <ion-row justify-content-center class="ion-margin-top">
+          <ion-col size="12" text-center>
+            <ion-label class="fntbig-cursive">
+              Order total
+            </ion-label>
+            <ion-text class="fntbig-cursive">{{ "(" + ticketLines.length + " items)" }}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+          <ion-col size="12" text-center>
+            <p class="fntbig">&#8364;{{ totalPrice | number: "1.1-2" }}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="totalPrice < store.minAmount">
+          <ion-col size="12" text-center>
+            <ion-text class="cl-red" text-center>
+              Spend {{ store.minAmount  | number: "1.1-2" }} More for delivery</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-button (click)="updateSale()" color="primary" expand="full">Continue</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="9">
+            <ion-item lines="none">
+              <ion-text>Add Items</ion-text>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="slide(1)" fill="none">
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <ion-list class="full-width">
+                  <ion-card *ngFor="let product of selectedProducts" class="full-width">
+                    <ion-item>
+                      <ion-grid class="ion-no-padding">
+                        <ion-row class="ion-no-padding">
+                          <ion-col size ="4" class="ion-margin-top ion-margin-bottom">
+                      <ion-text>{{product.name }}</ion-text>
+                    </ion-col>
+                    <ion-col size ="3" class="ion-margin-top ion-margin-bottom">
+                      <ion-text>
+                        {{getCount(product)}}  x  &#8364;{{product.sellingPrice | number: "1.1-2"}}
+                      </ion-text>
+                    </ion-col>
+                    <ion-col size ="2" class="ion-margin-top ion-margin-bottom">
+                      <ion-text >
+                         &#8364;{{getCount(product)*product.sellingPrice | number: "1.1-2" }}
+                      </ion-text>
+                    </ion-col>
+                    <ion-col size ="3" class="ion-margin-top ion-margin-bottom">
+                        <ion-buttons class="ion-no-padding ion-no-margin">
+                          <ion-button (click)="remove(product)">
+                            <ion-icon name="remove"></ion-icon>
+                          </ion-button>
+                          <ion-button (click)="add(product)">
+                            <ion-icon name="add"></ion-icon>
+                          </ion-button>
+                        </ion-buttons>
+                      </ion-col>
+                      </ion-row>
+                      </ion-grid>
+                    </ion-item>
+                    <!-- <ion-grid>
+                      <ion-row>
+                        <ion-col>
+                          <ion-avatar size="1">
+                            <ion-img [src]="'data:' + product.imageContentType + ';base64,' + product.image"></ion-img>
+                          </ion-avatar>
+                          <ion-text padding>{{product.name}}</ion-text>
+                        </ion-col>
+                        <ion-col size="2">
+                          <ion-button slot="end" fill="none">
+                            {{getCount(product)}}*{{product.sellingPrice}}
+                          </ion-button>
+                        </ion-col>
+                        <ion-col>
+                          {{getCount(product)*product.sellingPrice}}
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid> -->
+                  </ion-card>
+                </ion-list>
+          </ion-col>
+        </ion-row>
       </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-list class="full-width">
+        <ion-card *ngFor="let product of products" class="full-width">
+          <ion-item>
+            <ion-avatar>
+              <ion-img [src]="'data:' + product.imageContentType + ';base64,' + product.image"></ion-img>
+            </ion-avatar>
+            <ion-text padding>{{product.name}}</ion-text>
+            <ion-button slot="end" (click)="remove(product)" fill="none">
+              <ion-icon name="remove" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" fill="none">
+                {{getCount(product)}}
+              </ion-button>
+            <ion-button slot="end" (click)="add(product)" fill="none">
+                <ion-icon name="add" slot="icon-only"></ion-icon>
+              </ion-button>
+          </ion-item>
+        </ion-card>
+      </ion-list>
+      <ion-infinite-scroll threshold="600px" (infiniteScroll)="loadMoreProducts($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

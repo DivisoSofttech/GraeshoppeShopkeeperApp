@@ -55,6 +55,7 @@ class CommandResourceService extends __BaseService {
   static readonly createComboLineItemUsingPOSTPath = '/api/command/combolineitem';
   static readonly updateComboLineItemUsingPUTPath = '/api/command/combolineitem';
   static readonly deleteComboLineItemUsingDELETEPath = '/api/command/combolineitem/{id}';
+  static readonly createContactUsingPOSTPath = '/api/command/contacts';
   static readonly updateContactUsingPUTPath = '/api/command/contacts';
   static readonly deleteContactUsingDELETEPath = '/api/command/contacts/{id}';
   static readonly updateCustomerUsingPUTPath = '/api/command/customers';
@@ -555,6 +556,42 @@ class CommandResourceService extends __BaseService {
   deleteComboLineItemUsingDELETE(id: number): __Observable<null> {
     return this.deleteComboLineItemUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param contact contact
+   * @return OK
+   */
+  createContactUsingPOSTResponse(contact: ContactDTO): __Observable<__StrictHttpResponse<ContactDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = contact;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/contacts`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ContactDTO>;
+      })
+    );
+  }
+  /**
+   * @param contact contact
+   * @return OK
+   */
+  createContactUsingPOST(contact: ContactDTO): __Observable<ContactDTO> {
+    return this.createContactUsingPOSTResponse(contact).pipe(
+      __map(_r => _r.body as ContactDTO)
     );
   }
 

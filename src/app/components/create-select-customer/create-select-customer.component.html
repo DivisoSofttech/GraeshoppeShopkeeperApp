@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="dissmiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-title>Add Customer</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar></ion-searchbar>
+  <ion-buttons *ngIf="showCustomer == false" class="vertical-align-center">
+  <ion-button (click)="toggleCustomer()" class="btn-border" color="primary" expand="full">Add Customer</ion-button>
+  </ion-buttons>
+  <ion-card class="full-width" *ngIf="showCustomer == true" >
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Name</ion-label>
+          <ion-input [(ngModel)] = "customer.name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Mobile Number</ion-label>
+            <ion-input [(ngModel)] = "contact.mobileNumber"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input [(ngModel)] = "contact.email"></ion-input>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <ion-button (click)="toggleCustomer()" class="vertical-align-center" fill="none">Cancel</ion-button>
+                  </ion-col>
+                  <ion-col>
+                      <ion-button class="vertical-align-center" fill="none" (click)="createCustomer(true)" >Save & Use</ion-button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-button class="vertical-align-center" fill="none" (click)="createCustomer(false)">Save</ion-button>
+                      </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-list *ngFor="let customer of customers">
+      <ion-card>
+        <ion-item>
+          <ion-text>{{customer.name}}</ion-text>
+          <ion-buttons slot="end">
+            <ion-button color="success" (click)="dissmissData(customer)">Add</ion-button>
+            <ion-button color="danger">Delete </ion-button>
+          </ion-buttons>
+        </ion-item>
+        
+      </ion-card>
+    </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreCustomer()">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

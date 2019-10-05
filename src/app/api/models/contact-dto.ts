@@ -1,6 +1,8 @@
 /* tslint:disable */
 export interface ContactDTO {
+  email?: string;
   id?: number;
-  mobileNumber?: string;
-  telephone?: string;
+  mobileNumber?: number;
+  phoneCode?: number;
+  telephone?: number;
 }

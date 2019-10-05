@@ -1,3 +1,5 @@
+import { ComponentsModule } from './../../components/components.module';
+import { CreateSelectCustomerComponent } from 'src/app/components/create-select-customer/create-select-customer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,8 +21,10 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ComponentsModule
   ],
-  declarations: [SalePage]
+  declarations: [SalePage],
+  entryComponents: [CreateSelectCustomerComponent]
 })
 export class SalePageModule {}
