@@ -42,7 +42,7 @@ export class UomPage implements OnInit {
         .then(loader => {
           this.loader = loader;
           console.log('UOM PAGE loader created');
-          this.getNoticationCount();
+          // this.getNoticationCount();
           this.getUoms(0);
         });
     });

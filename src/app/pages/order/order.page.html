@@ -49,6 +49,7 @@
           <app-order-card class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order)"  [order]="order"></app-order-card>
         </div>
       </ion-list>
+      
         </ion-slide>
         <ion-slide>
           <ion-list class="order-card-view" justify-content-center>
@@ -65,7 +66,14 @@
             </div>
           </ion-list>
         </ion-slide>
+        
         </ion-slides>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore()">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
         <ion-refresher-content
           pullingIcon="arrow-dropdown"
@@ -74,12 +82,6 @@
           refreshingText="Refreshing...">
         </ion-refresher-content>
       </ion-refresher>
-      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore()">
-        <ion-infinite-scroll-content
-          loadingSpinner="bubbles"
-          loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
   </ion-content>
 
   <ion-footer *ngIf="showFooter"  class="hieght">

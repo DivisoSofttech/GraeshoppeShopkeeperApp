@@ -160,7 +160,6 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          console.log('pending', res.content);
           res.content.forEach(data => this.pendingOrders.push(data));
           i++;
           if (i === res.totalPages) {
@@ -185,7 +184,6 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          console.log('confirmed', res.content);
           res.content.forEach(data => this.confirmedOrders.push(data));
           i++;
           if (i === res.totalPages) {
@@ -211,7 +209,6 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          console.log('completed', res.content);
           res.content.forEach(data => this.completedOrders.push(data));
           i++;
           if (i === res.totalPages) {
@@ -257,13 +254,13 @@ export class OrderPage implements OnInit {
   }
 
   loadMore() {
-    if (this.deliveryType === 'pending') {
+    if (this.currentPage === 'pending') {
       this.penCount++;
       this.getPendingOrders(this.penCount);
-    } else if (this.deliveryType === 'confirmed') {
+    } else if (this.currentPage === 'confirmed') {
       this.conCount++;
       this.getConfirmedOrders(this.conCount);
-    } else if (this.deliveryType === 'completed') {
+    } else if (this.currentPage === 'completed') {
       this.comcount++;
       this.getCompletedOrders(this.comcount);
     }

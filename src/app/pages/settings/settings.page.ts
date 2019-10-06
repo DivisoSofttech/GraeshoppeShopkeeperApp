@@ -59,4 +59,11 @@ export class SettingsPage implements OnInit {
       }
     );
   }
+
+  refresh(event) {
+    this.ngOnInit();
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
 }

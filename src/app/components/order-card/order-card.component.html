@@ -21,6 +21,12 @@
         <span><br></span>
         <ion-icon name="calendar"></ion-icon>
         {{order.date | date: 'shortTime'}}
+        <span><br></span>
+        <ion-badge color="dark" class="ion-margin-start ion-margin-top">
+          <ion-text>
+            {{order.deliveryInfo.deliveryType}}
+          </ion-text>
+        </ion-badge>
       </ion-text>
       </ion-col>
     </ion-row>

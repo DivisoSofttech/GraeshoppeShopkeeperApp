@@ -39,7 +39,7 @@ export class ProductPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
-      this.getNoticationCount();
+      // this.getNoticationCount();
       this.getProducts(0 , true);
       this.tempProducts = this.products;
     });

@@ -42,7 +42,7 @@ export class CategoryPage implements OnInit {
     .then(loader => {
       this.loader = loader;
       this.loader.present();
-      this.getNoticationCount();
+      //this.getNoticationCount();
       this.getCategories(0 , true);
     });
   }

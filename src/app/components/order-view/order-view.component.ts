@@ -29,17 +29,17 @@ export class OrderViewComponent implements OnInit {
        this.queryService.findOrderMasterByOrderIdUsingGET(this.order.orderId)
        .subscribe(data => {
          console.log('Data ' , data);
-        this.order.orderLines.forEach(orderLine => {
+         this.order.orderLines.forEach(orderLine => {
           this.queryService.findProductByIdUsingGET(orderLine.productId).subscribe(res => {
-            console.log(res);
+            console.log('product', res);
             this.products[orderLine.productId] = res;
             this.auxilaries[orderLine.productId] = [];
             this.combolineItems[orderLine.productId] = [];
           });
-        });           
-       },err=> {
+        });
+       }, err => {
          console.error('Unable to fetch Order Master');
-       })
+       });
       });
     }
   }
