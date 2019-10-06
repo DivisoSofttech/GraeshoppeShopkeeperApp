@@ -300,7 +300,10 @@ export class OrderPage implements OnInit {
     return await modal.present();
   }
   getNoticationCount() {
-    this.notificationCount = this.notification.notificationCount;
+    this.notification.notificationBehaviouralSubject
+      .subscribe(count => {
+        this.notificationCount = count;
+      });
   }
   orderAccepted(order) {
     this.pendingOrders = this.pendingOrders.filter(

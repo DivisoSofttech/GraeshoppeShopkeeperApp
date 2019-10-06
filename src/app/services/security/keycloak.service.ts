@@ -23,7 +23,15 @@ export class KeycloakService {
     private notificationService: NotificationService
   ) {
 
-
+    console.log('Created Keycloak Service');
+    this.getCurrentUserDetails()
+    .then((data: any ) => {
+      if (data.preferred_username !== 'guest') {
+        console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+        this.notificationService.connectToNotification();
+        this.notificationService.subscribeToMyNotifications(data.preferred_username);
+      }
+    });
   }
 
 
