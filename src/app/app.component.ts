@@ -30,11 +30,11 @@ export class AppComponent {
       url: '/category',
       icon: 'filing'
     },
-    {
-      title: 'Stock Dairy',
-      url: '/stock-dairy',
-      icon: 'book'
-    },
+    // {
+    //   title: 'Stock Dairy',
+    //   url: '/stock-dairy',
+    //   icon: 'book'
+    // },
     {
       title: 'Order',
       url: '/order',
@@ -50,11 +50,11 @@ export class AppComponent {
       url: '/uom',
       icon: 'speedometer'
     },
-    {
-      title: 'Sale',
-      url: '/sale',
-      icon: 'pricetags'
-    },
+    // {
+    //   title: 'Sale',
+    //   url: '/sale',
+    //   icon: 'pricetags'
+    // },
     {
       title: 'Settings',
       url: '/settings',

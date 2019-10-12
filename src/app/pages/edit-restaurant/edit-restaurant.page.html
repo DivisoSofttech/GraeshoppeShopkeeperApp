@@ -5,7 +5,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="updateStoreBundle()" [disabled]="storeBundleDTO==null || storeBundleDTO.store.image==null" >SAVE</ion-button>
+      <ion-button (click)="updateStoreBundle()" [disabled]="disableSaveState" >SAVE</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -50,17 +50,20 @@
       <ion-icon name="settings"></ion-icon>
       General
     </ion-label>
-    <ion-item>
-      <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="storeBundleDTO.store.name"></ion-input>
-    </ion-item>
+    <form [formGroup]="storeForm">
+      <ion-item>
+        <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
+        <ion-input (ionChange)="disableSave()" formControlName="name" [(ngModel)]="storeBundleDTO.store.name"></ion-input>
+      </ion-item>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('name').errors">Invalid Name</ion-text>
+    </form>
     <ion-item>
       <ion-label position="floating">Email <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="storeBundleDTO.store.email"></ion-input>
+      <ion-input (ionChange)="disableSave()" [(ngModel)]="storeBundleDTO.store.email"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Contact <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-      <ion-input [(ngModel)]="storeBundleDTO.store.contactNo"></ion-input>
+      <ion-input (ionChange)="disableSave()" [(ngModel)]="storeBundleDTO.store.contactNo"></ion-input>
     </ion-item>
     <ion-grid>
       <ion-row>

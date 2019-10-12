@@ -12,7 +12,7 @@ import { ImageSelectorComponent } from './image-selector/image-selector.componen
 import { CreateEditUomComponent } from './create-edit-uom/create-edit-uom.component';
 import { CreateEditProductComponent } from './create-edit-product/create-edit-product.component';
 import { CategoryCardComponent } from './category-card/category-card.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -61,7 +61,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
     ProductCardComponent,

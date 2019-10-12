@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Util } from './../../services/util';
 import { StoreAddressDTO } from './../../api/models/store-address-dto';
 import { DeliveryInfoDTO } from './../../api/models/delivery-info-dto';
@@ -39,7 +40,21 @@ export class EditRestaurantPage implements OnInit {
   ) {}
   loader: HTMLIonLoadingElement;
 
-  storeBundleDTO: StoreBundleDTO;
+  storeBundleDTO: StoreBundleDTO = {
+    store: {},
+    storeAddress: {},
+    storeSettings: {},
+  };
+
+  storeForm = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.pattern('^[a-zA-Z ]*$')
+    ])
+  });
+
+  disableSaveState = true;
 
   private delivery: TypeDTO = undefined;
   private collection: TypeDTO = undefined;
@@ -80,6 +95,7 @@ export class EditRestaurantPage implements OnInit {
       cssClass: 'half-height'
     });
     modal.onDidDismiss().then(data => {
+      this.disableSave();
       this.storeBundleDTO.store.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );
@@ -380,5 +396,13 @@ export class EditRestaurantPage implements OnInit {
       }
     }
     return true;
+  }
+
+  disableSave() {
+    if (this.storeBundleDTO === null || this.storeBundleDTO.store.image === null || this.storeForm.get('name').errors !== null) {
+      this.disableSaveState = true;
+    } else {
+      this.disableSaveState = false;
+    }
   }
 }

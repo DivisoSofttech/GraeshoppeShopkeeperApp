@@ -30,6 +30,7 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
@@ -54,7 +55,9 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
       apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
       libraries: ['places', 'geometry']
     }),
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     Base64,

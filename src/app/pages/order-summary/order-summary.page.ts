@@ -35,7 +35,7 @@ export class OrderSummaryPage implements OnInit {
       this.user = user;
       this.getNoticationCount();
       this.getOrderSummary();
-    })
+    });
   }
 
 

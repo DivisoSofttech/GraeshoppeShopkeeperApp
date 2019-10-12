@@ -6,6 +6,7 @@ import { ModalController, PopoverController, IonSlides } from '@ionic/angular';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-edit-category',
@@ -22,6 +23,15 @@ export class CreateEditCategoryComponent implements OnInit {
   @Output() onSlide = new EventEmitter();
   @Input() throughProduct = 'false';
   // @ViewChild('slides', { static: false }) slides: IonSlides;
+
+  categoryForm = new FormGroup({
+    image: new FormControl(''),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+    ]),
+    description: new FormControl('')
+  });
   constructor(
     private modalController: ModalController,
     private commandResource: CommandResourceService,
