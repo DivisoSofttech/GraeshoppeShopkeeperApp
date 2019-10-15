@@ -98,12 +98,11 @@ export class OrderPage implements OnInit {
       this.getNoticationCount();
       if (store.storeSettings.orderAcceptType !== 'automatic') {
         this.getPendingOrders(0);
+      } else {
+        this.currentPage = 'confirmed';
       }
       this.getConfirmedOrders(0);
       this.getCompletedOrders(0);
-      if (store.storeSettings.orderAcceptType === 'automatic') {
-        this.slides.slideTo(1);
-      }
     });
   }
 
@@ -267,26 +266,45 @@ export class OrderPage implements OnInit {
   }
 
   segmentChange(ev) {
-    if (ev.detail.value === 'pending') {
-      this.slides.slideTo(0);
-    } else if (ev.detail.value === 'confirmed') {
-      this.slides.slideTo(1);
-    } else if (ev.detail.value === 'completed') {
-      this.slides.slideTo(2);
+    if (this.showPending) {
+      if (ev.detail.value === 'pending') {
+        this.slides.slideTo(0);
+      } else if (ev.detail.value === 'confirmed') {
+        this.slides.slideTo(1);
+      } else if (ev.detail.value === 'completed') {
+        this.slides.slideTo(2);
+      }
+    } else {
+      if (ev.detail.value === 'confirmed') {
+        this.slides.slideTo(0);
+      } else if (ev.detail.value === 'completed') {
+        this.slides.slideTo(1);
+      }
     }
   }
   slideChange() {
     let index: any;
-    this.slides.getActiveIndex().then(num => {
-      index = num;
-      if (index === 0) {
-        this.currentPage = 'pending';
-      } else if (index === 1) {
-        this.currentPage = 'confirmed';
-      } else if (index === 2) {
-        this.currentPage = 'completed';
-      }
-    });
+    if (this.showPending) {
+      this.slides.getActiveIndex().then(num => {
+        index = num;
+        if (index === 0) {
+          this.currentPage = 'pending';
+        } else if (index === 1) {
+          this.currentPage = 'confirmed';
+        } else if (index === 2) {
+          this.currentPage = 'completed';
+        }
+      });
+    } else {
+      this.slides.getActiveIndex().then(num => {
+        index = num;
+        if (index === 0) {
+          this.currentPage = 'confirmed';
+        } else if (index === 1) {
+          this.currentPage = 'completed';
+        }
+      });
+    }
   }
 
   async openNotificationModal() {
@@ -321,6 +339,9 @@ export class OrderPage implements OnInit {
   }
 
   refresh(event) {
+    this.pendingOrders = [];
+    this.confirmedOrders = [];
+    this.completedOrders = [];
     this.ngOnInit();
     setTimeout(() => {
       event.target.complete();

@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { QueryResourceService } from 'src/app/api/services';
 import { Component, OnInit } from '@angular/core';
@@ -26,7 +27,10 @@ export class OrderSummaryPage implements OnInit {
 
     private queryResource: QueryResourceService,
     private modalController: ModalController,
-    private storage: Storage
+    private storage: Storage,
+    private file: File,
+    private fileOpener: FileOpener,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -53,21 +57,71 @@ export class OrderSummaryPage implements OnInit {
   }
 
   getOrderSummary() {
-    this.queryResource.createReportSummaryUsingGET({ storeId: this.user.preferred_username, date: this.date }).subscribe(orderSummary => {
-      this.orderSummary = orderSummary;
-      console.log('date', this.date);
-      console.log('summary', this.orderSummary);
-    }, err => {
-      console.log(err);
+    // this.queryResource.createReportSummaryUsingGET({ storeId: this.user.preferred_username, date: this.date }).subscribe(orderSummary => {
+    //   this.orderSummary = orderSummary;
+    //   console.log('date', this.date);
+    //   console.log('summary', this.orderSummary);
+    // }, err => {
+    //   console.log(err);
 
-      console.log('date', this.date);
-      console.log('summary', this.orderSummary);
-    })
+    //   console.log('date', this.date);
+    //   console.log('summary', this.orderSummary);
+    // });
   }
-  
-  dateSelected(){
-    this.date = this.date.slice(0,this.date.indexOf('T'));
+
+  dateSelected() {
+    this.date = this.date.slice(0, this.date.indexOf('T'));
     this.getOrderSummary();
   }
-  
+
+  getOrderSummaryPdf() {
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.queryResource.getOrderSummaryUsingGET({storeId: this.user.preferred_username , date: this.date}).subscribe(orderDocket => {
+        console.log(orderDocket.pdf, orderDocket.contentType);
+        const byteCharacters = atob(orderDocket.pdf);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: orderDocket.contentType });
+        console.log('blob is' + blob);
+        this.fileCreation(blob, orderDocket);
+        loader.dismiss();
+      }, err => {
+        console.log(err);
+        loader.dismiss();
+        this.util.createToast('Error Loading Pdf', 'alert');
+      });
+    });
+  }
+
+  fileCreation(blob, result) {
+    const res = this.file.createFile(this.file.externalCacheDirectory, 'items.pdf', true);
+    if (res !== undefined) {
+        res
+      .then(() => {
+        console.log('file created' + blob);
+
+        this.file
+          .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
+            replace: true
+          })
+          .then(value => {
+            console.log('file writed' + value);
+            this.fileOpener
+              .showOpenWithDialog(
+                this.file.externalCacheDirectory + 'items.pdf',
+                result.contentType
+              )
+              .then(() => console.log('File is opened'))
+              .catch(e => console.log('Error opening file', e));
+            // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
+            // {print: {enabled: true}, openWith: {enabled: true}});
+          });
+      });
+  }
+      }
+
 }

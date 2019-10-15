@@ -106,6 +106,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
+  static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
   static readonly findAllProductUsingGETPath = '/api/query/productByStoreId/{iDPcode}';
@@ -2311,6 +2312,53 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getOrderSummaryUsingGETResponse(params: QueryResourceService.GetOrderSummaryUsingGETParams): __Observable<__StrictHttpResponse<PdfDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/ordersummary/${params.date}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PdfDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getOrderSummaryUsingGET(params: QueryResourceService.GetOrderSummaryUsingGETParams): __Observable<PdfDTO> {
+    return this.getOrderSummaryUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
    * @param id id
    * @return OK
    */
@@ -4320,6 +4368,22 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for getOrderSummaryUsingGET
+   */
+  export interface GetOrderSummaryUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * date
+     */
+    date: string;
   }
 
   /**

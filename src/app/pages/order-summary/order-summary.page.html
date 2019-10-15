@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="half-width">
+  <ion-card class="half-width center">
     <ion-buttons>
       <ion-button>
           <ion-icon slot="icon-only" name="calendar"></ion-icon>
@@ -26,7 +26,7 @@
     </ion-buttons>
       
   </ion-card>
-  <ion-card>
+  <!-- <ion-card>
       <ion-row padding>
           <ion-col padding>
             <ion-text color="primary"><Strong>Order Types</Strong></ion-text>
@@ -82,12 +82,12 @@
                 <ion-text><Strong>{{orderSummary.typeCashTotal}}</Strong></ion-text>
             </ion-col>
           </ion-row>
-  </ion-card>
+  </ion-card> -->
 </ion-content>
 <ion-footer>
   <ion-card>
     <ion-item>
-    <ion-button>
+    <ion-button (click)="getOrderSummaryPdf()">
       Print Summary
     </ion-button>
     <ion-button slot="end">

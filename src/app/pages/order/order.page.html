@@ -42,7 +42,7 @@
     </div>
     <!--Segment Button Container End-->
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
-        <ion-slide>
+        <ion-slide *ngIf="showPending">
           <ion-list class="order-card-view" justify-content-center>
         <div *ngFor="let order  of pendingOrders"  justify-content-center>
           <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
