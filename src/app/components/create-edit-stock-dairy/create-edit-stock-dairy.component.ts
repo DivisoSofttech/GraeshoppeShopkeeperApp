@@ -7,7 +7,7 @@ import { EntryLineItemDTO } from './../../api/models/entry-line-item-dto';
 import { EntryLineItem } from './../../api/models/entry-line-item';
 import { Product } from './../../api/models/product';
 import { Util } from 'src/app/services/util';
-import { ModalController, IonSlides, IonInfiniteScroll } from '@ionic/angular';
+import { ModalController, IonSlides, IonInfiniteScroll, IonContent } from '@ionic/angular';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
@@ -41,6 +41,7 @@ export class CreateEditStockDairyComponent implements OnInit {
 
   @Input()edit = false;
 
+  @ViewChild('content', {static: false}) content: IonContent;
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   constructor(
@@ -80,6 +81,7 @@ export class CreateEditStockDairyComponent implements OnInit {
       this.slides.slideTo(1);
     } else {
       this.slides.slideTo(0);
+      this.content.scrollToTop(0);
     }
   }
 
@@ -112,32 +114,15 @@ export class CreateEditStockDairyComponent implements OnInit {
       iDPcode = user.preferred_username;
       this.queryService.findAllProductsUsingGET({iDPcode, page: i})
       .subscribe(res => {
-        this.infiniteScroll.complete();
-        success !== undefined ? success(res) : null;
-
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
-          this.queryService.getProductBundleUsingGET(p.id)
-              .subscribe(productBundle => {
-                p.comboLineItems = productBundle.comboLineItems;
-                p.auxilaryLineItems = productBundle.auxilaryLineItems;
-
-              });
           this.products.push(p);
         });
         i++;
         if (i === res.totalPages) {
           this.toggleInfiniteScroll();
         }
-        if (limit === false) {
-          if (i < res.totalPages) {
-            this.getProducts(i , limit);
-          } else {
-            this.loader.dismiss();
-          }
-        } else {
-          this.loader.dismiss();
-        }
+        this.loader.dismiss();
       },
       err => {
         this.loader.dismiss();
@@ -150,20 +135,13 @@ export class CreateEditStockDairyComponent implements OnInit {
   }
 
   loadMoreProducts(event) {
+    console.log('page count', this.pageCount);
     this.pageCount++;
-    this.getProducts(this.pageCount , true , (data) => {
-
-      // Disable infinite scroll if all pages have been loaded
-      console.log(this.pageCount + 1, '==' , data.totalPages);
-      if (data.totalPages === this.pageCount + 1) {
-        console.log('InfiniteScroll Disabled'
-        );
-        event.target.disabled = true;
-      }
-    });
+    this.getProducts(this.pageCount);
   }
 
   toggleInfiniteScroll() {
+    console.log('in', this.infiniteScroll.disabled);
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 

@@ -1,4 +1,5 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Contact } from './../../api/models/contact';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Util } from './../../services/util';
 import { StoreAddressDTO } from './../../api/models/store-address-dto';
 import { DeliveryInfoDTO } from './../../api/models/delivery-info-dto';
@@ -47,12 +48,42 @@ export class EditRestaurantPage implements OnInit {
   };
 
   storeForm = new FormGroup({
-    name: new FormControl('', [
+    name: new FormControl(this.storeBundleDTO.store.name, [
       Validators.required,
       Validators.minLength(3),
       Validators.pattern('^[a-zA-Z ]*$')
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+    contact: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[0-9]*'),
+      Validators.minLength(6)
+    ]),
+    openingTime: new FormControl('', [
+      Validators.required,
+    ]),
+    closingTime: new FormControl('', [
+      Validators.required
+    ]),
+    houseNoOrBuildingName: new FormControl('', [
+      Validators.required
+    ]),
+    city: new FormControl('', [
+      Validators.required
+    ]),
+    state: new FormControl('', [
+      Validators.required
+    ]),
+    zipcode: new FormControl('', [
+      Validators.required
     ])
+
   });
+
+  showError = false;
 
   disableSaveState = true;
 
@@ -84,6 +115,17 @@ export class EditRestaurantPage implements OnInit {
             this.setDeliveryTypes();
             this.setOrderAcceptTypes();
             loader.dismiss();
+            this.storeForm.setValue({
+              name : this.storeBundleDTO.store.name,
+              email: this.storeBundleDTO.store.email,
+              contact: this.storeBundleDTO.store.contactNo,
+              openingTime: this.storeBundleDTO.store.openingTime,
+              closingTime: this.storeBundleDTO.store.closingTime,
+              houseNoOrBuildingName: this.storeBundleDTO.storeAddress.houseNoOrBuildingName,
+              city: this.storeBundleDTO.storeAddress.city,
+              state: this.storeBundleDTO.storeAddress.state,
+              zipcode: this.storeBundleDTO.storeAddress.pincode
+          });
           });
       });
     });
@@ -281,38 +323,52 @@ export class EditRestaurantPage implements OnInit {
   }
 
   updateStoreBundle() {
-    if (this.hasValidContents()) {
-      this.util.createLoader().then(loader => {
-        this.loader = loader;
-        this.loader.present();
-      });
-      this.saveUpdates();
-      const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
-      this.storeBundleDTO.store.locationName =
-        address.houseNoOrBuildingName +
-        ', ' +
-        (address.roadNameAreaOrStreet ? address.roadNameAreaOrStreet + ', ' : '') +
-        address.city +
-        ', ' +
-        address.state +
-        ', ' +
-        address.pincode;
-      this.commandService
-        .createStoreBundleUsingPOST(this.storeBundleDTO)
-        .subscribe(
-          data => {
-            this.loader.dismiss();
-            this.util.createToast('Store successfully updated', 'checkmark');
-            this.navCtrl.navigateBack('/settings');
-          },
-          err => {
-            this.util.createToast('Error occured while updating store');
-            this.ngOnInit();
-            this.loader.dismiss();
-          }
-        );
+    const formValue = this.storeForm.value;
+    this.storeBundleDTO.store.name = formValue.name;
+    this.storeBundleDTO.store.email = formValue.email;
+    this.storeBundleDTO.store.contactNo = formValue.contact;
+    this.storeBundleDTO.store.openingTime = formValue.openingTime;
+    this.storeBundleDTO.store.closingTime = formValue.closingTime;
+    this.storeBundleDTO.storeAddress.houseNoOrBuildingName = formValue.houseNoOrBuildingName;
+    this.storeBundleDTO.storeAddress.city = formValue.city;
+    this.storeBundleDTO.storeAddress.state = formValue.state;
+    this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
+    if (!this.storeForm.invalid) {
+      if (this.hasValidContents()) {
+        this.util.createLoader().then(loader => {
+          this.loader = loader;
+          this.loader.present();
+        });
+        this.saveUpdates();
+        const address: StoreAddressDTO = this.storeBundleDTO.storeAddress;
+        this.storeBundleDTO.store.locationName =
+          address.houseNoOrBuildingName +
+          ', ' +
+          (address.roadNameAreaOrStreet ? address.roadNameAreaOrStreet + ', ' : '') +
+          address.city +
+          ', ' +
+          address.state +
+          ', ' +
+          address.pincode;
+        this.commandService
+          .createStoreBundleUsingPOST(this.storeBundleDTO)
+          .subscribe(
+            data => {
+              this.loader.dismiss();
+              this.util.createToast('Store successfully updated', 'checkmark');
+              this.navCtrl.navigateBack('/settings');
+            },
+            err => {
+              this.util.createToast('Error occured while updating store');
+              this.ngOnInit();
+              this.loader.dismiss();
+            }
+          );
+      } else {
+        this.util.createAlert('Can\'t save', 'You skipped some mandatory fields, mandatory fields are marked with a \'*\' mark ');
+      }
     } else {
-      this.util.createAlert('Can\'t save', 'You skipped some mandatory fields, mandatory fields are marked with a \'*\' mark ');
+      this.showError = true;
     }
   }
   connectDeliveryInfo() {
@@ -399,7 +455,9 @@ export class EditRestaurantPage implements OnInit {
   }
 
   disableSave() {
-    if (this.storeBundleDTO === null || this.storeBundleDTO.store.image === null || this.storeForm.get('name').errors !== null) {
+    console.log('nbm', this.storeForm.get('name').invalid);
+    console.log('errors', this.storeForm.invalid);
+    if (this.storeBundleDTO === null || this.storeBundleDTO.store.image === null || this.storeForm.invalid) {
       this.disableSaveState = true;
     } else {
       this.disableSaveState = false;

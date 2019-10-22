@@ -48,6 +48,9 @@ export class OrderPage implements OnInit {
   penCount = 0;
   conCount = 0;
   comcount = 0;
+  penTotalPages = 0;
+  conTotalPages = 0;
+  comTotalPages = 0;
   showFooter = false;
 
 
@@ -161,9 +164,13 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => this.pendingOrders.push(data));
           i++;
-          if (i === res.totalPages) {
-            this.toggleInfiniteScroll();
+          this.penTotalPages = res.totalPages;
+          if (this.comcount + 1 === res.totalPages) {
+            this.ionInfiniteScroll.disabled = true;
+         } else {
+           this.ionInfiniteScroll.disabled = false;
           }
+          console.log('pending', i, '==',  res.totalPages );
           loader.dismiss();
         }, err => {
           loader.dismiss();
@@ -185,9 +192,13 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => this.confirmedOrders.push(data));
           i++;
-          if (i === res.totalPages) {
-            this.toggleInfiniteScroll();
+          this.conTotalPages = res.totalPages;
+          if (this.conCount + 1 === res.totalPages) {
+            this.ionInfiniteScroll.disabled = true;
+         } else {
+           this.ionInfiniteScroll.disabled = false;
           }
+          console.log('confirmed', i, '==',  res.totalPages );
           loader.dismiss();
         }, err => {
           loader.dismiss();
@@ -210,9 +221,13 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => this.completedOrders.push(data));
           i++;
-          if (i === res.totalPages) {
-            this.toggleInfiniteScroll();
+          this.comTotalPages = res.totalPages;
+          if (this.comcount + 1 === res.totalPages) {
+            this.ionInfiniteScroll.disabled = true;
+         } else {
+           this.ionInfiniteScroll.disabled = false;
           }
+          console.log('completed', i, '==', res.totalPages );
           loader.dismiss();
         }, err => {
           loader.dismiss();
@@ -253,6 +268,7 @@ export class OrderPage implements OnInit {
   }
 
   loadMore() {
+    console.log('loading More Data');
     if (this.currentPage === 'pending') {
       this.penCount++;
       this.getPendingOrders(this.penCount);
@@ -269,16 +285,41 @@ export class OrderPage implements OnInit {
     if (this.showPending) {
       if (ev.detail.value === 'pending') {
         this.slides.slideTo(0);
+        if (this.penCount + 1 === this.penTotalPages) {
+           this.ionInfiniteScroll.disabled = true;
+        } else {
+          this.ionInfiniteScroll.disabled = false;
+         }
       } else if (ev.detail.value === 'confirmed') {
         this.slides.slideTo(1);
+        if (this.conCount + 1 === this.conTotalPages) {
+          this.ionInfiniteScroll.disabled = true;
+       } else {
+        this.ionInfiniteScroll.disabled = false;
+       }
       } else if (ev.detail.value === 'completed') {
         this.slides.slideTo(2);
+        if (this.comcount + 1 === this.comTotalPages) {
+          this.ionInfiniteScroll.disabled = true;
+       } else {
+        this.ionInfiniteScroll.disabled = false;
+       }
       }
     } else {
       if (ev.detail.value === 'confirmed') {
         this.slides.slideTo(0);
+        if (this.conCount + 1 === this.conTotalPages) {
+          this.ionInfiniteScroll.disabled = true;
+       } else {
+        this.ionInfiniteScroll.disabled = false;
+       }
       } else if (ev.detail.value === 'completed') {
         this.slides.slideTo(1);
+        if (this.conCount + 1 === this.conTotalPages) {
+          this.ionInfiniteScroll.disabled = true;
+       } else {
+        this.ionInfiniteScroll.disabled = false;
+       }
       }
     }
   }

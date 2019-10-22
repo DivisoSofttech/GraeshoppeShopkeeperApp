@@ -5,7 +5,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="updateStoreBundle()" [disabled]="disableSaveState" >SAVE</ion-button>
+      <ion-button (click)="updateStoreBundle()" >SAVE</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -45,39 +45,42 @@
   </ion-grid>
 
   <!-- General -->
+  <form [formGroup]="storeForm">
   <ion-card class="ion-padding-top ion-padding-bottom">
     <ion-label position="fixed" class="ion-padding-start">
       <ion-icon name="settings"></ion-icon>
       General
     </ion-label>
-    <form [formGroup]="storeForm">
       <ion-item>
         <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-        <ion-input (ionChange)="disableSave()" formControlName="name" [(ngModel)]="storeBundleDTO.store.name"></ion-input>
+        <ion-input (ionChange)="disableSave()" formControlName="name"></ion-input>
       </ion-item>
-      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('name').errors">Invalid Name</ion-text>
-    </form>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('name').invalid && showError">Invalid Name</ion-text>
     <ion-item>
       <ion-label position="floating">Email <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-      <ion-input (ionChange)="disableSave()" [(ngModel)]="storeBundleDTO.store.email"></ion-input>
+      <ion-input (ionChange)="disableSave()" formControlName="email"></ion-input>
     </ion-item>
+    <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('email').invalid && showError">Invalid Email</ion-text>
     <ion-item>
       <ion-label position="floating">Contact <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-      <ion-input (ionChange)="disableSave()" [(ngModel)]="storeBundleDTO.store.contactNo"></ion-input>
+      <ion-input (ionChange)="disableSave()" formControlName="contact"></ion-input>
     </ion-item>
+    <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('contact').invalid && showError">Invalid Contact Number</ion-text>
     <ion-grid>
       <ion-row>
         <ion-col size="6">
           <ion-item>
             <ion-label position="floating">Open <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-            <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.openingTime"></ion-datetime>
+            <ion-datetime displayFormat="h:mm a" formControlName="openingTime"></ion-datetime>
           </ion-item>
+          <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('openingTime').invalid && showError">Invalid Opening Time</ion-text>
         </ion-col>
         <ion-col size="6">
           <ion-item>
             <ion-label position="floating">Closing <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-            <ion-datetime displayFormat="h:mm a" [(ngModel)]="storeBundleDTO.store.closingTime"></ion-datetime>
+            <ion-datetime displayFormat="h:mm a" (ionChange)="disableSave()" formControlName="closingTime"></ion-datetime>
           </ion-item>
+          <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('closingTime').invalid && showError">Invalid Closing Time</ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -96,28 +99,32 @@
       </ion-item> -->
       <ion-item>
         <ion-label position="floating">Building name or number <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.houseNoOrBuildingName"></ion-input>
+        <ion-input (ionChange)="disableSave()" formControlName="houseNoOrBuildingName"></ion-input>
       </ion-item>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('houseNoOrBuildingName').invalid && showError">Invalid Building name or number</ion-text>
       <ion-item>
         <ion-label position="floating">Area</ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.roadNameAreaOrStreet"></ion-input>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.roadNameAreaOrStreet" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">City <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.city"></ion-input>
+        <ion-input (ionChange)="disableSave()" formControlName="city"></ion-input>
       </ion-item>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('city').invalid && showError">Invalid City</ion-text>
       <ion-item>
         <ion-label position="floating">Landmark</ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.landmark"></ion-input>
+        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.landmark" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">State <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.state"></ion-input>
+        <ion-input (ionChange)="disableSave()" formControlName="state"></ion-input>
       </ion-item>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('state').invalid && showError">Invalid State</ion-text>
       <ion-item>
         <ion-label position="floating">Zip code <ion-text color="danger" class="text-size">*</ion-text></ion-label>
-        <ion-input [(ngModel)]="storeBundleDTO.storeAddress.pincode"></ion-input>
+        <ion-input (ionChange)="disableSave()" formControlName="zipcode"></ion-input>
       </ion-item>
+      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('zipcode').invalid && showError">Invalid Zip Code</ion-text>
     </ion-card>
     <!-- /address -->
 
@@ -140,7 +147,7 @@
     </ion-badge>
     <ion-item>
       <ion-label position="floating">Minimum order amount</ion-label>
-      <ion-input class="ion-margin-top" [(ngModel)]="storeBundleDTO.store.minAmount">&euro;</ion-input>
+      <ion-input class="ion-margin-top" [(ngModel)]="storeBundleDTO.store.minAmount" [ngModelOptions]="{standalone: true}">&euro;</ion-input>
     </ion-item>
   </ion-card>
   <!-- /General -->
@@ -153,35 +160,35 @@
     </ion-label>
     <ion-item class="ion-margin-bottom">
       <ion-label position="stacked" class="no-wrap">Estimated delivery time</ion-label>
-      <ion-datetime [(ngModel)]="storeBundleDTO.store.maxDeliveryTime" displayFormat="mm"></ion-datetime>
+      <ion-datetime [(ngModel)]="storeBundleDTO.store.maxDeliveryTime" [ngModelOptions]="{standalone: true}" displayFormat="mm"></ion-datetime>
     </ion-item>
     <ion-label position="stacked" class="ion-padding-start ion-margin-top">Delivery types <ion-text color="danger" class="text-size">*</ion-text></ion-label>
     <ion-item>
-      <ion-checkbox [(ngModel)]="deliveryChecked"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('delivery', $event)"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="deliveryChecked" [ngModelOptions]="{standalone: true}"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('delivery', $event)"></ion-checkbox>
       <ion-label>Delivery</ion-label>
     </ion-item>
     <ion-card *ngIf="deliveryChecked">
       <ion-item>
         <ion-label position="floating">Starting Time</ion-label>
-        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.startingTime"></ion-datetime>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.startingTime" [ngModelOptions]="{standalone: true}"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Ending Time</ion-label>
-        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.endTime"></ion-datetime>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="deliveryInfo.endTime" [ngModelOptions]="{standalone: true}"></ion-datetime>
       </ion-item>
     </ion-card>
     <ion-item>
-      <ion-checkbox [(ngModel)]="collectionChecked"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('collection', $event)"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="collectionChecked" [ngModelOptions]="{standalone: true}"  class="ion-margin-end" (ionChange)="onChangeDeliveryInfo('collection', $event)"></ion-checkbox>
       <ion-label>Collection</ion-label>
     </ion-item>
     <ion-card *ngIf="collectionChecked">
       <ion-item>
         <ion-label position="floating">Starting Time</ion-label>
-        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.startingTime"></ion-datetime>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.startingTime" [ngModelOptions]="{standalone: true}"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Ending Time</ion-label>
-        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.endTime"></ion-datetime>
+        <ion-datetime displayFormat="h:mm a" [(ngModel)]="collectionInfo.endTime" [ngModelOptions]="{standalone: true}"></ion-datetime>
       </ion-item>
     </ion-card>
     <ion-grid>
@@ -189,18 +196,19 @@
         <ion-col size="6">
           <ion-item>
             <ion-label position="floating">Delivery Charge</ion-label>
-            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.deliveryCharge"></ion-input>
+            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.deliveryCharge" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size="6">
           <ion-item>
             <ion-label position="floating">Service Charge</ion-label>
-            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.serviceCharge"></ion-input>
+            <ion-input type="number" [(ngModel)]="storeBundleDTO.storeSettings.serviceCharge" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
+</form>
   <!-- /Delivery info -->
 
   <ion-card class="ion-padding-top">

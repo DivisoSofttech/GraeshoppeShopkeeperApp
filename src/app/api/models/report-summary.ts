@@ -1,7 +1,7 @@
 /* tslint:disable */
 export interface ReportSummary {
   typeCashCount?: number;
-  localDate?: string;
+  date?: string;
   typeAllCount?: number;
   typeAllTotal?: number;
   typeCardCount?: number;

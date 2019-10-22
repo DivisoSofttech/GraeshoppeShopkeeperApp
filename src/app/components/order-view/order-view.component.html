@@ -81,7 +81,7 @@
 
   <ion-card>
     <ion-card-content class="ion-no-padding">
-        <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
+        <app-product-card *ngFor="let orderLine of order.orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
         [product]="products[orderLine.productId]"
         [comboLineItems]="comboLineItems[orderLine.productId]"
         [orderLine]="orderLine"

@@ -57,16 +57,16 @@ export class OrderSummaryPage implements OnInit {
   }
 
   getOrderSummary() {
-    // this.queryResource.createReportSummaryUsingGET({ storeId: this.user.preferred_username, date: this.date }).subscribe(orderSummary => {
-    //   this.orderSummary = orderSummary;
-    //   console.log('date', this.date);
-    //   console.log('summary', this.orderSummary);
-    // }, err => {
-    //   console.log(err);
-
-    //   console.log('date', this.date);
-    //   console.log('summary', this.orderSummary);
-    // });
+    this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username).subscribe(store => {
+      this.queryResource.createReportSummaryUsingGET({
+        storeName: store.name, expectedDelivery: this.date
+      }).subscribe(orderSummary => {
+        this.orderSummary = orderSummary;
+        console.log('summary', this.orderSummary);
+      }, err => {
+        console.log(err);
+      });
+    });
   }
 
   dateSelected() {
