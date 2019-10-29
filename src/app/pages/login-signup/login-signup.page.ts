@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommandResourceService } from '../../api/services/command-resource.service';
 import { Util } from './../../services/util';
 import { StoreDTO } from './../../api/models/store-dto';
@@ -18,7 +19,32 @@ export class LoginSignupPage implements OnInit {
   loginTab = true;
   value = 'login';
   phone: number;
+  showErrorSignup = false;
+  showLoginError = false;
   @ViewChild('slides', { static: false }) slides: IonSlides;
+
+  loginForm = new FormGroup({
+    username: new FormControl('', [
+      Validators.required
+    ]),
+    password: new FormControl('', [
+      Validators.required
+    ])
+  });
+
+  signupForm = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3)
+    ]),
+    password: new FormControl('', [
+      Validators.required
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+  });
 
   constructor(
     private keycloakService: KeycloakService,
@@ -35,6 +61,9 @@ export class LoginSignupPage implements OnInit {
   // Login and Register Methods
 
   login() {
+    this.username = this.loginForm.get('username').value;
+    this.password = this.loginForm.get('password').value;
+    if (!this.loginForm.invalid) {
     this.util.createLoader().then(loader => {
       loader.present();
       this.keycloakService.authenticate(
@@ -50,9 +79,16 @@ export class LoginSignupPage implements OnInit {
         }
       );
     });
+    } else {
+      this.showLoginError = true;
+    }
   }
 
   signup() {
+    this.username = this.signupForm.get('username').value;
+    this.email = this.signupForm.get('email').value;
+    this.password = this.signupForm.get('password').value;
+    if (!this.signupForm.invalid) {
     this.util.createLoader().then(loader => {
       loader.present();
       const user = { username: this.username, email: this.email };
@@ -75,7 +111,10 @@ export class LoginSignupPage implements OnInit {
         }
         );
       });
+    } else {
+      this.showErrorSignup = true;
     }
+  }
 
     isLoggedIn() {
       this.keycloakService

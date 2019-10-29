@@ -1,9 +1,87 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>reports</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+      <ion-title>Report</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
-
+    <ion-grid>
+        <ion-row>
+          <ion-col class="vertical-align-center column" text-center>
+            <ion-grid>
+              <ion-row>
+                <ion-col text-center>
+                  <ion-icon name="people"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col text-center>
+                  <p>Customer</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+          <ion-col (click)="getReports('pro')" class="vertical-align-center column" text-center>
+            <ion-grid>
+              <ion-row>
+                <ion-col text center>
+                  <ion-icon name="logo-buffer"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col text-center>
+                  <p>Products</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="vertical-align-center column" text-center>
+            <ion-grid>
+              <ion-row>
+                <ion-col text-center>
+                  <ion-icon name="logo-usd"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col text-center>
+                  <p>Sales</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+          <ion-col (click)="getReports('sc')" class="vertical-align-center column" text-center>
+            <ion-grid>
+              <ion-row>
+                <ion-col text center>
+                  <ion-icon name="basket"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col text-center>
+                  <p>Stock</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col (click)="getReports('cat')" class="vertical-align-center column" text-center>
+              <ion-grid>
+                <ion-row>
+                  <ion-col text-center>
+                    <ion-icon name="filing"></ion-icon>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col text-center>
+                    <p>Category</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+          </ion-row>
+      </ion-grid>
 </ion-content>

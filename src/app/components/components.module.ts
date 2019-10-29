@@ -1,3 +1,4 @@
+import { SaleHistoryComponent } from './sale-history/sale-history.component';
 import { CreateSelectCustomerComponent } from './create-select-customer/create-select-customer.component';
 import { CreateEditStockDairyComponent } from './create-edit-stock-dairy/create-edit-stock-dairy.component';
 import { OrderViewComponent } from './order-view/order-view.component';
@@ -53,7 +54,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateEditStockDairyComponent,
     StockDairyCardComponent,
     StockDairyViewComponent,
-    CreateSelectCustomerComponent
+    CreateSelectCustomerComponent,
+    SaleHistoryComponent
   ],
 
   imports: [
@@ -88,7 +90,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateEditStockDairyComponent,
     StockDairyCardComponent,
     StockDairyViewComponent,
-    CreateSelectCustomerComponent
+    CreateSelectCustomerComponent,
+    SaleHistoryComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

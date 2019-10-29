@@ -19,7 +19,7 @@ import { ReasonDTO, Reason, Location } from 'src/app/api/models';
   styleUrls: ['./create-edit-stock-dairy.component.scss'],
 })
 export class CreateEditStockDairyComponent implements OnInit {
-
+  user;
   reasonDTO: ReasonDTO = {};
   reasons: Reason[] = [];
   locations: Location[] = [];
@@ -55,11 +55,14 @@ export class CreateEditStockDairyComponent implements OnInit {
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
-      this.loader = loader;
-      this.loader.present();
-      this.getProducts(0 , true);
-      this.getReasons();
-      this.getLocations();
+      this.storage.get('user').then(user => {
+        this.user = user;
+        this.loader = loader;
+        this.loader.present();
+        this.getProducts(0 , true);
+        this.getReasons();
+        this.getLocations();
+      });
     });
   }
 
@@ -182,19 +185,21 @@ export class CreateEditStockDairyComponent implements OnInit {
       });
     });
   });
-
   }
 
   getLocations() {
     this.storage.get('user').then(user => {
-      this.queryService.findLocationByRegNoUsingGET(user.preferred_username).subscribe(page => {
+      this.queryService.findLocationByRegNoUsingGET({idpcode: user.preferred_username}).subscribe(page => {
         this.locations = page.content;
+        console.log(page.content);
       });
     });
   }
   getReasons() {
     this.storage.get('user').then(user => {
-      this.queryService.findReasonByRegNoUsingGET(user.preferred_username).subscribe(page => {
+      console.log(user);
+      this.queryService.findReasonByRegNoUsingGET({idpcode: user.preferred_username}).subscribe(page => {
+        console.log(page.content);
         this.reasons = page.content;
       });
     });

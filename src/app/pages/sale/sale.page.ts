@@ -1,3 +1,4 @@
+import { SaleHistoryComponent } from './../../components/sale-history/sale-history.component';
 import { Customer } from './../../api/models/customer';
 import { Util } from './../../services/util';
 import { IonInfiniteScroll, IonSlides, ModalController } from '@ionic/angular';
@@ -116,20 +117,24 @@ export class SalePage implements OnInit {
   updateSale() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.sale.grandTotal = this.totalPrice;
-      this.commandResource.createSaleUsingPOST(this.sale).subscribe(sale => {
-        console.log('sale', sale);
-        this.ticketLines.forEach(tl => {
-          tl.saleId = sale.id;
-          this.commandResource.createTickerLineUsingPOST(tl).subscribe(data => {
-            console.log('ticket', data);
-          }, err => {
-            loader.dismiss();
+      this.storage.get('user').then(user => {
+        this.sale.customerId = this.customer.id;
+        this.sale.userId = user.preferred_username;
+        this.sale.grandTotal = this.totalPrice;
+        this.commandResource.createSaleUsingPOST(this.sale).subscribe(sale => {
+          console.log('sale', sale);
+          this.ticketLines.forEach(tl => {
+            tl.saleId = sale.id;
+            this.commandResource.createTickerLineUsingPOST(tl).subscribe(data => {
+              console.log('ticket', data);
+            }, err => {
+              loader.dismiss();
+            });
           });
+          loader.dismiss();
+        }, err => {
+          loader.dismiss();
         });
-        loader.dismiss();
-      }, err => {
-        loader.dismiss();
       });
     });
   }
@@ -209,8 +214,15 @@ export class SalePage implements OnInit {
     modal.present();
 
     modal.onDidDismiss().then(cus => {
-      console.log(cus);
+      this.customer = cus.data;
     });
+  }
+
+  async saleHistoryModal() {
+    const modal = await this.modal.create({
+      component: SaleHistoryComponent
+    });
+    modal.present();
   }
 
 }

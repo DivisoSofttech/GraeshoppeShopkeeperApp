@@ -1,3 +1,4 @@
+import { SaleHistoryComponent } from './../../components/sale-history/sale-history.component';
 import { ComponentsModule } from './../../components/components.module';
 import { CreateSelectCustomerComponent } from 'src/app/components/create-select-customer/create-select-customer.component';
 import { NgModule } from '@angular/core';
@@ -25,6 +26,6 @@ const routes: Routes = [
     ComponentsModule
   ],
   declarations: [SalePage],
-  entryComponents: [CreateSelectCustomerComponent]
+  entryComponents: [CreateSelectCustomerComponent, SaleHistoryComponent]
 })
 export class SalePageModule {}

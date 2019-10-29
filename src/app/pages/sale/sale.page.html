@@ -8,6 +8,9 @@
     <ion-title *ngIf="currentSlide == 0">sale</ion-title>
     <ion-title *ngIf="currentSlide == 1">add items</ion-title>
   </ion-buttons>
+  <ion-button (click)="saleHistoryModal()" slot="end" fill="none">
+    <ion-icon slot="icon-only" name="time"></ion-icon>
+  </ion-button>
   <ion-button (click)="customerModal()" slot="end" fill="none">
       <ion-icon slot="icon-only" name="person-add"></ion-icon>
   </ion-button>
@@ -47,7 +50,7 @@
         <ion-row justify-content-center class="ion-margin-top">
           <ion-col size="12" text-center>
             <ion-label class="fntbig-cursive">
-              Order total
+              Total
             </ion-label>
             <ion-text class="fntbig-cursive">{{ "(" + ticketLines.length + " items)" }}</ion-text>
           </ion-col>
@@ -66,6 +69,15 @@
         <ion-row>
           <ion-col size="12">
             <ion-button (click)="updateSale()" color="primary" expand="full">Continue</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-icon color="warning" *ngIf="!customer" name="warning"></ion-icon>
+              <ion-text color="warning" *ngIf="!customer"> Please select a customer</ion-text>
+              <ion-text *ngIf="customer">Customer name: {{customer.name}}</ion-text>
+            </ion-item>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -150,17 +162,17 @@
             </ion-button>
             <ion-button slot="end" fill="none">
                 {{getCount(product)}}
-              </ion-button>
+            </ion-button>
             <ion-button slot="end" (click)="add(product)" fill="none">
                 <ion-icon name="add" slot="icon-only"></ion-icon>
               </ion-button>
           </ion-item>
         </ion-card>
       </ion-list>
-      <ion-infinite-scroll threshold="600px" (infiniteScroll)="loadMoreProducts($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </ion-slide>
   </ion-slides>
+  <ion-infinite-scroll threshold="600px" (infiniteScroll)="loadMoreProducts($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

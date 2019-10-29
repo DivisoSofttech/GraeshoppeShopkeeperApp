@@ -1,3 +1,4 @@
+import { QueryResourceService } from 'src/app/api/services';
 import { StockEntry } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -16,10 +17,12 @@ export class StockDairyViewComponent implements OnInit {
   showDetail = false;
 
   constructor(
-    private modal: ModalController
+    private modal: ModalController,
+    private query: QueryResourceService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   dismiss() {
     this.modal.dismiss();
