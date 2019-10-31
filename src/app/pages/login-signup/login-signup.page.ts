@@ -59,10 +59,9 @@ export class LoginSignupPage implements OnInit {
   }
 
   // Login and Register Methods
-
+  
   login() {
-    this.username = this.loginForm.get('username').value;
-    this.password = this.loginForm.get('password').value;
+    console.log('username password is '+ this.username );
     if (!this.loginForm.invalid) {
     this.util.createLoader().then(loader => {
       loader.present();
@@ -92,13 +91,24 @@ export class LoginSignupPage implements OnInit {
     this.util.createLoader().then(loader => {
       loader.present();
       const user = { username: this.username, email: this.email };
+      console.log('User' , user);
       this.keycloakService.createAccount(
         user,
         this.password,
         res => {
-          // this.createStore(res.preferred_username);
-          this.login();
           loader.dismiss();
+          this.keycloakService.authenticate(
+            { username: this.username, password: this.password },
+            () => {
+              loader.dismiss();
+              this.createStore(this.username);
+              this.util.createToast('Logged in successfully' , 'checkmark-circle-outline');
+            },
+            () => {
+              loader.dismiss();
+              this.util.createToast('Invalid user credentials' , 'close-circle-outline');
+            }
+          );
         },
         err => {
           loader.dismiss();

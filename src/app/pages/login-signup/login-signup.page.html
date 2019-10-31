@@ -32,12 +32,12 @@
               <form [formGroup]="loginForm">
               <ion-item class="item-inner">
                 <ion-label color="medium" position="floating">Username or Email</ion-label>
-                <ion-input formControlName="username" background="light"></ion-input>
+                <ion-input formControlName="username" background="light" [(ngModel)]="username"></ion-input>
               </ion-item>
               <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="loginForm.get('username').invalid && showLoginError">Username Required</ion-text>
               <ion-item class="item-inner">
                 <ion-label color="medium" position="floating">Password</ion-label>
-                <ion-input formControlName="password" type="password"></ion-input>
+                <ion-input formControlName="password" type="password" [(ngModel)]="password"></ion-input>
               </ion-item>
               <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="loginForm.get('password').invalid && showLoginError">Password Required</ion-text>
               <ion-button (click)="login()" expand="block" margin-top margin-bottom>Login
