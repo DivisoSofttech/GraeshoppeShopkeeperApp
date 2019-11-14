@@ -8,7 +8,7 @@ import { UOMDTO } from './../../api/models/uomdto';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
 import { ModalController, PopoverController, IonSlides, IonContent } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import {
   QueryResourceService,
   CommandResourceService
@@ -19,11 +19,18 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-create-edit-product',
   templateUrl: './create-edit-product.component.html',
-  styleUrls: ['./create-edit-product.component.scss']
+  styleUrls: ['./create-edit-product.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateEditProductComponent implements OnInit {
   loader: HTMLIonLoadingElement;
-  productbundle: ProductBundle = {};
+  productbundle: ProductBundle = {
+    product : {
+      category: {
+        name : undefined
+      }
+    }
+  };
   product: Product = {};
   productDTO: ProductDTO = {
     isAuxilaryItem: false
@@ -46,8 +53,8 @@ export class CreateEditProductComponent implements OnInit {
   deleteAuxilaries: AuxilaryLineItemDTO[] = [];
   deleteCombos: ComboLineItemDTO[] = [];
   discount: DiscountDTO = {};
-  oldAux: number = 0;
-  oldCombo: number = 0;
+  oldAux = 0;
+  oldCombo = 0;
   @ViewChild('content', {static: false}) content: IonContent;
 
   constructor(
@@ -55,8 +62,15 @@ export class CreateEditProductComponent implements OnInit {
     private query: QueryResourceService,
     private storage: Storage,
     private commandResource: CommandResourceService,
-    private util: Util
-  ) { }
+    private util: Util,
+    private ref: ChangeDetectorRef
+  ) {
+    setInterval(() => {
+      if (!this.ref['destroyed']) {
+        this.ref.detectChanges();
+      }
+    }, 1000);
+   }
 
   ngOnInit() {
     this.getCategories();
@@ -73,6 +87,7 @@ export class CreateEditProductComponent implements OnInit {
         });
     }
   }
+
   showCombo() {
     if (this.combo === true) {
       this.combo = false;
@@ -88,6 +103,7 @@ export class CreateEditProductComponent implements OnInit {
     }
   }
   dismiss(data) {
+    this.ref.detach();
     this.modalController.dismiss(data);
   }
 
@@ -140,7 +156,7 @@ export class CreateEditProductComponent implements OnInit {
                   this.checkComboArray[this.nonAuxNonComboProducts.indexOf(data)] = true;
                 }
               });
-            })
+            });
         });
       });
   }
@@ -189,13 +205,13 @@ export class CreateEditProductComponent implements OnInit {
 
           this.saveAuxilary();
           this.saveCombo();
-          this.util.createToast("Product Created Successfully", 'checkmark');
+          this.util.createToast('Product Created Successfully', 'checkmark');
           this.loader.dismiss();
         },
           err => {
             console.log('error creating product', err);
             this.loader.dismiss();
-            this.util.createToast("Product Creation Error", 'alert');
+            this.util.createToast('Product Creation Error', 'alert');
           }
         );
     });
@@ -217,14 +233,13 @@ export class CreateEditProductComponent implements OnInit {
             .subscribe(comboDto =>
               this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId != comboDto.comboItemId)
             )
-        )
-        if(this.discount.rate == null){
+        );
+        if (this.discount.rate == null) {
           this.commandResource.deleteDiscountUsingDELETE(this.discount.id).subscribe();
-        }
-        else{
+        } else {
           this.commandResource.updateDiscountUsingPUT(this.discount).subscribe();
         }
-        
+
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
@@ -235,27 +250,27 @@ export class CreateEditProductComponent implements OnInit {
           this.commandResource.createAuxilaryLineItemUsingPOST(this.auxilaryLineItemDTOs[i])
             .subscribe(data => console.log('auxilary', data)
               , err => console.log('error creating Auxilary')
-            )
+            );
         }
         for (let i = this.oldCombo; i < this.comboLineItems.length; i++) {
           this.commandResource.createComboLineItemUsingPOST(this.comboLineItems[i])
             .subscribe(data => console.log('combo', data)
               , err => console.log('error creating Combo')
-            )
+            );
         }
 
 
         this.deleteAuxilaries.forEach(aux =>
           this.commandResource.deleteAuxilaryLineIteamUsingDELETE(aux.id).subscribe()
-        )
+        );
         this.deleteCombos.forEach(com =>
           this.commandResource.deleteComboLineItemUsingDELETE(com.id).subscribe()
-        )
+        );
         this.dismiss(data);
-        this.util.createToast("Product Updation Success", 'checkmark');
+        this.util.createToast('Product Updation Success', 'checkmark');
         this.loader.dismiss();
       }, err => {
-        this.util.createToast("Product Updation Error", 'alert');
+        this.util.createToast('Product Updation Error', 'alert');
       });
   }
   async selectImage() {
@@ -310,7 +325,7 @@ export class CreateEditProductComponent implements OnInit {
         if (data.comboItemId == item.id && data.id != null) {
           this.deleteCombos.push(data);
         }
-      })
+      });
       this.comboLineItems = this.comboLineItems.filter(ci => ci.id !== item.id);
     }
 
@@ -327,7 +342,7 @@ export class CreateEditProductComponent implements OnInit {
         if (data.auxilaryItemId == item.id && data.id != null) {
           this.deleteAuxilaries.push(data);
         }
-      })
+      });
       this.auxilaryLineItemDTOs = this.auxilaryLineItemDTOs.filter(ai => ai.id !== item.id);
     }
 
@@ -353,14 +368,14 @@ export class CreateEditProductComponent implements OnInit {
   }
   createDisabled() {
     if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
-      return true
+      return true;
     }
     return false;
   }
 
   createAuxilaryDisabled() {
     if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
-      return true
+      return true;
     }
     return false;
   }

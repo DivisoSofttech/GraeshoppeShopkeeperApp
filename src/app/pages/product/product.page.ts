@@ -134,12 +134,14 @@ export class ProductPage implements OnInit {
 
   updateProduct(product) {
     console.log('product', product);
-    this.queryService.findProductByIdUsingGET(product.id)
+    if (product) {
+      this.queryService.findProductByIdUsingGET(product.id)
         .subscribe(product => {
           const productDomain: Product = product;
           const index = this.products.findIndex(p => p.id === product.id);
           this.products.splice(index, 1, productDomain);
         });
+    }
   }
   deleteProduct(product: Product) {
     this.products = this.products.filter(p => p !== product);
