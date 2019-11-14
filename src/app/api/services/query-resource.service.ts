@@ -102,6 +102,7 @@ class QueryResourceService extends __BaseService {
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly getNotificationCountByReceiveridAndStatusUsingGETPath = '/api/query/notification/{status}/{receiverId}';
   static readonly getOpenTasksUsingGETPath = '/api/query/opentasks';
+  static readonly countByCustomerIdAndStatusNameUsingGETPath = '/api/query/order/countByCustomerIdAndStatusName/{customerId}/{statusName}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderLineByOrderMasterIdUsingGETPath = '/api/query/orderLineByOrderMasterId/{orderMasterId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
@@ -2114,6 +2115,53 @@ class QueryResourceService extends __BaseService {
   getOpenTasksUsingGET(params: QueryResourceService.GetOpenTasksUsingGETParams): __Observable<Array<OpenTask>> {
     return this.getOpenTasksUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<OpenTask>)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `customerId`: customerId
+   *
+   * @return OK
+   */
+  countByCustomerIdAndStatusNameUsingGETResponse(params: QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/order/countByCustomerIdAndStatusName/${params.customerId}/${params.statusName}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `customerId`: customerId
+   *
+   * @return OK
+   */
+  countByCustomerIdAndStatusNameUsingGET(params: QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams): __Observable<number> {
+    return this.countByCustomerIdAndStatusNameUsingGETResponse(params).pipe(
+      __map(_r => _r.body as number)
     );
   }
 
@@ -4359,6 +4407,22 @@ module QueryResourceService {
      * assignee
      */
     assignee?: string;
+  }
+
+  /**
+   * Parameters for countByCustomerIdAndStatusNameUsingGET
+   */
+  export interface CountByCustomerIdAndStatusNameUsingGETParams {
+
+    /**
+     * statusName
+     */
+    statusName: string;
+
+    /**
+     * customerId
+     */
+    customerId: string;
   }
 
   /**

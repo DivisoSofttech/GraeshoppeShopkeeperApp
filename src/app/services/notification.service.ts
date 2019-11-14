@@ -56,6 +56,7 @@ export class NotificationService {
          .fromEvent(user).subscribe((notification: NotificationDTO) => {
            console.log('Notifications Are subscribing ........');
            this.notificationCount++;
+           this.notificationBehaviouralSubject.next(this.notificationCount);
            console.log('Notification count is ', this.notificationCount);
            console.log('notification is ', notification);
            this.platform.ready().then(() => {

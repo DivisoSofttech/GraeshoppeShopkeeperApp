@@ -30,6 +30,7 @@ export class OrderCardComponent implements OnInit {
 
   deliveryTime: string;
   user;
+  requiredPhoneVerification = false;
   constructor(
     private command: CommandResourceService,
     private modalController: ModalController,
@@ -46,6 +47,21 @@ export class OrderCardComponent implements OnInit {
         .then(data => {
           this.user = data;
         });
+
+        // tslint:disable-next-line: max-line-length
+    if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' ||  this.order.status.name === 'payment-processed') {
+          console.log('Checking the order count ', this.order.status.name);
+          this.queryResource.countByCustomerIdAndStatusNameUsingGET
+          ({statusName: this.order.status.name, customerId: this.order.customerId})
+          .subscribe(ordercount => {
+            console.log('Order count is ', ordercount);
+            if (ordercount === 1) {
+              console.log('call enable set to true');
+              
+                this.requiredPhoneVerification = true;
+              }
+          });
+        }
   }
 
   completeOrder(order: Order) {
@@ -107,7 +123,7 @@ export class OrderCardComponent implements OnInit {
       );
     });
   }
-  
+
   async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
       component: OrderViewComponent,

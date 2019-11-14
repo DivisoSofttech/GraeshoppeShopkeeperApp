@@ -31,7 +31,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
+import { ApiModule } from './api/api.module';
+const config: SocketIoConfig = { url: 'http://dev.ci1.divisosofttech.com:9999', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -57,7 +58,8 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     }),
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ApiModule.forRoot({rootUrl: 'https://dev.ci1.divisosofttech.com:9080'}),
   ],
   providers: [
     Base64,

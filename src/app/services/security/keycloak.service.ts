@@ -86,6 +86,7 @@ export class KeycloakService {
       this.checkUserInRole(data.sub)
           .then(async hasRoleCustomer => {
             if (hasRoleCustomer) {
+              this.notificationService.connectToNotification();
               this.notificationService.subscribeToMyNotifications(credentials.username);
               success();
             } else {
