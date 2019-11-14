@@ -7,7 +7,7 @@ import {
 } from 'src/app/api/services';
 import { CommandResource } from './../../api/models/command-resource';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Order, Product } from 'src/app/api/models';
+import { Order, Product, Customer } from 'src/app/api/models';
 import * as moment from 'moment/moment';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -23,6 +23,7 @@ export class OrderCardComponent implements OnInit {
   @Input() order: Order;
   @Input() orderType: string;
   taskId: string;
+  customer: Customer;
 
   @Output() accept = new EventEmitter();
   @Output() completed = new EventEmitter();

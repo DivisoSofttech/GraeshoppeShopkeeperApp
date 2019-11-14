@@ -121,7 +121,7 @@
       </ion-item>
       <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('state').invalid && showError">Invalid State</ion-text>
       <ion-item>
-        <ion-label position="floating">Zip code <ion-text color="danger" class="text-size">*</ion-text></ion-label>
+        <ion-label position="floating">Eircode <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input (ionChange)="disableSave()" formControlName="zipcode"></ion-input>
       </ion-item>
       <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('zipcode').invalid && showError">Invalid Zip Code</ion-text>

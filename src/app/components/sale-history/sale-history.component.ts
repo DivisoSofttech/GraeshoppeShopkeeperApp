@@ -1,3 +1,5 @@
+import { Product } from 'src/app/api/models';
+import { TicketLine } from './../../api/models/ticket-line';
 import { SaleAggregate } from './../../api/models/sale-aggregate';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -17,6 +19,8 @@ export class SaleHistoryComponent implements OnInit {
   currentSale: SaleAggregate = {};
   user;
   pagecount = 0;
+  saleDetails = [];
+  products: string[] = [];
 
   constructor(
     private query: QueryResourceService,
@@ -38,6 +42,7 @@ export class SaleHistoryComponent implements OnInit {
       });
       console.log(pos.content);
       this.pagecount++;
+      this.getProductName();
     });
   }
 
@@ -47,5 +52,17 @@ export class SaleHistoryComponent implements OnInit {
 
   dismiss() {
     this.modal.dismiss();
+  }
+  getProductName() {
+    this.sales.forEach( sl => {
+      sl.ticketLines.forEach(tl => {
+        if (this.products[tl.productId] == null) {
+          this.query.findProductByIdUsingGET(tl.productId).subscribe(pro => {
+            this.products[tl.productId] = pro.name;
+          });
+        }
+      });
+    });
+    console.log(this.products);
   }
 }

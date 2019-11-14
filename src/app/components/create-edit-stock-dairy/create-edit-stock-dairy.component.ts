@@ -121,8 +121,8 @@ export class CreateEditStockDairyComponent implements OnInit {
         res.content.forEach(p => {
           this.products.push(p);
         });
-        i++;
-        if (i === res.totalPages) {
+        this.pageCount++;
+        if (this.pageCount === res.totalPages) {
           this.toggleInfiniteScroll();
         }
         this.loader.dismiss();
@@ -139,13 +139,11 @@ export class CreateEditStockDairyComponent implements OnInit {
 
   loadMoreProducts(event) {
     console.log('page count', this.pageCount);
-    this.pageCount++;
     this.getProducts(this.pageCount);
   }
 
   toggleInfiniteScroll() {
-    console.log('in', this.infiniteScroll.disabled);
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+      this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
   toggleDetail(product) {

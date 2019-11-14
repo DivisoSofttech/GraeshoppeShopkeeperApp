@@ -214,7 +214,7 @@
       </ion-list>
     </ion-slide>
   </ion-slides>
-  <ion-infinite-scroll *ngIf="currentSlide == '1'" threshold="100px" (ionInfinite)="loadMoreProducts($event)">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreProducts($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

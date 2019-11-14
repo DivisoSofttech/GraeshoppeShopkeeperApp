@@ -15,11 +15,11 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 export class AppComponent {
   public appPages = [
-    {
-      title: 'Dashboard',
-      url: '/dashboard',
-      icon: 'analytics'
-    },
+    // {
+    //   title: 'Dashboard',
+    //   url: '/dashboard',
+    //   icon: 'analytics'
+    // },
     {
       title: 'Product',
       url: '/product',
@@ -30,36 +30,36 @@ export class AppComponent {
       url: '/category',
       icon: 'filing'
     },
-    {
-      title: 'Stock Dairy',
-      url: '/stock-dairy',
-      icon: 'book'
-    },
+    // {
+    //   title: 'Stock Dairy',
+    //   url: '/stock-dairy',
+    //   icon: 'book'
+    // },
     {
       title: 'Order',
       url: '/order',
       icon: 'list-box'
     },
-    {
-      title: 'Order Summary',
-      url: '/order-summary',
-      icon: 'browsers'
-    },
+    // {
+    //   title: 'Order Summary',
+    //   url: '/order-summary',
+    //   icon: 'browsers'
+    // },
     {
       title: 'UOM',
       url: '/uom',
       icon: 'speedometer'
     },
-    {
-      title: 'Sale',
-      url: '/sale',
-      icon: 'pricetags'
-    },
-    {
-      title: 'Reports',
-      url: '/reports',
-      icon: 'apps'
-    },
+    // {
+    //   title: 'Sale',
+    //   url: '/sale',
+    //   icon: 'pricetags'
+    // },
+    // {
+    //   title: 'Reports',
+    //   url: '/reports',
+    //   icon: 'apps'
+    // },
     {
       title: 'Settings',
       url: '/settings',

@@ -11,7 +11,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-card *ngFor="let sale of sales">
+    <ion-card *ngFor="let sale of sales; let t of saleDetails">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -23,23 +23,23 @@
             </ion-item>
           </ion-col>
         </ion-row>
-        <!-- <ion-row>
+        <ion-row>
           <ion-col>
             <ion-card>
                 <ion-item *ngFor="let ticket of sale.ticketLines">
                     <ion-grid class="ion-no-padding">
                       <ion-row class="ion-no-padding">
-                        <ion-col size ="4" class="ion-margin-top ion-margin-bottom">
-                    <ion-text>{{ticket.}}</ion-text>
+                        <ion-col size ="7" class="ion-margin-top ion-margin-bottom">
+                    <ion-text>{{products[ticket.productId]}}</ion-text>
                   </ion-col>
                   <ion-col size ="3" class="ion-margin-top ion-margin-bottom">
                     <ion-text>
-                      {{getCount(product)}}  x  &#8364;{{product.sellingPrice | number: "1.1-2"}}
+                      {{ticket.quantity}}  x  &#8364;{{ticket.price | number: "1.1-2"}}
                     </ion-text>
                   </ion-col>
                   <ion-col size ="2" class="ion-margin-top ion-margin-bottom">
                     <ion-text >
-                       &#8364;{{sale | number: "1.1-2" }}
+                       &#8364;{{ticket.total | number: "1.1-2" }}
                     </ion-text>
                   </ion-col>
                     </ion-row>
@@ -47,7 +47,7 @@
                   </ion-item>
             </ion-card>
           </ion-col>
-        </ion-row> -->
+        </ion-row>
       </ion-grid>
     </ion-card>
   </ion-list>
