@@ -73,9 +73,9 @@ export class EditRestaurantPage implements OnInit {
     city: new FormControl('', [
       Validators.required
     ]),
-    state: new FormControl('', [
-      Validators.required
-    ]),
+    // state: new FormControl('', [
+    //   Validators.required
+    // ]),
     zipcode: new FormControl('', [
       Validators.required
     ])
@@ -122,7 +122,7 @@ export class EditRestaurantPage implements OnInit {
               closingTime: this.storeBundleDTO.store.closingTime,
               houseNoOrBuildingName: this.storeBundleDTO.storeAddress.houseNoOrBuildingName,
               city: this.storeBundleDTO.storeAddress.city,
-              state: this.storeBundleDTO.storeAddress.state,
+              // state: this.storeBundleDTO.storeAddress.state,
               zipcode: this.storeBundleDTO.storeAddress.pincode
           });
           });
@@ -330,7 +330,7 @@ export class EditRestaurantPage implements OnInit {
     this.storeBundleDTO.store.closingTime = formValue.closingTime;
     this.storeBundleDTO.storeAddress.houseNoOrBuildingName = formValue.houseNoOrBuildingName;
     this.storeBundleDTO.storeAddress.city = formValue.city;
-    this.storeBundleDTO.storeAddress.state = formValue.state;
+    // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
     if (!this.storeForm.invalid) {
       if (this.hasValidContents()) {
@@ -346,7 +346,7 @@ export class EditRestaurantPage implements OnInit {
           (address.roadNameAreaOrStreet ? address.roadNameAreaOrStreet + ', ' : '') +
           address.city +
           ', ' +
-          address.state +
+          // address.state +
           ', ' +
           address.pincode;
         this.commandService
