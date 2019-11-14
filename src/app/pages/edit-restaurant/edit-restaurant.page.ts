@@ -50,8 +50,7 @@ export class EditRestaurantPage implements OnInit {
   storeForm = new FormGroup({
     name: new FormControl(this.storeBundleDTO.store.name, [
       Validators.required,
-      Validators.minLength(3),
-      Validators.pattern('^[a-zA-Z ]*$')
+      Validators.minLength(3)
     ]),
     email: new FormControl('', [
       Validators.required,
