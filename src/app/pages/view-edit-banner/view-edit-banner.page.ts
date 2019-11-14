@@ -59,7 +59,7 @@ export class ViewEditBannerPage implements OnInit {
       this.bannerDTO.storeId = store.id;
       this.command.createBannerUsingPOST(this.bannerDTO)
         .subscribe(data => {
-          console.log("banner added",data);
+          console.log('banner added', data);
           this.banners.push(this.bannerDTO);
         }
         ,err => console.log("error adding banner"));

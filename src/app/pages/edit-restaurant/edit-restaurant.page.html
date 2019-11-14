@@ -112,14 +112,14 @@
       </ion-item>
       <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('city').invalid && showError">Invalid City</ion-text>
       <ion-item>
-        <ion-label position="floating">Landmark</ion-label>
+        <ion-label position="floating">County</ion-label>
         <ion-input [(ngModel)]="storeBundleDTO.storeAddress.landmark" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
-      <ion-item>
+      <!-- <ion-item>
         <ion-label position="floating">State <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input (ionChange)="disableSave()" formControlName="state"></ion-input>
-      </ion-item>
-      <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('state').invalid && showError">Invalid State</ion-text>
+      </ion-item> -->
+      <!-- <ion-text  class="err-size ion-margin-start" color="danger" *ngIf="storeForm.get('state').invalid && showError">Invalid State</ion-text> -->
       <ion-item>
         <ion-label position="floating">Eircode <ion-text color="danger" class="text-size">*</ion-text></ion-label>
         <ion-input (ionChange)="disableSave()" formControlName="zipcode"></ion-input>
