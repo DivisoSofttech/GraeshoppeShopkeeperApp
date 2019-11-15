@@ -102,7 +102,7 @@ class QueryResourceService extends __BaseService {
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly getNotificationCountByReceiveridAndStatusUsingGETPath = '/api/query/notification/{status}/{receiverId}';
   static readonly getOpenTasksUsingGETPath = '/api/query/opentasks';
-  static readonly countByCustomerIdAndStatusNameUsingGETPath = '/api/query/order/countByCustomerIdAndStatusName/{customerId}/{statusName}';
+  static readonly countByCustomerIdAndStatusNameUsingGETPath = '/api/query/order/countByStoreIdAndCustomerId/{storeId}/{customerId}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderLineByOrderMasterIdUsingGETPath = '/api/query/orderLineByOrderMasterId/{orderMasterId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
@@ -2121,7 +2121,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams` containing the following parameters:
    *
-   * - `statusName`: statusName
+   * - `storeId`: storeId
    *
    * - `customerId`: customerId
    *
@@ -2135,7 +2135,7 @@ class QueryResourceService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/order/countByCustomerIdAndStatusName/${params.customerId}/${params.statusName}`,
+      this.rootUrl + `/api/query/order/countByStoreIdAndCustomerId/${params.storeId}/${params.customerId}`,
       __body,
       {
         headers: __headers,
@@ -2153,7 +2153,7 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CountByCustomerIdAndStatusNameUsingGETParams` containing the following parameters:
    *
-   * - `statusName`: statusName
+   * - `storeId`: storeId
    *
    * - `customerId`: customerId
    *
@@ -4415,9 +4415,9 @@ module QueryResourceService {
   export interface CountByCustomerIdAndStatusNameUsingGETParams {
 
     /**
-     * statusName
+     * storeId
      */
-    statusName: string;
+    storeId: string;
 
     /**
      * customerId

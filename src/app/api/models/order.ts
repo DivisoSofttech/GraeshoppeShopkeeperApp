@@ -18,4 +18,5 @@ export interface Order {
   paymentRef?: string;
   status?: Status;
   storeId?: string;
+  subTotal?: number;
 }
