@@ -15,9 +15,9 @@ import { ImageSelectorComponent } from 'src/app/components/image-selector/image-
 })
 export class ViewEditBannerPage implements OnInit {
 
-  store: Store
-  banners: Banner[] =[];
-  bannerDTO: BannerDTO ={};
+  store: Store;
+  banners: Banner[] = [];
+  bannerDTO: BannerDTO = {};
   cropperSettings: CropperSettings
   constructor(
     private query: QueryResourceService,

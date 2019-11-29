@@ -16,7 +16,7 @@
     <div class="close">
         <ion-icon (click)="deleteBanner(banner)" class="icon-size" name="close"></ion-icon>
     </div>
-  <ion-img [src]="'data:' + banner.fileContentType + ';base64,' + banner.file">
+  <ion-img [src]=banner.imageLink>
       
   </ion-img>
 </ion-card>

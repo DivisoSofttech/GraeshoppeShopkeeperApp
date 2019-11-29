@@ -29,6 +29,7 @@ import { ReviewDTO } from '../models/review-dto';
 import { SaleDTO } from '../models/sale-dto';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntryDTO } from '../models/stock-entry-dto';
+import { PreOrderSettingsDTO } from '../models/pre-order-settings-dto';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
 import { StoreDTO } from '../models/store-dto';
 import { TicketLineDTO } from '../models/ticket-line-dto';
@@ -100,6 +101,9 @@ class CommandResourceService extends __BaseService {
   static readonly updateStockEntryUsingPUTPath = '/api/command/stock-entry';
   static readonly deleteStockEntryUsingDELETEPath = '/api/command/stock-entry/{id}';
   static readonly deleteStoreTypeUsingDELETEPath = '/api/command/store-types/{id}';
+  static readonly createPreOrderSettingsUsingPOSTPath = '/api/command/store/preOrderSettings';
+  static readonly updatePreOrderSettingsUsingPUTPath = '/api/command/store/preOrderSettings';
+  static readonly deletePreOrderSettingsUsingDELETEPath = '/api/command/store/preOrderSettings';
   static readonly createStoreBundleUsingPOSTPath = '/api/command/storeBundle';
   static readonly createStoreUsingPOSTPath = '/api/command/stores';
   static readonly updateStoreUsingPUTPath = '/api/command/stores';
@@ -2145,6 +2149,112 @@ class CommandResourceService extends __BaseService {
    */
   deleteStoreTypeUsingDELETE(id: number): __Observable<null> {
     return this.deleteStoreTypeUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param preOrderSettingsDTO preOrderSettingsDTO
+   * @return OK
+   */
+  createPreOrderSettingsUsingPOSTResponse(preOrderSettingsDTO: PreOrderSettingsDTO): __Observable<__StrictHttpResponse<PreOrderSettingsDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = preOrderSettingsDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/store/preOrderSettings`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PreOrderSettingsDTO>;
+      })
+    );
+  }
+  /**
+   * @param preOrderSettingsDTO preOrderSettingsDTO
+   * @return OK
+   */
+  createPreOrderSettingsUsingPOST(preOrderSettingsDTO: PreOrderSettingsDTO): __Observable<PreOrderSettingsDTO> {
+    return this.createPreOrderSettingsUsingPOSTResponse(preOrderSettingsDTO).pipe(
+      __map(_r => _r.body as PreOrderSettingsDTO)
+    );
+  }
+
+  /**
+   * @param preOrderSettingsDTO preOrderSettingsDTO
+   * @return OK
+   */
+  updatePreOrderSettingsUsingPUTResponse(preOrderSettingsDTO: PreOrderSettingsDTO): __Observable<__StrictHttpResponse<PreOrderSettingsDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = preOrderSettingsDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/store/preOrderSettings`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PreOrderSettingsDTO>;
+      })
+    );
+  }
+  /**
+   * @param preOrderSettingsDTO preOrderSettingsDTO
+   * @return OK
+   */
+  updatePreOrderSettingsUsingPUT(preOrderSettingsDTO: PreOrderSettingsDTO): __Observable<PreOrderSettingsDTO> {
+    return this.updatePreOrderSettingsUsingPUTResponse(preOrderSettingsDTO).pipe(
+      __map(_r => _r.body as PreOrderSettingsDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deletePreOrderSettingsUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/store/preOrderSettings`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deletePreOrderSettingsUsingDELETE(id: number): __Observable<null> {
+    return this.deletePreOrderSettingsUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
     );
   }

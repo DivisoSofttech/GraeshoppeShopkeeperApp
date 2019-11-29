@@ -140,7 +140,9 @@ export class LoginSignupPage implements OnInit {
     createStore(userName) {
       const store: StoreDTO = {
         regNo: userName,
-        email: this.email
+        email: this.email,
+        storeUniqueId: userName,
+        imageLink: ''
       };
       this.util.createLoader().then(loader => {
         loader.present();

@@ -11,7 +11,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  store: Store;
+  store: Store = {
+    imageLink: '',
+    storeUniqueId: ''
+  };
   constructor(
     private queryService: QueryResourceService,
     private storage: Storage

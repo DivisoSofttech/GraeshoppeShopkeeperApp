@@ -21,7 +21,7 @@ export class CategoryCardComponent implements OnInit {
   ) { }
   @Input()
   category: Category;
-  @Output() 
+  @Output()
   update = new EventEmitter();
   @Output()
   delete = new EventEmitter();

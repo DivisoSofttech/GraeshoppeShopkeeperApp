@@ -14,12 +14,20 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8" class="vertical-align-center hide-overflow">
-        <ion-img *ngIf="storeBundleDTO.store.image"  class="image hide-overflow"
-          [src]="'data:' + storeBundleDTO.store.imageContentType + ';base64,' + storeBundleDTO.store.image">
+        <ion-img *ngIf="storeBundleDTO.store.imageLink"  class="image hide-overflow"
+          [src]=storeBundleDTO.store.imageLink>
         </ion-img>
-        <ion-img *ngIf="!storeBundleDTO.store.image" class="image hide-overflow"
+        <ion-img *ngIf="!storeBundleDTO.store.imageLink && !storeBundleDTO.store.image" class="image hide-overflow"
           src="assets/images/placeholder.png">
         </ion-img>
+        <ion-img *ngIf="!storeBundleDTO.store.imageLink && storeBundleDTO.store.image" class="image hide-overflow"
+        [src]="
+          'data:' +
+          storeBundleDTO.store.imageContentType +
+          ';base64,' +
+          storeBundleDTO.store.image
+        ">
+      </ion-img>
         <ion-text color="danger" class="text-size">
           *
         </ion-text>
@@ -247,8 +255,18 @@
         </ion-item>
         <ion-item>
             <ion-label slot="start">Pre-order Available</ion-label>
-            <ion-toggle slot="end" ></ion-toggle>
+            <ion-toggle [(ngModel)]="storeBundleDTO.preOrderSettings.isPreOrderAvailable" slot="end" ></ion-toggle>
         </ion-item>
+        <ion-card *ngIf="storeBundleDTO.preOrderSettings.isPreOrderAvailable">
+          <ion-item>
+            <ion-label position="floating">Starting Time</ion-label>
+            <ion-datetime [(ngModel)]="storeBundleDTO.preOrderSettings.fromTime" displayFormat="h:mm a"  ></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Ending Time</ion-label>
+            <ion-datetime [(ngModel)]="storeBundleDTO.preOrderSettings.toTime" displayFormat="h:mm a"  ></ion-datetime>
+          </ion-item>
+        </ion-card>
         <ion-item>
             <ion-label slot="start">Active</ion-label>
             <ion-toggle slot="end" ></ion-toggle>

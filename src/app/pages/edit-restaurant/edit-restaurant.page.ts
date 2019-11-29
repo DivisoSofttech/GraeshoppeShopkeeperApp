@@ -1,3 +1,4 @@
+import { PreOrderSettingsDTO } from './../../api/models/pre-order-settings-dto';
 import { Contact } from './../../api/models/contact';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Util } from './../../services/util';
@@ -42,7 +43,13 @@ export class EditRestaurantPage implements OnInit {
   loader: HTMLIonLoadingElement;
 
   storeBundleDTO: StoreBundleDTO = {
-    store: {},
+    store: {
+      imageLink: '',
+      storeUniqueId: ''
+    },
+    preOrderSettings: {
+      isPreOrderAvailable: false
+    },
     storeAddress: {},
     storeSettings: {},
   };
@@ -85,7 +92,7 @@ export class EditRestaurantPage implements OnInit {
   showError = false;
 
   disableSaveState = true;
-
+  preOrderSettings: PreOrderSettingsDTO = {};
   private delivery: TypeDTO = undefined;
   private collection: TypeDTO = undefined;
   @ViewChild('info', { static: false }) private infoInput: IonInput;
@@ -110,6 +117,9 @@ export class EditRestaurantPage implements OnInit {
         this.queryService
           .getStoreBundleUsingGET({ regNo: user.preferred_username })
           .subscribe(res => {
+            if (res.preOrderSettings) {
+              this.preOrderSettings = res.preOrderSettings;
+            }
             this.storeBundleDTO = res;
             this.setDeliveryTypes();
             this.setOrderAcceptTypes();
@@ -265,6 +275,7 @@ export class EditRestaurantPage implements OnInit {
     }
   }
 
+
   toggleAddress() {
     this.showAddress = !this.showAddress;
   }
@@ -333,7 +344,6 @@ export class EditRestaurantPage implements OnInit {
     // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
     if (!this.storeForm.invalid) {
-      if (this.hasValidContents()) {
         this.util.createLoader().then(loader => {
           this.loader = loader;
           this.loader.present();
@@ -349,6 +359,14 @@ export class EditRestaurantPage implements OnInit {
           // address.state +
           ', ' +
           address.pincode;
+        // if (this.preOrderSettings.isPreOrderAvailable) {
+        //   this.commandService.createPreOrderSettingsUsingPOST(this.preOrderSettings).subscribe( pre => {
+        //     this.storeBundleDTO.store.preOrderSettingsId = pre.id;
+        //     this.storeBundleDTO.preOrderSettings = pre;
+        //   });
+        // } else {
+        //   this.storeBundleDTO.store.preOrderSettingsId = null;
+        // }
         this.commandService
           .createStoreBundleUsingPOST(this.storeBundleDTO)
           .subscribe(
@@ -363,9 +381,6 @@ export class EditRestaurantPage implements OnInit {
               this.loader.dismiss();
             }
           );
-      } else {
-        this.util.createAlert('Can\'t save', 'You skipped some mandatory fields, mandatory fields are marked with a \'*\' mark ');
-      }
     } else {
       this.showError = true;
     }
@@ -434,8 +449,7 @@ export class EditRestaurantPage implements OnInit {
         this.storeBundleDTO.store.closingTime &&
         this.storeBundleDTO.storeAddress.houseNoOrBuildingName &&
         this.storeBundleDTO.storeAddress.city &&
-        this.storeBundleDTO.storeAddress.pincode &&
-        this.storeBundleDTO.storeAddress.state
+        this.storeBundleDTO.storeAddress.pincode
       )
     ) {
       return false;

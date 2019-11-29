@@ -15,7 +15,10 @@ import { CreateSelectCustomerComponent } from 'src/app/components/create-select-
   styleUrls: ['./sale.page.scss'],
 })
 export class SalePage implements OnInit {
-  store: Store = {};
+  store: Store = {
+  	imageLink: '',
+  	storeUniqueId: ''
+  };
   sale: SaleDTO = {};
   ticketLines: TicketLineDTO[] = [];
   totalPrice = 0;

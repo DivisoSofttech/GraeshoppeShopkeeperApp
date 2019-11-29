@@ -55,11 +55,11 @@ export class AppComponent {
     //   url: '/sale',
     //   icon: 'pricetags'
     // },
-    // {
-    //   title: 'Reports',
-    //   url: '/reports',
-    //   icon: 'apps'
-    // },
+    {
+      title: 'Reports',
+      url: '/reports',
+      icon: 'apps'
+    },
     {
       title: 'Settings',
       url: '/settings',

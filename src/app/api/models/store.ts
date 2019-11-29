@@ -1,34 +1,40 @@
 /* tslint:disable */
 import { Banner } from './banner';
 import { DeliveryInfo } from './delivery-info';
+import { PreOrderSettings } from './pre-order-settings';
 import { Propreitor } from './propreitor';
 import { Review } from './review';
 import { StoreAddress } from './store-address';
 import { StoreSettings } from './store-settings';
 import { StoreType } from './store-type';
+import { UserRatingReview } from './user-rating-review';
 import { UserRating } from './user-rating';
 export interface Store {
+  minAmount?: number;
   banners?: Array<Banner>;
-  closingTime?: string;
   contactNo?: number;
   deliveryInfos?: Array<DeliveryInfo>;
   email?: string;
   id?: number;
   image?: string;
   imageContentType?: string;
+  imageLink: string;
   info?: string;
   location?: string;
   locationName?: string;
   maxDeliveryTime?: string;
-  minAmount?: number;
+  closingTime?: string;
   name?: string;
   openingTime?: string;
+  preOrderSettings?: PreOrderSettings;
   propreitor?: Propreitor;
   regNo?: string;
   reviews?: Array<Review>;
   storeAddress?: StoreAddress;
   storeSettings?: StoreSettings;
   storeTypes?: Array<StoreType>;
+  storeUniqueId: string;
   totalRating?: number;
+  userRatingReviews?: Array<UserRatingReview>;
   userRatings?: Array<UserRating>;
 }
