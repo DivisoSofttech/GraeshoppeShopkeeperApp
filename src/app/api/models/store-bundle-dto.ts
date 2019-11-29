@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { BannerDTO } from './banner-dto';
 import { DeliveryInfoDTO } from './delivery-info-dto';
-import { PreOrderSettings } from './pre-order-settings';
+import { PreOrderSettingsDTO } from './pre-order-settings-dto';
 import { StoreDTO } from './store-dto';
 import { StoreAddressDTO } from './store-address-dto';
 import { StoreSettingsDTO } from './store-settings-dto';
@@ -10,7 +10,7 @@ import { TypeDTO } from './type-dto';
 export interface StoreBundleDTO {
   banners?: Array<BannerDTO>;
   deliveryInfos?: Array<DeliveryInfoDTO>;
-  preOrderSettings?: PreOrderSettings;
+  preOrderSettings?: PreOrderSettingsDTO;
   store?: StoreDTO;
   storeAddress?: StoreAddressDTO;
   storeSettings?: StoreSettingsDTO;

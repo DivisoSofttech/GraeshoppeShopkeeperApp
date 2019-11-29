@@ -2,7 +2,7 @@
     <div class="close">
         <ion-icon (click)="dismiss()" class="icon-size" name="close-circle-outline"></ion-icon>
     </div>
-    <img [src]="'data:' + product.imageContentType + ';base64,' + product.image" />
+    <img [src]=product.imagelink />
     <ion-card>
         <ion-card-content>
             <ion-item>

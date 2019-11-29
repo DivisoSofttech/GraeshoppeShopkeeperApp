@@ -33,15 +33,19 @@
         <div>
           <ion-card no-padding>
             <ion-card-content no-padding>
-                <ion-item text-center *ngIf="!productDTO.image">
+                <ion-item text-center *ngIf="!productDTO.image && !productDTO.imagelink">
                   <ion-label>
                 <ion-img (click)="selectImage()" src="assets/images/camera.png"></ion-img>
                 <ion-text color="danger" class="text-size">*</ion-text>
               </ion-label>
               </ion-item>
-              <ion-item text-center *ngIf="productDTO.image">
+              <ion-item text-center *ngIf="productDTO.image && !productDTO.imagelink">
                 <img (click)="selectImage()"
                   [src]="'data:' + productDTO.imageContentType + ';base64,' + productDTO.image" />
+              </ion-item>
+              <ion-item text-center *ngIf="productDTO.imagelink">
+                <img (click)="selectImage()"
+                  [src]=productDTO.imagelink />
               </ion-item>
               <ion-item>
                 <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
