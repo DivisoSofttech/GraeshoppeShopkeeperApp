@@ -122,6 +122,8 @@ export class EditRestaurantPage implements OnInit {
             } else {
               this.preOrderSettings.toTime = res.store.openingTime;
             }
+
+            console.log('pre', res.preOrderSettings);
             this.storeBundleDTO = res;
             this.setDeliveryTypes();
             this.setOrderAcceptTypes();
@@ -369,6 +371,8 @@ export class EditRestaurantPage implements OnInit {
         // } else {
         //   this.storeBundleDTO.store.preOrderSettingsId = null;
         // }
+        console.log('pre', this.storeBundleDTO.preOrderSettings);
+        
         this.commandService
           .createStoreBundleUsingPOST(this.storeBundleDTO)
           .subscribe(
