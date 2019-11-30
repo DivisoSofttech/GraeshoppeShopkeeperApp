@@ -1,6 +1,6 @@
 import { OrderViewComponent } from './../../components/order-view/order-view.component';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -27,6 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [OrderPage],
+  providers: [DatePipe],
   entryComponents: [OrderCardComponent,OrderViewComponent,NotificationComponent]
 })
 export class OrderPageModule {}
