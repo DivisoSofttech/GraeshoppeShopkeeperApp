@@ -41,23 +41,37 @@
       </ion-segment>
     </div>
     <!--Segment Button Container End-->
+
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
+
         <ion-slide *ngIf="showPending">
-          <ion-list class="order-card-view" justify-content-center>
-        <div *ngFor="let order  of pendingOrders"  justify-content-center>
-          <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-          <app-order-card class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order)"  [order]="order"></app-order-card>
-        </div>
-      </ion-list>
-      
-        </ion-slide>
-        <ion-slide>
-          <ion-list class="order-card-view" justify-content-center>
-            <div *ngFor="let order  of confirmedOrders" justify-content-center>
-              <app-order-card class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(order)" [order]="order"></app-order-card>
+          <ion-list class="order-card-view" justify-content-center *ngFor="let okey of pendingOrdersSortedKeys">
+            <ion-list-header>
+              <ion-label>{{okey}}</ion-label>
+            </ion-list-header>
+            <div class="mg-top">
+                <ion-label *ngIf="pendingOrdersSorted[okey].length === 0">No Orders</ion-label>
             </div>
+            <app-order-card *ngFor="let order  of pendingOrdersSorted[okey]"  class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order , okey)"  [order]="order"></app-order-card>
           </ion-list>
         </ion-slide>
+
+        <ion-slide>
+          <div class="slideContent">
+              <ion-list justify-content-center *ngFor="let okey of confirmedOrdersSortedKeys">
+                  <ion-list-header color="secondary">
+                    <ion-label>
+                      <b>{{okey | titlecase}}</b>
+                    </ion-label>
+                  </ion-list-header>    
+                  <div class="mg-top">
+                      <ion-label *ngIf="confirmedOrdersSorted[okey].length === 0">No Orders</ion-label>
+                  </div>
+                  <app-order-card *ngFor="let order  of confirmedOrdersSorted[okey]" class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(order , okey)" [order]="order"></app-order-card>
+                </ion-list>      
+          </div>
+        </ion-slide>
+ 
         <ion-slide>
           <ion-list class="order-card-view" justify-content-center>
             <div *ngFor="let order  of completedOrders" justify-content-center>

@@ -1,21 +1,18 @@
-.order-card-view {
-    width: 50%;
+ion-card {
+    width: 100%;
 }
 
-@media only screen and (max-width: 600px) {
-    .order-card-view {
-        width: 100%;
-    }
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
 }
 
-.buttons-right {
-    position: absolute;
-    top:0;
-    right: 0;
+.center {
+    display: flex;
+    align-items: center;
 }
 
-.wrap {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.icon-big {
+    font-size: 30px;
+    margin-right: 10px;
 }
