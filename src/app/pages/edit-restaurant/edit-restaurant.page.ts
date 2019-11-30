@@ -119,6 +119,8 @@ export class EditRestaurantPage implements OnInit {
           .subscribe(res => {
             if (res.preOrderSettings) {
               this.preOrderSettings = res.preOrderSettings;
+            } else {
+              this.preOrderSettings.toTime = res.store.openingTime;
             }
             this.storeBundleDTO = res;
             this.setDeliveryTypes();

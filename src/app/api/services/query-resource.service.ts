@@ -373,6 +373,8 @@ class QueryResourceService extends __BaseService {
    *
    * - `name`:
    *
+   * - `imageLink`:
+   *
    * - `imageContentType`:
    *
    * - `image`:
@@ -390,6 +392,7 @@ class QueryResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.name != null) __params = __params.set('name', params.name.toString());
+    if (params.imageLink != null) __params = __params.set('imageLink', params.imageLink.toString());
     if (params.imageContentType != null) __params = __params.set('imageContentType', params.imageContentType.toString());
     if (params.image != null) __params = __params.set('image', params.image.toString());
     if (params.id != null) __params = __params.set('id', params.id.toString());
@@ -416,6 +419,8 @@ class QueryResourceService extends __BaseService {
    * @param params The `QueryResourceService.UpdateCategoryUsingPUT1Params` containing the following parameters:
    *
    * - `name`:
+   *
+   * - `imageLink`:
    *
    * - `imageContentType`:
    *
@@ -3789,6 +3794,7 @@ module QueryResourceService {
    */
   export interface UpdateCategoryUsingPUT1Params {
     name?: string;
+    imageLink?: string;
     imageContentType?: string;
     image?: string;
     id?: number;
