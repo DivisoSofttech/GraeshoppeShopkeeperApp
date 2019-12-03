@@ -2,7 +2,7 @@
   <div (click) = "presentActionSheet()" class="blank-content">
     <ion-icon slot="icon-only" name="more" class="rotate void-button pointer" float-right></ion-icon>
   </div>
-  <ion-img (click)="viewCategoryModal()" [src]=category.imagelink class="imageShow"></ion-img>
+  <ion-img (click)="viewCategoryModal()" [src]=category.imageLink class="imageShow"></ion-img>
   <!-- <ion-img src="assets/images/burger.jpeg" class="imageShow"></ion-img> -->
   <div class="overlay" text-center>
     <ion-text class="stock-name" (click)="viewCategoryModal()">{{category.name}}</ion-text>

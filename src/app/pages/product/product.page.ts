@@ -109,7 +109,7 @@ export class ProductPage implements OnInit {
           this.products.push(p);
         });
         i++;
-        if (i == res.totalPages) {
+        if (i === res.totalPages) {
           this.toggleInfiniteScroll();
         }
         if (limit === false) {

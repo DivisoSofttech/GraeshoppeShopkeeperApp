@@ -1,3 +1,4 @@
+import { Printer } from '@ionic-native/printer/ngx';
 import { MaterialModule } from './components/material.module';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -74,6 +75,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci1.divisosofttech.com:9999', 
     LocalNotifications,
     File,
     FileOpener,
+    Printer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,

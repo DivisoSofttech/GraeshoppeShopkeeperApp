@@ -4,10 +4,9 @@ export interface Category {
   description?: string;
   iDPcode?: string;
   id?: number;
-  idpcode?: string;
   image?: string;
   imageContentType?: string;
-  imagelink?: string;
+  imageLink?: string;
   name?: string;
   products?: Array<Product>;
 }

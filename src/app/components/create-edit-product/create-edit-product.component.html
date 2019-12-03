@@ -39,11 +39,11 @@
                 <ion-text color="danger" class="text-size">*</ion-text>
               </ion-label>
               </ion-item>
-              <ion-item text-center *ngIf="productDTO.image && !productDTO.imagelink">
+              <ion-item text-center *ngIf="productDTO.image && !productDTO.imageLink">
                 <img (click)="selectImage()"
                   [src]="'data:' + productDTO.imageContentType + ';base64,' + productDTO.image" />
               </ion-item>
-              <ion-item text-center *ngIf="productDTO.imagelink">
+              <ion-item text-center *ngIf="productDTO.imageLink">
                 <img (click)="selectImage()"
                   [src]=productDTO.imagelink />
               </ion-item>

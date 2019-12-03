@@ -24,12 +24,12 @@
       <ion-text color="danger" class="text-size">*</ion-text>
     </ion-label>
     </ion-item>
-    <ion-item text-center  *ngIf="categoryDTO.image && !categoryDTO.imagelink">
+    <ion-item text-center  *ngIf="categoryDTO.image && !categoryDTO.imageLink">
       <ion-label>
       <img (click)="selectImage()" [src]="'data:' + categoryDTO.imageContentType + ';base64,' + categoryDTO.image"/>
     </ion-label>
     </ion-item>
-    <ion-item text-center  *ngIf="categoryDTO.imagelink">
+    <ion-item text-center  *ngIf="categoryDTO.imageLink">
       <ion-label>
         <ion-img *ngIf="categoryDTO.imagelink"  class="image hide-overflow"
         [src]=categoryDTO.imagelink>

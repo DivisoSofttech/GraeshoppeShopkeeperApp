@@ -137,6 +137,7 @@ export class RestaurantLocationPage implements OnInit {
   }
 
   saveStore() {
+    console.log('store', this.store);
     this.commandResource.updateStoreUsingPUT(this.store).subscribe(
       res => {
         this.util.createToast('Location changed', 'done-all');

@@ -69,7 +69,7 @@ export class LoginSignupPage implements OnInit {
         { username: this.username, password: this.password },
         () => {
           loader.dismiss();
-          this.createStore(this.username);
+          this.util.navigateRoot();
           this.util.createToast('Logged in successfully' , 'checkmark-circle-outline');
         },
         () => {

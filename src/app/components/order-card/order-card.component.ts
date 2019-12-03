@@ -14,6 +14,8 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Util } from 'src/app/services/util';
 
+import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
+
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -38,7 +40,8 @@ export class OrderCardComponent implements OnInit {
     private fileOpener: FileOpener,
     private queryResource: QueryResourceService,
     private util: Util,
-    private storage: Storage
+    private storage: Storage,
+    private printer: Printer
   ) {}
 
   ngOnInit() {
@@ -180,6 +183,15 @@ export class OrderCardComponent implements OnInit {
           });
       });
   }
+      }
+
+      print() {
+        const options: PrintOptions = {
+          name: 'MyDocument'
+        };
+        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(docket => {
+          this.printer.print('base64://' + 'data:' + docket.contentType + ';base64,' + docket.pdf, options).then();
+        });
       }
 
 }
