@@ -58,6 +58,7 @@
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^4.1.1",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
+    "cordova-plugin-print-pdf": "^4.0.2",
     "cordova-plugin-printer": "^0.8.0",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",

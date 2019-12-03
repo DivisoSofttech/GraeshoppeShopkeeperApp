@@ -264,7 +264,7 @@
           </ion-item>
           <ion-item>
             <ion-label position="floating">Ending Time</ion-label>
-            <ion-datetime [(ngModel)]="storeBundleDTO.preOrderSettings.toTime" displayFormat="h:mm a"  ></ion-datetime>
+            <ion-datetime [(ngModel)]="storeBundleDTO.preOrderSettings.toTime" displayFormat="h:mm a" value="storeBundleDTO.store.openingTime" ></ion-datetime>
           </ion-item>
         </ion-card>
         <ion-item>

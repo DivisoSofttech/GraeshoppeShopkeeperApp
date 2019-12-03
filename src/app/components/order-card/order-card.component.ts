@@ -171,13 +171,17 @@ export class OrderCardComponent implements OnInit {
           })
           .then(value => {
             console.log('file writed' + value);
-            this.fileOpener
-              .showOpenWithDialog(
-                this.file.externalCacheDirectory + 'items.pdf',
-                result.contentType
-              )
-              .then(() => console.log('File is opened'))
-              .catch(e => console.log('Error opening file', e));
+            const options: PrintOptions = {
+              name: 'MyDocument'
+            };
+            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            // this.fileOpener
+            //   .showOpenWithDialog(
+            //     this.file.externalCacheDirectory + 'items.pdf',
+            //     result.contentType
+            //   )
+            //   .then(() => console.log('File is opened'))
+            //   .catch(e => console.log('Error opening file', e));
             // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
             // {print: {enabled: true}, openWith: {enabled: true}});
           });
@@ -190,6 +194,12 @@ export class OrderCardComponent implements OnInit {
           name: 'MyDocument'
         };
         this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(docket => {
+          // const encodedString = docket.pdf;
+          // cordova.plugins..PDF.print({
+          //     data: encodedString,
+          //     type: 'Data',
+          //     title: 'Print Document',
+          // });
           this.printer.print('base64://' + 'data:' + docket.contentType + ';base64,' + docket.pdf, options).then();
         });
       }
