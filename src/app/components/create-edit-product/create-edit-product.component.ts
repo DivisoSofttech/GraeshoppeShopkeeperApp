@@ -123,6 +123,13 @@ export class CreateEditProductComponent implements OnInit {
     }
   }
 
+  addSelectedCategory($event) {
+    console.log($event);
+    this.productDTO.categoryId = $event.id;
+    console.log(this.productDTO.categoryId);
+    
+  }
+
   getProductAux() {
     this.query.getProductBundleUsingGET(this.product.id)
       .subscribe(productBundle => {

@@ -20,7 +20,10 @@ export class CreateEditCategoryComponent implements OnInit {
   };
   categoryDTO: CategoryDTO = {};
   mode = 'create';
+
   @Output() onSlide = new EventEmitter();
+
+  @Output() added = new EventEmitter();
   @Input() throughProduct = 'false';
   // @ViewChild('slides', { static: false }) slides: IonSlides;
 
@@ -80,6 +83,7 @@ export class CreateEditCategoryComponent implements OnInit {
     });
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
+          this.categoryDTO = data;
           this.loader.dismiss();
           this.util.createToast("Category Created",'checkmark');
           if(this.throughProduct=='false'){
@@ -87,6 +91,7 @@ export class CreateEditCategoryComponent implements OnInit {
           }
           else{
             this.onSlide.emit();
+            this.added.emit(this.categoryDTO);
           }
         }
         , err => {

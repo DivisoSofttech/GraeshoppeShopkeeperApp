@@ -229,14 +229,22 @@
         <ion-row>
           <ion-col size="6">
             <ion-item>
-              <ion-checkbox [(ngModel)]="orderIsAuto" (ionChange)="onChangeOrderAcceptType('auto', $event)"></ion-checkbox>
+              <ion-checkbox [(ngModel)]="auto" (ionChange)="onChangeOrderAcceptType('auto', $event)"></ion-checkbox>
               <ion-label class="ion-padding-start">Automatic</ion-label>
             </ion-item>
           </ion-col>
           <ion-col size="6">
             <ion-item>
-              <ion-checkbox [(ngModel)]="!orderIsAuto" (ionChange)="onChangeOrderAcceptType('manual', $event)"></ion-checkbox>
+              <ion-checkbox [(ngModel)]="manual" (ionChange)="onChangeOrderAcceptType('manual', $event)"></ion-checkbox>
               <ion-label class="ion-padding-start">Manual</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-checkbox [(ngModel)]="advanced" (ionChange)="onChangeOrderAcceptType('advanced', $event)"></ion-checkbox>
+              <ion-label class="ion-padding-start">Advanced</ion-label>
             </ion-item>
           </ion-col>
         </ion-row>

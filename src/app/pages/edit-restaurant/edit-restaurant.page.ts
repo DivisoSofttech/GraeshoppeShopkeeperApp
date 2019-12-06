@@ -23,6 +23,7 @@ import {
   NavController
 } from '@ionic/angular';
 import { StoreTypeDTO } from 'src/app/api/models';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-edit-restaurant',
@@ -101,6 +102,9 @@ export class EditRestaurantPage implements OnInit {
   deliveryChecked: boolean;
   collectionChecked: boolean;
   orderIsAuto = true;
+  auto = false;
+  manual = false;
+  advanced = false;
 
   deliveryInfo: DeliveryInfoDTO;
   collectionInfo: DeliveryInfoDTO;
@@ -277,6 +281,8 @@ export class EditRestaurantPage implements OnInit {
         };
       }
     }
+
+
   }
 
 
@@ -424,22 +430,45 @@ export class EditRestaurantPage implements OnInit {
     }
   }
 
-  onChangeOrderAcceptType(autoOrManual: string, event) {
-    if (autoOrManual === 'auto') {
+  onChangeOrderAcceptType(type: string, event) {
+    console.log(type , event.detail.checked);
+    if (type === 'auto') {
       if (event.detail.checked) {
-        this.orderIsAuto = true;
+        this.auto = true;
+        this.manual = false;
+        this.advanced = false;
         this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
       } else {
-        this.orderIsAuto = false;
-        this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
+        this.auto = false;
+        if (!this.auto && !this.manual) {
+          this.advanced = true;
+        }
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'advanced';
+      }
+    } else if (type === 'advanced') {
+      if (event.detail.checked) {
+        this.auto = false;
+        this.manual = false;
+        this.advanced = true;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'advanced';
+      } else {
+        if (!this.auto && !this.manual) {
+          this.advanced = true;
+        }
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'advanced';
       }
     } else {
       if (event.detail.checked) {
-        this.orderIsAuto = false;
+        this.auto = false;
+        this.manual = true;
+        this.advanced = false;
         this.storeBundleDTO.storeSettings.orderAcceptType = 'manual';
       } else {
-        this.orderIsAuto = true;
-        this.storeBundleDTO.storeSettings.orderAcceptType = 'automatic';
+        this.manual = false;
+        if (!this.auto && !this.manual) {
+          this.advanced = true;
+        }
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'advanced';
       }
     }
   }

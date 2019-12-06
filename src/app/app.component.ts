@@ -50,11 +50,11 @@ export class AppComponent {
       url: '/uom',
       icon: 'speedometer'
     },
-    // {
-    //   title: 'Sale',
-    //   url: '/sale',
-    //   icon: 'pricetags'
-    // },
+    {
+      title: 'Sale',
+      url: '/sale',
+      icon: 'pricetags'
+    },
     {
       title: 'Reports',
       url: '/reports',

@@ -45,7 +45,7 @@
               </ion-item>
               <ion-item text-center *ngIf="productDTO.imageLink">
                 <img (click)="selectImage()"
-                  [src]=productDTO.imagelink />
+                  [src]=productDTO.imageLink />
               </ion-item>
               <ion-item>
                 <ion-label position="floating">Name <ion-text color="danger" class="text-size">*</ion-text></ion-label>
@@ -208,7 +208,7 @@
       </div>
     </ion-slide>
     <ion-slide>
-      <app-create-edit-category (onSlide)="slide('none')" [throughProduct]='true'></app-create-edit-category>
+      <app-create-edit-category (added)="addSelectedCategory($event)" (onSlide)="slide('none')" [throughProduct]='true'></app-create-edit-category>
     </ion-slide>
     <ion-slide>
       <app-create-edit-uom (onSlide)="slide('none')" [throughProduct]='true'></app-create-edit-uom>
