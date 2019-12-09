@@ -110,6 +110,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/ordersbystoreId/{storeId}';
   static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
   static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{expectedDelivery}/{storeName}';
+  static readonly printSaleUsingGETPath = '/api/query/printSale/{saleId}/{idpCode}';
   static readonly findProductByIdUsingGETPath = '/api/query/product/{id}';
   static readonly getProductBundleUsingGETPath = '/api/query/productBundle/{id}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
@@ -2518,6 +2519,53 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.PrintSaleUsingGETParams` containing the following parameters:
+   *
+   * - `saleId`: saleId
+   *
+   * - `idpCode`: idpCode
+   *
+   * @return OK
+   */
+  printSaleUsingGETResponse(params: QueryResourceService.PrintSaleUsingGETParams): __Observable<__StrictHttpResponse<PdfDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/printSale/${params.saleId}/${params.idpCode}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PdfDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.PrintSaleUsingGETParams` containing the following parameters:
+   *
+   * - `saleId`: saleId
+   *
+   * - `idpCode`: idpCode
+   *
+   * @return OK
+   */
+  printSaleUsingGET(params: QueryResourceService.PrintSaleUsingGETParams): __Observable<PdfDTO> {
+    return this.printSaleUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
    * @param id id
    * @return OK
    */
@@ -4549,6 +4597,22 @@ module QueryResourceService {
      * expectedDelivery
      */
     expectedDelivery: string;
+  }
+
+  /**
+   * Parameters for printSaleUsingGET
+   */
+  export interface PrintSaleUsingGETParams {
+
+    /**
+     * saleId
+     */
+    saleId: number;
+
+    /**
+     * idpCode
+     */
+    idpCode: string;
   }
 
   /**

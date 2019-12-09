@@ -4,5 +4,9 @@ export interface SaleDTO {
   date?: string;
   grandTotal?: number;
   id?: number;
-  userId?: string;
+  idpCode?: string;
+  paymentMode?: string;
+  paymentRef?: string;
+  saleUniqueId?: string;
+  storeName?: string;
 }

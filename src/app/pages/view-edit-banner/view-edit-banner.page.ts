@@ -1,5 +1,5 @@
 import { CropperSettings } from 'ngx-img-cropper';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { BannerDTO } from './../../api/models/banner-dto';
 import { Banner } from './../../api/models/banner';
 import { Component, OnInit } from '@angular/core';
@@ -18,12 +18,13 @@ export class ViewEditBannerPage implements OnInit {
   store: Store;
   banners: Banner[] = [];
   bannerDTO: BannerDTO = {};
-  cropperSettings: CropperSettings
+  cropperSettings: CropperSettings;
   constructor(
     private query: QueryResourceService,
     private storage: Storage,
     private modalController: ModalController,
-    private command: CommandResourceService
+    private command: CommandResourceService,
+    private alertController: AlertController
   ) {
     this.cropperSettings = new CropperSettings();
     this.cropperSettings.width = 400;
@@ -80,12 +81,31 @@ export class ViewEditBannerPage implements OnInit {
         })
     })
   }
-  deleteBanner(banner){
-    this.command.deleteBannerUsingDELETE(banner.id)
-        .subscribe(data => {
-          console.log('banner deleted');
-          this.banners = this.banners.filter(b => b.id != banner.id);
-        });
+
+
+  async deleteBanner(banner) {
+    const alert = await this.alertController.create({
+      header: 'Delete Banner',
+      message: 'Are you Sure!!!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.command.deleteBannerUsingDELETE(banner.id)
+              .subscribe(data => {
+                console.log('banner deleted');
+                this.banners = this.banners.filter(b => b.id !== banner.id);
+              });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   

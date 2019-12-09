@@ -42,7 +42,7 @@ export class SaleHistoryComponent implements OnInit {
       });
       console.log(pos.content);
       this.pagecount++;
-      this.getProductName();
+      //this.getProductName();
     });
   }
 
@@ -53,16 +53,16 @@ export class SaleHistoryComponent implements OnInit {
   dismiss() {
     this.modal.dismiss();
   }
-  getProductName() {
-    this.sales.forEach( sl => {
-      sl.ticketLines.forEach(tl => {
-        if (this.products[tl.productId] == null) {
-          this.query.findProductByIdUsingGET(tl.productId).subscribe(pro => {
-            this.products[tl.productId] = pro.name;
-          });
-        }
-      });
-    });
-    console.log(this.products);
-  }
+  // getProductName() {
+  //   this.sales.forEach( sl => {
+  //     sl.ticketLines.forEach(tl => {
+  //       if (this.products[tl.productId] == null) {
+  //         this.query.findProductByIdUsingGET(tl.productId).subscribe(pro => {
+  //           this.products[tl.productId] = pro.name;
+  //         });
+  //       }
+  //     });
+  //   });
+  //   console.log(this.products);
+  // }
 }

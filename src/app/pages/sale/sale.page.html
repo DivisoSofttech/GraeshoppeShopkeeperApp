@@ -154,7 +154,7 @@
         <ion-card *ngFor="let product of products" class="full-width">
           <ion-item>
             <ion-avatar>
-              <ion-img [src]="'data:' + product.imageContentType + ';base64,' + product.image"></ion-img>
+              <ion-img [src]=product.imageLink></ion-img>
             </ion-avatar>
             <ion-text padding>{{product.name}}</ion-text>
             <ion-button slot="end" (click)="remove(product)" fill="none">

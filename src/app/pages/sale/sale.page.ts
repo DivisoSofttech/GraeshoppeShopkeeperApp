@@ -1,3 +1,4 @@
+import { PdfDTO } from './../../api/models/pdf-dto';
 import { SaleHistoryComponent } from './../../components/sale-history/sale-history.component';
 import { Customer } from './../../api/models/customer';
 import { Util } from './../../services/util';
@@ -27,6 +28,7 @@ export class SalePage implements OnInit {
   currentSlide = 0;
   selectedProducts: Product[] = [] ;
   customer: Customer;
+  salePdf: PdfDTO;
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('slides', { static: false }) slides: IonSlides;
   loader: HTMLIonLoadingElement;
@@ -122,8 +124,9 @@ export class SalePage implements OnInit {
       loader.present();
       this.storage.get('user').then(user => {
         this.sale.customerId = this.customer.id;
-        this.sale.userId = user.preferred_username;
+        this.sale.idpCode = user.preferred_username;
         this.sale.grandTotal = this.totalPrice;
+        this.sale.storeName = user.preferred_username;
         this.commandResource.createSaleUsingPOST(this.sale).subscribe(sale => {
           console.log('sale', sale);
           this.ticketLines.forEach(tl => {
@@ -133,6 +136,14 @@ export class SalePage implements OnInit {
             }, err => {
               loader.dismiss();
             });
+          });
+          this.customer = {};
+          this.selectedProducts = [];
+          this.ticketLines = [];
+          this.totalPrice = 0;
+          this.queryService.printSaleUsingGET({saleId: sale.id , idpCode: user.preferred_username}).subscribe(pdf => {
+            this.salePdf = pdf;
+            console.log(pdf);
           });
           loader.dismiss();
         }, err => {
@@ -144,11 +155,11 @@ export class SalePage implements OnInit {
 
   add(product: Product) {
     const containValue = this.ticketLines.find(tl => {
-      return tl.productId === product.id;
+      return tl.productName === product.name;
     });
     if (containValue === undefined) {
       const ticketLine: TicketLineDTO = {};
-      ticketLine.productId = product.id;
+      ticketLine.productName = product.name;
       ticketLine.quantity = 1;
       ticketLine.price = product.sellingPrice;
       ticketLine.total = product.sellingPrice;
@@ -156,7 +167,7 @@ export class SalePage implements OnInit {
       this.selectedProducts.push(product);
     } else {
       this.ticketLines.forEach(tl => {
-        if (tl.productId === product.id) {
+        if (tl.productName === product.name) {
           tl.quantity++;
           tl.total = tl.total + product.sellingPrice;
           this.getTotalPrice();
@@ -170,19 +181,19 @@ export class SalePage implements OnInit {
 
   remove(product: Product) {
     const containValue = this.ticketLines.find(tl => {
-      return tl.productId === product.id;
+      return tl.productName === product.name;
     });
     if (containValue.quantity === 0) {
-      this.ticketLines = this.ticketLines.filter(tl => tl.productId !== product.id);
+      this.ticketLines = this.ticketLines.filter(tl => tl.productName !== product.name);
       this.selectedProducts = this.selectedProducts.filter(sp => sp.id === product.id);
     } else if (containValue.quantity > 0) {
       this.ticketLines.forEach(tl => {
-        if (tl.productId === product.id) {
+        if (tl.productName === product.name) {
           tl.quantity--;
           tl.total = tl.total - product.sellingPrice;
           this.getTotalPrice();
           if (tl.quantity < 1) {
-            this.ticketLines = this.ticketLines.filter(tls => tls.productId !== product.id);
+            this.ticketLines = this.ticketLines.filter(tls => tls.productName !== product.name);
             this.selectedProducts = this.selectedProducts.filter(sp => sp.id !== product.id);
           }
         }
@@ -195,7 +206,7 @@ export class SalePage implements OnInit {
 
   getCount(product: Product): number {
     const containValue = this.ticketLines.find(tl => {
-      return tl.productId === product.id;
+      return tl.productName === product.name;
     });
     if  (containValue === undefined) {
       return 0;
