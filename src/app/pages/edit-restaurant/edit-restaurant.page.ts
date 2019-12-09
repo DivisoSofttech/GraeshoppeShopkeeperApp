@@ -369,6 +369,8 @@ export class EditRestaurantPage implements OnInit {
           // address.state +
           ', ' +
           address.pincode;
+        this.storeBundleDTO.storeSettings.orderAcceptType = 'advanced';
+
         // if (this.preOrderSettings.isPreOrderAvailable) {
         //   this.commandService.createPreOrderSettingsUsingPOST(this.preOrderSettings).subscribe( pre => {
         //     this.storeBundleDTO.store.preOrderSettingsId = pre.id;
@@ -377,8 +379,6 @@ export class EditRestaurantPage implements OnInit {
         // } else {
         //   this.storeBundleDTO.store.preOrderSettingsId = null;
         // }
-        console.log('pre', this.storeBundleDTO.preOrderSettings);
-        
         this.commandService
           .createStoreBundleUsingPOST(this.storeBundleDTO)
           .subscribe(

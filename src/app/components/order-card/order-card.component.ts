@@ -15,7 +15,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-declare let sunmiInnerPrinter: any;
+declare var sunmiInnerPrinter: any;
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -81,9 +81,9 @@ export class OrderCardComponent implements OnInit {
   }
   acceptOrder() {
     this.queryResource.getTaskDetailsUsingGET({
+      storeId: this.user.preferred_username,
       taskName: 'Accept Order',
-      orderId: this.order.orderId,
-      storeId: this.user.preferred_username
+      orderId: this.order.orderId
     }).subscribe(openTask => {
       this.util.createLoader().then(
         loader => {

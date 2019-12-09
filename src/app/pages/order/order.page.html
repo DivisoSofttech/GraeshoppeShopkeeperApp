@@ -29,7 +29,7 @@
   <!--Segment Button Container Start-->
   <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
-        <ion-segment-button *ngIf="showPending" value="pending">
+        <ion-segment-button value="pending">
           <ion-label>Pending</ion-label>
         </ion-segment-button>
         <ion-segment-button value="confirmed">
@@ -44,7 +44,7 @@
 
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
 
-        <ion-slide *ngIf="showPending">
+        <ion-slide>
           <ion-list class="order-card-view" justify-content-center *ngFor="let okey of pendingOrdersSortedKeys">
             <ion-list-header>
               <ion-label>{{okey}}</ion-label>
