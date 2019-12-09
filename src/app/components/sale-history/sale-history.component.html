@@ -16,6 +16,7 @@
               <ion-item lines="none"  color="success">
               <ion-text slot="start"><b>{{sale.customer.name | titlecase}}</b></ion-text>
               <ion-text slot="end">{{sale.sale.date | date:"short"}}</ion-text>
+              <ion-icon ios="ios-print" md="md-print" slot="end" ></ion-icon>
               </ion-item>
 
       </ion-card-header>
@@ -62,7 +63,6 @@
             <ion-item lines="none">
            <ion-text><b>Total</b></ion-text>
            <ion-text slot="end">&euro;{{sale.sale.grandTotal}}</ion-text> 
-            <ion-icon slot="end" name="arrow-dropright"></ion-icon>
             </ion-item>
           </ion-col> 
 
