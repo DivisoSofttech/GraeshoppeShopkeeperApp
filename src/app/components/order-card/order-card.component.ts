@@ -15,7 +15,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-
+declare let sunmiInnerPrinter: any;
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -188,19 +188,16 @@ export class OrderCardComponent implements OnInit {
       });
   }
       }
-
+      ionViewDidLoad() {
+        console.log('ionViewDidLoad ReceiptPage');
+      }
       print() {
-        const options: PrintOptions = {
-          name: 'MyDocument'
-        };
-        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(docket => {
-          // const encodedString = docket.pdf;
-          // cordova.plugins..PDF.print({
-          //     data: encodedString,
-          //     type: 'Data',
-          //     title: 'Print Document',
-          // });
-          this.printer.print('base64://' + 'data:' + docket.contentType + ';base64,' + docket.pdf, options).then();
+        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
+          try {
+            sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
+          } catch (err) {
+            console.error(err);
+          }
         });
       }
 

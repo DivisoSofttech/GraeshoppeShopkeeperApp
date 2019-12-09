@@ -5,6 +5,10 @@ export interface Sale {
   date?: string;
   grandTotal?: number;
   id?: number;
+  idpCode?: string;
+  paymentMode?: string;
+  paymentRef?: string;
+  saleUniqueId?: string;
+  storeName?: string;
   ticketLines?: Array<TicketLine>;
-  userId?: string;
 }

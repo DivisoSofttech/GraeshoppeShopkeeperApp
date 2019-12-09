@@ -11,8 +11,7 @@
 </ion-header>
 
 <ion-content>
-<div *ngFor="let banner of banners">
-<ion-card>
+<ion-card *ngFor="let banner of banners">
     <div class="close">
         <ion-icon (click)="deleteBanner(banner)" class="icon-size" name="close"></ion-icon>
     </div>
@@ -20,5 +19,4 @@
       
   </ion-img>
 </ion-card>
-</div>
 </ion-content>

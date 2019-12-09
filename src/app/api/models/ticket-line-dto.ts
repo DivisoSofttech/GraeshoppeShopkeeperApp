@@ -2,7 +2,7 @@
 export interface TicketLineDTO {
   id?: number;
   price?: number;
-  productId?: number;
+  productName?: string;
   quantity?: number;
   saleId?: number;
   total?: number;
