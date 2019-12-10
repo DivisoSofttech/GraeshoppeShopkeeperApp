@@ -45,8 +45,9 @@
     <ion-slides  #slides (ionSlideDidChange)="slideChange()">
 
         <ion-slide *ngIf="showPending">
+         <div class="slideContent">
           <ion-list class="order-card-view" justify-content-center *ngFor="let okey of pendingOrdersSortedKeys">
-            <ion-list-header>
+            <ion-list-header color="secondary">
               <ion-label>{{okey}}</ion-label>
             </ion-list-header>
             <div class="mg-top">
@@ -54,6 +55,7 @@
             </div>
             <app-order-card *ngFor="let order  of pendingOrdersSorted[okey]"  class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order , okey)"  [order]="order"></app-order-card>
           </ion-list>
+         </div>
         </ion-slide>
 
         <ion-slide>
@@ -73,12 +75,14 @@
         </ion-slide>
  
         <ion-slide>
-          <ion-list class="order-card-view" justify-content-center>
+         <div class="slideContent">
+          <ion-list class="order-card-view" color="secondary" justify-content-center>
             <div *ngFor="let order  of completedOrders" justify-content-center>
               <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
               <app-order-card class="vertical-align-center" [orderType]='"completed"' [order]="order"></app-order-card>
             </div>
           </ion-list>
+         </div>
         </ion-slide>
         
         </ion-slides>
