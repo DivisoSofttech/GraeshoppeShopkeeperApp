@@ -5,6 +5,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { PdfDTO } from './../../api/models/pdf-dto';
 import { QueryResourceService } from 'src/app/api/services';
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-reports',
@@ -23,7 +24,8 @@ export class ReportsPage implements OnInit {
     private file: File,
     private fileOpener: FileOpener,
     private util: Util,
-    private storage: Storage
+    private storage: Storage,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -75,7 +77,18 @@ exportPdf() {
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: this.pdf.contentType });
         console.log('blob is' + blob);
+        if(this.platform.is('android'))
+        {
+          console.log("platform is android***********");
         this.fileCreation(blob, this.pdf);
+        }
+        else{
+          console.log("platform is browser***********");
+          var pdfResult = this.pdf.pdf;
+          var dataURI = "data:application/pdf;base64," + pdfResult;
+          var win = window.open();
+          win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
+        }
         this.loader.dismiss();
   }
 fileCreation(blob, result) {

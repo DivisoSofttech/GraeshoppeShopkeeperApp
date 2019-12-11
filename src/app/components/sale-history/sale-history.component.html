@@ -62,7 +62,7 @@
                <ion-col>
             <ion-item lines="none">
            <ion-text><b>Total</b></ion-text>
-           <ion-text slot="end">&euro;{{sale.sale.grandTotal}}</ion-text> 
+           <ion-text slot="end">&euro;{{sale.sale.grandTotal | number: "0.1-2" }}</ion-text> 
             </ion-item>
           </ion-col> 
 

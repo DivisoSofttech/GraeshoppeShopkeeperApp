@@ -20,6 +20,7 @@ import { PdfDTO } from '../models/pdf-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { Type } from '../models/type';
 import { EntryLineItem } from '../models/entry-line-item';
+import { PageOfCategoryDTO } from '../models/page-of-category-dto';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
@@ -796,7 +797,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAllCategoriesWithOutImageUsingGETResponse(params: QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams): __Observable<__StrictHttpResponse<Array<CategoryDTO>>> {
+  findAllCategoriesWithOutImageUsingGETResponse(params: QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams): __Observable<__StrictHttpResponse<PageOfCategoryDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -817,7 +818,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<CategoryDTO>>;
+        return _r as __StrictHttpResponse<PageOfCategoryDTO>;
       })
     );
   }
@@ -834,9 +835,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAllCategoriesWithOutImageUsingGET(params: QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams): __Observable<Array<CategoryDTO>> {
+  findAllCategoriesWithOutImageUsingGET(params: QueryResourceService.FindAllCategoriesWithOutImageUsingGETParams): __Observable<PageOfCategoryDTO> {
     return this.findAllCategoriesWithOutImageUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<CategoryDTO>)
+      __map(_r => _r.body as PageOfCategoryDTO)
     );
   }
 

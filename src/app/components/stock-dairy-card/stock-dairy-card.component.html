@@ -1,29 +1,27 @@
 <ion-card (click)="openStockDairyViewModal()">
-<ion-item>
-  <ion-grid >
-  <ion-row no-padding no-margin>
-    <ion-col no-padding no-margin>
-      <ion-buttons>
+<ion-item lines="full" color="primary">
+      <ion-buttons slot="start">
         <ion-button>
           <ion-icon slot="icon-only" name="paper"></ion-icon>
         </ion-button>
         <ion-text>{{stockEntry.reference | titlecase}}</ion-text>
       </ion-buttons>
-    </ion-col>
-    <ion-col no-padding no-margin>
-      <ion-buttons>
+
+      <ion-buttons slot="end">
+          <ion-text>{{stockEntry.date}}</ion-text>
         <ion-button>
           <ion-icon slot="icon-only" name="time"></ion-icon>
         </ion-button>
-        <ion-text>{{stockEntry.date}}</ion-text>
+        
       </ion-buttons>
-    </ion-col>
-  </ion-row>
+</ion-item>
+<ion-item>
+  <ion-grid>
   <ion-row no-padding no-margin>
     <ion-col no-padding no-margin>
         <ion-buttons>
             <ion-button>
-              <ion-icon slot="icon-only" name="pin"></ion-icon>
+              <ion-icon slot="icon-only" name="pin" color="success"></ion-icon>
             </ion-button>
             <ion-text>{{stockEntry.location.name}}</ion-text>
           </ion-buttons>
@@ -33,7 +31,7 @@
       <ion-col no-padding no-margin>
           <ion-buttons>
               <ion-button >
-                <ion-icon slot="icon-only" name="information-circle"></ion-icon>
+                <ion-icon slot="icon-only" name="information-circle" color="danger"></ion-icon>
               </ion-button>
               <ion-text>{{stockEntry.reason.name}}</ion-text>
             </ion-buttons>

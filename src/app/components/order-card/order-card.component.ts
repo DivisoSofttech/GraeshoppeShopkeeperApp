@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { OrderViewComponent } from './../order-view/order-view.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import {
   CommandResourceService,
   QueryResourceService
@@ -15,7 +15,8 @@ import { File } from '@ionic-native/file/ngx';
 import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
-declare let sunmiInnerPrinter: any;
+
+declare var sunmiInnerPrinter: any;
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -41,7 +42,8 @@ export class OrderCardComponent implements OnInit {
     private queryResource: QueryResourceService,
     private util: Util,
     private storage: Storage,
-    private printer: Printer
+    private printer: Printer,
+    private platform: Platform
   ) {}
 
   ngOnInit() {
@@ -81,9 +83,9 @@ export class OrderCardComponent implements OnInit {
   }
   acceptOrder() {
     this.queryResource.getTaskDetailsUsingGET({
+      storeId: this.user.preferred_username,
       taskName: 'Accept Order',
-      orderId: this.order.orderId,
-      storeId: this.user.preferred_username
+      orderId: this.order.orderId
     }).subscribe(openTask => {
       this.util.createLoader().then(
         loader => {
@@ -148,7 +150,18 @@ export class OrderCardComponent implements OnInit {
           const byteArray = new Uint8Array(byteNumbers);
           const blob = new Blob([byteArray], { type: orderDocket.contentType });
           console.log('blob is' + blob);
+          if(this.platform.is('android'))
+          {
+            console.log("platform is android***********");
           this.fileCreation(blob, orderDocket);
+          }
+          else{
+            console.log("platform is browser***********");
+            var pdfResult = orderDocket.pdf;
+            var dataURI = "data:application/pdf;base64," + pdfResult;
+            var win = window.open();
+            win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
+          }
           loader.dismiss();
         }, err => {
           console.log(err);
@@ -188,17 +201,17 @@ export class OrderCardComponent implements OnInit {
       });
   }
       }
-      ionViewDidLoad() {
-        console.log('ionViewDidLoad ReceiptPage');
-      }
-      print() {
-        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
-          try {
-            sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
-          } catch (err) {
-            console.error(err);
-          }
-        });
-      }
+      // ionViewDidLoad() {
+      //   console.log('ionViewDidLoad ReceiptPage');
+      // }
+      // print() {
+      //   this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
+      //     try {
+      //       sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
+      //     } catch (err) {
+      //       console.error(err);
+      //     }
+      //   });
+      // }
 
 }

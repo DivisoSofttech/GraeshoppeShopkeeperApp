@@ -178,10 +178,12 @@ export class CreateEditProductComponent implements OnInit {
       this.query
         .findAllCategoriesWithOutImageUsingGET({ iDPcode: user.preferred_username })
         .subscribe(res => {
-          this.categories = res;
+          this.categories = res.content;
+          console.log("get categoies", res      );
+          
         });
     });
-  }
+  } 
   getUOM() {
     this.storage.get('user').then(user => {
       this.query.findUOMByIDPcodeUsingGET({ iDPcode: user.preferred_username }).subscribe(res => {

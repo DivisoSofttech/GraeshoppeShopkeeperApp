@@ -169,7 +169,7 @@ export class OrderPage implements OnInit {
       loader.present();
       this.queryResource
         .findOrderByStatusNameUsingGET({
-          statusName: 'unapproved',
+          statusName: 'payment-processed-unapproved',
           page: i,
           storeId: this.user.preferred_username,
           deliveryType: this.deliveryType
@@ -200,7 +200,7 @@ export class OrderPage implements OnInit {
       loader.present();
       this.queryResource
         .findOrderByStatusNameUsingGET({
-          statusName: 'payment-processed',
+          statusName: 'payment-processed-approved',
           page: i,
           storeId: this.user.preferred_username,
           deliveryType: this.deliveryType

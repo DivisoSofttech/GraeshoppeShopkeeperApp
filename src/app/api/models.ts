@@ -42,6 +42,7 @@ export { PageOfAuxItem } from './models/page-of-aux-item';
 export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
 export { PageOfBanner } from './models/page-of-banner';
 export { PageOfCategory } from './models/page-of-category';
+export { PageOfCategoryDTO } from './models/page-of-category-dto';
 export { PageOfComboItem } from './models/page-of-combo-item';
 export { PageOfCustomer } from './models/page-of-customer';
 export { PageOfEntryLineItem } from './models/page-of-entry-line-item';

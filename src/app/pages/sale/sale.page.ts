@@ -2,13 +2,15 @@ import { PdfDTO } from './../../api/models/pdf-dto';
 import { SaleHistoryComponent } from './../../components/sale-history/sale-history.component';
 import { Customer } from './../../api/models/customer';
 import { Util } from './../../services/util';
-import { IonInfiniteScroll, IonSlides, ModalController } from '@ionic/angular';
+import { IonInfiniteScroll, IonSlides, ModalController, Platform } from '@ionic/angular';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Sale } from './../../api/models/sale';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TicketLine, Store, Product, TicketLineDTO, SaleDTO } from 'src/app/api/models';
 import { CreateSelectCustomerComponent } from 'src/app/components/create-select-customer/create-select-customer.component';
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Component({
   selector: 'app-sale',
@@ -38,7 +40,11 @@ export class SalePage implements OnInit {
     private queryService: QueryResourceService,
     private util: Util,
     private commandResource: CommandResourceService,
-    private modal: ModalController
+    private modal: ModalController,
+    private queryResource: QueryResourceService,
+    private file: File,
+    private fileOpener: FileOpener,
+    private platform: Platform
     ) { }
 
   ngOnInit() {
@@ -143,7 +149,7 @@ export class SalePage implements OnInit {
           this.totalPrice = 0;
           this.queryService.printSaleUsingGET({saleId: sale.id , idpCode: user.preferred_username}).subscribe(pdf => {
             this.salePdf = pdf;
-            console.log(pdf);
+            this.printSale(this.salePdf);
           });
           loader.dismiss();
         }, err => {
@@ -238,5 +244,59 @@ export class SalePage implements OnInit {
     });
     modal.present();
   }
+
+  printSale(salePdf) {
+    this.util.createLoader().then(loader => {
+      loader.present();
+        const byteCharacters = atob(salePdf.pdf);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: salePdf.contentType });
+        console.log('blob is' + blob);
+        if(this.platform.is('android'))
+        {
+          console.log("platform is android***********");
+        this.fileCreation(blob, salePdf);
+        }
+        else{
+          console.log("platform is browser***********");
+          var pdfResult = salePdf.pdf;
+          var dataURI = "data:application/pdf;base64," + pdfResult;
+          var win = window.open();
+          win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
+        }
+        loader.dismiss();
+    });
+  }
+
+  fileCreation(blob, result) {
+    const res = this.file.createFile(this.file.externalCacheDirectory, 'items.pdf', true);
+    if (res !== undefined) {
+        res
+      .then(() => {
+        console.log('file created' + blob);
+
+        this.file
+          .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
+            replace: true
+          })
+          .then(value => {
+            console.log('file writed' + value);
+            this.fileOpener
+              .showOpenWithDialog(
+                this.file.externalCacheDirectory + 'items.pdf',
+                result.contentType
+              )
+              .then(() => console.log('File is opened'))
+              .catch(e => console.log('Error opening file', e));
+            // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
+            // {print: {enabled: true}, openWith: {enabled: true}});
+          });
+      });
+  }
+      }
 
 }

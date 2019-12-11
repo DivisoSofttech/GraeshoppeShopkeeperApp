@@ -42,7 +42,7 @@
       <ion-row>
         <ion-col size="6" class="ion-no-padding">
             <ion-buttons class="buttons-right">
-                <ion-button *ngIf="orderType=='confirmed'" (click)="print()">
+                <ion-button *ngIf="orderType=='confirmed'" (click)="getOrderMaster()">
                   <ion-icon slot="icon-only" name="print" ></ion-icon>
                 </ion-button>
                 <ion-button  (click)="viewOrderViewModal()">

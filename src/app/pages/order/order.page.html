@@ -29,7 +29,7 @@
   <!--Segment Button Container Start-->
   <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
-        <ion-segment-button *ngIf="showPending" value="pending">
+        <ion-segment-button value="pending">
           <ion-label>Pending</ion-label>
         </ion-segment-button>
         <ion-segment-button value="confirmed">

@@ -10,8 +10,8 @@ import { StoreType } from './store-type';
 import { UserRatingReview } from './user-rating-review';
 import { UserRating } from './user-rating';
 export interface Store {
+  minAmount?: number;
   banners?: Array<Banner>;
-  closingTime?: string;
   contactNo?: number;
   deliveryInfos?: Array<DeliveryInfo>;
   email?: string;
@@ -23,7 +23,7 @@ export interface Store {
   location?: string;
   locationName?: string;
   maxDeliveryTime?: string;
-  minAmount?: number;
+  closingTime?: string;
   name?: string;
   openingTime?: string;
   preOrderSettings?: PreOrderSettings;
