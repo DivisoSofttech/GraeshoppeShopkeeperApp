@@ -121,6 +121,8 @@ export class EditRestaurantPage implements OnInit {
         this.queryService
           .getStoreBundleUsingGET(user.preferred_username)
           .subscribe(res => {
+            console.log("store bundle ",res);
+
             if (res.preOrderSettings) {
               this.preOrderSettings = res.preOrderSettings;
             } else {

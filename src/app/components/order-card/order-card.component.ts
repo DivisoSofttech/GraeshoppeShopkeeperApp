@@ -150,16 +150,14 @@ export class OrderCardComponent implements OnInit {
           const byteArray = new Uint8Array(byteNumbers);
           const blob = new Blob([byteArray], { type: orderDocket.contentType });
           console.log('blob is' + blob);
-          if(this.platform.is('android'))
-          {
-            console.log("platform is android***********");
-          this.fileCreation(blob, orderDocket);
-          }
-          else{
-            console.log("platform is browser***********");
-            var pdfResult = orderDocket.pdf;
-            var dataURI = "data:application/pdf;base64," + pdfResult;
-            var win = window.open();
+          if (this.platform.is('android')) {
+            console.log('platform is android***********');
+            this.fileCreation(blob, orderDocket);
+          } else {
+            console.log('platform is browser***********');
+            const pdfResult = orderDocket.pdf;
+            const dataURI = 'data:application/pdf;base64,' + pdfResult;
+            const win = window.open();
             win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
           }
           loader.dismiss();
@@ -187,14 +185,14 @@ export class OrderCardComponent implements OnInit {
             const options: PrintOptions = {
               name: 'MyDocument'
             };
-            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
-            // this.fileOpener
-            //   .showOpenWithDialog(
-            //     this.file.externalCacheDirectory + 'items.pdf',
-            //     result.contentType
-            //   )
-            //   .then(() => console.log('File is opened'))
-            //   .catch(e => console.log('Error opening file', e));
+            // this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            this.fileOpener
+              .showOpenWithDialog(
+                this.file.externalCacheDirectory + 'items.pdf',
+                result.contentType
+              )
+              .then(() => console.log('File is opened'))
+              .catch(e => console.log('Error opening file', e));
             // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
             // {print: {enabled: true}, openWith: {enabled: true}});
           });

@@ -66,7 +66,7 @@ export class CreateEditProductComponent implements OnInit {
     private ref: ChangeDetectorRef
   ) {
     setInterval(() => {
-      if (!this.ref.destroyed) {
+      if (!this.ref['destroyed']) {
         this.ref.detectChanges();
       }
     }, 1000);
@@ -81,7 +81,7 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
-          console.log('productBundle ', productBundle);
+          console.log('productBundle ',productBundle);
           this.productbundle = productBundle;
           this.productDTO.discountId = productBundle.discount.id;
           this.discount = productBundle.discount;
