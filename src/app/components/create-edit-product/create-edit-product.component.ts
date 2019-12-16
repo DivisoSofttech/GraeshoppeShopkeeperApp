@@ -65,11 +65,19 @@ export class CreateEditProductComponent implements OnInit {
     private util: Util,
     private ref: ChangeDetectorRef
   ) {
+<<<<<<< HEAD
     // setInterval(() => {
     //   if (!this.ref.destroyed) {
     //     this.ref.detectChanges();
     //   }
     // }, 1000);
+=======
+    setInterval(() => {
+      if (!this.ref['destroyed']) {
+        this.ref.detectChanges();
+      }
+    }, 1000);
+>>>>>>> e7fc4ed8455a7578d1ef67941d2af8ced7c5b08b
    }
 
   ngOnInit() {
@@ -81,7 +89,7 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
-          console.log('productBundle ', productBundle);
+          console.log('productBundle ',productBundle);
           this.productbundle = productBundle;
           this.productDTO.discountId = productBundle.discount.id;
           this.discount = productBundle.discount;

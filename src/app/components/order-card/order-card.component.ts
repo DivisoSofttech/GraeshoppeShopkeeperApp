@@ -156,15 +156,14 @@ export class OrderCardComponent implements OnInit {
           const blob = new Blob([byteArray], { type: orderDocket.contentType });
           console.log('blob is' + blob);
           if (this.platform.is('android')) {
-            console.log("platform is android***********");
+            console.log('platform is android***********');
             this.fileCreation(blob, orderDocket);
-          }
-          else {
-            console.log("platform is browser***********");
-            var pdfResult = orderDocket.pdf;
-            var dataURI = "data:application/pdf;base64," + pdfResult;
-            var win = window.open();
-            win.document.write('<iframe src="' + dataURI + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
+          } else {
+            console.log('platform is browser***********');
+            const pdfResult = orderDocket.pdf;
+            const dataURI = 'data:application/pdf;base64,' + pdfResult;
+            const win = window.open();
+            win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
           }
           loader.dismiss();
         }, err => {
@@ -178,33 +177,33 @@ export class OrderCardComponent implements OnInit {
   fileCreation(blob, result) {
     const res = this.file.createFile(this.file.externalCacheDirectory, 'items.pdf', true);
     if (res !== undefined) {
-      res
-        .then(() => {
-          console.log('file created' + blob);
+        res
+      .then(() => {
+        console.log('file created' + blob);
 
-          this.file
-            .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
-              replace: true
-            })
-            .then(value => {
-              console.log('file writed' + value);
-              const options: PrintOptions = {
-                name: 'MyDocument'
-              };
-              this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
-              // this.fileOpener
-              //   .showOpenWithDialog(
-              //     this.file.externalCacheDirectory + 'items.pdf',
-              //     result.contentType
-              //   )
-              //   .then(() => console.log('File is opened'))
-              //   .catch(e => console.log('Error opening file', e));
-              // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
-              // {print: {enabled: true}, openWith: {enabled: true}});
-            });
-        });
-    }
+        this.file
+          .writeFile(this.file.externalCacheDirectory, 'items.pdf', blob, {
+            replace: true
+          })
+          .then(value => {
+            console.log('file writed' + value);
+            const options: PrintOptions = {
+              name: 'MyDocument'
+            };
+            // this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            this.fileOpener
+              .showOpenWithDialog(
+                this.file.externalCacheDirectory + 'items.pdf',
+                result.contentType
+              )
+              .then(() => console.log('File is opened'))
+              .catch(e => console.log('Error opening file', e));
+            // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
+            // {print: {enabled: true}, openWith: {enabled: true}});
+          });
+      });
   }
+}
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad ReceiptPage');
   // }
