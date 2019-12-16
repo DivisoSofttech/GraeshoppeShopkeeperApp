@@ -82,6 +82,8 @@ export class OrderPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("method ngOninit ");
+
     this.util.createLoader().then(
       loader => {
         // this.pendingOrders = [];
@@ -100,6 +102,7 @@ export class OrderPage implements OnInit {
             this.storage.set('user', user);
             this.user = user;
             this.initTasks();
+            console.log("last log ");
             loader.dismiss();
           });
         });
@@ -108,6 +111,7 @@ export class OrderPage implements OnInit {
   }
 
   initTasks() {
+    console.log("method initTasks ");
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
     .subscribe(store => {
       this.store = store;
@@ -119,19 +123,35 @@ export class OrderPage implements OnInit {
         this.currentPage = 'confirmed';
       }
       this.getConfirmedOrders(0);
+      console.log("hi");
       this.getCompletedOrders(0);
-    });
+      console.log("hi");
+
+    },
+    err=>{
+
+      console.log("error finding store ",err);
+
+    }
+    );
   }
 
   filter(filterBy) {
+    console.log("method filterBy ");
+
     this.deliveryType = filterBy;
+    console.log("filterBy ",filterBy);
     this.confirmedOrdersSorted = {
       'today':[]
     }
     this.confirmedOrdersSortedKeys = ['today'];
     this.getConfirmedOrders(0);
+    console.log("hi");
+
     this.completedOrders = [];
     this.getCompletedOrders(0);
+    console.log("hi");
+
     this.pendingOrdersSorted = {
       'today':[]
     }
@@ -147,6 +167,8 @@ export class OrderPage implements OnInit {
   }
 
   sortOrders(o: Order , keyStore , arrayList) {
+    console.log("method sort ");
+
     const date1: any = new Date(this.datePipe.transform(o.date,'M/d/yy'))
     const date2: any = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
     const diffTime = Math.abs(date2 - date1);
@@ -165,10 +187,12 @@ export class OrderPage implements OnInit {
   }
 
   getPendingOrders(i) {
+    console.log("method pending oders ");
+
     this.util.createLoader().then(loader => {
       loader.present();
       this.queryResource
-        .findOrderByStatusNameUsingGET({
+        .findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGET({
           statusName: 'payment-processed-unapproved',
           page: i,
           storeId: this.user.preferred_username,
@@ -178,6 +202,10 @@ export class OrderPage implements OnInit {
           res.content.forEach(data => 
           {
               this.sortOrders(data , this.pendingOrdersSortedKeys , this.pendingOrdersSorted);
+          },err=>{
+
+            console.log("error geting order ",err);
+
           });
           i++;
           this.penTotalPages = res.totalPages;
@@ -196,10 +224,12 @@ export class OrderPage implements OnInit {
   }
 
   getConfirmedOrders(i) {
+    console.log("method confirmedOders ");
+
     this.util.createLoader().then(loader => {
       loader.present();
       this.queryResource
-        .findOrderByStatusNameUsingGET({
+        .findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGET({
           statusName: 'payment-processed-approved',
           page: i,
           storeId: this.user.preferred_username,
@@ -229,10 +259,13 @@ export class OrderPage implements OnInit {
 
 
   getCompletedOrders(i) {
+    console.log("method completed oders ");
+    console.log("completed delivery type ",this.deliveryType+this.user.preferred_username);
+
     this.util.createLoader().then(loader => {
       loader.present();
       this.queryResource
-        .findOrderByStatusNameUsingGET({
+        .findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGET({
           statusName: 'delivered',
           page: i,
           storeId: this.user.preferred_username,
@@ -241,6 +274,7 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => this.completedOrders.push(data));
           i++;
+          console.log("completedsdkfk oders ",res);
           this.comTotalPages = res.totalPages;
           if (this.comcount + 1 === res.totalPages) {
             this.ionInfiniteScroll.disabled = true;
@@ -251,11 +285,14 @@ export class OrderPage implements OnInit {
           loader.dismiss();
         }, err => {
           loader.dismiss();
+          console.log('Error getting Completed Orders',err);
           this.util.createToast('Error getting Completed Orders', 'information-circle');
         });
     });
   }
   getOrders(i, limit: boolean) {
+    console.log("method getOders ");
+
     this.queryResource
       .findOrderLineByStoreIdUsingGET({
         storeId: this.user.preferred_username,

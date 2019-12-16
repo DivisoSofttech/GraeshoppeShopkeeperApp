@@ -120,7 +120,7 @@ export class CreateEditCategoryComponent implements OnInit {
 
   }
   getcategoryDTOUsingCategory() {
-    this.query.findCategoryUsingGET(this.category.id)
+    this.query.findCategoryByIdUsingGET(this.category.id)
         .subscribe(categoryDTO => this.categoryDTO = categoryDTO);
   }
 

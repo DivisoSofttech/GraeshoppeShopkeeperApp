@@ -74,7 +74,7 @@ export class ProductPage implements OnInit {
     let storeId;
     this.storage.get('user').then(user => {
       storeId = user.preferred_username;
-      this.queryService.findAllProductBySearchTermUsingGET({storeId, page: i, searchTerm: this.searchTerm})
+      this.queryService.findAllProductByNameAndStoreIdUsingGET({storeId, page: i, name: this.searchTerm})
           .subscribe(res => {
           this.products = [];
           res.content.forEach(p => {
@@ -95,13 +95,13 @@ export class ProductPage implements OnInit {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode, page: i})
+      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode:iDPcode, page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
         success !== undefined ? success(res) : null;
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
-          this.queryService.getProductBundleUsingGET(p.id)
+          this.queryService.getProductBundleByIdUsingGET(p.id)
               .subscribe(productBundle => {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
@@ -123,6 +123,7 @@ export class ProductPage implements OnInit {
         }
       },
       err => {
+        console.log("error getting products",err);
         this.loader.dismiss();
       });
     })

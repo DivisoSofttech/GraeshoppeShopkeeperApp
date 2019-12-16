@@ -1,21 +1,17 @@
 /* tslint:disable */
-import { Address } from './address';
 import { Contact } from './contact';
-import { Note } from './note';
+import { FavouriteProduct } from './favourite-product';
+import { FavouriteStore } from './favourite-store';
 export interface Customer {
-  maxDebt?: number;
-  addresses?: Array<Address>;
   contact?: Contact;
-  curDebt?: number;
-  debtDate?: string;
-  discount?: number;
+  customerUniqueId: string;
+  favouriteproducts?: Array<FavouriteProduct>;
+  favouritestores?: Array<FavouriteStore>;
   id?: number;
-  card?: string;
+  idpCode: string;
+  idpSub?: string;
+  image?: string;
+  imageContentType?: string;
+  imageLink: string;
   name?: string;
-  notes?: Array<Note>;
-  photo?: string;
-  photoContentType?: string;
-  reference?: string;
-  searchKey?: string;
-  visible?: boolean;
 }

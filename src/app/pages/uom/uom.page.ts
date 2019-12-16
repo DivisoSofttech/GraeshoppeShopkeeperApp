@@ -54,10 +54,10 @@ export class UomPage implements OnInit {
       // Present loader for the first page = 0 request only
       this.loader.present();
     }
-    this.queryResource.findUOMByIDPcodeUsingGET({
-      iDPcode: this.user.preferred_username
-    }).subscribe(
+    this.queryResource.findUOMByIdpCodeUsingGET({ idpCode: this.user.preferred_username}
+    ).subscribe(
       res => {
+        console.log("uoms are ",res);
         res.content.forEach(uom => {
           this.uoms.push(uom);
         });

@@ -1,8 +1,7 @@
 /* tslint:disable */
 import { Customer } from './customer';
-export interface Note {
-  createdDate?: string;
+export interface FavouriteProduct {
   customer?: Customer;
   id?: number;
-  matter?: string;
+  productId: number;
 }

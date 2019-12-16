@@ -13,5 +13,6 @@ export interface OrderLine {
   productId?: number;
   quantity?: number;
   requiedAuxilaries?: Array<AuxilaryOrderLine>;
+  state?: string;
   total?: number;
 }

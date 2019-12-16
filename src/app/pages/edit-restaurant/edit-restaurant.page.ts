@@ -119,7 +119,7 @@ export class EditRestaurantPage implements OnInit {
       loader.present();
       this.storage.get('user').then(user => {
         this.queryService
-          .getStoreBundleUsingGET({ regNo: user.preferred_username })
+          .getStoreBundleUsingGET(user.preferred_username)
           .subscribe(res => {
             if (res.preOrderSettings) {
               this.preOrderSettings = res.preOrderSettings;

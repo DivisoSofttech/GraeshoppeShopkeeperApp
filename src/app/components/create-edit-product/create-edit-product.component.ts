@@ -66,7 +66,7 @@ export class CreateEditProductComponent implements OnInit {
     private ref: ChangeDetectorRef
   ) {
     setInterval(() => {
-      if (!this.ref['destroyed']) {
+      if (!this.ref.destroyed) {
         this.ref.detectChanges();
       }
     }, 1000);
@@ -79,8 +79,9 @@ export class CreateEditProductComponent implements OnInit {
     this.getNonComboNonAuxilaryProduct();
     if (this.mode === 'update') {
       this.getProductDtoUsingProduct();
-      this.query.getProductBundleUsingGET(this.product.id)
+      this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
+          console.log('productBundle ', productBundle);
           this.productbundle = productBundle;
           this.productDTO.discountId = productBundle.discount.id;
           this.discount = productBundle.discount;
@@ -127,14 +128,14 @@ export class CreateEditProductComponent implements OnInit {
     console.log($event);
     this.productDTO.categoryId = $event.id;
     console.log(this.productDTO.categoryId);
-    
+
   }
 
   getProductAux() {
-    this.query.getProductBundleUsingGET(this.product.id)
+    this.query.getProductBundleByIdUsingGET(this.product.id)
       .subscribe(productBundle => {
         productBundle.auxilaryLineItems.forEach(aux => {
-          this.query.findAuxilaryLineItemUsingGET(aux.id)
+          this.query.findAuxilaryLineItemByIdUsingGET(aux.id)
             .subscribe(auxDto => {
               this.auxilaryLineItemDTOs.push(auxDto);
               this.oldAux++;
@@ -150,10 +151,10 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   getProductCombo() {
-    this.query.getProductBundleUsingGET(this.product.id)
+    this.query.getProductBundleByIdUsingGET(this.product.id)
       .subscribe(productBundle => {
         productBundle.comboLineItems.forEach(combo => {
-          this.query.findCombolineItemUsingGET(combo.id)
+          this.query.findCombolineItemByIdUsingGET(combo.id)
             .subscribe(comboDto => {
               this.comboLineItems.push(comboDto);
               this.oldCombo++;
@@ -169,24 +170,25 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   getProductDtoUsingProduct() {
-    this.query.findProductUsingGET(this.product.id)
-      .subscribe(productDto => this.productDTO = productDto,
+    this.query.findProductByIdUsingGET(this.product.id)
+      .subscribe(productDto => { this.productDTO = productDto;
+                                 console.log('product dto ', this.productDTO); },
         err => console.log('Error Getting ProductDTO Using Product', err));
   }
   getCategories() {
     this.storage.get('user').then(user => {
       this.query
-        .findAllCategoriesWithOutImageUsingGET({ iDPcode: user.preferred_username })
+        .findAllCategoryDTOsByIdpCodeUsingGET( {idpCode: user.preferred_username })
         .subscribe(res => {
           this.categories = res.content;
-          console.log("get categoies", res      );
-          
+          console.log('get categoies', res      );
+
         });
     });
-  } 
+  }
   getUOM() {
     this.storage.get('user').then(user => {
-      this.query.findUOMByIDPcodeUsingGET({ iDPcode: user.preferred_username }).subscribe(res => {
+      this.query.findUOMByIdpCodeUsingGET({ idpCode: user.preferred_username }).subscribe(res => {
         this.uoms = res.content;
       });
     });
@@ -227,7 +229,7 @@ export class CreateEditProductComponent implements OnInit {
 
   }
   updateProduct() {
-    if (this.productDTO.isAuxilaryItem == true) {
+    if (this.productDTO.isAuxilaryItem === true) {
       this.productDTO.categoryId = null;
     }
     this.util.createLoader()
@@ -238,9 +240,9 @@ export class CreateEditProductComponent implements OnInit {
     this.commandResource.updateProductUsingPUT(this.productDTO)
       .subscribe(data => {
         this.productbundle.comboLineItems.forEach(combo =>
-          this.query.findCombolineItemUsingGET(combo.id)
+          this.query.findCombolineItemByIdUsingGET(combo.id)
             .subscribe(comboDto =>
-              this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId != comboDto.comboItemId)
+              this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId !== comboDto.comboItemId)
             )
         );
         if (this.discount.rate == null) {
@@ -331,7 +333,7 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteCombos = this.deleteCombos.filter(ci => ci.comboItemId !== item.id);
     } else {
       this.comboLineItems.forEach(data => {
-        if (data.comboItemId == item.id && data.id != null) {
+        if (data.comboItemId === item.id && data.id != null) {
           this.deleteCombos.push(data);
         }
       });
@@ -348,7 +350,7 @@ export class CreateEditProductComponent implements OnInit {
       this.deleteAuxilaries = this.deleteAuxilaries.filter(ai => ai.auxilaryItemId !== item.id);
     } else {
       this.auxilaryLineItemDTOs.forEach(data => {
-        if (data.auxilaryItemId == item.id && data.id != null) {
+        if (data.auxilaryItemId === item.id && data.id != null) {
           this.deleteAuxilaries.push(data);
         }
       });
@@ -376,14 +378,14 @@ export class CreateEditProductComponent implements OnInit {
     );
   }
   createDisabled() {
-    if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
+    if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
       return true;
     }
     return false;
   }
 
   createAuxilaryDisabled() {
-    if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name == '') {
+    if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
       return true;
     }
     return false;

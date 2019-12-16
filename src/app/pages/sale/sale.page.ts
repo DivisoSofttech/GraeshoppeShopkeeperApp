@@ -61,18 +61,20 @@ export class SalePage implements OnInit {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode, page: i})
+      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode:iDPcode})
       .subscribe(res => {
         this.infiniteScroll.complete();
         success !== undefined ? success(res) : null;
 
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {
-          this.queryService.getProductBundleUsingGET(p.id)
+          this.queryService.getProductBundleByIdUsingGET(p.id)
               .subscribe(productBundle => {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
 
+              },err=>{
+                console.log("error getting products",err)
               });
           this.products.push(p);
         });
@@ -126,6 +128,8 @@ export class SalePage implements OnInit {
   }
 
   updateSale() {
+    console.log("update sale");
+    if(this.customer!=undefined){
     this.util.createLoader().then(loader => {
       loader.present();
       this.storage.get('user').then(user => {
@@ -143,7 +147,7 @@ export class SalePage implements OnInit {
               loader.dismiss();
             });
           });
-          this.customer = {};
+          this.customer = {idpCode:'',imageLink:'',customerUniqueId:""};
           this.selectedProducts = [];
           this.ticketLines = [];
           this.totalPrice = 0;
@@ -155,8 +159,19 @@ export class SalePage implements OnInit {
         }, err => {
           loader.dismiss();
         });
-      });
+      },
+      err=>{
+        console.log("error geting user",err);
+        loader.dismiss();
+      }
+      );
     });
+  }else{
+  
+    this.util.createToast('Pleace select Customer', 'information-circle');
+
+
+  }
   }
 
   add(product: Product) {

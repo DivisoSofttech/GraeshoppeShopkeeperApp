@@ -15,8 +15,8 @@ import { CssSelector } from '@angular/compiler';
 })
 export class CreateSelectCustomerComponent implements OnInit {
   user;
-  customer: CustomerDTO = {};
-  contact: ContactDTO = {};
+  customer: CustomerDTO ={customerUniqueId:'',idpCode:'',imageLink:''};
+  contact: ContactDTO = {mobileNumber:0,phoneCode:0};
   showCustomer = false;
   customers: Customer[] = [];
   pageCount = 0;
@@ -73,7 +73,7 @@ export class CreateSelectCustomerComponent implements OnInit {
     });
   }
   getCustomers(i) {
-    this.queryResource.findAllCustomersWithoutSearchUsingGET({}).subscribe(cus => {
+    this.queryResource.findAllCustomersUsingGET({}).subscribe(cus => {
       cus.content.forEach(customer => {
         this.customers.push(customer);
       });

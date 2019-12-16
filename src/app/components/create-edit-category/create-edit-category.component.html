@@ -17,12 +17,17 @@
 </ion-header>
 
 <div class="scroll">
+  
+<ion-text>{{categoryDTO.image && !categoryDTO.imageLink}}</ion-text>
   <ion-card>
-    <ion-item text-center *ngIf="!categoryDTO.image && !categoryDTO.imagelink">
+    <ion-item text-center *ngIf="!categoryDTO.image && !categoryDTO.imageLink">
         <ion-label>
-      <ion-img (click)="selectImage()" src="assets/images/camera.png"></ion-img>
+      <ion-img *ngIf="mode=='update'&&throughProduct=='false'" (click)="selectImage()" [src]=categoryDTO.imageLink ></ion-img>
+      <ion-img *ngIf="mode=='create'&&throughProduct=='false'" (click)="selectImage()" src="assets/images/camera.png"></ion-img>
+
       <ion-text color="danger" class="text-size">*</ion-text>
     </ion-label>
+ 
     </ion-item>
     <ion-item text-center  *ngIf="categoryDTO.image && !categoryDTO.imageLink">
       <ion-label>
@@ -31,8 +36,8 @@
     </ion-item>
     <ion-item text-center  *ngIf="categoryDTO.imageLink">
       <ion-label>
-        <ion-img *ngIf="categoryDTO.imagelink"  class="image hide-overflow"
-        [src]=categoryDTO.imagelink>
+        <ion-img *ngIf="categoryDTO.imageLink"  class="image hide-overflow"
+        [src]=categoryDTO.imageLink>
       </ion-img>    </ion-label>
     </ion-item>
     <ion-item margin>

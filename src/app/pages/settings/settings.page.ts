@@ -52,7 +52,7 @@ export class SettingsPage implements OnInit {
 
     this.storage.get('user').then(
       data => {
-        this.queryService.getStoreBundleUsingGET({ regNo: data.preferred_username }).subscribe(
+        this.queryService.getStoreBundleUsingGET( data.preferred_username ).subscribe(
           res => {
             this.store = res.store;
             this.store.storeTypes = res.storeType;

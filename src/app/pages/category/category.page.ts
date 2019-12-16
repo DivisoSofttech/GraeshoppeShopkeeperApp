@@ -54,9 +54,9 @@ export class CategoryPage implements OnInit {
 
   searchCategories(i) {
     this.storage.get('user').then(user => {
-    this.queryService.findAllCategoryBySearchTermUsingGET({
-      storeId: user.preferred_username,
-      searchTerm: this.searchTerm,
+    this.queryService.findAllCategoriesByNameAndIdpCodeUsingGET({
+      idpCode: user.preferred_username,
+      name: this.searchTerm,
       page: i
     }).subscribe(res => {
         this.categories = [];
@@ -85,8 +85,10 @@ export class CategoryPage implements OnInit {
   getCategories(i , limit?: Boolean , success?) {
     let iDPcode;
     this.storage.get('user').then(user => {
+
       iDPcode = user.preferred_username;
-      this.queryService.findAllCategoriesUsingGET({storeId: iDPcode})
+      console.log("idpCode=",iDPcode);
+      this.queryService.findAllCategoriesByIdpCodeUsingGET({idpCode:iDPcode})
       .subscribe(res => {
         this.infiniteScroll.complete();
         if (i === res.totalPages) {
@@ -117,6 +119,7 @@ export class CategoryPage implements OnInit {
         }
       }
       , err => {
+        console.log("error getting categories",err);
         this.loader.dismiss();
       });
     });

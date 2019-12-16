@@ -23,7 +23,7 @@ export class ProductViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.query.getProductBundleUsingGET(this.product.id).subscribe(productBundle =>{
+    this.query.getProductBundleByIdUsingGET(this.product.id).subscribe(productBundle =>{
       this.product.auxilaryLineItems = productBundle.auxilaryLineItems;
       this.product.comboLineItems = productBundle.comboLineItems;
       this.product.discount = productBundle.discount;

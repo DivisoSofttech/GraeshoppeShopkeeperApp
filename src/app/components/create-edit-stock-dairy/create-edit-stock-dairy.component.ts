@@ -115,7 +115,7 @@ export class CreateEditStockDairyComponent implements OnInit {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsUsingGET({iDPcode, page: i})
+      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode:iDPcode, page: i})
       .subscribe(res => {
         console.log('Total Pages:' , res.totalPages , ' Total Element:' , res.totalElements);
         res.content.forEach(p => {

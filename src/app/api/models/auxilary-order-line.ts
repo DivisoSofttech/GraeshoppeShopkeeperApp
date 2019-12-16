@@ -6,5 +6,6 @@ export interface AuxilaryOrderLine {
   pricePerUnit?: number;
   productId?: number;
   quantity?: number;
+  state?: string;
   total?: number;
 }

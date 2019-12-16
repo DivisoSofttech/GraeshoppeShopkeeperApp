@@ -76,10 +76,10 @@ export class StockDairyPage implements OnInit {
 
   getStockEntries(i) {
 
-    this.query.findAllStockEntriesUsingGET({page: i, storeId: this.user.preferred_username}).subscribe(page => {
+    this.query.findAllStockEntriesByIdpcodeUsingGET({page: i, idpCode: this.user.preferred_username}).subscribe(page => {
       this.pageCount = page.totalPages;
       page.content.forEach(se => {
-        this.query.getStockEntryBundleUsingGET(se.id).subscribe(seb => {
+        this.query.getStockEntryBundleByIdUsingGET(se.id).subscribe(seb => {
           se.entryLineItems = seb.entryLineItems;
           se.reason = seb.reason;
           se.location = seb.location;

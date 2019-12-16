@@ -53,7 +53,10 @@ export class OrderSummaryPage implements OnInit {
 
   getNoticationCount() {
     this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({ status: 'unread', receiverId: this.user.preferred_username })
-      .subscribe(num => this.notificationCount = num);
+      .subscribe(num => this.notificationCount = num,
+        err=>{
+          console.log("error getting notificationCount ",err);
+        });
   }
 
   getOrderSummary() {
@@ -64,8 +67,11 @@ export class OrderSummaryPage implements OnInit {
         this.orderSummary = orderSummary;
         console.log('summary', this.orderSummary);
       }, err => {
-        console.log(err);
+        console.log("error getting summary ",err);
       });
+    },
+    err => {
+      console.log("error getting store  ",err);
     });
   }
 
@@ -90,7 +96,7 @@ export class OrderSummaryPage implements OnInit {
         this.fileCreation(blob, orderDocket);
         loader.dismiss();
       }, err => {
-        console.log(err);
+        console.log("error geting order summary",err);
         loader.dismiss();
         this.util.createToast('Error Loading Pdf', 'alert');
       });

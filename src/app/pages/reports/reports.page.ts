@@ -40,7 +40,7 @@ export class ReportsPage implements OnInit {
       this.loader = loader;
       this.loader.present();
       if (report === 'pro') {
-          this.query.getAllProductsUsingGET(this.user.preferred_username).subscribe(proPdf => {
+          this.query.getAllProductsByIdpCodeUsingGET(this.user.preferred_username).subscribe(proPdf => {
             this.pdf = proPdf;
             console.log(this.pdf);
             this.exportPdf();
@@ -48,7 +48,7 @@ export class ReportsPage implements OnInit {
             console.log(err);
           });
         } else if (report === 'cat') {
-          this.query.getAllCategoriesUsingGET(this.user.preferred_username).subscribe(catPdf => {
+          this.query.getAllCategoriesByIdpCodeUsingGET(this.user.preferred_username).subscribe(catPdf => {
             this.pdf = catPdf;
             console.log(this.pdf);
             this.exportPdf();
@@ -56,7 +56,7 @@ export class ReportsPage implements OnInit {
             console.log(err);
           });
         } else if (report === 'sc') {
-          this.query.getCurrentStockUsingGET(this.user.preferred_username).subscribe(scPdf => {
+          this.query.getCurrentStockByIdpCodeUsingGET(this.user.preferred_username).subscribe(scPdf => {
             this.pdf = scPdf;
             console.log(this.pdf);
             this.exportPdf();
