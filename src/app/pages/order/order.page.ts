@@ -40,20 +40,20 @@ export class OrderPage implements OnInit {
     }
   ];
 
-  // pendingOrders: Order[] = [];
-  confirmedOrders: Order[] = [];
-  completedOrders: Order[] = [];
   deliveryType = 'all';
 
   pendingOrdersSorted = {
     'today':[]
-  }
-  pendingOrdersSortedKeys = ['today']
+  };
   confirmedOrdersSorted = {
     'today':[]
   }
+  completedOrdersSorted = {
+    'today':[]
+  };
+  pendingOrdersSortedKeys = ['today'];
   confirmedOrdersSortedKeys = ['today'];
-
+  completedOrdersSortedKeys = ['today'];
 
 
   showPending = true;
@@ -86,9 +86,6 @@ export class OrderPage implements OnInit {
 
     this.util.createLoader().then(
       loader => {
-        // this.pendingOrders = [];
-        this.completedOrders = [];
-        this.confirmedOrders = [];
         loader.present();
         this.storage
         .get('user')
@@ -145,16 +142,16 @@ export class OrderPage implements OnInit {
       'today':[]
     }
     this.confirmedOrdersSortedKeys = ['today'];
+    this.confirmedOrdersSorted = {'today':[]};
     this.getConfirmedOrders(0);
     console.log("hi");
 
-    this.completedOrders = [];
+    this.completedOrdersSortedKeys = ['today'];
+    this.completedOrdersSorted = {'today':[]};
     this.getCompletedOrders(0);
     console.log("hi");
 
-    this.pendingOrdersSorted = {
-      'today':[]
-    }
+    this.pendingOrdersSorted = {'today':[]}
     this.pendingOrdersSortedKeys = ['today'];
     this.getPendingOrders(0);
   }
@@ -238,7 +235,6 @@ export class OrderPage implements OnInit {
         .subscribe(res => {
           res.content.forEach(data => 
             {
-              this.confirmedOrders.push(data);
               this.sortOrders(data , this.confirmedOrdersSortedKeys, this.confirmedOrdersSorted)
             });
           i++;
@@ -272,7 +268,10 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          res.content.forEach(data => this.completedOrders.push(data));
+          res.content.forEach(data =>
+            {
+              this.sortOrders(data , this.completedOrdersSortedKeys, this.completedOrdersSorted)
+            });
           i++;
           console.log("completedsdkfk oders ",res);
           this.comTotalPages = res.totalPages;
@@ -430,7 +429,6 @@ export class OrderPage implements OnInit {
     this.confirmedOrdersSorted[key] = this.confirmedOrdersSorted[key].filter(
       co => co.orderId !== order.orderId
     );
-    this.completedOrders.push(order);
   }
 
   hidePending() {
@@ -444,7 +442,8 @@ export class OrderPage implements OnInit {
     this.pendingOrdersSortedKeys = ['today'];
     this.confirmedOrdersSorted = {'today':[]};
     this.confirmedOrdersSortedKeys = ['today'];
-    this.completedOrders = [];
+    this.completedOrdersSorted = {'today':[]};
+    this.completedOrdersSortedKeys = ['today'];
     this.ngOnInit();
     setTimeout(() => {
       event.target.complete();

@@ -48,7 +48,7 @@
          <div class="slideContent">
           <ion-list class="order-card-view" justify-content-center *ngFor="let okey of pendingOrdersSortedKeys">
             <ion-list-header color="secondary">
-              <ion-label>{{okey}}</ion-label>
+              <ion-label>{{okey | titlecase}}</ion-label>
             </ion-list-header>
             <div class="mg-top">
                 <ion-label *ngIf="pendingOrdersSorted[okey].length === 0">No Orders</ion-label>
@@ -75,14 +75,19 @@
         </ion-slide>
  
         <ion-slide>
-         <div class="slideContent">
-          <ion-list class="order-card-view" color="secondary" justify-content-center>
-            <div *ngFor="let order  of completedOrders" justify-content-center>
-              <!-- <app-order-card (click)="viewOrderViewModal(order)" [order]="order"></app-order-card> -->
-              <app-order-card class="vertical-align-center" [orderType]='"completed"' [order]="order"></app-order-card>
-            </div>
-          </ion-list>
-         </div>
+          <div class="slideContent">
+            <ion-list justify-content-center *ngFor="let okey of completedOrdersSortedKeys">
+                <ion-list-header color="secondary">
+                  <ion-label>
+                    <b>{{okey | titlecase}}</b>
+                  </ion-label>
+                </ion-list-header>    
+                <div class="mg-top">
+                    <ion-label *ngIf="completedOrdersSorted[okey].length === 0">No Orders</ion-label>
+                </div>
+                <app-order-card *ngFor="let order  of completedOrdersSorted[okey]" [orderType]='"completed"' class="vertical-align-center"  [order]="order"></app-order-card>
+              </ion-list>      
+        </div>
         </ion-slide>
         
         </ion-slides>

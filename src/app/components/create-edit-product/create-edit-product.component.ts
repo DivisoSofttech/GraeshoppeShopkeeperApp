@@ -65,11 +65,11 @@ export class CreateEditProductComponent implements OnInit {
     private util: Util,
     private ref: ChangeDetectorRef
   ) {
-    setInterval(() => {
-      if (!this.ref.destroyed) {
-        this.ref.detectChanges();
-      }
-    }, 1000);
+    // setInterval(() => {
+    //   if (!this.ref.destroyed) {
+    //     this.ref.detectChanges();
+    //   }
+    // }, 1000);
    }
 
   ngOnInit() {
