@@ -124,8 +124,10 @@ export class CreateEditCategoryComponent implements OnInit {
         .subscribe(categoryDTO => this.categoryDTO = categoryDTO);
   }
 
-  createCategory(){
-    if(this.categoryDTO.image==null||this.categoryDTO.name==null){
+  createCategory() {
+    console.log(this.categoryDTO);
+    
+    if ((this.categoryDTO.image === null && this.categoryDTO.imageLink === null) || this.categoryDTO.name === null) {
       return true;
     }
     return false;

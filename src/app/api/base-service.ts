@@ -35,7 +35,7 @@ export class BaseService {
   ) {
   }
 
-  private _rootUrl: string = 'http://104.198.222.106:9080';
+  private _rootUrl: string = 'http://dev.ci1.divisosofttech.com:9080';
 
   /**
    * Returns the root url for API operations. If not set directly in this

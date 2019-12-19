@@ -25,7 +25,6 @@ import { AddressDTO } from '../models/address-dto';
 import { ProductDTO } from '../models/product-dto';
 import { ReasonDTO } from '../models/reason-dto';
 import { ReplyDTO } from '../models/reply-dto';
-import { ReviewDTO } from '../models/review-dto';
 import { SaleDTO } from '../models/sale-dto';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StockEntryDTO } from '../models/stock-entry-dto';
@@ -35,7 +34,6 @@ import { StoreDTO } from '../models/store-dto';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { TypeDTO } from '../models/type-dto';
 import { UOMDTO } from '../models/uomdto';
-import { UserRatingDTO } from '../models/user-rating-dto';
 
 /**
  * Command Resource
@@ -89,9 +87,6 @@ class CommandResourceService extends __BaseService {
   static readonly createReplyUsingPOSTPath = '/api/command/replies';
   static readonly updateReplyUsingPUTPath = '/api/command/replies';
   static readonly deleteReplyUsingDELETEPath = '/api/command/replies/{id}';
-  static readonly createUserRatingUsingPOSTPath = '/api/command/reviews';
-  static readonly updateUserRatingUsingPUTPath = '/api/command/reviews';
-  static readonly deleteReviewUsingDELETEPath = '/api/command/reviews/{id}';
   static readonly createSaleUsingPOSTPath = '/api/command/sales';
   static readonly updateSaleUsingPUTPath = '/api/command/sales';
   static readonly deleteSaleUsingDELETEPath = '/api/command/sales/{id}';
@@ -117,9 +112,6 @@ class CommandResourceService extends __BaseService {
   static readonly createUOMUsingPOSTPath = '/api/command/unit-of-meassurement';
   static readonly updateUOMUsingPUTPath = '/api/command/uoms';
   static readonly deleteUOMUsingDELETEPath = '/api/command/uoms/{id}';
-  static readonly createUserRatingUsingPOST1Path = '/api/command/user-ratings';
-  static readonly updateUserRatingUsingPUT1Path = '/api/command/user-ratings';
-  static readonly deleteUserRatingUsingDELETEPath = '/api/command/user-ratings/{id}';
 
   constructor(
     config: __Configuration,
@@ -1730,112 +1722,6 @@ class CommandResourceService extends __BaseService {
   }
 
   /**
-   * @param reviewDTO reviewDTO
-   * @return OK
-   */
-  createUserRatingUsingPOSTResponse(reviewDTO: ReviewDTO): __Observable<__StrictHttpResponse<ReviewDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = reviewDTO;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/reviews`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ReviewDTO>;
-      })
-    );
-  }
-  /**
-   * @param reviewDTO reviewDTO
-   * @return OK
-   */
-  createUserRatingUsingPOST(reviewDTO: ReviewDTO): __Observable<ReviewDTO> {
-    return this.createUserRatingUsingPOSTResponse(reviewDTO).pipe(
-      __map(_r => _r.body as ReviewDTO)
-    );
-  }
-
-  /**
-   * @param reviewDTO reviewDTO
-   * @return OK
-   */
-  updateUserRatingUsingPUTResponse(reviewDTO: ReviewDTO): __Observable<__StrictHttpResponse<ReviewDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = reviewDTO;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/command/reviews`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<ReviewDTO>;
-      })
-    );
-  }
-  /**
-   * @param reviewDTO reviewDTO
-   * @return OK
-   */
-  updateUserRatingUsingPUT(reviewDTO: ReviewDTO): __Observable<ReviewDTO> {
-    return this.updateUserRatingUsingPUTResponse(reviewDTO).pipe(
-      __map(_r => _r.body as ReviewDTO)
-    );
-  }
-
-  /**
-   * @param id id
-   */
-  deleteReviewUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/command/reviews/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   */
-  deleteReviewUsingDELETE(id: number): __Observable<null> {
-    return this.deleteReviewUsingDELETEResponse(id).pipe(
-      __map(_r => _r.body as null)
-    );
-  }
-
-  /**
    * @param saleDTO saleDTO
    * @return OK
    */
@@ -2715,112 +2601,6 @@ class CommandResourceService extends __BaseService {
    */
   deleteUOMUsingDELETE(id: number): __Observable<null> {
     return this.deleteUOMUsingDELETEResponse(id).pipe(
-      __map(_r => _r.body as null)
-    );
-  }
-
-  /**
-   * @param userRatingDTO userRatingDTO
-   * @return OK
-   */
-  createUserRatingUsingPOST1Response(userRatingDTO: UserRatingDTO): __Observable<__StrictHttpResponse<UserRatingDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = userRatingDTO;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/user-ratings`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<UserRatingDTO>;
-      })
-    );
-  }
-  /**
-   * @param userRatingDTO userRatingDTO
-   * @return OK
-   */
-  createUserRatingUsingPOST1(userRatingDTO: UserRatingDTO): __Observable<UserRatingDTO> {
-    return this.createUserRatingUsingPOST1Response(userRatingDTO).pipe(
-      __map(_r => _r.body as UserRatingDTO)
-    );
-  }
-
-  /**
-   * @param userRatingDTO userRatingDTO
-   * @return OK
-   */
-  updateUserRatingUsingPUT1Response(userRatingDTO: UserRatingDTO): __Observable<__StrictHttpResponse<UserRatingDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = userRatingDTO;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/command/user-ratings`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<UserRatingDTO>;
-      })
-    );
-  }
-  /**
-   * @param userRatingDTO userRatingDTO
-   * @return OK
-   */
-  updateUserRatingUsingPUT1(userRatingDTO: UserRatingDTO): __Observable<UserRatingDTO> {
-    return this.updateUserRatingUsingPUT1Response(userRatingDTO).pipe(
-      __map(_r => _r.body as UserRatingDTO)
-    );
-  }
-
-  /**
-   * @param id id
-   */
-  deleteUserRatingUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/command/user-ratings/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   */
-  deleteUserRatingUsingDELETE(id: number): __Observable<null> {
-    return this.deleteUserRatingUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
     );
   }

@@ -53,9 +53,9 @@
 
 <ion-footer>
   <div *ngIf="mode=='update'">
-    <ion-button [disabled]="createCategory()" margin expand="block" color="primary" (click)="updateCategory()">Update</ion-button>
+    <ion-button [disabled]="(categoryDTO.image == null && categoryDTO.imageLink == null) || categoryDTO.name == null || categoryDTO.name == ''" margin expand="block" color="primary" (click)="updateCategory()">Update</ion-button>
   </div>
   <div *ngIf="mode=='create'">
-    <ion-button [disabled]="createCategory()" margin expand="block" color="primary" (click)="addCategory()">Create</ion-button>
+    <ion-button [disabled]="(categoryDTO.image == null && categoryDTO.imageLink == null) || categoryDTO.name == null || categoryDTO.name == ''" margin expand="block" color="primary" (click)="addCategory()">Create</ion-button>
   </div>
 </ion-footer>

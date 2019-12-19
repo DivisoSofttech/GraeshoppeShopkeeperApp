@@ -121,16 +121,15 @@ export class EditRestaurantPage implements OnInit {
         this.queryService
           .getStoreBundleUsingGET(user.preferred_username)
           .subscribe(res => {
-            console.log("store bundle ",res);
-
-            if (res.preOrderSettings) {
-              this.preOrderSettings = res.preOrderSettings;
-            } else {
-              this.preOrderSettings.toTime = res.store.openingTime;
-            }
+            console.log('store bundle ' , res);
 
             console.log('pre', res.preOrderSettings);
             this.storeBundleDTO = res;
+            if (!res.preOrderSettings) {
+              this.storeBundleDTO.preOrderSettings = {
+                toTime: res.store.openingTime
+              };
+            }
             this.setDeliveryTypes();
             this.setOrderAcceptTypes();
             loader.dismiss();
@@ -183,6 +182,11 @@ export class EditRestaurantPage implements OnInit {
         this.collectionInfo = this.getInfo(type.id);
       }
     });
+  }
+
+  updatePreOrder() {
+    console.log(this.storeForm.get('openingTime').value);
+    this.storeBundleDTO.preOrderSettings.toTime = this.storeForm.get('openingTime').value;
   }
 
   getInfo(id): DeliveryInfoDTO {
