@@ -15,12 +15,12 @@
           <ion-card *ngFor="let notification of notifications">
             <ion-card-header (click)="onClick(notification)">
                 <ion-item >
-                    <ion-avatar *ngIf="notification.status=='unread'" margin> 
+                    <!-- <ion-avatar *ngIf="notification.status=='unread'" margin> 
                       <ion-img [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
                     </ion-avatar>
                     <ion-avatar *ngIf="notification.status=='read'" margin> 
                         <ion-img class="read-img" [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
-                      </ion-avatar>
+                      </ion-avatar> -->
                     <ion-text *ngIf="notification.status=='unread'">
                       <p><strong>{{notification.title}}</strong></p>
                       <p>{{notification.date | date:'shortDate'}}</p>

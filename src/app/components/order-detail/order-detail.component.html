@@ -20,11 +20,6 @@
     <ng-content *ngTemplateOutlet="OrderProductDetails"></ng-content>
     <ng-content *ngTemplateOutlet="OrderExtraDetails"></ng-content>
   </div>
-  <div class="footer" *ngIf="orderDelivered">
-    <ion-button expand="block" class="ion-margin" (click)="reorder()"
-      >Reorder</ion-button
-    >
-  </div>
   <div class="footer" *ngIf="ShowContinueShopping">
     <ion-button expand="block" class="ion-margin" (click)="continue()"
       >Continue Shopping</ion-button
@@ -220,7 +215,7 @@
     </ion-label>
     <ion-label slot="end" class="ion-text-right">
       <h3>
-        <b>{{ order.paymentMode }}</b>
+        <b>{{ order.paymentMode}}</b>
       </h3>
     </ion-label>
   </ion-item>

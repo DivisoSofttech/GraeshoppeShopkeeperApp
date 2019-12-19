@@ -3,7 +3,6 @@ import { Util } from 'src/app/services/util';
 import { ComboLineItemDTO } from './../../api/models/combo-line-item-dto';
 import { ImageSelectorComponent } from './../image-selector/image-selector.component';
 import { AuxilaryLineItemDTO } from './../../api/models/auxilary-line-item-dto';
-import { CreateEditCategoryComponent } from './../create-edit-category/create-edit-category.component';
 import { UOMDTO } from './../../api/models/uomdto';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
@@ -65,11 +64,11 @@ export class CreateEditProductComponent implements OnInit {
     private util: Util,
     private ref: ChangeDetectorRef
   ) {
-    // setInterval(() => {
-    //   if (!this.ref.destroyed) {
-    //     this.ref.detectChanges();
-    //   }
-    // }, 1000);
+    setInterval(() => {
+      if (!this.ref['destroyed']) {
+        this.ref.detectChanges();
+      }
+    }, 1000);
    }
 
   ngOnInit() {
@@ -81,7 +80,8 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
-          console.log('productBundle ',productBundle);
+          console.log('product' , this.product);
+          console.log('productBundle ', productBundle);
           this.productbundle = productBundle;
           this.productDTO.discountId = productBundle.discount.id;
           this.discount = productBundle.discount;
@@ -170,7 +170,7 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   getProductDtoUsingProduct() {
-    this.query.findProductByIdUsingGET(this.product.id)
+    this.query.findProductDTOByIdUsingGET(this.product.id)
       .subscribe(productDto => { this.productDTO = productDto;
                                  console.log('product dto ', this.productDTO); },
         err => console.log('Error Getting ProductDTO Using Product', err));

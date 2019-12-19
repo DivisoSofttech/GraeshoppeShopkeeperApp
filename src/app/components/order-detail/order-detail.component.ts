@@ -77,7 +77,7 @@ export class OrderDetailComponent implements OnInit{
 
   ngOnInit() {
     this.getOrderLines(0);
-    this.getAppliedOffers(this.order.id);
+    //this.getAppliedOffers(this.order.id);
     this.checkOrderType();
   }
 

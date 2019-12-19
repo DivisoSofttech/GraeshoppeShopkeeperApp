@@ -2,6 +2,7 @@ import { SaleHistoryComponent } from './sale-history/sale-history.component';
 import { CreateSelectCustomerComponent } from './create-select-customer/create-select-customer.component';
 import { CreateEditStockDairyComponent } from './create-edit-stock-dairy/create-edit-stock-dairy.component';
 import { OrderViewComponent } from './order-view/order-view.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
@@ -55,7 +56,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     StockDairyCardComponent,
     StockDairyViewComponent,
     CreateSelectCustomerComponent,
-    SaleHistoryComponent
+    SaleHistoryComponent,
+    OrderDetailComponent
   ],
 
   imports: [
@@ -101,7 +103,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateEditUomComponent,
     CreateEditCategoryComponent,
     ProductViewComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
+    OrderDetailComponent
   ]
 })
 export class ComponentsModule { }

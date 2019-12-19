@@ -1,5 +1,5 @@
 import { Storage } from '@ionic/storage';
-import { OrderViewComponent } from './../order-view/order-view.component';
+import { OrderDetailComponent } from './../order-detail/order-detail.component';
 import { ModalController, Platform } from '@ionic/angular';
 import {
   CommandResourceService,
@@ -135,7 +135,7 @@ export class OrderCardComponent implements OnInit {
 
   async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
-      component: OrderViewComponent,
+      component: OrderDetailComponent,
       componentProps: { order: this.order }
     });
     return await modal.present();

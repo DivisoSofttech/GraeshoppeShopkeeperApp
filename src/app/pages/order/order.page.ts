@@ -43,13 +43,13 @@ export class OrderPage implements OnInit {
   deliveryType = 'all';
 
   pendingOrdersSorted = {
-    'today':[]
+    today: []
   };
   confirmedOrdersSorted = {
-    'today':[]
-  }
+    today: []
+  };
   completedOrdersSorted = {
-    'today':[]
+    today: []
   };
   pendingOrdersSortedKeys = ['today'];
   confirmedOrdersSortedKeys = ['today'];
@@ -82,7 +82,7 @@ export class OrderPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("method ngOninit ");
+    console.log('method ngOninit ');
 
     this.util.createLoader().then(
       loader => {
@@ -99,7 +99,7 @@ export class OrderPage implements OnInit {
             this.storage.set('user', user);
             this.user = user;
             this.initTasks();
-            console.log("last log ");
+            console.log('last log ');
             loader.dismiss();
           });
         });
@@ -108,7 +108,7 @@ export class OrderPage implements OnInit {
   }
 
   initTasks() {
-    console.log("method initTasks ");
+    console.log('method initTasks ');
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
     .subscribe(store => {
       this.store = store;
@@ -120,38 +120,38 @@ export class OrderPage implements OnInit {
         this.currentPage = 'confirmed';
       }
       this.getConfirmedOrders(0);
-      console.log("hi");
+      console.log('hi');
       this.getCompletedOrders(0);
-      console.log("hi");
+      console.log('hi');
 
     },
-    err=>{
+    err => {
 
-      console.log("error finding store ",err);
+      console.log('error finding store ', err);
 
     }
     );
   }
 
   filter(filterBy) {
-    console.log("method filterBy ");
+    console.log('method filterBy ');
 
     this.deliveryType = filterBy;
-    console.log("filterBy ",filterBy);
+    console.log('filterBy ', filterBy);
     this.confirmedOrdersSorted = {
-      'today':[]
-    }
+      today: []
+    };
     this.confirmedOrdersSortedKeys = ['today'];
-    this.confirmedOrdersSorted = {'today':[]};
+    this.confirmedOrdersSorted = {today: []};
     this.getConfirmedOrders(0);
-    console.log("hi");
+    console.log('hi');
 
     this.completedOrdersSortedKeys = ['today'];
-    this.completedOrdersSorted = {'today':[]};
+    this.completedOrdersSorted = {today: []};
     this.getCompletedOrders(0);
-    console.log("hi");
+    console.log('hi');
 
-    this.pendingOrdersSorted = {'today':[]}
+    this.pendingOrdersSorted = {today: []};
     this.pendingOrdersSortedKeys = ['today'];
     this.getPendingOrders(0);
   }
@@ -164,27 +164,27 @@ export class OrderPage implements OnInit {
   }
 
   sortOrders(o: Order , keyStore , arrayList) {
-    console.log("method sort ");
+    console.log('method sort ');
 
-    const date1: any = new Date(this.datePipe.transform(o.date,'M/d/yy'))
+    const date1: any = new Date(this.datePipe.transform(o.date, 'M/d/yy'));
     const date2: any = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
     const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    if(diffDays === 0) {
-       arrayList['today'].push(o);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) {
+       arrayList.today.push(o);
     } else {
-      if(keyStore.includes(this.datePipe.transform(o.date,'M/d/yy'))) {            
-        arrayList[this.datePipe.transform(o.date,'M/d/yy')].push(o);
+      if (keyStore.includes(this.datePipe.transform(o.date, 'M/d/yy'))) {
+        arrayList[this.datePipe.transform(o.date, 'M/d/yy')].push(o);
       } else {
-        keyStore.push(this.datePipe.transform(o.date,'M/d/yy'));
-        arrayList[this.datePipe.transform(o.date,'M/d/yy')] = [];
-        arrayList[this.datePipe.transform(o.date,'M/d/yy')].push(o);
+        keyStore.push(this.datePipe.transform(o.date, 'M/d/yy'));
+        arrayList[this.datePipe.transform(o.date, 'M/d/yy')] = [];
+        arrayList[this.datePipe.transform(o.date, 'M/d/yy')].push(o);
       }
     }
   }
 
   getPendingOrders(i) {
-    console.log("method pending oders ");
+    console.log('method pending oders ');
 
     this.util.createLoader().then(loader => {
       loader.present();
@@ -196,12 +196,12 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          res.content.forEach(data => 
+          res.content.forEach(data =>
           {
               this.sortOrders(data , this.pendingOrdersSortedKeys , this.pendingOrdersSorted);
-          },err=>{
+          }, err => {
 
-            console.log("error geting order ",err);
+            console.log('error geting order ', err);
 
           });
           i++;
@@ -221,7 +221,7 @@ export class OrderPage implements OnInit {
   }
 
   getConfirmedOrders(i) {
-    console.log("method confirmedOders ");
+    console.log('method confirmedOders ');
 
     this.util.createLoader().then(loader => {
       loader.present();
@@ -233,9 +233,9 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          res.content.forEach(data => 
+          res.content.forEach(data =>
             {
-              this.sortOrders(data , this.confirmedOrdersSortedKeys, this.confirmedOrdersSorted)
+              this.sortOrders(data , this.confirmedOrdersSortedKeys, this.confirmedOrdersSorted);
             });
           i++;
           this.conTotalPages = res.totalPages;
@@ -255,8 +255,8 @@ export class OrderPage implements OnInit {
 
 
   getCompletedOrders(i) {
-    console.log("method completed oders ");
-    console.log("completed delivery type ",this.deliveryType+this.user.preferred_username);
+    console.log('method completed oders ');
+    console.log('completed delivery type ', this.deliveryType + this.user.preferred_username);
 
     this.util.createLoader().then(loader => {
       loader.present();
@@ -268,12 +268,11 @@ export class OrderPage implements OnInit {
           deliveryType: this.deliveryType
         })
         .subscribe(res => {
-          res.content.forEach(data =>
-            {
-              this.sortOrders(data , this.completedOrdersSortedKeys, this.completedOrdersSorted)
+          res.content.forEach(data => {
+              this.sortOrders(data , this.completedOrdersSortedKeys, this.completedOrdersSorted);
             });
           i++;
-          console.log("completedsdkfk oders ",res);
+          console.log('completedsdkfk oders ', res);
           this.comTotalPages = res.totalPages;
           if (this.comcount + 1 === res.totalPages) {
             this.ionInfiniteScroll.disabled = true;
@@ -284,13 +283,13 @@ export class OrderPage implements OnInit {
           loader.dismiss();
         }, err => {
           loader.dismiss();
-          console.log('Error getting Completed Orders',err);
+          console.log('Error getting Completed Orders', err);
           this.util.createToast('Error getting Completed Orders', 'information-circle');
         });
     });
   }
   getOrders(i, limit: boolean) {
-    console.log("method getOders ");
+    console.log('method getOders ');
 
     this.queryResource
       .findOrderLineByStoreIdUsingGET({
@@ -411,7 +410,7 @@ export class OrderPage implements OnInit {
     });
     return await modal.present();
   }
-  
+
   getNoticationCount() {
     this.notification.notificationBehaviouralSubject
       .subscribe(count => {
@@ -423,12 +422,26 @@ export class OrderPage implements OnInit {
     this.pendingOrdersSorted[key] = this.pendingOrdersSorted[key].filter(
       po => po.orderId !== order.orderId
     );
+    if (this.confirmedOrdersSortedKeys.includes(key)) {
+      this.confirmedOrdersSorted[key].push(order);
+    } else {
+      this.confirmedOrdersSortedKeys.push(key);
+      this.confirmedOrdersSorted[key] = [];
+      this.confirmedOrdersSorted[key].push(order);
+    }
   }
 
   orderCompleted(order , key) {
     this.confirmedOrdersSorted[key] = this.confirmedOrdersSorted[key].filter(
       co => co.orderId !== order.orderId
     );
+    if (this.completedOrdersSortedKeys.includes(key)) {
+      this.completedOrdersSorted[key].push(order);
+    } else {
+      this.completedOrdersSortedKeys.push(key);
+      this.completedOrdersSorted[key] = [];
+      this.completedOrdersSorted[key].push(order);
+    }
   }
 
   hidePending() {
@@ -438,11 +451,11 @@ export class OrderPage implements OnInit {
   }
 
   refresh(event) {
-    this.pendingOrdersSorted = {'today':[]};
+    this.pendingOrdersSorted = {today: []};
     this.pendingOrdersSortedKeys = ['today'];
-    this.confirmedOrdersSorted = {'today':[]};
+    this.confirmedOrdersSorted = {today: []};
     this.confirmedOrdersSortedKeys = ['today'];
-    this.completedOrdersSorted = {'today':[]};
+    this.completedOrdersSorted = {today: []};
     this.completedOrdersSortedKeys = ['today'];
     this.ngOnInit();
     setTimeout(() => {
