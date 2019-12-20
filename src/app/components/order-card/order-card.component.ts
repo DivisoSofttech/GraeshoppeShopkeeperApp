@@ -82,10 +82,8 @@ export class OrderCardComponent implements OnInit {
     );
   }
   acceptOrder() {
-    this.util.createLoader().then(
-      loader => {
-        loader.present();
-        this.queryResource.getTaskDetailsUsingGET({
+    this.accept.emit();
+    this.queryResource.getTaskDetailsUsingGET({
           storeId: this.user.preferred_username,
           taskName: 'Accept Order',
           orderId: this.order.orderId
@@ -116,20 +114,14 @@ export class OrderCardComponent implements OnInit {
               }
             })
             .subscribe(data => {
-              this.accept.emit();
               this.util.createToast('Order Accepted', 'checkmark');
-              loader.dismiss();
             }, err => {
               console.log(err);
-              loader.dismiss();
             });
         },
         err => {
           console.log(err);
-          loader.dismiss();
         });
-      }
-    );
 
   }
 
