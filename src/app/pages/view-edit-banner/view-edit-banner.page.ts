@@ -40,7 +40,7 @@ export class ViewEditBannerPage implements OnInit {
   ngOnInit() {
     this.getBanners(0);
   }
-  async viewAddBannerModal(){
+  async viewAddBannerModal() {
     const modal = await this.modalController.create({
       component: ImageSelectorComponent,
       componentProps: {cropperSettings: this.cropperSettings}
@@ -53,33 +53,39 @@ export class ViewEditBannerPage implements OnInit {
     });
     return await modal.present();
    }
-   createBanner(){
-    this.storage.get('user').then( user => 
+   createBanner() {
+    this.storage.get('user').then( user =>
     this.query.findStoreByRegNoUsingGET(user.preferred_username)
     .subscribe(store => {
       this.bannerDTO.storeId = store.id;
+      console.log('banner', this.bannerDTO);
       this.command.createBannerUsingPOST(this.bannerDTO)
         .subscribe(data => {
           console.log('banner added', data);
-          this.banners.push(this.bannerDTO);
+          this.banners = [];
+          this.getBanners(0);
         }
-        ,err => console.log("error adding banner"));
-    }))
+        , err => console.log('error adding banner'));
+    }));
   }
-  getBanners(i){
+  getBanners(i , success?) {
     this.storage.get('user').then(user => {
-      this.query.findBannerByStoreIdUsingGET(user.preferred_username)
-        .subscribe(res => {
-          console.log("banners",res.content);
+      this.query.findBannerByStoreIdUsingGET({
+        storeId: user.preferred_username,
+        page: i
+      }).subscribe(res => {
+          console.log('user', user);
+          success !== undefined ? success(res) : null;
+          console.log('banners', res.content);
           res.content.forEach(p => {
             this.banners.push(p);
           });
           i++;
-          if(i < res.totalPages) {
-            this.getBanners(i);  
+          if (i < res.totalPages) {
+            this.getBanners(i);
           }
-        })
-    })
+        });
+    });
   }
 
 
@@ -108,5 +114,8 @@ export class ViewEditBannerPage implements OnInit {
     await alert.present();
   }
 
-  
+  refresh(event) {
+    this.banners = [];
+    this.getBanners(0 , () => event.target.complete());
+  }
 }

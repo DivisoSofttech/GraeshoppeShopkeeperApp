@@ -50,16 +50,23 @@ export class ProductPage implements OnInit {
     console.log(this.products);
   }
 
-  getAuxilaries() {
+  getAuxilaries(i) {
       this.util.createLoader()
       .then(loader => {
       this.loader = loader;
       this.loader.present();
       this.storage.get('user').then(user => {
-        this.queryService.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(auxilaries => {
+        this.queryService.getAllAuxilaryProductUsingGET({
+          storeId: user.preferred_username,
+          page: i
+        }).subscribe(auxilaries => {
           this.products = [];
           auxilaries.content.forEach(auxilary => this.products.push(auxilary));
           this.loader.dismiss();
+          i++;
+          if (i < auxilaries.totalPages) {
+            this.getAuxilaries(i);
+          }
         });
       });
     });

@@ -8,6 +8,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Storage } from '@ionic/storage';
 import { formatDate } from '@angular/common';
 import { ReportSummary } from 'src/app/api/models';
+import { Printer , PrintOptions} from '@ionic-native/printer/ngx';
 
 @Component({
   selector: 'app-order-summary',
@@ -30,7 +31,8 @@ export class OrderSummaryPage implements OnInit {
     private storage: Storage,
     private file: File,
     private fileOpener: FileOpener,
-    private util: Util
+    private util: Util,
+    private printer: Printer
   ) { }
 
   ngOnInit() {
@@ -54,8 +56,8 @@ export class OrderSummaryPage implements OnInit {
   getNoticationCount() {
     this.queryResource.getNotificationCountByReceiveridAndStatusUsingGET({ status: 'unread', receiverId: this.user.preferred_username })
       .subscribe(num => this.notificationCount = num,
-        err=>{
-          console.log("error getting notificationCount ",err);
+        err => {
+          console.log('error getting notificationCount ', err);
         });
   }
 
@@ -67,11 +69,11 @@ export class OrderSummaryPage implements OnInit {
         this.orderSummary = orderSummary;
         console.log('summary', this.orderSummary);
       }, err => {
-        console.log("error getting summary ",err);
+        console.log('error getting summary ', err);
       });
     },
     err => {
-      console.log("error getting store  ",err);
+      console.log('error getting store  ', err);
     });
   }
 
@@ -96,7 +98,7 @@ export class OrderSummaryPage implements OnInit {
         this.fileCreation(blob, orderDocket);
         loader.dismiss();
       }, err => {
-        console.log("error geting order summary",err);
+        console.log('error geting order summary', err);
         loader.dismiss();
         this.util.createToast('Error Loading Pdf', 'alert');
       });
@@ -116,13 +118,17 @@ export class OrderSummaryPage implements OnInit {
           })
           .then(value => {
             console.log('file writed' + value);
-            this.fileOpener
-              .showOpenWithDialog(
-                this.file.externalCacheDirectory + 'items.pdf',
-                result.contentType
-              )
-              .then(() => console.log('File is opened'))
-              .catch(e => console.log('Error opening file', e));
+            const options: PrintOptions = {
+              name: 'MyDocument'
+            };
+            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            // this.fileOpener
+            //   .showOpenWithDialog(
+            //     this.file.externalCacheDirectory + 'items.pdf',
+            //     result.contentType
+            //   )
+            //   .then(() => console.log('File is opened'))
+            //   .catch(e => console.log('Error opening file', e));
             // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
             // {print: {enabled: true}, openWith: {enabled: true}});
           });

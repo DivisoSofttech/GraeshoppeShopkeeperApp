@@ -46,7 +46,7 @@
           <ion-text><Strong>{{orderSummary.typeAllCount}}</Strong></ion-text>
       </ion-col>
       <ion-col padding>
-          <ion-text><Strong>{{orderSummary.typeAllTotal}}</Strong></ion-text>
+          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeAllTotal}}</Strong></ion-text>
       </ion-col>
     </ion-row>
     <ion-row padding>
@@ -57,7 +57,7 @@
             <ion-text><Strong>{{orderSummary.typeCollectionCount}}</Strong></ion-text>
         </ion-col>
         <ion-col padding>
-            <ion-text><Strong>{{orderSummary.typeCollectionTotal}}</Strong></ion-text>
+            <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCollectionTotal}}</Strong></ion-text>
         </ion-col>
       </ion-row>
       <ion-row padding>
@@ -68,7 +68,7 @@
               <ion-text><Strong>{{orderSummary.typeDeliveryCount}}</Strong></ion-text>
           </ion-col>
           <ion-col padding>
-              <ion-text><Strong>{{orderSummary.typeDeliveryTotal}}</Strong></ion-text>
+              <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeDeliveryTotal}}</Strong></ion-text>
           </ion-col>
         </ion-row>
         
@@ -93,12 +93,12 @@
           <ion-text><Strong>{{orderSummary.typeCashCount}}</Strong></ion-text>
       </ion-col>
       <ion-col padding>
-          <ion-text><Strong>{{orderSummary.typeCashTotal}}</Strong></ion-text>
+          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCashTotal}}</Strong></ion-text>
       </ion-col>
     </ion-row>
   </ion-card>
 </ion-content>
-<ion-footer>
+<!-- <ion-footer>
   <ion-card>
     <ion-item>
     <ion-button (click)="getOrderSummaryPdf()">
@@ -109,4 +109,4 @@
       </ion-button>
     </ion-item>
     </ion-card>
-</ion-footer>
+</ion-footer> -->

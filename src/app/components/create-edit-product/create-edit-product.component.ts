@@ -73,7 +73,7 @@ export class CreateEditProductComponent implements OnInit {
 
   ngOnInit() {
     this.getCategories();
-    this.getAuxilaryItems();
+    this.getAuxilaryItems(0);
     this.getUOM();
     this.getNonComboNonAuxilaryProduct();
     if (this.mode === 'update') {
@@ -311,13 +311,21 @@ export class CreateEditProductComponent implements OnInit {
       });
     });
   }
-  getAuxilaryItems() {
+  getAuxilaryItems(i) {
     this.storage.get('user').then(user => {
-      this.query.getAllAuxilaryProductUsingGET(user.preferred_username).subscribe(res => {
+      this.query.getAllAuxilaryProductUsingGET({
+        storeId: user.preferred_username,
+        page: i
+      }).subscribe(res => {
         this.auxilaryProduct = res.content;
+        console.log(this.auxilaryProduct);
         this.checkAuxArray.push(false);
         if (this.mode === 'update') {
           this.getProductAux();
+        }
+        i++;
+        if (i < res.totalPages) {
+          this.getAuxilaryItems(i);
         }
 
       });
