@@ -23,7 +23,7 @@
                       </ion-avatar> -->
                     <ion-text *ngIf="notification.status=='unread'">
                       <p><strong>{{notification.title}}</strong></p>
-                      <p>{{notification.date | date:'shortDate'}}</p>
+                      <p>{{notification.date | date:'d/M/yy'}}</p>
                       <p>{{notification.date | date:'shortTime'}}</p>
                     </ion-text>
                     <ion-text  *ngIf="notification.status=='read'">

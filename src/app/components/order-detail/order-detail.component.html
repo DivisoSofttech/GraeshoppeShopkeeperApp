@@ -14,7 +14,7 @@
     <ng-content *ngTemplateOutlet="OrderStatus"></ng-content>
     <ng-content *ngTemplateOutlet="OrderStepper"></ng-content>
     <ng-content *ngTemplateOutlet="OrderDetails"></ng-content>
-    <ng-content *ngTemplateOutlet="OrderProductDetails"></ng-content>
+    <!-- <ng-content *ngTemplateOutlet="OrderProductDetails"></ng-content> -->
     <ng-content *ngTemplateOutlet="OrderExtraDetails"></ng-content>
   </div>
   <div class="footer" *ngIf="ShowContinueShopping">
@@ -26,12 +26,12 @@
 
 <!--Order Status Start-->
 <ng-template #OrderStatus>
-  <ion-item color="danger" lines="full" *ngIf="order.preOrderDate">
+  <!-- <ion-item color="danger" lines="full" *ngIf="order.preOrderDate">
     <ion-label>Preorder Time</ion-label>
     <ion-text>
       {{ order.preOrderDate | date: "shortTime" }}
     </ion-text>
-  </ion-item>
+  </ion-item> -->
   <ion-item *ngIf="orderPlaced" color="warning" lines="full">
     <ion-text>Order Placed</ion-text>
   </ion-item>
@@ -186,7 +186,7 @@
 <!--Order Details End-->
 
 <!--Order Product Details Start-->
-<ng-template #OrderProductDetails>
+<!-- <ng-template #OrderProductDetails>
   <ion-card *ngIf="orderLines.length === 0">
     <ion-card-content class="ion-text-center">
       <ion-spinner name="dots"></ion-spinner>
@@ -201,12 +201,12 @@
     [orderLine]="orderLine"
     [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"
   ></app-product-card>
-</ng-template>
+</ng-template> -->
 <!--Order Product Details End-->
 
 <!--Order Extra Details Start-->
 <ng-template #OrderExtraDetails>
-  <ion-item lines="full">
+  <!-- <ion-item lines="full">
     <ion-label>
       <h2>Payment Mode</h2>
     </ion-label>
@@ -215,7 +215,7 @@
         <b>{{ order.paymentMode}}</b>
       </h3>
     </ion-label>
-  </ion-item>
+  </ion-item> -->
   <ion-card
     *ngIf="
       order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null

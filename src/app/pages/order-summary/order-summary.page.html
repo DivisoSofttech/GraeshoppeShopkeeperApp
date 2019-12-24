@@ -46,7 +46,7 @@
           <ion-text><Strong>{{orderSummary.typeAllCount}}</Strong></ion-text>
       </ion-col>
       <ion-col padding>
-          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeAllTotal}}</Strong></ion-text>
+          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeAllTotal | number:'1.2-2'}}</Strong></ion-text>
       </ion-col>
     </ion-row>
     <ion-row padding>
@@ -57,7 +57,7 @@
             <ion-text><Strong>{{orderSummary.typeCollectionCount}}</Strong></ion-text>
         </ion-col>
         <ion-col padding>
-            <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCollectionTotal}}</Strong></ion-text>
+            <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCollectionTotal | number:'1.2-2'}}</Strong></ion-text>
         </ion-col>
       </ion-row>
       <ion-row padding>
@@ -68,7 +68,7 @@
               <ion-text><Strong>{{orderSummary.typeDeliveryCount}}</Strong></ion-text>
           </ion-col>
           <ion-col padding>
-              <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeDeliveryTotal}}</Strong></ion-text>
+              <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeDeliveryTotal | number:'1.2-2'}}</Strong></ion-text>
           </ion-col>
         </ion-row>
         
@@ -93,20 +93,31 @@
           <ion-text><Strong>{{orderSummary.typeCashCount}}</Strong></ion-text>
       </ion-col>
       <ion-col padding>
-          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCashTotal}}</Strong></ion-text>
+          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCashTotal | number:'1.2-2'}}</Strong></ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row padding>
+      <ion-col padding>
+        <ion-text><strong>Card</strong></ion-text>
+      </ion-col>
+      <ion-col padding>
+          <ion-text><Strong>{{orderSummary.typeCardCount}}</Strong></ion-text>
+      </ion-col>
+      <ion-col padding>
+          <ion-text><Strong> <ion-text>&euro;        </ion-text>{{orderSummary.typeCardTotal | number:'1.2-2'}}</Strong></ion-text>
       </ion-col>
     </ion-row>
   </ion-card>
 </ion-content>
-<!-- <ion-footer>
+<ion-footer>
   <ion-card>
     <ion-item>
     <ion-button (click)="getOrderSummaryPdf()">
       Print Summary
     </ion-button>
-    <ion-button slot="end">
+    <!-- <ion-button slot="end">
         Detailed Orders
-      </ion-button>
+      </ion-button> -->
     </ion-item>
     </ion-card>
-</ion-footer> -->
+</ion-footer>

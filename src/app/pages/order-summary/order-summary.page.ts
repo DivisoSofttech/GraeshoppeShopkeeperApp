@@ -78,7 +78,10 @@ export class OrderSummaryPage implements OnInit {
   }
 
   dateSelected() {
-    this.date = this.date.slice(0, this.date.indexOf('T'));
+    console.log('date', this.date);
+    if (this.date.length > 12) {
+      this.date = this.date.slice(0, this.date.indexOf('T'));
+    }
     this.getOrderSummary();
   }
 
