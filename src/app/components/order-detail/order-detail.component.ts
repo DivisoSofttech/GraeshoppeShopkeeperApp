@@ -77,12 +77,8 @@ export class OrderDetailComponent implements OnInit{
 
   ngOnInit() {
     this.getOrderLines(0);
-    //this.getAppliedOffers(this.order.id);
+    this.getAppliedOffers(this.order.orderId);
     this.checkOrderType();
-  }
-
-  ngAfterViewInit() {
-    this.initStepper();
   }
 
   checkOrderType() {
@@ -108,9 +104,9 @@ export class OrderDetailComponent implements OnInit{
   }
 
   getOrderDetails() {
-    this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
-      .subscribe(data => {
-      });
+    // this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
+    //   .subscribe(data => {
+    //   });
   }
 
   getOrderLines(i) {
@@ -134,7 +130,7 @@ export class OrderDetailComponent implements OnInit{
   }
 
   getAppliedOffers(id) {
-    this.queryResource.findOfferLinesByOrderIdUsingGET(id)
+    this.queryResource.findOfferLinesByOrderNumberUsingGET(id)
       .subscribe(offerLines => {
         this.offer = offerLines;
       });

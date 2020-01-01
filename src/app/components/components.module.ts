@@ -1,3 +1,5 @@
+import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
+import { MaterialModule } from './material.module';
 import { SaleHistoryComponent } from './sale-history/sale-history.component';
 import { CreateSelectCustomerComponent } from './create-select-customer/create-select-customer.component';
 import { CreateEditStockDairyComponent } from './create-edit-stock-dairy/create-edit-stock-dairy.component';
@@ -57,7 +59,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     StockDairyViewComponent,
     CreateSelectCustomerComponent,
     SaleHistoryComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    OrderProductCardComponent
   ],
 
   imports: [
@@ -66,6 +69,7 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     FormsModule,
     IonicModule,
     RouterModule,
+    MaterialModule,
     ReactiveFormsModule
   ],
   exports: [
@@ -93,7 +97,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     StockDairyCardComponent,
     StockDairyViewComponent,
     CreateSelectCustomerComponent,
-    SaleHistoryComponent
+    SaleHistoryComponent,
+    OrderProductCardComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

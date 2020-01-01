@@ -12,7 +12,6 @@
 <ion-content appScrollbarTheme>
   <div class="content">
     <ng-content *ngTemplateOutlet="OrderStatus"></ng-content>
-    <ng-content *ngTemplateOutlet="OrderStepper"></ng-content>
     <ng-content *ngTemplateOutlet="OrderDetails"></ng-content>
     <!-- <ng-content *ngTemplateOutlet="OrderProductDetails"></ng-content> -->
     <ng-content *ngTemplateOutlet="OrderExtraDetails"></ng-content>
@@ -45,7 +44,7 @@
 <!--Order Status End-->
 
 <!--Order Stepper Start-->
-<ng-template #OrderStepper>
+<!-- <ng-template #OrderStepper>
   <mat-horizontal-stepper labelPosition="bottom" #stepper>
     <ng-template matStepperIcon="waiting">
       <mat-icon>done</mat-icon>
@@ -67,7 +66,7 @@
       <ng-template matStepLabel>Delivered</ng-template>
     </mat-step>
   </mat-horizontal-stepper>
-</ng-template>
+</ng-template> -->
 <!--Order Stepper End-->
 
 <!--Order Details Start-->
@@ -185,8 +184,8 @@
 </ng-template>
 <!--Order Details End-->
 
-<!--Order Product Details Start-->
-<!-- <ng-template #OrderProductDetails>
+<!-- Order Product Details Start-->
+<ng-template #OrderProductDetails>
   <ion-card *ngIf="orderLines.length === 0">
     <ion-card-content class="ion-text-center">
       <ion-spinner name="dots"></ion-spinner>
@@ -201,7 +200,7 @@
     [orderLine]="orderLine"
     [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"
   ></app-product-card>
-</ng-template> -->
+</ng-template>
 <!--Order Product Details End-->
 
 <!--Order Extra Details Start-->

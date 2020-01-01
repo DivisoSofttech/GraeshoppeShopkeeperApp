@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <mat-horizontal-stepper labelPosition="bottom">
+  <!-- <mat-horizontal-stepper labelPosition="bottom">
     <mat-step completed editable="false">
         <ng-template matStepLabel>Placed</ng-template>
     </mat-step>
@@ -20,7 +20,7 @@
     <mat-step   editable="false">
         <ng-template matStepLabel>Delivered</ng-template>
     </mat-step>
-  </mat-horizontal-stepper>
+  </mat-horizontal-stepper> -->
   
   <!-- <ion-item *ngIf="store" lines="full">
     <ion-avatar>
@@ -119,6 +119,19 @@
         <ion-card-content class="ion-no-padding pd-10">
           <ion-item lines="none">
               <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header color="light">
+          <ion-card-title>
+            <h1>Note</h1>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="ion-no-padding pd-10">
+          <ion-item *ngFor="let orderLine of order.orderLines" lines="none">
+            <app-order-product-card  [orderLine]="orderLine" ></app-order-product-card>
           </ion-item>
         </ion-card-content>
       </ion-card>

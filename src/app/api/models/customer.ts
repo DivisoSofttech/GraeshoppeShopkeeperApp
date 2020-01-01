@@ -4,14 +4,15 @@ import { FavouriteProduct } from './favourite-product';
 import { FavouriteStore } from './favourite-store';
 export interface Customer {
   contact?: Contact;
-  customerUniqueId: string;
+  customerUniqueId?: string;
   favouriteproducts?: Array<FavouriteProduct>;
   favouritestores?: Array<FavouriteStore>;
   id?: number;
-  idpCode: string;
+  idpCode?: string;
   idpSub?: string;
   image?: string;
   imageContentType?: string;
-  imageLink: string;
+  imageLink?: string;
+  loyaltyPoint?: number;
   name?: string;
 }

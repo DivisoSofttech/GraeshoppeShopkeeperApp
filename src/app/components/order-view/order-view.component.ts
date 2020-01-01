@@ -12,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class OrderViewComponent implements OnInit {
 
   order: Order = {};
+
   products = [];
   auxilaries = [];
   comboLineItems = [];
@@ -23,6 +24,7 @@ export class OrderViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.findAllorderLines();
     // if (this.order) {
     //   this.util.createLoader().then(loader => {
     //    this.queryService.findOrderMasterByOrderIdUsingGET(this.order.orderId)
@@ -41,6 +43,16 @@ export class OrderViewComponent implements OnInit {
     //    });
     //   });
     // }
+  }
+
+  findAllorderLines() {
+    this.queryService.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
+      this.order.orderLines = orderLines;
+      console.log('orderLines' , orderLines);
+      // this.queryService.findAuxItemsByIdUsingGET(this.order.id).subscribe(auxitems => {
+      //   console.log('aux' , auxitems);
+      // });
+    });
   }
 
   getAuxilaries(product) {

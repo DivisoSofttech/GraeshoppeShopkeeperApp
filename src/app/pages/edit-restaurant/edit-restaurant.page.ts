@@ -45,7 +45,7 @@ export class EditRestaurantPage implements OnInit {
 
   storeBundleDTO: StoreBundleDTO = {
     store: {
-      imageLink: '',
+      imageLink: null,
       storeUniqueId: ''
     },
     preOrderSettings: {
@@ -91,6 +91,7 @@ export class EditRestaurantPage implements OnInit {
   });
 
   showError = false;
+  imgError = false;
 
   disableSaveState = true;
   preOrderSettings: PreOrderSettingsDTO = {};
@@ -359,7 +360,9 @@ export class EditRestaurantPage implements OnInit {
     this.storeBundleDTO.storeAddress.city = formValue.city;
     // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
-    if (!this.storeForm.invalid) {
+    console.log('ivdfhvdfvuy',this.imageValidation());
+    
+    if (!this.storeForm.invalid && this.imageValidation()) {
         this.util.createLoader().then(loader => {
           this.loader = loader;
           this.loader.present();
@@ -517,4 +520,12 @@ export class EditRestaurantPage implements OnInit {
       this.disableSaveState = false;
     }
   }
+
+  imageValidation() {
+    if (!this.storeBundleDTO.store.image  && !this.storeBundleDTO.store.imageLink) {
+      return false;
+    }
+    return true;
+  }
+
 }

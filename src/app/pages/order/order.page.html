@@ -97,15 +97,16 @@
             loadingText="Loading more data...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
-      <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-        <ion-refresher-content
-          pullingIcon="arrow-dropdown"
-          pullingText="Pull to refresh"
-          refreshingSpinner="circles"
-          refreshingText="Refreshing...">
-        </ion-refresher-content>
-      </ion-refresher>
+        <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+          <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+          </ion-refresher-content>
+        </ion-refresher>
   </ion-content>
+  
 
   <ion-footer *ngIf="showFooter"  class="hieght">
     

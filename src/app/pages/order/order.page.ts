@@ -1,7 +1,7 @@
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {
   QueryResourceService,
 } from 'src/app/api/services';

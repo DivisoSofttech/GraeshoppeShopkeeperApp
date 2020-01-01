@@ -1,12 +1,13 @@
 /* tslint:disable */
 export interface CustomerDTO {
   contactId?: number;
-  customerUniqueId: string;
+  customerUniqueId?: string;
   id?: number;
-  idpCode: string;
+  idpCode?: string;
   idpSub?: string;
   image?: string;
   imageContentType?: string;
-  imageLink: string;
+  imageLink?: string;
+  loyaltyPoint?: number;
   name?: string;
 }

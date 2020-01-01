@@ -6,7 +6,6 @@ export interface ProductDTO {
   discountId?: number;
   iDPcode?: string;
   id?: number;
-  idpcode?: string;
   image?: string;
   imageContentType?: string;
   imageLink?: string;

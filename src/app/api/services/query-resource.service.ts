@@ -19,6 +19,7 @@ import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { PageOfStockEntry } from '../models/page-of-stock-entry';
 import { PageOfAuxItem } from '../models/page-of-aux-item';
+import { AuxItem } from '../models/aux-item';
 import { AuxilaryLineItemDTO } from '../models/auxilary-line-item-dto';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
 import { CategoryDTO } from '../models/category-dto';
@@ -27,8 +28,10 @@ import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { Offer } from '../models/offer';
+import { OfferLine } from '../models/offer-line';
 import { TicketLineDTO } from '../models/ticket-line-dto';
 import { PageOfOrder } from '../models/page-of-order';
+import { OrderLine } from '../models/order-line';
 import { Product } from '../models/product';
 import { ProductDTO } from '../models/product-dto';
 import { SaleDTO } from '../models/sale-dto';
@@ -46,7 +49,6 @@ import { PageOfLocation } from '../models/page-of-location';
 import { PageOfNotification } from '../models/page-of-notification';
 import { Order } from '../models/order';
 import { OrderMaster } from '../models/order-master';
-import { OrderAggregator } from '../models/order-aggregator';
 import { ReportSummary } from '../models/report-summary';
 import { PageOfReason } from '../models/page-of-reason';
 import { PageOfBanner } from '../models/page-of-banner';
@@ -65,7 +67,6 @@ class QueryResourceService extends __BaseService {
   static readonly findBannerUsingGETPath = '/api/query/banner/{id}';
   static readonly findCategoryByIdUsingGETPath = '/api/query/categorybyid/{id}';
   static readonly exportCustomersUsingGETPath = '/api/query/customers/export';
-  static readonly exportOrderDocketUsingGETPath = '/api/query/exportDocket/{orderNumber}';
   static readonly findAllCategoriesByIdpCodeUsingGETPath = '/api/query/findAllCategoriesByIdpCode/{idpCode}';
   static readonly findAllCategoriesByNameAndIdpCodeUsingGETPath = '/api/query/findAllCategoriesByNameAndIdpCode/{name}/{idpCode}';
   static readonly findAllCategoryDTOsByIdpCodeUsingGETPath = '/api/query/findAllCategoryDTOsByIdpCode/{idpCode}';
@@ -78,6 +79,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAllSaleAggregatesUsingGETPath = '/api/query/findAllSaleAggregates/combined/{storeId}';
   static readonly findAllStockEntriesByIdpcodeUsingGETPath = '/api/query/findAllStockEntriesByIdpCode/{idpCode}';
   static readonly findAuxItemByOrderLineIdUsingGETPath = '/api/query/findAuxItemByOrderLineId/{orderLineId}';
+  static readonly findAuxItemsByIdUsingGETPath = '/api/query/findAuxItemsbyId/{id}';
   static readonly findAuxilaryLineItemByIdUsingGETPath = '/api/query/findAuxilaryLineItemById/{id}';
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
   static readonly findCategoryDTOByIdUsingGETPath = '/api/query/findCategoryDTOById/{id}';
@@ -87,9 +89,11 @@ class QueryResourceService extends __BaseService {
   static readonly findCustomerByIdUsingGETPath = '/api/query/findCustomerById/{id}';
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findNotificationCountByReceiverIdAndStatusName/{receiverId}/{status}';
   static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{orderId}';
+  static readonly findOfferLinesByOrderNumberUsingGETPath = '/api/query/findOfferLinesByOrderNumber/{orderId}';
   static readonly findOneTicketLinesUsingGETPath = '/api/query/findOneTicketLines/{id}';
   static readonly findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETPath = '/api/query/findOrderByStatusNameAndStoreIdAndDeliveryType/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/findOrderLineByStoreId/{storeId}';
+  static readonly findOrderLinesByOrderNumberUsingGETPath = '/api/query/findOrderLinesByOrderNumber/{orderId}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
   static readonly findProductDTOByIdUsingGETPath = '/api/query/findProductDTOById/{id}';
   static readonly findSaleByIdUsingGETPath = '/api/query/findSaleById/{id}';
@@ -112,7 +116,6 @@ class QueryResourceService extends __BaseService {
   static readonly orderCountByCustomerIdAndStoreIdUsingGETPath = '/api/query/orderCountByCustomerIdAndStoreId/{customerId}/{storeId}';
   static readonly findOrderLineByOrderMasterIdUsingGETPath = '/api/query/orderLineByOrderMasterId/{orderMasterId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
-  static readonly getOrderAggregatorUsingGETPath = '/api/query/orderaggregator/{orderNumber}';
   static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
   static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{expectedDelivery}/{storeName}';
   static readonly printSaleUsingGETPath = '/api/query/printSale/{saleId}/{idpCode}';
@@ -293,42 +296,6 @@ class QueryResourceService extends __BaseService {
   exportCustomersUsingGET(): __Observable<PdfDTO> {
     return this.exportCustomersUsingGETResponse().pipe(
       __map(_r => _r.body as PdfDTO)
-    );
-  }
-
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  exportOrderDocketUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/exportDocket/${orderNumber}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'text'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
-      })
-    );
-  }
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  exportOrderDocketUsingGET(orderNumber: string): __Observable<string> {
-    return this.exportOrderDocketUsingGETResponse(orderNumber).pipe(
-      __map(_r => _r.body as string)
     );
   }
 
@@ -1025,6 +992,42 @@ class QueryResourceService extends __BaseService {
    * @param id id
    * @return OK
    */
+  findAuxItemsByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Array<AuxItem>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findAuxItemsbyId/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<AuxItem>>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findAuxItemsByIdUsingGET(id: number): __Observable<Array<AuxItem>> {
+    return this.findAuxItemsByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Array<AuxItem>)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
   findAuxilaryLineItemByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<AuxilaryLineItemDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
@@ -1399,6 +1402,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOfferLinesByOrderNumberUsingGETResponse(orderId: string): __Observable<__StrictHttpResponse<Array<OfferLine>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findOfferLinesByOrderNumber/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<OfferLine>>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOfferLinesByOrderNumberUsingGET(orderId: string): __Observable<Array<OfferLine>> {
+    return this.findOfferLinesByOrderNumberUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as Array<OfferLine>)
+    );
+  }
+
+  /**
    * @param id id
    * @return OK
    */
@@ -1555,6 +1594,42 @@ class QueryResourceService extends __BaseService {
   findOrderLineByStoreIdUsingGET(params: QueryResourceService.FindOrderLineByStoreIdUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderLineByStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderLinesByOrderNumberUsingGETResponse(orderId: string): __Observable<__StrictHttpResponse<Array<OrderLine>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findOrderLinesByOrderNumber/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<OrderLine>>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderLinesByOrderNumberUsingGET(orderId: string): __Observable<Array<OrderLine>> {
+    return this.findOrderLinesByOrderNumberUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as Array<OrderLine>)
     );
   }
 
@@ -2553,42 +2628,6 @@ class QueryResourceService extends __BaseService {
   findOrderMasterByOrderIdUsingGET(orderId: string): __Observable<OrderMaster> {
     return this.findOrderMasterByOrderIdUsingGETResponse(orderId).pipe(
       __map(_r => _r.body as OrderMaster)
-    );
-  }
-
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  getOrderAggregatorUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<OrderAggregator>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/orderaggregator/${orderNumber}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<OrderAggregator>;
-      })
-    );
-  }
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  getOrderAggregatorUsingGET(orderNumber: string): __Observable<OrderAggregator> {
-    return this.getOrderAggregatorUsingGETResponse(orderNumber).pipe(
-      __map(_r => _r.body as OrderAggregator)
     );
   }
 

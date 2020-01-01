@@ -45,7 +45,7 @@
         <ion-text class="info-text duration animated" *ngIf="storeBundleDTO.store.info"  [ngClass]="!editInfo?'slideInRight':'hidden'" >{{storeBundleDTO.store.info}}</ion-text>
         <ion-text class="info-text duration animated" *ngIf="!storeBundleDTO.store.info"  [ngClass]="!editInfo?'slideInRight':'hidden'" >info</ion-text>
         <ion-item color="transparent" [ngClass]="editInfo?'slideInRight':'hidden'" class="width-75 animated duration">
-          <ion-input text-center #info (ionBlur)="toggleEdit()" [(ngModel)]="storeBundleDTO.store.info"></ion-input>
+          <ion-textarea maxlength="200" text-center #info (ionBlur)="toggleEdit()" placeholder="maxium length is 200" [(ngModel)]="storeBundleDTO.store.info"></ion-textarea>
         </ion-item>
         <ion-icon [ngClass]="!editInfo?'slideInRight':'hidden'" name="create" class="pointer duration animated" (click)="toggleEdit()"></ion-icon>
       </ion-col>

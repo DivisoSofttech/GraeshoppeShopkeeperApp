@@ -1,3 +1,4 @@
+import { OrderViewComponent } from './../order-view/order-view.component';
 import { Storage } from '@ionic/storage';
 import { OrderDetailComponent } from './../order-detail/order-detail.component';
 import { ModalController, Platform } from '@ionic/angular';
@@ -127,7 +128,7 @@ export class OrderCardComponent implements OnInit {
 
   async viewOrderViewModal(order) {
     const modal = await this.modalController.create({
-      component: OrderDetailComponent,
+      component: OrderViewComponent,
       componentProps: { order: this.order }
     });
     return await modal.present();
@@ -196,17 +197,17 @@ export class OrderCardComponent implements OnInit {
       });
   }
 }
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad ReceiptPage');
-  // }
-  // print() {
-  //   this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
-  //     try {
-  //       sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ReceiptPage');
+  }
+  print() {
+    this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
+      try {
+        sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
 
 }
