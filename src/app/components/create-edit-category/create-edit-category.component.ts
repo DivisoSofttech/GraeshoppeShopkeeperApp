@@ -126,10 +126,16 @@ export class CreateEditCategoryComponent implements OnInit {
 
   createCategory() {
     console.log(this.categoryDTO);
-    
-    if ((this.categoryDTO.image === null && this.categoryDTO.imageLink === null) || this.categoryDTO.name === null) {
-      return true;
+    if (this.mode === 'create') {
+      if ((this.categoryDTO.image === null && this.categoryDTO.imageLink === null) || this.categoryDTO.name === null) {
+        return true;
+      }
+    } else {
+      if (this.categoryDTO.name === null) {
+        return true;
+      }
     }
+    
     return false;
   }
 }

@@ -49,9 +49,9 @@ export class OrderViewComponent implements OnInit {
     this.queryService.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
       this.order.orderLines = orderLines;
       console.log('orderLines' , orderLines);
-      // this.queryService.findAuxItemsByIdUsingGET(this.order.id).subscribe(auxitems => {
-      //   console.log('aux' , auxitems);
-      // });
+      this.queryService.findAuxItemsByIdUsingGET(this.order.id).subscribe(auxitems => {
+        console.log('aux' , auxitems);
+      });
     });
   }
 

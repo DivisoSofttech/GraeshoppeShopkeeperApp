@@ -386,8 +386,14 @@ export class CreateEditProductComponent implements OnInit {
     );
   }
   createDisabled() {
-    if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
-      return true;
+    if (this.mode === 'update') {
+      if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.name == null || this.productDTO.name === '') {
+        return true;
+      }
+    } else {
+      if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
+        return true;
+      }
     }
     return false;
   }

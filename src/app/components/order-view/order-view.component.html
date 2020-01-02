@@ -79,7 +79,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-content class="ion-no-padding">
         <app-product-card *ngFor="let orderLine of order.orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
         [product]="products[orderLine.productId]"
@@ -87,7 +87,7 @@
         [orderLine]="orderLine"
         ></app-product-card>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
   <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
       <ion-card-header color="light">
@@ -126,13 +126,12 @@
       <ion-card>
         <ion-card-header color="light">
           <ion-card-title>
-            <h1>Note</h1>
+            <h1>Products</h1>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content class="ion-no-padding pd-10">
-          <ion-item *ngFor="let orderLine of order.orderLines" lines="none">
-            <app-order-product-card  [orderLine]="orderLine" ></app-order-product-card>
-          </ion-item>
+          
+            <app-order-product-card *ngFor="let orderLine of order.orderLines" [orderLine]="orderLine" ></app-order-product-card>
         </ion-card-content>
       </ion-card>
 

@@ -12,6 +12,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class OrderProductCardComponent implements OnInit {
   @Input() orderLine: OrderLine = {};
   aux: AuxItem[] = [];
+  showAux = false;
   constructor(private query: QueryResourceService) { }
 
   ngOnInit() {
@@ -22,12 +23,16 @@ export class OrderProductCardComponent implements OnInit {
     console.log(this.orderLine.id);
     this.query.findAuxItemsByIdUsingGET(this.orderLine.id).subscribe(aux => {
       this.aux = aux;
-      console.log(aux);
+      console.log('aux on order', aux);
     });
   }
 
   getOfferLineItems() {
     
+  }
+
+  toggleShowAux() {
+    this.showAux = !this.showAux;
   }
 
 }

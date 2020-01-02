@@ -1,23 +1,43 @@
 
   <ion-grid class="full-width">
-    <ion-row>
+    <ion-row class="ion-padding">
       <ion-col size="3">
         <ion-text>{{orderLine.item}}</ion-text>
         </ion-col>
         <ion-col size ="1">
           <ion-text>*</ion-text>
         </ion-col>
-        <ion-col size ="2">
+        <ion-col size ="1">
           <ion-text>{{orderLine.quantity}}</ion-text>
         </ion-col>
-        <ion-col size ="2">
+        <ion-col size ="1">
           <ion-text>=</ion-text>
         </ion-col>
-        <ion-col size ="2">
+        <ion-col size ="1">
           <ion-text>{{orderLine.total}}</ion-text>
         </ion-col>
-        <ion-col size="1">
-          <ion-button fill="none"><ion-icon slot="icon-only" name="arrow-dropdown"></ion-icon></ion-button>
+        <ion-col size="3">
+          <ion-button class="ion-margin-bottom" *ngIf="!showAux"  (click)="toggleShowAux()" fill="none">Show Aux</ion-button>
+          <ion-button *ngIf="showAux" (click)="toggleShowAux()" fill="none">Hide Aux</ion-button>
+        </ion-col>
+      </ion-row >
+  </ion-grid>
+  <ion-grid *ngIf="showAux" >
+    <ion-row  *ngFor="let a of aux"  class="ion-padding">
+      <ion-col size="3">
+        <ion-text>{{a.auxItem}}</ion-text>
+        </ion-col>
+        <ion-col size ="1">
+          <ion-text>*</ion-text>
+        </ion-col>
+        <ion-col size ="1">
+          <ion-text>{{a.quantity}}</ion-text>
+        </ion-col>
+        <ion-col size ="1">
+          <ion-text>=</ion-text>
+        </ion-col>
+        <ion-col size ="1">
+          <ion-text>{{a.total}}</ion-text>
         </ion-col>
       </ion-row>
   </ion-grid>

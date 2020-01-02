@@ -16,6 +16,8 @@ import {
 import { NotificationService } from 'src/app/services/notification.service';
 import { DatePipe } from '@angular/common';
 
+declare var sunmiInnerPrinter: any;
+
 @Component({
   selector: 'app-order',
   templateUrl: './order.page.html',
@@ -106,6 +108,10 @@ export class OrderPage implements OnInit {
       }
     );
   }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ReceiptPage');
+    }
 
   initTasks() {
     console.log('method initTasks ');
@@ -465,6 +471,15 @@ export class OrderPage implements OnInit {
 
   showFoo() {
     this.showFooter = !this.showFooter;
+  }
+
+  print() {
+    
+    try {
+      sunmiInnerPrinter.printOriginalText("Hello Printer");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
 

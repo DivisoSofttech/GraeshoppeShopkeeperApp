@@ -19,7 +19,6 @@ export interface Product {
   discount?: Discount;
   iDPcode?: string;
   id?: number;
-  image?: string;
   imageContentType?: string;
   imageLink?: string;
   isActive?: boolean;
