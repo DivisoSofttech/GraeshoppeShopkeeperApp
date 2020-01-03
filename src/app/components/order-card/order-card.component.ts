@@ -1,7 +1,7 @@
+import { ExpectedDeliveryComponent } from './../expected-delivery/expected-delivery.component';
 import { OrderViewComponent } from './../order-view/order-view.component';
 import { Storage } from '@ionic/storage';
-import { OrderDetailComponent } from './../order-detail/order-detail.component';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import {
   CommandResourceService,
   QueryResourceService
@@ -44,7 +44,8 @@ export class OrderCardComponent implements OnInit {
     private util: Util,
     private storage: Storage,
     private printer: Printer,
-    private platform: Platform
+    private platform: Platform,
+    private popoverController: PopoverController
   ) { }
 
   ngOnInit() {
@@ -55,6 +56,7 @@ export class OrderCardComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
           console.log('Checking the order count ', this.order.status.name);
+          // tslint:disable-next-line: max-line-length
           this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
             .subscribe(ordercount => {
               console.log('Order count is ', ordercount);
@@ -82,47 +84,69 @@ export class OrderCardComponent implements OnInit {
       }
     );
   }
+
+  routeAcceptOrder() {
+    console.log(this.order.preOrderTime);
+    if (!this.order.preOrderTime) {
+      this.expectedTimePopover((data) => {
+        this.deliveryTime = data;
+        console.log(this.deliveryTime);
+        this.acceptOrder();
+      });
+    } else {
+      this.acceptOrder();
+    }
+  }
+
   acceptOrder() {
-    this.accept.emit();
-    this.queryResource.getTaskDetailsUsingGET({
-          storeId: this.user.preferred_username,
-          taskName: 'Accept Order',
-          orderId: this.order.orderId
-        }).subscribe(openTask => {
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.queryResource.getTaskDetailsUsingGET({
+        storeId: this.user.preferred_username,
+        taskName: 'Accept Order',
+        orderId: this.order.orderId
+      }).subscribe(openTask => {
+        if (this.order.preOrderTime) {
+          this.deliveryTime = this.order.preOrderTime;
+        }
+        const date = new Date();
+        const time: string = this.deliveryTime.slice(
+          this.deliveryTime.indexOf('T') + 1,
+          this.deliveryTime.indexOf('.'));
+        const tempTime: string[] = time.split(':');
+        const newTime = moment(date)
+          .add(0, 'seconds')
+          .add(tempTime[1], 'minutes')
+          .add(tempTime[0], 'hours')
+          .toISOString();
+        console.log('new time', newTime);
+        console.log('task id', openTask.taskId);
 
-          const date = new Date();
-          this.deliveryTime = date.toISOString();
-          const time: string = this.deliveryTime.slice(
-            this.deliveryTime.indexOf('T') + 1,
-            this.deliveryTime.indexOf('.'));
-          const tempTime: string[] = time.split(':');
-          const newTime = moment(date)
-            .add(0, 'seconds')
-            .add(tempTime[1], 'minutes')
-            .add(tempTime[0], 'hours')
-            .toISOString();
-          console.log('task id', openTask.taskId);
-
-          this.command
-            .acceptOrderUsingPOST({
-              taskId: openTask.taskId,
-              approvalDetailsDTO: {
-                acceptedAt: date.toISOString(),
-                customerId: this.order.customerId,
-                decision: 'accepted',
-                orderId: this.order.orderId,
-                expectedDelivery: newTime
-              }
-            })
-            .subscribe(data => {
-              this.util.createToast('Order Accepted', 'checkmark');
-            }, err => {
-              console.log(err);
-            });
-        },
-        err => {
-          console.log(err);
-        });
+        this.command
+          .acceptOrderUsingPOST({
+            taskId: openTask.taskId,
+            approvalDetailsDTO: {
+              acceptedAt: date.toISOString(),
+              customerId: this.order.customerId,
+              decision: 'accepted',
+              orderId: this.order.orderId,
+              expectedDelivery: newTime
+            }
+          })
+          .subscribe(data => {
+            this.accept.emit();
+            loader.dismiss();
+            this.util.createToast('Order Accepted', 'checkmark');
+          }, err => {
+            loader.dismiss();
+            console.log(err);
+          });
+      },
+      err => {
+        loader.dismiss();
+        console.log(err);
+      });
+    });
 
   }
 
@@ -196,6 +220,20 @@ export class OrderCardComponent implements OnInit {
           });
       });
   }
+}
+
+async expectedTimePopover(callback?) {
+  const popover = await this.popoverController.create({
+    component: ExpectedDeliveryComponent,
+    translucent: false,
+    backdropDismiss: false
+  });
+
+  popover.onDidDismiss()
+    .then((data) => {
+      callback(data.data);
+    });
+  await popover.present();
 }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReceiptPage');

@@ -1,10 +1,10 @@
+import { ExpectedDeliveryComponent } from './expected-delivery/expected-delivery.component';
 import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
 import { MaterialModule } from './material.module';
 import { SaleHistoryComponent } from './sale-history/sale-history.component';
 import { CreateSelectCustomerComponent } from './create-select-customer/create-select-customer.component';
 import { CreateEditStockDairyComponent } from './create-edit-stock-dairy/create-edit-stock-dairy.component';
 import { OrderViewComponent } from './order-view/order-view.component';
-import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MapComponent } from './map/map.component';
 import { CategoryViewComponent } from './category-view/category-view.component';
 import { ProductViewComponent } from './product-view/product-view.component';
@@ -59,8 +59,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     StockDairyViewComponent,
     CreateSelectCustomerComponent,
     SaleHistoryComponent,
-    OrderDetailComponent,
-    OrderProductCardComponent
+    OrderProductCardComponent,
+    ExpectedDeliveryComponent
   ],
 
   imports: [
@@ -98,7 +98,8 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     StockDairyViewComponent,
     CreateSelectCustomerComponent,
     SaleHistoryComponent,
-    OrderProductCardComponent
+    OrderProductCardComponent,
+    ExpectedDeliveryComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
@@ -109,7 +110,7 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateEditCategoryComponent,
     ProductViewComponent,
     CategoryViewComponent,
-    OrderDetailComponent
+    ExpectedDeliveryComponent
   ]
 })
 export class ComponentsModule { }

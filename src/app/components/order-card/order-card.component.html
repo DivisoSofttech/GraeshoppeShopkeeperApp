@@ -58,7 +58,7 @@
               Mark as delivered
               <ion-icon name="checkmark"></ion-icon>
             </ion-button>
-            <ion-button (click)="acceptOrder()" *ngIf="orderType=='pending'" color="success" fill="clear">Accept</ion-button>
+            <ion-button (click)="routeAcceptOrder()" *ngIf="orderType=='pending'" color="success" fill="clear">Accept</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -28,7 +28,7 @@ export class OrderProductCardComponent implements OnInit {
   }
 
   getOfferLineItems() {
-    
+
   }
 
   toggleShowAux() {

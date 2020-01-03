@@ -118,6 +118,7 @@ export class OrderPage implements OnInit {
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
     .subscribe(store => {
       this.store = store;
+      console.log(this.store);
       this.hidePending();
       this.getNoticationCount();
       if (store.storeSettings.orderAcceptType !== 'automatic') {
@@ -473,14 +474,13 @@ export class OrderPage implements OnInit {
     this.showFooter = !this.showFooter;
   }
 
+
+  // sunmi printer test method
   print() {
-    
     try {
-      sunmiInnerPrinter.printOriginalText("Hello Printer");
+      sunmiInnerPrinter.printOriginalText('Hello Printer');
     } catch (err) {
       console.error(err);
     }
   }
-
-
 }

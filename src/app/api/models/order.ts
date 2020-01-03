@@ -19,4 +19,5 @@ export interface Order {
   status?: Status;
   storeId?: string;
   subTotal?: number;
+  preOrderTime?: string;
 }
