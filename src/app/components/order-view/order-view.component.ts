@@ -24,6 +24,7 @@ export class OrderViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.error(this.order);
     this.findAllorderLines();
   }
 
@@ -33,6 +34,7 @@ export class OrderViewComponent implements OnInit {
       console.log('orderLines' , orderLines);
     });
   }
+  
   dismiss() {
     this.modalController.dismiss();
   }

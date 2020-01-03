@@ -10,34 +10,6 @@
 </ion-header>
 
 <ion-content>
-  <!-- <mat-horizontal-stepper labelPosition="bottom">
-    <mat-step completed editable="false">
-        <ng-template matStepLabel>Placed</ng-template>
-    </mat-step>
-    <mat-step completed editable="false">
-        <ng-template matStepLabel >Approved</ng-template>
-    </mat-step>
-    <mat-step   editable="false">
-        <ng-template matStepLabel>Delivered</ng-template>
-    </mat-step>
-  </mat-horizontal-stepper> -->
-  
-  <!-- <ion-item *ngIf="store" lines="full">
-    <ion-avatar>
-        <ion-img
-        [src]="
-          'data:' +
-          store.imageContentType +
-          ';base64,' +
-          store.image
-        "
-      ></ion-img>
-    </ion-avatar>
-    <ion-text class="ion-margin">
-      {{store.name}}
-    </ion-text>
-    <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
-  </ion-item> -->
 
   <ion-card class="ion-no-padding">
     <ion-card-header class="ion-no-padding">
@@ -79,39 +51,38 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- <ion-card>
-    <ion-card-content class="ion-no-padding">
-        <app-product-card *ngFor="let orderLine of order.orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
-        [product]="products[orderLine.productId]"
-        [comboLineItems]="comboLineItems[orderLine.productId]"
-        [orderLine]="orderLine"
-        ></app-product-card>
-    </ion-card-content>
-  </ion-card> -->
 
-  <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
-      <ion-card-header color="light">
+
+  <ion-card  *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
+      <ion-card-header color="primary">
         <ion-card-title>
           <h1>Address</h1>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content class="ion-no-padding pd-10">
         <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
-            <p>
-                <b>
-                {{order.deliveryInfo.deliveryAddress.name + ',' + order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.city + ',' + order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.landmark + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.state + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.phone + ',' + order.deliveryInfo.deliveryAddress.alternatePhone + ' ' | titlecase}}
-                </b>
-              </p>
+          <ion-label>
+            <address>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.addressType">
+                ({{ order.deliveryInfo.deliveryAddress.addressType | titlecase}})
+              </span>
+              <span>{{ order.deliveryInfo.deliveryAddress.name | titlecase }}</span>
+              <span>
+                {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }}
+              </span>
+              <span>{{ order.deliveryInfo.deliveryAddress.city }}</span>
+              <span>{{ order.deliveryInfo.deliveryAddress.landmark }}</span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.pincode">
+                {{ order.deliveryInfo.deliveryAddress.pincode }}
+              </span>
+            </address>
+          </ion-label>
         </ion-item>
       </ion-card-content>
     </ion-card>
 
     <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null">
-        <ion-card-header color="light">
+        <ion-card-header color="primary">
           <ion-card-title>
             <h1>Note</h1>
           </ion-card-title>
@@ -123,14 +94,13 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card>
-        <ion-card-header color="light">
+      <ion-card >
+        <ion-card-header color="primary">
           <ion-card-title>
             <h1>Products</h1>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content class="ion-no-padding pd-10">
-          
             <app-order-product-card *ngFor="let orderLine of order.orderLines" [orderLine]="orderLine" ></app-order-product-card>
         </ion-card-content>
       </ion-card>

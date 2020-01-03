@@ -1,8 +1,7 @@
-import { Product } from './../../api/models/product';
-import { AuxItem } from './../../api/models/aux-item';
-import { QueryResourceService } from 'src/app/api/services';
 import { OrderLine } from './../../api/models/order-line';
 import { Component, OnInit, Input } from '@angular/core';
+import { QueryResourceService } from 'src/app/api/services';
+import { AuxilaryLineItem, Product, AuxItem } from 'src/app/api/models';
 
 @Component({
   selector: 'app-order-product-card',
@@ -10,29 +9,25 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./order-product-card.component.scss'],
 })
 export class OrderProductCardComponent implements OnInit {
-  @Input() orderLine: OrderLine = {};
-  aux: AuxItem[] = [];
-  showAux = false;
-  constructor(private query: QueryResourceService) { }
 
-  ngOnInit() {
-    this.getAuxItems();
+  @Input() orderLine: OrderLine;
+
+  auxItems: AuxItem[] = [];
+
+  constructor(
+    private queryResourceService: QueryResourceService
+  ){}
+
+  ngOnInit(){
+    this.getAuxilaryOrderLine();
   }
 
-  getAuxItems() {
-    console.log(this.orderLine.id);
-    this.query.findAuxItemsByIdUsingGET(this.orderLine.id).subscribe(aux => {
-      this.aux = aux;
-      console.log('aux on order', aux);
+
+  getAuxilaryOrderLine() {
+    this.queryResourceService.findAuxItemsByIdUsingGET(this.orderLine.id).subscribe(aux => {
+      this.auxItems= aux;
+      console.log('AuxItems' , this.auxItems);
     });
-  }
-
-  getOfferLineItems() {
-
-  }
-
-  toggleShowAux() {
-    this.showAux = !this.showAux;
   }
 
 }

@@ -1,43 +1,28 @@
-
-  <ion-grid class="full-width">
-    <ion-row class="ion-padding">
-      <ion-col size="3">
-        <ion-text>{{orderLine.item}}</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>*</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>{{orderLine.quantity}}</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>=</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>{{orderLine.total}}</ion-text>
-        </ion-col>
-        <ion-col size="3">
-          <ion-button class="ion-margin-bottom" *ngIf="!showAux"  (click)="toggleShowAux()" fill="none">Show Aux</ion-button>
-          <ion-button *ngIf="showAux" (click)="toggleShowAux()" fill="none">Hide Aux</ion-button>
-        </ion-col>
-      </ion-row >
-  </ion-grid>
-  <ion-grid *ngIf="showAux" >
-    <ion-row  *ngFor="let a of aux"  class="ion-padding">
-      <ion-col size="3">
-        <ion-text>{{a.auxItem}}</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>*</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>{{a.quantity}}</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>=</ion-text>
-        </ion-col>
-        <ion-col size ="1">
-          <ion-text>{{a.total}}</ion-text>
-        </ion-col>
-      </ion-row>
-  </ion-grid>
+<ion-card
+class="ion-no-padding border"> 
+  <ion-card-header class="ion-no-padding" color="primary">
+      <ion-item lines="full">
+            <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
+              <h1 class="font-small"> {{orderLine.item | titlecase}}</h1>
+              <span>{{orderLine.quantity + ' x &#8364;' + (orderLine.total/orderLine.quantity |  number: "1.1-2") + ' '}}</span>
+              <span>{{'Total: &#8364;' + (orderLine.total |  number: "1.1-2")}}</span>
+            </ion-label>   
+      </ion-item> 
+  </ion-card-header>
+  <ion-card-content *ngIf="auxItems.length>0" class="ion-no-padding" color="primary">
+    <ion-list lines="none">
+        <ion-list-header color="light">
+          <ion-text>
+            <h2>Extras</h2>
+          </ion-text>
+        </ion-list-header>
+        <ion-item lines="none" *ngFor="let auxItem of auxItems" lines="none">
+          <ion-label margin>
+            <h1 class="font-tiny">{{auxItem.auxItem | titlecase}}</h1>
+            <span >{{auxItem.quantity + ' x &#8364;' + (auxItem.total/auxItem.quantity)}}</span>
+            <span>{{'  Total: &#8364;' + (auxItem.total |  number: "1.1-2")}}</span>
+          </ion-label>
+        </ion-item>
+      </ion-list>  
+</ion-card-content>
+</ion-card>
