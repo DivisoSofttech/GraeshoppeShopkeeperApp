@@ -17,7 +17,7 @@ import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 
-declare var sunmiInnerPrinter: any;
+//declare var sunmiInnerPrinter: any;
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -207,13 +207,15 @@ export class OrderCardComponent implements OnInit {
             const options: PrintOptions = {
               name: 'MyDocument'
             };
-            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then(_ => {
+              console.log('printing', _);
+            }).catch(e => console.log('pdf error' , e));
             // this.fileOpener
             //   .showOpenWithDialog(
             //     this.file.externalCacheDirectory + 'items.pdf',
             //     result.contentType
             //   )
-            //   .then(() => console.log('File is opened'))
+            //   .then(() => console.log('Filblobe is opened'))
             //   .catch(e => console.log('Error opening file', e));
             // this.documentViewer.viewDocument(this.file.externalCacheDirectory + 'items.pdf', 'application/pdf',
             // {print: {enabled: true}, openWith: {enabled: true}});
@@ -235,17 +237,17 @@ async expectedTimePopover(callback?) {
     });
   await popover.present();
 }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReceiptPage');
-  }
-  print() {
-    this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
-      try {
-        sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
-      } catch (err) {
-        console.error(err);
-      }
-    });
-  }
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad ReceiptPage');
+  // }
+  // print() {
+  //   this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
+  //     try {
+  //       sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
 
 }
