@@ -3,6 +3,7 @@ import { AuxItem } from './aux-item';
 import { Sort } from './sort';
 export interface PageOfAuxItem {
   content?: Array<AuxItem>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

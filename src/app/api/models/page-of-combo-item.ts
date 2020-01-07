@@ -3,6 +3,7 @@ import { ComboItem } from './combo-item';
 import { Sort } from './sort';
 export interface PageOfComboItem {
   content?: Array<ComboItem>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

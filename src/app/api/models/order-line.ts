@@ -1,7 +1,6 @@
 /* tslint:disable */
 import { AuxItem } from './aux-item';
 import { ComboItem } from './combo-item';
-import { Order } from './order';
 import { OrderMaster } from './order-master';
 import { AuxilaryOrderLine } from './auxilary-order-line';
 export interface OrderLine {
@@ -9,7 +8,6 @@ export interface OrderLine {
   comboItems?: Array<ComboItem>;
   id?: number;
   item?: string;
-  order?: Order;
   orderMaster?: OrderMaster;
   pricePerUnit?: number;
   productId?: number;

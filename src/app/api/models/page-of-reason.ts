@@ -3,6 +3,7 @@ import { Reason } from './reason';
 import { Sort } from './sort';
 export interface PageOfReason {
   content?: Array<Reason>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

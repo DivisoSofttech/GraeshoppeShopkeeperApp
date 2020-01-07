@@ -28,14 +28,14 @@
     </ion-label>
  
     </ion-item>
-    <ion-item text-center  *ngIf="categoryDTO.image && !categoryDTO.imageLink">
+    <ion-item text-center  *ngIf="categoryDTO.image">
       <ion-label>
-      <img (click)="selectImage()" [src]="'data:' + categoryDTO.imageContentType + ';base64,' + categoryDTO.image"/>
+      <img (click)="selectImage()" [src]="'data:' + imageContentType + ';base64,' + categoryDTO.image"/>
     </ion-label>
     </ion-item>
-    <ion-item text-center  *ngIf="categoryDTO.imageLink">
+    <ion-item text-center  *ngIf="!categoryDTO.image && categoryDTO.imageLink">
       <ion-label>
-        <ion-img *ngIf="categoryDTO.imageLink"  class="image hide-overflow"
+        <ion-img (click)="selectImage()" *ngIf="categoryDTO.imageLink"  class="image hide-overflow"
         [src]=categoryDTO.imageLink>
       </ion-img>    </ion-label>
     </ion-item>

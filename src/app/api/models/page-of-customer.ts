@@ -3,6 +3,7 @@ import { Customer } from './customer';
 import { Sort } from './sort';
 export interface PageOfCustomer {
   content?: Array<Customer>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

@@ -14,13 +14,13 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size="8" class="vertical-align-center hide-overflow">
-        <ion-img *ngIf="storeBundleDTO.store.imageLink"  class="image hide-overflow"
+        <ion-img *ngIf="!storeBundleDTO.store.image && storeBundleDTO.store.imageLink"  class="image hide-overflow"
           [src]=storeBundleDTO.store.imageLink>
         </ion-img>
         <ion-img *ngIf="!storeBundleDTO.store.imageLink && !storeBundleDTO.store.image" class="image hide-overflow"
           src="assets/images/placeholder.png">
         </ion-img>
-        <ion-img *ngIf="!storeBundleDTO.store.imageLink && storeBundleDTO.store.image" class="image hide-overflow"
+        <ion-img *ngIf="storeBundleDTO.store.image" class="image hide-overflow"
         [src]="
           'data:' +
           storeBundleDTO.store.imageContentType +

@@ -1,10 +1,10 @@
 import { Product } from 'src/app/api/models';
-import { TicketLine } from './../../api/models/ticket-line';
-import { SaleAggregate } from './../../api/models/sale-aggregate';
+// import { TicketLine } from './../../api/models/ticket-line';
+// import { SaleAggregate } from './../../api/models/sale-aggregate';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { QueryResourceService } from 'src/app/api/services';
-import { Sale } from './../../api/models/sale';
+// import { Sale } from './../../api/models/sale';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -15,8 +15,8 @@ import { Component, OnInit } from '@angular/core';
 export class SaleHistoryComponent implements OnInit {
 
 
-  sales: SaleAggregate[] = [];
-  currentSale: SaleAggregate = {};
+  // sales: SaleAggregate[] = [];
+  // currentSale: SaleAggregate = {};
   user;
   pagecount = 0;
   saleDetails = [];
@@ -36,14 +36,14 @@ export class SaleHistoryComponent implements OnInit {
   }
 
   getSales(i) {
-    this.query.findAllSaleAggregatesUsingGET({storeId: this.user.preferred_username, page: i}).subscribe(pos => {
-      pos.content.forEach(sale => {
-        this.sales.push(sale);
-      });
-      console.log(pos.content);
-      this.pagecount++;
-      //this.getProductName();
-    });
+    // this.query.findAllSaleAggregatesUsingGET({storeId: this.user.preferred_username, page: i}).subscribe(pos => {
+    //   pos.content.forEach(sale => {
+    //     this.sales.push(sale);
+    //   });
+    //   console.log(pos.content);
+    //   this.pagecount++;
+    //   //this.getProductName();
+    // });
   }
 
   loadMoreSale() {

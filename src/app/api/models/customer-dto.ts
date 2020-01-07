@@ -3,7 +3,7 @@ export interface CustomerDTO {
   contactId?: number;
   customerUniqueId?: string;
   id?: number;
-  idpCode?: string;
+  idpCode: string;
   idpSub?: string;
   image?: string;
   imageContentType?: string;

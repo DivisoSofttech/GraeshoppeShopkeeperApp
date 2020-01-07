@@ -19,7 +19,7 @@ export interface Product {
   discount?: Discount;
   iDPcode?: string;
   id?: number;
-  imageContentType?: string;
+  idpcode?: string;
   imageLink?: string;
   isActive?: boolean;
   isAuxilaryItem?: boolean;

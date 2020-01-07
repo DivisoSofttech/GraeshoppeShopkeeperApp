@@ -17,7 +17,7 @@ import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 
-//declare var sunmiInnerPrinter: any;
+// declare var sunmiInnerPrinter: any;
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -80,14 +80,18 @@ export class OrderCardComponent implements OnInit {
           .subscribe(data => {
             this.completed.emit();
             loader.dismiss();
+            this.util.createToast('Order marked as delivered', 'checkmark');
+          }, err => {
+            loader.dismiss();
+            this.util.createToast('Error while mark order as delivered', 'alert');
           });
       }
     );
   }
 
   routeAcceptOrder() {
-    console.log(this.order.preOrderTime);
-    if (!this.order.preOrderTime) {
+    console.log(this.order.preOrderDate);
+    if (!this.order.preOrderDate) {
       this.expectedTimePopover((data) => {
         this.deliveryTime = data;
         console.log(this.deliveryTime);
@@ -101,36 +105,31 @@ export class OrderCardComponent implements OnInit {
   acceptOrder() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.queryResource.getTaskDetailsUsingGET({
-        storeId: this.user.preferred_username,
-        taskName: 'Accept Order',
-        orderId: this.order.orderId
-      }).subscribe(openTask => {
-        if (this.order.preOrderTime) {
-          this.deliveryTime = this.order.preOrderTime;
+      if (this.order.preOrderDate) {
+          this.deliveryTime = this.order.preOrderDate;
         }
-        const date = new Date();
-        const time: string = this.deliveryTime.slice(
-          this.deliveryTime.indexOf('T') + 1,
-          this.deliveryTime.indexOf('.'));
-        const tempTime: string[] = time.split(':');
-        const newTime = moment(date)
-          .add(0, 'seconds')
-          .add(tempTime[1], 'minutes')
-          .add(tempTime[0], 'hours')
-          .toISOString();
-        console.log('new time', newTime);
-        console.log('task id', openTask.taskId);
+      const date = new Date();
+        // const time: string = this.deliveryTime.slice(
+        //   this.deliveryTime.indexOf('T') + 1,
+        //   this.deliveryTime.indexOf('.'));
+        // const tempTime: string[] = time.split(':');
+        // const newTime = moment(date)
+        //   .add(0, 'seconds')
+        //   .add(tempTime[1], 'minutes')
+        //   .add(tempTime[0], 'hours')
+        //   .toISOString();
+        // console.log('new time', newTime);
+        // console.log('task id', openTask.taskId);
 
-        this.command
+      this.command
           .acceptOrderUsingPOST({
-            taskId: openTask.taskId,
+            taskId: this.order.acceptOrderId,
             approvalDetailsDTO: {
               acceptedAt: date.toISOString(),
-              customerId: this.order.customerId,
               decision: 'accepted',
               orderId: this.order.orderId,
-              expectedDelivery: newTime
+              // expectedDelivery: newTime
+              expectedDelivery: null
             }
           })
           .subscribe(data => {
@@ -139,13 +138,8 @@ export class OrderCardComponent implements OnInit {
             this.util.createToast('Order Accepted', 'checkmark');
           }, err => {
             loader.dismiss();
-            console.log(err);
+            this.util.createToast('Error while Accepting order', 'alert');
           });
-      },
-      err => {
-        loader.dismiss();
-        console.log(err);
-      });
     });
 
   }

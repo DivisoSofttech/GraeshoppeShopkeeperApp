@@ -16,7 +16,6 @@ import { PageOfCategoryDTO } from '../models/page-of-category-dto';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { EntryLineItem } from '../models/entry-line-item';
 import { PageOfOrderLine } from '../models/page-of-order-line';
-import { PageOfSaleAggregate } from '../models/page-of-sale-aggregate';
 import { PageOfStockEntry } from '../models/page-of-stock-entry';
 import { PageOfAuxItem } from '../models/page-of-aux-item';
 import { AuxItem } from '../models/aux-item';
@@ -29,22 +28,18 @@ import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { Offer } from '../models/offer';
 import { OfferLine } from '../models/offer-line';
-import { TicketLineDTO } from '../models/ticket-line-dto';
 import { PageOfOrder } from '../models/page-of-order';
 import { OrderLine } from '../models/order-line';
 import { Product } from '../models/product';
 import { ProductDTO } from '../models/product-dto';
-import { SaleDTO } from '../models/sale-dto';
 import { StockEntryDTO } from '../models/stock-entry-dto';
 import { UOMDTO } from '../models/uomdto';
 import { PageOfUOM } from '../models/page-of-uom';
 import { PageOfEntryLineItem } from '../models/page-of-entry-line-item';
-import { PageOfSale } from '../models/page-of-sale';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
 import { ProductBundle } from '../models/product-bundle';
 import { StockEntryBundle } from '../models/stock-entry-bundle';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
-import { OpenTask } from '../models/open-task';
 import { PageOfLocation } from '../models/page-of-location';
 import { PageOfNotification } from '../models/page-of-notification';
 import { Order } from '../models/order';
@@ -76,7 +71,6 @@ class QueryResourceService extends __BaseService {
   static readonly findAllOrderLinesByOrderIdUsingGETPath = '/api/query/findAllOrderLinesByOrderId/{orderId}';
   static readonly findAllProductByNameAndStoreIdUsingGETPath = '/api/query/findAllProductByNameAndStoreId/{name}/{storeId}';
   static readonly findAllProductsByIdpCodeUsingGETPath = '/api/query/findAllProductsByIdpCode/{idpCode}';
-  static readonly findAllSaleAggregatesUsingGETPath = '/api/query/findAllSaleAggregates/combined/{storeId}';
   static readonly findAllStockEntriesByIdpcodeUsingGETPath = '/api/query/findAllStockEntriesByIdpCode/{idpCode}';
   static readonly findAuxItemByOrderLineIdUsingGETPath = '/api/query/findAuxItemByOrderLineId/{orderLineId}';
   static readonly findAuxItemsByIdUsingGETPath = '/api/query/findAuxItemsbyId/{id}';
@@ -90,25 +84,21 @@ class QueryResourceService extends __BaseService {
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findNotificationCountByReceiverIdAndStatusName/{receiverId}/{status}';
   static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{orderId}';
   static readonly findOfferLinesByOrderNumberUsingGETPath = '/api/query/findOfferLinesByOrderNumber/{orderId}';
-  static readonly findOneTicketLinesUsingGETPath = '/api/query/findOneTicketLines/{id}';
   static readonly findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETPath = '/api/query/findOrderByStatusNameAndStoreIdAndDeliveryType/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/findOrderLineByStoreId/{storeId}';
   static readonly findOrderLinesByOrderNumberUsingGETPath = '/api/query/findOrderLinesByOrderNumber/{orderId}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
   static readonly findProductDTOByIdUsingGETPath = '/api/query/findProductDTOById/{id}';
-  static readonly findSaleByIdUsingGETPath = '/api/query/findSaleById/{id}';
   static readonly findStockEntryByIdUsingGETPath = '/api/query/findStockEntryById/{id}';
   static readonly findUOMDTOByIdUsingGETPath = '/api/query/findUOMById/{id}';
   static readonly findUOMByIdpCodeUsingGETPath = '/api/query/findUOMByIdpCode/{idpCode}';
   static readonly findAllEntryLineItemsByStockEntryIdUsingGETPath = '/api/query/findallentrylineitems/{id}';
-  static readonly findSalesUsingGETPath = '/api/query/findallsales/{storeId}';
   static readonly getAuxilaryLineItemsByIdpCodeUsingGETPath = '/api/query/getAuxilaryLineItemsByIdpCode/{idpCode}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/getNotAuxNotComboProductsByIDPcode/{iDPcode}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderNumber}';
   static readonly getProductBundleByIdUsingGETPath = '/api/query/getProductBundle/{id}';
   static readonly getStockEntryBundleByIdUsingGETPath = '/api/query/getStockEntryBundleById/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/getStoreBundle/{regNo}';
-  static readonly getTaskDetailsUsingGETPath = '/api/query/getTaskDetails/{taskName}/{orderId}/{storeId}';
   static readonly findLocationByRegNoUsingGETPath = '/api/query/location/{idpcode}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/notification/{receiverId}';
   static readonly getNotificationCountByReceiveridAndStatusUsingGETPath = '/api/query/notification/{status}/{receiverId}';
@@ -118,7 +108,6 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
   static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
   static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{expectedDelivery}/{storeName}';
-  static readonly printSaleUsingGETPath = '/api/query/printSale/{saleId}/{idpCode}';
   static readonly findReasonByRegNoUsingGETPath = '/api/query/reason/{idpcode}';
   static readonly getAllCategoriesByIdpCodeUsingGETPath = '/api/query/report/getAllCategoriesByIdpCode/{idpcode}';
   static readonly getAllProductsByIdpCodeUsingGETPath = '/api/query/report/getAllProductsByIdpCode/{idpcode}';
@@ -126,8 +115,6 @@ class QueryResourceService extends __BaseService {
   static readonly findBannerByStoreIdUsingGETPath = '/api/query/store-banners/{storeId}';
   static readonly findStoreDTOByRegNoUsingGETPath = '/api/query/storeDTO/{regNo}';
   static readonly findStoreByRegNoUsingGETPath = '/api/query/stores/{regNo}';
-  static readonly getTasksUsingGETPath = '/api/query/tasks';
-  static readonly findAllTicketlinesUsingGETPath = '/api/query/ticket-lines';
   static readonly findUOMByIdUsingGETPath = '/api/query/uombyid/{id}';
 
   constructor(
@@ -818,63 +805,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindAllSaleAggregatesUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllSaleAggregatesUsingGETResponse(params: QueryResourceService.FindAllSaleAggregatesUsingGETParams): __Observable<__StrictHttpResponse<PageOfSaleAggregate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findAllSaleAggregates/combined/${params.storeId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfSaleAggregate>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindAllSaleAggregatesUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findAllSaleAggregatesUsingGET(params: QueryResourceService.FindAllSaleAggregatesUsingGETParams): __Observable<PageOfSaleAggregate> {
-    return this.findAllSaleAggregatesUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfSaleAggregate)
-    );
-  }
-
-  /**
    * @param params The `QueryResourceService.FindAllStockEntriesByIdpcodeUsingGETParams` containing the following parameters:
    *
    * - `idpCode`: idpCode
@@ -1438,42 +1368,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param id id
-   * @return OK
-   */
-  findOneTicketLinesUsingGETResponse(id: number): __Observable<__StrictHttpResponse<TicketLineDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findOneTicketLines/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TicketLineDTO>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   * @return OK
-   */
-  findOneTicketLinesUsingGET(id: number): __Observable<TicketLineDTO> {
-    return this.findOneTicketLinesUsingGETResponse(id).pipe(
-      __map(_r => _r.body as TicketLineDTO)
-    );
-  }
-
-  /**
    * @param params The `QueryResourceService.FindOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -1709,42 +1603,6 @@ class QueryResourceService extends __BaseService {
    * @param id id
    * @return OK
    */
-  findSaleByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<SaleDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findSaleById/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<SaleDTO>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   * @return OK
-   */
-  findSaleByIdUsingGET(id: number): __Observable<SaleDTO> {
-    return this.findSaleByIdUsingGETResponse(id).pipe(
-      __map(_r => _r.body as SaleDTO)
-    );
-  }
-
-  /**
-   * @param id id
-   * @return OK
-   */
   findStockEntryByIdUsingGETResponse(id?: number): __Observable<__StrictHttpResponse<StockEntryDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
@@ -1924,63 +1782,6 @@ class QueryResourceService extends __BaseService {
   findAllEntryLineItemsByStockEntryIdUsingGET(params: QueryResourceService.FindAllEntryLineItemsByStockEntryIdUsingGETParams): __Observable<PageOfEntryLineItem> {
     return this.findAllEntryLineItemsByStockEntryIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfEntryLineItem)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.FindSalesUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findSalesUsingGETResponse(params: QueryResourceService.FindSalesUsingGETParams): __Observable<__StrictHttpResponse<PageOfSale>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findallsales/${params.storeId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfSale>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindSalesUsingGETParams` containing the following parameters:
-   *
-   * - `storeId`: storeId
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findSalesUsingGET(params: QueryResourceService.FindSalesUsingGETParams): __Observable<PageOfSale> {
-    return this.findSalesUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfSale)
     );
   }
 
@@ -2239,58 +2040,6 @@ class QueryResourceService extends __BaseService {
   getStoreBundleUsingGET(regNo: string): __Observable<StoreBundleDTO> {
     return this.getStoreBundleUsingGETResponse(regNo).pipe(
       __map(_r => _r.body as StoreBundleDTO)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.GetTaskDetailsUsingGETParams` containing the following parameters:
-   *
-   * - `taskName`: taskName
-   *
-   * - `storeId`: storeId
-   *
-   * - `orderId`: orderId
-   *
-   * @return OK
-   */
-  getTaskDetailsUsingGETResponse(params: QueryResourceService.GetTaskDetailsUsingGETParams): __Observable<__StrictHttpResponse<OpenTask>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/getTaskDetails/${params.taskName}/${params.orderId}/${params.storeId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<OpenTask>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.GetTaskDetailsUsingGETParams` containing the following parameters:
-   *
-   * - `taskName`: taskName
-   *
-   * - `storeId`: storeId
-   *
-   * - `orderId`: orderId
-   *
-   * @return OK
-   */
-  getTaskDetailsUsingGET(params: QueryResourceService.GetTaskDetailsUsingGETParams): __Observable<OpenTask> {
-    return this.getTaskDetailsUsingGETResponse(params).pipe(
-      __map(_r => _r.body as OpenTask)
     );
   }
 
@@ -2726,53 +2475,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.PrintSaleUsingGETParams` containing the following parameters:
-   *
-   * - `saleId`: saleId
-   *
-   * - `idpCode`: idpCode
-   *
-   * @return OK
-   */
-  printSaleUsingGETResponse(params: QueryResourceService.PrintSaleUsingGETParams): __Observable<__StrictHttpResponse<PdfDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/printSale/${params.saleId}/${params.idpCode}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PdfDTO>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.PrintSaleUsingGETParams` containing the following parameters:
-   *
-   * - `saleId`: saleId
-   *
-   * - `idpCode`: idpCode
-   *
-   * @return OK
-   */
-  printSaleUsingGET(params: QueryResourceService.PrintSaleUsingGETParams): __Observable<PdfDTO> {
-    return this.printSaleUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PdfDTO)
-    );
-  }
-
-  /**
    * @param params The `QueryResourceService.FindReasonByRegNoUsingGETParams` containing the following parameters:
    *
    * - `idpcode`: idpcode
@@ -3063,145 +2765,6 @@ class QueryResourceService extends __BaseService {
   findStoreByRegNoUsingGET(regNo: string): __Observable<Store> {
     return this.findStoreByRegNoUsingGETResponse(regNo).pipe(
       __map(_r => _r.body as Store)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.GetTasksUsingGETParams` containing the following parameters:
-   *
-   * - `nameLike`: nameLike
-   *
-   * - `name`: name
-   *
-   * - `createdOn`: createdOn
-   *
-   * - `createdBefore`: createdBefore
-   *
-   * - `createdAfter`: createdAfter
-   *
-   * - `candidateUser`: candidateUser
-   *
-   * - `candidateGroups`: candidateGroups
-   *
-   * - `candidateGroup`: candidateGroup
-   *
-   * - `assigneeLike`: assigneeLike
-   *
-   * - `assignee`: assignee
-   *
-   * @return OK
-   */
-  getTasksUsingGETResponse(params: QueryResourceService.GetTasksUsingGETParams): __Observable<__StrictHttpResponse<Array<Order>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    if (params.nameLike != null) __params = __params.set('nameLike', params.nameLike.toString());
-    if (params.name != null) __params = __params.set('name', params.name.toString());
-    if (params.createdOn != null) __params = __params.set('createdOn', params.createdOn.toString());
-    if (params.createdBefore != null) __params = __params.set('createdBefore', params.createdBefore.toString());
-    if (params.createdAfter != null) __params = __params.set('createdAfter', params.createdAfter.toString());
-    if (params.candidateUser != null) __params = __params.set('candidateUser', params.candidateUser.toString());
-    if (params.candidateGroups != null) __params = __params.set('candidateGroups', params.candidateGroups.toString());
-    if (params.candidateGroup != null) __params = __params.set('candidateGroup', params.candidateGroup.toString());
-    if (params.assigneeLike != null) __params = __params.set('assigneeLike', params.assigneeLike.toString());
-    if (params.assignee != null) __params = __params.set('assignee', params.assignee.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/tasks`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Order>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.GetTasksUsingGETParams` containing the following parameters:
-   *
-   * - `nameLike`: nameLike
-   *
-   * - `name`: name
-   *
-   * - `createdOn`: createdOn
-   *
-   * - `createdBefore`: createdBefore
-   *
-   * - `createdAfter`: createdAfter
-   *
-   * - `candidateUser`: candidateUser
-   *
-   * - `candidateGroups`: candidateGroups
-   *
-   * - `candidateGroup`: candidateGroup
-   *
-   * - `assigneeLike`: assigneeLike
-   *
-   * - `assignee`: assignee
-   *
-   * @return OK
-   */
-  getTasksUsingGET(params: QueryResourceService.GetTasksUsingGETParams): __Observable<Array<Order>> {
-    return this.getTasksUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<Order>)
-    );
-  }
-
-  /**
-   * @param params The `QueryResourceService.FindAllTicketlinesUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findAllTicketlinesUsingGETResponse(params: QueryResourceService.FindAllTicketlinesUsingGETParams): __Observable<__StrictHttpResponse<Array<TicketLineDTO>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/ticket-lines`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TicketLineDTO>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindAllTicketlinesUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: sort
-   *
-   * - `size`: size
-   *
-   * - `page`: page
-   *
-   * @return OK
-   */
-  findAllTicketlinesUsingGET(params: QueryResourceService.FindAllTicketlinesUsingGETParams): __Observable<Array<TicketLineDTO>> {
-    return this.findAllTicketlinesUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<TicketLineDTO>)
     );
   }
 
@@ -3510,32 +3073,6 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findAllSaleAggregatesUsingGET
-   */
-  export interface FindAllSaleAggregatesUsingGETParams {
-
-    /**
-     * storeId
-     */
-    storeId: string;
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
    * Parameters for findAllStockEntriesByIdpcodeUsingGET
    */
   export interface FindAllStockEntriesByIdpcodeUsingGETParams {
@@ -3770,32 +3307,6 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findSalesUsingGET
-   */
-  export interface FindSalesUsingGETParams {
-
-    /**
-     * storeId
-     */
-    storeId: string;
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
    * Parameters for getAuxilaryLineItemsByIdpCodeUsingGET
    */
   export interface GetAuxilaryLineItemsByIdpCodeUsingGETParams {
@@ -3845,27 +3356,6 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
-  }
-
-  /**
-   * Parameters for getTaskDetailsUsingGET
-   */
-  export interface GetTaskDetailsUsingGETParams {
-
-    /**
-     * taskName
-     */
-    taskName: string;
-
-    /**
-     * storeId
-     */
-    storeId: string;
-
-    /**
-     * orderId
-     */
-    orderId: string;
   }
 
   /**
@@ -4011,22 +3501,6 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for printSaleUsingGET
-   */
-  export interface PrintSaleUsingGETParams {
-
-    /**
-     * saleId
-     */
-    saleId: number;
-
-    /**
-     * idpCode
-     */
-    idpCode: string;
-  }
-
-  /**
    * Parameters for findReasonByRegNoUsingGET
    */
   export interface FindReasonByRegNoUsingGETParams {
@@ -4074,83 +3548,6 @@ module QueryResourceService {
 
     /**
      * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
-   * Parameters for getTasksUsingGET
-   */
-  export interface GetTasksUsingGETParams {
-
-    /**
-     * nameLike
-     */
-    nameLike?: string;
-
-    /**
-     * name
-     */
-    name?: string;
-
-    /**
-     * createdOn
-     */
-    createdOn?: string;
-
-    /**
-     * createdBefore
-     */
-    createdBefore?: string;
-
-    /**
-     * createdAfter
-     */
-    createdAfter?: string;
-
-    /**
-     * candidateUser
-     */
-    candidateUser?: string;
-
-    /**
-     * candidateGroups
-     */
-    candidateGroups?: string;
-
-    /**
-     * candidateGroup
-     */
-    candidateGroup?: string;
-
-    /**
-     * assigneeLike
-     */
-    assigneeLike?: string;
-
-    /**
-     * assignee
-     */
-    assignee?: string;
-  }
-
-  /**
-   * Parameters for findAllTicketlinesUsingGET
-   */
-  export interface FindAllTicketlinesUsingGETParams {
-
-    /**
-     * sort
-     */
-    sort?: Array<string>;
-
-    /**
-     * size
-     */
-    size?: number;
-
-    /**
-     * page
      */
     page?: number;
   }

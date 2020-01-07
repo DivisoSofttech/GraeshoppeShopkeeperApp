@@ -5,6 +5,8 @@ import { DeliveryInfo } from './delivery-info';
 import { OrderLine } from './order-line';
 import { Status } from './status';
 export interface Order {
+  acceptOrderId?: string;
+  allergyNote?: string;
   appliedOffers?: Array<Offer>;
   approvalDetails?: ApprovalDetails;
   customerId?: string;
@@ -15,9 +17,11 @@ export interface Order {
   id?: number;
   orderId?: string;
   orderLines?: Array<OrderLine>;
+  paymentMode?: string;
   paymentRef?: string;
+  preOrderDate?: string;
+  state?: string;
   status?: Status;
   storeId?: string;
   subTotal?: number;
-  preOrderTime?: string;
 }

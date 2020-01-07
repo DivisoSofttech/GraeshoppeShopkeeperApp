@@ -21,6 +21,9 @@ export class CreateEditCategoryComponent implements OnInit {
   categoryDTO: CategoryDTO = {};
   mode = 'create';
 
+  imageContentType;
+
+  // tslint:disable-next-line: no-output-on-prefix
   @Output() onSlide = new EventEmitter();
 
   @Output() added = new EventEmitter();
@@ -62,7 +65,7 @@ export class CreateEditCategoryComponent implements OnInit {
     modal.onDidDismiss()
     .then(data => {
       this.categoryDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
-      this.categoryDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
+      this.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
     });
 
     return await modal.present();
@@ -85,11 +88,10 @@ export class CreateEditCategoryComponent implements OnInit {
         .subscribe(data => {
           this.categoryDTO = data;
           this.loader.dismiss();
-          this.util.createToast("Category Created",'checkmark');
-          if(this.throughProduct=='false'){
+          this.util.createToast('Category Created', 'checkmark');
+          if (this.throughProduct == 'false') {
             this.modalController.dismiss(data);
-          }
-          else{
+          } else {
             this.onSlide.emit();
             this.added.emit(this.categoryDTO);
           }
@@ -97,7 +99,7 @@ export class CreateEditCategoryComponent implements OnInit {
         , err => {
           this.loader.dismiss();
           console.log('Error Creating Category', err);
-          this.util.createToast("Category Creation Error",'alert');
+          this.util.createToast('Category Creation Error', 'alert');
       });
 
   }
@@ -110,12 +112,12 @@ export class CreateEditCategoryComponent implements OnInit {
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
       this.loader.dismiss();
-      this.util.createToast("Category Updated",'checkmark');
+      this.util.createToast('Category Updated', 'checkmark');
       this.modalController.dismiss(data);
     }
     , err => {
       console.log('Error Updating Category', err);
-      this.util.createToast("Category Updation Error",'alert');
+      this.util.createToast('Category Updation Error', 'alert');
     });
 
   }
@@ -127,7 +129,7 @@ export class CreateEditCategoryComponent implements OnInit {
   createCategory() {
     console.log(this.categoryDTO);
     if (this.mode === 'create') {
-      if ((this.categoryDTO.image === null && this.categoryDTO.imageLink === null) || this.categoryDTO.name === null) {
+      if (this.categoryDTO.image === null || this.categoryDTO.name === null) {
         return true;
       }
     } else {
@@ -135,7 +137,6 @@ export class CreateEditCategoryComponent implements OnInit {
         return true;
       }
     }
-    
     return false;
   }
 }

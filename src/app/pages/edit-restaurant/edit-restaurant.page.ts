@@ -360,8 +360,7 @@ export class EditRestaurantPage implements OnInit {
     this.storeBundleDTO.storeAddress.city = formValue.city;
     // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
-    console.log('ivdfhvdfvuy',this.imageValidation());
-    
+    console.log('ivdfhvdfvuy', this.imageValidation());
     if (!this.storeForm.invalid && this.imageValidation()) {
         this.util.createLoader().then(loader => {
           this.loader = loader;

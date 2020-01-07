@@ -8,7 +8,7 @@ export interface Customer {
   favouriteproducts?: Array<FavouriteProduct>;
   favouritestores?: Array<FavouriteStore>;
   id?: number;
-  idpCode?: string;
+  idpCode: string;
   idpSub?: string;
   image?: string;
   imageContentType?: string;

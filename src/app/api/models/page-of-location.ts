@@ -3,6 +3,7 @@ import { Location } from './location';
 import { Sort } from './sort';
 export interface PageOfLocation {
   content?: Array<Location>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

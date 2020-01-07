@@ -2,11 +2,21 @@
   <ion-toolbar>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
         <ion-title>Order</ion-title>
+        <ion-item slot="end">
+          <ion-button fill="none"><ion-icon slot="icon-only" name="funnel"></ion-icon></ion-button>
+          <ion-select class="ion-no-padding ion-no-margin" okText="Okay" (ionChange)="filter($event)" cancelText="Dismiss">
+            <ion-select-option value="all">All</ion-select-option>
+            <ion-select-option value="delivery">Delivery</ion-select-option>
+            <ion-select-option value="collection">Collection</ion-select-option>
+          </ion-select>
+        </ion-item>
         <ion-buttons slot="end">
           <!-- Sunmi Printer Test -->
           <!-- <ion-button (click)="print()">
             <ion-icon slot="icon-only" name="print" ></ion-icon>
           </ion-button> -->
+
+          
           <ion-button (click)="openNotificationModal()">
             <ion-icon class="icon" name="notifications"></ion-icon>
           </ion-button>
@@ -14,21 +24,6 @@
         </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-fab data-desc="Category" (click)="showFoo()" vertical="bottom" horizontal="start" slot="fixed">
-  <ion-fab-button>
-      <ion-icon name="funnel"></ion-icon>
-  </ion-fab-button>
-  <ion-fab-list side="end">
-    <ion-buttons>
-    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='all' }" (click)="filter('all')">All
-    </ion-button>
-    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='delivery' }" (click)="filter('delivery')" class="button-border">Delivery
-    </ion-button>
-    <ion-button [ngClass]="{ 'btn-color' :deliveryType=='collection' }" (click)="filter('collection')" class="button-border">Collection
-    </ion-button>
-  </ion-buttons>
-  </ion-fab-list>
-</ion-fab>
 <ion-content>
   <!--Segment Button Container Start-->
   <div>
@@ -110,9 +105,3 @@
           </ion-refresher-content>
         </ion-refresher>
   </ion-content>
-  
-
-  <ion-footer *ngIf="showFooter"  class="hieght">
-    
-  </ion-footer>
-  

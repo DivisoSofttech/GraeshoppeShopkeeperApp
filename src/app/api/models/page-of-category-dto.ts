@@ -3,6 +3,7 @@ import { CategoryDTO } from './category-dto';
 import { Sort } from './sort';
 export interface PageOfCategoryDTO {
   content?: Array<CategoryDTO>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

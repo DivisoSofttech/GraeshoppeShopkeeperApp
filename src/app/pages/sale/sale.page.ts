@@ -5,9 +5,9 @@ import { Util } from './../../services/util';
 import { IonInfiniteScroll, IonSlides, ModalController, Platform } from '@ionic/angular';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { Sale } from './../../api/models/sale';
+// import { Sale } from './../../api/models/sale';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TicketLine, Store, Product, TicketLineDTO, SaleDTO } from 'src/app/api/models';
+import { Store, Product } from 'src/app/api/models';
 import { CreateSelectCustomerComponent } from 'src/app/components/create-select-customer/create-select-customer.component';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -22,8 +22,8 @@ export class SalePage implements OnInit {
   	imageLink: '',
   	storeUniqueId: ''
   };
-  sale: SaleDTO = {};
-  ticketLines: TicketLineDTO[] = [];
+  // sale: SaleDTO = {};
+  // ticketLines: TicketLineDTO[] = [];
   totalPrice = 0;
   products: Product[] = [] ;
   pageCount = 0;
@@ -61,7 +61,7 @@ export class SalePage implements OnInit {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode:iDPcode})
+      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode: iDPcode})
       .subscribe(res => {
         this.infiniteScroll.complete();
         success !== undefined ? success(res) : null;
@@ -73,8 +73,8 @@ export class SalePage implements OnInit {
                 p.comboLineItems = productBundle.comboLineItems;
                 p.auxilaryLineItems = productBundle.auxilaryLineItems;
 
-              },err=>{
-                console.log("error getting products",err)
+              }, err => {
+                console.log('error getting products', err);
               });
           this.products.push(p);
         });
@@ -128,118 +128,115 @@ export class SalePage implements OnInit {
   }
 
   updateSale() {
-    console.log("update sale");
-    if(this.customer!=undefined){
-    this.util.createLoader().then(loader => {
-      loader.present();
-      this.storage.get('user').then(user => {
-        this.sale.customerId = this.customer.id;
-        this.sale.idpCode = user.preferred_username;
-        this.sale.grandTotal = this.totalPrice;
-        this.sale.storeName = user.preferred_username;
-        this.commandResource.createSaleUsingPOST(this.sale).subscribe(sale => {
-          console.log('sale', sale);
-          this.ticketLines.forEach(tl => {
-            tl.saleId = sale.id;
-            this.commandResource.createTickerLineUsingPOST(tl).subscribe(data => {
-              console.log('ticket', data);
-            }, err => {
-              loader.dismiss();
-            });
-          });
-          this.customer = {idpCode:'',imageLink:'',customerUniqueId:""};
-          this.selectedProducts = [];
-          this.ticketLines = [];
-          this.totalPrice = 0;
-          this.queryService.printSaleUsingGET({saleId: sale.id , idpCode: user.preferred_username}).subscribe(pdf => {
-            this.salePdf = pdf;
-            this.printSale(this.salePdf);
-          });
-          loader.dismiss();
-        }, err => {
-          loader.dismiss();
-        });
-      },
-      err=>{
-        console.log("error geting user",err);
-        loader.dismiss();
-      }
-      );
-    });
-  }else{
-  
-    this.util.createToast('Pleace select Customer', 'information-circle');
-
-
-  }
+    console.log('update sale');
+  //   if(this.customer!=undefined){
+  //   this.util.createLoader().then(loader => {
+  //     loader.present();
+  //     this.storage.get('user').then(user => {
+  //       this.sale.customerId = this.customer.id;
+  //       this.sale.idpCode = user.preferred_username;
+  //       this.sale.grandTotal = this.totalPrice;
+  //       this.sale.storeName = user.preferred_username;
+  //       this.commandResource.createSaleUsingPOST(this.sale).subscribe(sale => {
+  //         console.log('sale', sale);
+  //         this.ticketLines.forEach(tl => {
+  //           tl.saleId = sale.id;
+  //           this.commandResource.createTickerLineUsingPOST(tl).subscribe(data => {
+  //             console.log('ticket', data);
+  //           }, err => {
+  //             loader.dismiss();
+  //           });
+  //         });
+  //         this.customer = {idpCode:'',imageLink:'',customerUniqueId:""};
+  //         this.selectedProducts = [];
+  //         this.ticketLines = [];
+  //         this.totalPrice = 0;
+  //         this.queryService.printSaleUsingGET({saleId: sale.id , idpCode: user.preferred_username}).subscribe(pdf => {
+  //           this.salePdf = pdf;
+  //           this.printSale(this.salePdf);
+  //         });
+  //         loader.dismiss();
+  //       }, err => {
+  //         loader.dismiss();
+  //       });
+  //     },
+  //     err=>{
+  //       console.log("error geting user",err);
+  //       loader.dismiss();
+  //     }
+  //     );
+  //   });
+  // }else{
+  //   this.util.createToast('Pleace select Customer', 'information-circle');
+  // }
   }
 
   add(product: Product) {
-    const containValue = this.ticketLines.find(tl => {
-      return tl.productName === product.name;
-    });
-    if (containValue === undefined) {
-      const ticketLine: TicketLineDTO = {};
-      ticketLine.productName = product.name;
-      ticketLine.quantity = 1;
-      ticketLine.price = product.sellingPrice;
-      ticketLine.total = product.sellingPrice;
-      this.ticketLines.push(ticketLine);
-      this.selectedProducts.push(product);
-    } else {
-      this.ticketLines.forEach(tl => {
-        if (tl.productName === product.name) {
-          tl.quantity++;
-          tl.total = tl.total + product.sellingPrice;
-          this.getTotalPrice();
-        }
-      });
-    }
-    console.log('sel', this.selectedProducts);
-    console.log('contain', containValue);
-    console.log('lineadd', this.ticketLines);
+    // const containValue = this.ticketLines.find(tl => {
+    //   return tl.productName === product.name;
+    // });
+    // if (containValue === undefined) {
+    //   const ticketLine: TicketLineDTO = {};
+    //   ticketLine.productName = product.name;
+    //   ticketLine.quantity = 1;
+    //   ticketLine.price = product.sellingPrice;
+    //   ticketLine.total = product.sellingPrice;
+    //   this.ticketLines.push(ticketLine);
+    //   this.selectedProducts.push(product);
+    // } else {
+    //   this.ticketLines.forEach(tl => {
+    //     if (tl.productName === product.name) {
+    //       tl.quantity++;
+    //       tl.total = tl.total + product.sellingPrice;
+    //       this.getTotalPrice();
+    //     }
+    //   });
+    // }
+    // console.log('sel', this.selectedProducts);
+    // console.log('contain', containValue);
+    // console.log('lineadd', this.ticketLines);
   }
 
   remove(product: Product) {
-    const containValue = this.ticketLines.find(tl => {
-      return tl.productName === product.name;
-    });
-    if (containValue.quantity === 0) {
-      this.ticketLines = this.ticketLines.filter(tl => tl.productName !== product.name);
-      this.selectedProducts = this.selectedProducts.filter(sp => sp.id === product.id);
-    } else if (containValue.quantity > 0) {
-      this.ticketLines.forEach(tl => {
-        if (tl.productName === product.name) {
-          tl.quantity--;
-          tl.total = tl.total - product.sellingPrice;
-          this.getTotalPrice();
-          if (tl.quantity < 1) {
-            this.ticketLines = this.ticketLines.filter(tls => tls.productName !== product.name);
-            this.selectedProducts = this.selectedProducts.filter(sp => sp.id !== product.id);
-          }
-        }
-      });
-    }
-    console.log('sel', this.selectedProducts);
-    console.log('contain', containValue);
-    console.log('lineremove', this.ticketLines);
+    // const containValue = this.ticketLines.find(tl => {
+    //   return tl.productName === product.name;
+    // });
+    // if (containValue.quantity === 0) {
+    //   this.ticketLines = this.ticketLines.filter(tl => tl.productName !== product.name);
+    //   this.selectedProducts = this.selectedProducts.filter(sp => sp.id === product.id);
+    // } else if (containValue.quantity > 0) {
+    //   this.ticketLines.forEach(tl => {
+    //     if (tl.productName === product.name) {
+    //       tl.quantity--;
+    //       tl.total = tl.total - product.sellingPrice;
+    //       this.getTotalPrice();
+    //       if (tl.quantity < 1) {
+    //         this.ticketLines = this.ticketLines.filter(tls => tls.productName !== product.name);
+    //         this.selectedProducts = this.selectedProducts.filter(sp => sp.id !== product.id);
+    //       }
+    //     }
+    //   });
+    // }
+    // console.log('sel', this.selectedProducts);
+    // console.log('contain', containValue);
+    // console.log('lineremove', this.ticketLines);
   }
 
-  getCount(product: Product): number {
-    const containValue = this.ticketLines.find(tl => {
-      return tl.productName === product.name;
-    });
-    if  (containValue === undefined) {
-      return 0;
-    }
-    return containValue.quantity;
+  getCount(product: Product) {
+    // const containValue = this.ticketLines.find(tl => {
+    //   return tl.productName === product.name;
+    // });
+    // if  (containValue === undefined) {
+    //   return 0;
+    // }
+    // return containValue.quantity;
   }
 
   getTotalPrice() {
-    this.totalPrice = 0;
-    this.ticketLines.forEach(tl => {
-      this.totalPrice = this.totalPrice + tl.total;
-    });
+    // this.totalPrice = 0;
+    // this.ticketLines.forEach(tl => {
+    //   this.totalPrice = this.totalPrice + tl.total;
+    // });
   }
 
   async customerModal() {
@@ -263,27 +260,25 @@ export class SalePage implements OnInit {
   printSale(salePdf) {
     this.util.createLoader().then(loader => {
       loader.present();
-        const byteCharacters = atob(salePdf.pdf);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
+      const byteCharacters = atob(salePdf.pdf);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
           byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: salePdf.contentType });
-        console.log('blob is' + blob);
-        if(this.platform.is('android'))
-        {
-          console.log("platform is android***********");
-        this.fileCreation(blob, salePdf);
-        }
-        else{
-          console.log("platform is browser***********");
-          var pdfResult = salePdf.pdf;
-          var dataURI = "data:application/pdf;base64," + pdfResult;
-          var win = window.open();
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: salePdf.contentType });
+      console.log('blob is' + blob);
+      if (this.platform.is('android')) {
+          console.log('platform is android***********');
+          this.fileCreation(blob, salePdf);
+        } else {
+          console.log('platform is browser***********');
+          let pdfResult = salePdf.pdf;
+          let dataURI = 'data:application/pdf;base64,' + pdfResult;
+          let win = window.open();
           win.document.write('<iframe src="' + dataURI  + '"  style="position: absolute; height: 100%; border: none " ></iframe>');
         }
-        loader.dismiss();
+      loader.dismiss();
     });
   }
 

@@ -13,7 +13,7 @@ export interface Store {
   deliveryInfos?: Array<DeliveryInfo>;
   email?: string;
   id?: number;
-  imageLink?: string;
+  imageLink: string;
   info?: string;
   location?: string;
   locationName?: string;
@@ -26,7 +26,7 @@ export interface Store {
   storeAddress?: StoreAddress;
   storeSettings?: StoreSettings;
   storeTypes?: Array<StoreType>;
-  storeUniqueId?: string;
+  storeUniqueId: string;
   totalRating?: number;
   userRatingReviews?: Array<UserRatingReview>;
 }

@@ -8,6 +8,7 @@ export interface Address {
   cityOrTown?: string;
   country?: string;
   customerId?: string;
+  email?: string;
   houseNoOrBuildingName?: string;
   id?: number;
   landmark?: string;

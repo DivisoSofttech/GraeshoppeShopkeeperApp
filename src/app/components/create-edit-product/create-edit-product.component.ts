@@ -55,6 +55,7 @@ export class CreateEditProductComponent implements OnInit {
   oldAux = 0;
   oldCombo = 0;
   @ViewChild('content', {static: false}) content: IonContent;
+  imageContentType;
 
   constructor(
     private modalController: ModalController,
@@ -294,7 +295,7 @@ export class CreateEditProductComponent implements OnInit {
     modal.onDidDismiss()
       .then(data => {
         this.productDTO.image = data.data.image.substring(data.data.image.indexOf(',') + 1);
-        this.productDTO.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
+        this.imageContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
 
       });
 
@@ -387,10 +388,12 @@ export class CreateEditProductComponent implements OnInit {
   }
   createDisabled() {
     if (this.mode === 'update') {
+      // tslint:disable-next-line: max-line-length
       if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.name == null || this.productDTO.name === '') {
         return true;
       }
     } else {
+      // tslint:disable-next-line: max-line-length
       if (this.productDTO.sellingPrice == null || this.productDTO.categoryId == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
         return true;
       }
@@ -399,9 +402,18 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   createAuxilaryDisabled() {
-    if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
-      return true;
+    if (this.mode === 'update') {
+      // tslint:disable-next-line: max-line-length
+      if (this.productDTO.sellingPrice == null || this.productDTO.name == null || this.productDTO.name === '') {
+        return true;
+      }
+      return false;
+    } else {
+      // tslint:disable-next-line: max-line-length
+      if (this.productDTO.sellingPrice == null || this.productDTO.image == null || this.productDTO.name == null || this.productDTO.name === '') {
+        return true;
+      }
+      return false;
     }
-    return false;
   }
 }

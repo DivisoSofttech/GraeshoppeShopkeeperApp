@@ -3,6 +3,7 @@ import { EntryLineItem } from './entry-line-item';
 import { Sort } from './sort';
 export interface PageOfEntryLineItem {
   content?: Array<EntryLineItem>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

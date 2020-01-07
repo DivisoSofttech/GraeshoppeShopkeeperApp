@@ -6,7 +6,7 @@ import {
   QueryResourceService,
 } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
-import { Order, Store, OpenTask } from 'src/app/api/models';
+import { Order, Store} from 'src/app/api/models';
 import {
   IonInfiniteScroll,
   IonSlides,
@@ -26,7 +26,6 @@ declare var sunmiInnerPrinter: any;
 export class OrderPage implements OnInit {
   store: Store;
   user;
-  tasks: OpenTask[] = [];
   loader: HTMLIonLoadingElement;
   orders: Order[] = [
     {
@@ -143,8 +142,8 @@ export class OrderPage implements OnInit {
   filter(filterBy) {
     console.log('method filterBy ');
 
-    this.deliveryType = filterBy;
-    console.log('filterBy ', filterBy);
+    this.deliveryType = filterBy.detail.value;
+    console.log('filterBy ', filterBy.detail.value);
     this.confirmedOrdersSorted = {
       today: []
     };
@@ -430,11 +429,11 @@ export class OrderPage implements OnInit {
       po => po.orderId !== order.orderId
     );
     if (this.confirmedOrdersSortedKeys.includes(key)) {
-      this.confirmedOrdersSorted[key].push(order);
+      this.confirmedOrdersSorted[key].unshift(order);
     } else {
       this.confirmedOrdersSortedKeys.push(key);
       this.confirmedOrdersSorted[key] = [];
-      this.confirmedOrdersSorted[key].push(order);
+      this.confirmedOrdersSorted[key].unshift(order);
     }
   }
 
@@ -443,11 +442,11 @@ export class OrderPage implements OnInit {
       co => co.orderId !== order.orderId
     );
     if (this.completedOrdersSortedKeys.includes(key)) {
-      this.completedOrdersSorted[key].push(order);
+      this.completedOrdersSorted[key].unshift(order);
     } else {
       this.completedOrdersSortedKeys.push(key);
       this.completedOrdersSorted[key] = [];
-      this.completedOrdersSorted[key].push(order);
+      this.completedOrdersSorted[key].unshift(order);
     }
   }
 
