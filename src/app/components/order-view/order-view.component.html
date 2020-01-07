@@ -51,6 +51,22 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card>
+    <ion-item lines="none">
+      <ion-text slot="start" >
+          Payment mode
+      </ion-text>
+      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.paymentMode}}</ion-text>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text slot="start" >
+          Delivery type
+      </ion-text>
+      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.deliveryInfo.deliveryType}}</ion-text>
+    </ion-item>
+  </ion-card>
+
 
 
   <ion-card  *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
