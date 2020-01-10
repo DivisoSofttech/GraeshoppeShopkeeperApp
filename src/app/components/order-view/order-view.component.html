@@ -18,7 +18,7 @@
             Subtotal
         </ion-text>
         <ion-text slot="start" slot="end" class="ion-text-right">
-            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+            &#8364;{{ order.subTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -86,6 +86,9 @@
               <span>
                 {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }}
               </span>
+            </address>
+
+            <address>
               <span>{{ order.deliveryInfo.deliveryAddress.city }}</span>
               <span>{{ order.deliveryInfo.deliveryAddress.landmark }}</span>
               <span *ngIf="order.deliveryInfo.deliveryAddress.pincode">
@@ -113,7 +116,7 @@
       <ion-card *ngIf="order.allergyNote !== null">
         <ion-card-header color="primary">
           <ion-card-title>
-            <h1>Allergic Note</h1>
+            <h1>Allergy Note</h1>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content class="ion-no-padding pd-10">

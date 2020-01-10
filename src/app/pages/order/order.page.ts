@@ -27,19 +27,7 @@ export class OrderPage implements OnInit {
   store: Store;
   user;
   loader: HTMLIonLoadingElement;
-  orders: Order[] = [
-    {
-      orderId: '78',
-      customerId: '564654',
-      deliveryInfo: {
-        startingTime: '12.30Am',
-        deliveryAddress: {
-          addressLine1: '1/123,pathiripala'
-        }
-      },
-      paymentRef: 'cash'
-    }
-  ];
+  orders: Order[] = [];
 
   deliveryType = 'all';
 
@@ -172,19 +160,19 @@ export class OrderPage implements OnInit {
   sortOrders(o: Order , keyStore , arrayList) {
     console.log('method sort ');
 
-    const date1: any = new Date(this.datePipe.transform(o.date, 'M/d/yy'));
-    const date2: any = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
+    const date1: any = new Date(this.datePipe.transform(o.date, 'd/M/yy'));
+    const date2: any = new Date(this.datePipe.transform(new Date() , 'd/M/yy'));
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays === 0) {
        arrayList.today.push(o);
     } else {
-      if (keyStore.includes(this.datePipe.transform(o.date, 'M/d/yy'))) {
-        arrayList[this.datePipe.transform(o.date, 'M/d/yy')].push(o);
+      if (keyStore.includes(this.datePipe.transform(o.date, 'd/M/yy'))) {
+        arrayList[this.datePipe.transform(o.date, 'd/M/yy')].push(o);
       } else {
-        keyStore.push(this.datePipe.transform(o.date, 'M/d/yy'));
-        arrayList[this.datePipe.transform(o.date, 'M/d/yy')] = [];
-        arrayList[this.datePipe.transform(o.date, 'M/d/yy')].push(o);
+        keyStore.push(this.datePipe.transform(o.date, 'd/M/yy'));
+        arrayList[this.datePipe.transform(o.date, 'd/M/yy')] = [];
+        arrayList[this.datePipe.transform(o.date, 'd/M/yy')].push(o);
       }
     }
   }

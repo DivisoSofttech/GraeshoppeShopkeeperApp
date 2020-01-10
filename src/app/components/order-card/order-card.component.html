@@ -43,7 +43,8 @@
             <ion-row class="ion-margin-bottom">
               <ion-col>
                 <ion-text class="center">
-                  <ion-icon class="icon-big" name="wallet"></ion-icon>
+                  <ion-icon *ngIf="order.paymentMode != 'COD'"  class="icon-big" name="card"></ion-icon>
+                  <ion-icon *ngIf="order.paymentMode == 'COD'" class="icon-big" name="wallet"></ion-icon>
                   {{order.paymentMode}}
                 </ion-text>
               </ion-col>
@@ -52,9 +53,7 @@
 
         </ion-col>
         <ion-col *ngIf="order.preOrderDate">
-          <ion-badge>
-            <ion-text>Requested for {{order.preOrderDate | date : 'dd/MM/yy,hh:mm a'}}</ion-text>
-          </ion-badge>
+            <ion-text><strong>Requested for {{order.preOrderDate | date : 'd/M/yy,hh:mm a'}}</strong></ion-text>
         </ion-col>
 
       </ion-row>
