@@ -1,5 +1,3 @@
-import { OrderTabAllComponent } from './order-tab-all/order-tab-all.component';
-import { OrderComponent } from './order/order.component';
 import { ExpectedDeliveryComponent } from './expected-delivery/expected-delivery.component';
 import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
 import { MaterialModule } from './material.module';
@@ -63,8 +61,6 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     SaleHistoryComponent,
     OrderProductCardComponent,
     ExpectedDeliveryComponent,
-    OrderComponent,
-    OrderTabAllComponent
   ],
 
   imports: [
@@ -103,8 +99,6 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     SaleHistoryComponent,
     OrderProductCardComponent,
     ExpectedDeliveryComponent,
-    OrderComponent,
-    OrderTabAllComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

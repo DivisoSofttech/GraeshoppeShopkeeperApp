@@ -1,4 +1,3 @@
-import { OrderTabAllComponent } from './../../components/order-tab-all/order-tab-all.component';
 import { OrderViewComponent } from './../../components/order-view/order-view.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';

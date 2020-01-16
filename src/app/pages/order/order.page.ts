@@ -1,4 +1,3 @@
-import { FilterService } from './../../services/filter.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
@@ -70,7 +69,6 @@ export class OrderPage implements OnInit {
     private keycloakService: KeycloakService,
     private notification: NotificationService,
     private datePipe: DatePipe,
-    private filterService: FilterService
   ) {}
 
   ngOnInit() {
