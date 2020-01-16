@@ -20,7 +20,8 @@ export class OrderSummaryPage implements OnInit {
 
   user;
 
-  date: string;
+  fromDate: string;
+  toDate: string;
 
   orderSummary: ReportSummary = {};
 
@@ -36,7 +37,8 @@ export class OrderSummaryPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    this.fromDate = formatDate(new Date().setDate( new Date().getDate() - 1 ), 'yyyy-MM-dd', 'en');
+    this.toDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.storage.get('user').then(user => {
       this.user = user;
       this.getNoticationCount();
@@ -64,7 +66,7 @@ export class OrderSummaryPage implements OnInit {
   getOrderSummary() {
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username).subscribe(store => {
       this.queryResource.createReportSummaryUsingGET({
-        storeName: store.name, expectedDelivery: this.date
+        storeName: this.user.preferred_username, fromDate: this.fromDate , toDate: this.toDate
       }).subscribe(orderSummary => {
         this.orderSummary = orderSummary;
         console.log('summary', this.orderSummary);
@@ -78,9 +80,12 @@ export class OrderSummaryPage implements OnInit {
   }
 
   dateSelected() {
-    console.log('date', this.date);
-    if (this.date.length > 12) {
-      this.date = this.date.slice(0, this.date.indexOf('T'));
+    console.log('date', this.fromDate);
+    if (this.fromDate.length > 12) {
+      this.fromDate = this.fromDate.slice(0, this.fromDate.indexOf('T'));
+    }
+    if (this.toDate.length > 12) {
+      this.toDate = this.toDate.slice(0, this.toDate.indexOf('T'));
     }
     this.getOrderSummary();
   }
@@ -88,7 +93,11 @@ export class OrderSummaryPage implements OnInit {
   getOrderSummaryPdf() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.queryResource.getOrderSummaryUsingGET({storeId: this.user.preferred_username , date: this.date}).subscribe(orderDocket => {
+      this.queryResource.getOrderSummaryUsingGET({
+        storeName: this.user.preferred_username,
+        fromDate: this.fromDate,
+        toDate: this.toDate
+      }).subscribe(orderDocket => {
         console.log(orderDocket.pdf, orderDocket.contentType);
         const byteCharacters = atob(orderDocket.pdf);
         const byteNumbers = new Array(byteCharacters.length);

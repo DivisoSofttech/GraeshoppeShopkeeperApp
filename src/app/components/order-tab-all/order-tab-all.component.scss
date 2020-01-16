@@ -1,0 +1,63 @@
+.action-sheets{
+    .action-sheet-button-inner .sc-ion-action-sheet-md{
+    font-size: 20px;
+    }
+  }
+  
+  .slideContent {
+    width: 100%;
+  }
+  
+  .mg-top {
+    margin-top: 20px;
+  }
+  
+  .order-card-view{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  #notifications-badge {
+    background-color: red;
+    position: absolute;
+    top: -2px;
+    right: 10px;
+    border-radius: 100%;
+  }
+  .icon{
+    font-size: 30px;
+  }
+  
+  .btn-color{
+    color: #3880ff
+  }
+  
+  .seghide{
+    visibility: hidden;
+  }
+  
+  .segshow {
+    visibility: visible;
+  }
+  
+  .hieght {
+    height: 80px; 
+  }
+  
+  .ion-fab {
+    margin: 8px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  
+  .pos {
+    height: 50px;
+    width: 100px;
+    border-radius: 25%;
+    background-color: #3880ff;
+    z-index: 500;
+    position: relative;
+    top: 80%;
+  }
+  

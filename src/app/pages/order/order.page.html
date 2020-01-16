@@ -2,6 +2,7 @@
   <ion-toolbar>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
         <ion-title>Order</ion-title>
+        
         <ion-item slot="end">
           <ion-button fill="none"><ion-icon slot="icon-only" name="funnel"></ion-icon></ion-button>
           <ion-select class="ion-no-padding ion-no-margin" okText="Okay" (ionChange)="filter($event)" cancelText="Dismiss">
@@ -15,8 +16,7 @@
           <!-- <ion-button (click)="print()">
             <ion-icon slot="icon-only" name="print" ></ion-icon>
           </ion-button> -->
-
-          
+          <ion-button slot="end" fill="none"(click)="refresh()"><ion-icon slot="icon-only" name="refresh"></ion-icon></ion-button>
           <ion-button (click)="openNotificationModal()">
             <ion-icon class="icon" name="notifications"></ion-icon>
           </ion-button>
@@ -24,8 +24,9 @@
         </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <!--Segment Button Container Start-->
+<i *ngIf="onRefresh" class="center fa fa-refresh fa-spin" style="font-size:30px"><ion-icon name="refresh"></ion-icon></i>
+
+<ion-content >
   <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
         <ion-segment-button value="pending">
@@ -39,9 +40,8 @@
         </ion-segment-button>
       </ion-segment>
     </div>
-    <!--Segment Button Container End-->
 
-    <ion-slides  #slides (ionSlideDidChange)="slideChange()">
+    <ion-slides #slides (ionSlideDidChange)="slideChange()">
 
         <ion-slide *ngIf="showPending">
          <div class="slideContent">
@@ -96,12 +96,15 @@
             loadingText="Loading more data...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+        <!-- <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
           <ion-refresher-content
             pullingIcon="arrow-dropdown"
             pullingText="Pull to refresh"
             refreshingSpinner="circles"
             refreshingText="Refreshing...">
           </ion-refresher-content>
-        </ion-refresher>
+        </ion-refresher> -->
   </ion-content>
+<!-- <ion-content>
+  <app-order></app-order>
+</ion-content> -->

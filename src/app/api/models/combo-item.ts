@@ -4,5 +4,6 @@ export interface ComboItem {
   comboItem?: string;
   id?: number;
   orderLine?: OrderLine;
+  productId?: number;
   quantity?: number;
 }

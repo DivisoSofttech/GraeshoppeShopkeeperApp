@@ -1,7 +1,8 @@
 /* tslint:disable */
 export interface ReportSummary {
-  date?: string;
+  fromDate?: string;
   storeId?: string;
+  toDate?: string;
   typeAllCount?: number;
   typeAllTotal?: number;
   typeCardCount?: number;

@@ -1,3 +1,5 @@
+import { OrderTabAllComponent } from './order-tab-all/order-tab-all.component';
+import { OrderComponent } from './order/order.component';
 import { ExpectedDeliveryComponent } from './expected-delivery/expected-delivery.component';
 import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
 import { MaterialModule } from './material.module';
@@ -60,11 +62,12 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateSelectCustomerComponent,
     SaleHistoryComponent,
     OrderProductCardComponent,
-    ExpectedDeliveryComponent
+    ExpectedDeliveryComponent,
+    OrderComponent,
+    OrderTabAllComponent
   ],
 
   imports: [
-    ImageCropperModule,
     CommonModule,
     FormsModule,
     IonicModule,
@@ -99,7 +102,9 @@ import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.com
     CreateSelectCustomerComponent,
     SaleHistoryComponent,
     OrderProductCardComponent,
-    ExpectedDeliveryComponent
+    ExpectedDeliveryComponent,
+    OrderComponent,
+    OrderTabAllComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [

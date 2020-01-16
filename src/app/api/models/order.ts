@@ -20,8 +20,10 @@ export interface Order {
   paymentMode?: string;
   paymentRef?: string;
   preOrderDate?: string;
+  processId?: string;
   state?: string;
   status?: Status;
   storeId?: string;
   subTotal?: number;
+  timeZone?: string;
 }

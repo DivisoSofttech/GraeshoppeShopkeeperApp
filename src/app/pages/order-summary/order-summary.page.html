@@ -12,20 +12,30 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="half-width">
-    <ion-buttons>
-      <ion-button>
-          <ion-icon slot="icon-only" name="calendar"></ion-icon>
-      </ion-button>
-      <ion-button>
-          <ion-datetime displayFormat="YYYY-MM-DD" min="2005" max="2030" [(ngModel)]="date"></ion-datetime>
-      </ion-button>
-      <ion-button (click)="dateSelected()">
-          <ion-icon  color="success" slot="icon-only" name="arrow-round-forward"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-      
-  </ion-card>
+  <ion-grid>
+    <ion-row justify-content-center class="white-background">
+      <ion-col size="5" class="date">
+        <ion-item>
+          <ion-label position="floating">From</ion-label>
+          <ion-datetime displayFormat="DD-MMM-YYYY" [(ngModel)]="fromDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+      <ion-col no-padding size="2" (click)="dateSelected()" class="ion-padding-top">
+        <ion-button expand="full" fill="clear" >
+          APPLY
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="5" class="date">
+        <ion-item>
+          <ion-label position="floating">To</ion-label>
+          <ion-datetime displayFormat="DD-MMM-YYYY" [(ngModel)]="toDate"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
   <ion-card>
       <ion-row padding>
           <ion-col padding>

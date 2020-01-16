@@ -1,3 +1,4 @@
+import { OrderTabAllComponent } from './../../components/order-tab-all/order-tab-all.component';
 import { OrderViewComponent } from './../../components/order-view/order-view.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -14,7 +15,45 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 const routes: Routes = [
   {
     path: '',
-    component: OrderPage
+    component: OrderPage,
+    children: [
+      // {
+      //   path: 'pending',
+      //   children: [
+      //     {
+      //       path: '',
+      //       component: OrderTabAllComponent,
+      //       data: {title: 'pending'}
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: 'confirmed',
+      //   children: [
+      //     {
+      //       path: '',
+      //       component: OrderTabAllComponent,
+      //       data: {title: 'confirmed'}
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: 'completed',
+      //   children: [
+      //     {
+      //       path: '',
+      //       component: OrderTabAllComponent,
+      //       data: {title: 'completed'}
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: '',
+      //   redirectTo: '/order/pending',
+      //   pathMatch: 'full'
+      // }
+ 
+    ]
   }
 ];
 

@@ -1,30 +1,25 @@
 import { FilterService } from './../../services/filter.service';
-import { KeycloakService } from 'src/app/services/security/keycloak.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { Util } from './../../services/util';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {
-  QueryResourceService,
-} from 'src/app/api/services';
-import { Storage } from '@ionic/storage';
-import { Order, Store} from 'src/app/api/models';
-import {
-  IonInfiniteScroll,
-  IonSlides,
-  ActionSheetController,
-  ModalController,
-} from '@ionic/angular';
-import { NotificationService } from 'src/app/services/notification.service';
+import { Store } from './../../api/models/store';
+import { Order } from './../../api/models/order';
+import { NotificationComponent } from './../notification/notification.component';
 import { DatePipe } from '@angular/common';
-
-declare var sunmiInnerPrinter: any;
+import { NotificationService } from './../../services/notification.service';
+import { KeycloakService } from './../../services/security/keycloak.service';
+import { Util } from './../../services/util';
+import { ActionSheetController, ModalController, IonInfiniteScroll, IonSlides } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { QueryResourceService } from 'src/app/api/services';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-order-page',
-  templateUrl: './order.page.html',
-  styleUrls: ['./order.page.scss']
+  selector: 'app-order-tab-all',
+  templateUrl: './order-tab-all.component.html',
+  styleUrls: ['./order-tab-all.component.scss'],
 })
-export class OrderPage implements OnInit {
+export class OrderTabAllComponent implements OnInit {
+
+  title;
   store: Store;
   user;
   loader: HTMLIonLoadingElement;
@@ -47,21 +42,18 @@ export class OrderPage implements OnInit {
 
 
   showPending = true;
-  currentPage = 'pending';
+
   penCount = 0;
   conCount = 0;
   comcount = 0;
   penTotalPages = 0;
   conTotalPages = 0;
   comTotalPages = 0;
-  showFooter = false;
-  onRefresh = false;
-
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
-  @ViewChild('slides', null) slides: IonSlides;
   notificationCount: any;
   constructor(
+    private route: ActivatedRoute,
     private queryResource: QueryResourceService,
     private storage: Storage,
     public actionSheetController: ActionSheetController,
@@ -70,12 +62,12 @@ export class OrderPage implements OnInit {
     private keycloakService: KeycloakService,
     private notification: NotificationService,
     private datePipe: DatePipe,
-    private filterService: FilterService
-  ) {}
+    private filterService: FilterService,
+    private cref: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
-    console.log('method ngOninit ');
-
+    this.title = this.route.snapshot.data.title;
     this.util.createLoader().then(
       loader => {
         loader.present();
@@ -83,7 +75,10 @@ export class OrderPage implements OnInit {
         .get('user')
         .then(data => {
           this.user = data;
-          this.initTasks();
+          this.filterService.filter.subscribe(a => {
+            this.filter(a);
+          });
+          // this.initTasks();
           loader.dismiss();
         })
         .catch(err => {
@@ -104,60 +99,41 @@ export class OrderPage implements OnInit {
     }
 
   initTasks() {
-    console.log('method initTasks ');
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username)
     .subscribe(store => {
       this.store = store;
-      console.log(this.store);
-      this.hidePending();
       this.getNoticationCount();
-      if (store.storeSettings.orderAcceptType !== 'automatic') {
+      if (this.title === 'pending') {
         this.getPendingOrders(0);
+      } else if (this.title === 'confirmed') {
+        this.getConfirmedOrders(0);
       } else {
-        this.currentPage = 'confirmed';
+        this.getCompletedOrders(0);
       }
-      this.getConfirmedOrders(0);
-      console.log('hi');
-      this.getCompletedOrders(0);
-      console.log('hi');
-
     },
     err => {
-
       console.log('error finding store ', err);
-
     }
     );
   }
 
   filter(filterBy) {
-    console.log('method filterBy ');
-
-    this.deliveryType = filterBy.detail.value;
-    console.log('filterBy ', filterBy.detail.value);
+    this.deliveryType = filterBy;
+    console.log('filterBy ', filterBy);
     this.confirmedOrdersSorted = {
       today: []
     };
     this.confirmedOrdersSortedKeys = ['today'];
     this.confirmedOrdersSorted = {today: []};
     this.getConfirmedOrders(0);
-    console.log('hi');
 
     this.completedOrdersSortedKeys = ['today'];
     this.completedOrdersSorted = {today: []};
     this.getCompletedOrders(0);
-    console.log('hi');
 
     this.pendingOrdersSorted = {today: []};
     this.pendingOrdersSortedKeys = ['today'];
     this.getPendingOrders(0);
-  }
-
-  color(type): string {
-    if (this.deliveryType === type) {
-      return 'primary';
-    }
-    return 'warning';
   }
 
   sortOrders(o: Order , keyStore , arrayList) {
@@ -202,8 +178,9 @@ export class OrderPage implements OnInit {
 
           });
           i++;
+          console.log('pending oders ', res);
           this.penTotalPages = res.totalPages;
-          if (this.comcount + 1 === res.totalPages) {
+          if (this.penCount + 1 === res.totalPages) {
             this.ionInfiniteScroll.disabled = true;
          } else {
            this.ionInfiniteScroll.disabled = false;
@@ -235,6 +212,7 @@ export class OrderPage implements OnInit {
               this.sortOrders(data , this.confirmedOrdersSortedKeys, this.confirmedOrdersSorted);
             });
           i++;
+          console.log('confirmed oders ', res);
           this.conTotalPages = res.totalPages;
           if (this.conCount + 1 === res.totalPages) {
             this.ionInfiniteScroll.disabled = true;
@@ -269,7 +247,7 @@ export class OrderPage implements OnInit {
               this.sortOrders(data , this.completedOrdersSortedKeys, this.completedOrdersSorted);
             });
           i++;
-          console.log('completedsdkfk oders ', res);
+          console.log('completed oders ', res);
           this.comTotalPages = res.totalPages;
           if (this.comcount + 1 === res.totalPages) {
             this.ionInfiniteScroll.disabled = true;
@@ -285,35 +263,6 @@ export class OrderPage implements OnInit {
         });
     });
   }
-  getOrders(i, limit: boolean) {
-    console.log('method getOders ');
-
-    this.queryResource
-      .findOrderLineByStoreIdUsingGET({
-        storeId: this.user.preferred_username,
-        page: i
-      })
-      .subscribe(porders => {
-        porders.content.forEach(o => {
-          this.orders.push(o);
-        });
-
-        i++;
-
-        if (limit === false) {
-          // Load All Pages Recursively
-          if (i < porders.totalPages) {
-            this.getOrders(i, limit);
-          }
-        }
-
-        if (i === porders.totalPages) {
-          // Disable infinite Scroll
-          console.log('All Pages Retrieved PageCount', porders.totalPages);
-          this.toggleInfiniteScroll();
-        }
-      });
-  }
 
   toggleInfiniteScroll() {
     this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
@@ -321,82 +270,15 @@ export class OrderPage implements OnInit {
 
   loadMore() {
     console.log('loading More Data');
-    if (this.currentPage === 'pending') {
+    if (this.title === 'pending') {
       this.penCount++;
       this.getPendingOrders(this.penCount);
-    } else if (this.currentPage === 'confirmed') {
+    } else if (this.title === 'confirmed') {
       this.conCount++;
       this.getConfirmedOrders(this.conCount);
-    } else if (this.currentPage === 'completed') {
+    } else if (this.title === 'completed') {
       this.comcount++;
       this.getCompletedOrders(this.comcount);
-    }
-  }
-
-  segmentChange(ev) {
-    if (this.showPending) {
-      if (ev.detail.value === 'pending') {
-        this.slides.slideTo(0);
-        if (this.penCount + 1 === this.penTotalPages) {
-           this.ionInfiniteScroll.disabled = true;
-        } else {
-          this.ionInfiniteScroll.disabled = false;
-         }
-      } else if (ev.detail.value === 'confirmed') {
-        this.slides.slideTo(1);
-        if (this.conCount + 1 === this.conTotalPages) {
-          this.ionInfiniteScroll.disabled = true;
-       } else {
-        this.ionInfiniteScroll.disabled = false;
-       }
-      } else if (ev.detail.value === 'completed') {
-        this.slides.slideTo(2);
-        if (this.comcount + 1 === this.comTotalPages) {
-          this.ionInfiniteScroll.disabled = true;
-       } else {
-        this.ionInfiniteScroll.disabled = false;
-       }
-      }
-    } else {
-      if (ev.detail.value === 'confirmed') {
-        this.slides.slideTo(0);
-        if (this.conCount + 1 === this.conTotalPages) {
-          this.ionInfiniteScroll.disabled = true;
-       } else {
-        this.ionInfiniteScroll.disabled = false;
-       }
-      } else if (ev.detail.value === 'completed') {
-        this.slides.slideTo(1);
-        if (this.conCount + 1 === this.conTotalPages) {
-          this.ionInfiniteScroll.disabled = true;
-       } else {
-        this.ionInfiniteScroll.disabled = false;
-       }
-      }
-    }
-  }
-  slideChange() {
-    let index: any;
-    if (this.showPending) {
-      this.slides.getActiveIndex().then(num => {
-        index = num;
-        if (index === 0) {
-          this.currentPage = 'pending';
-        } else if (index === 1) {
-          this.currentPage = 'confirmed';
-        } else if (index === 2) {
-          this.currentPage = 'completed';
-        }
-      });
-    } else {
-      this.slides.getActiveIndex().then(num => {
-        index = num;
-        if (index === 0) {
-          this.currentPage = 'confirmed';
-        } else if (index === 1) {
-          this.currentPage = 'completed';
-        }
-      });
     }
   }
 
@@ -416,6 +298,7 @@ export class OrderPage implements OnInit {
   }
 
   orderAccepted(order , key) {
+    console.log('Accepted');
     this.pendingOrdersSorted[key] = this.pendingOrdersSorted[key].filter(
       po => po.orderId !== order.orderId
     );
@@ -426,9 +309,15 @@ export class OrderPage implements OnInit {
       this.confirmedOrdersSorted[key] = [];
       this.confirmedOrdersSorted[key].unshift(order);
     }
+    setInterval(() => {
+      if (!this.cref['destroyed']) {
+        this.cref.detectChanges();
+      }
+    }, 1000);
   }
 
   orderCompleted(order , key) {
+    console.log('Completed');
     this.confirmedOrdersSorted[key] = this.confirmedOrdersSorted[key].filter(
       co => co.orderId !== order.orderId
     );
@@ -439,16 +328,14 @@ export class OrderPage implements OnInit {
       this.completedOrdersSorted[key] = [];
       this.completedOrdersSorted[key].unshift(order);
     }
+    setInterval(() => {
+      if (!this.cref['destroyed']) {
+        this.cref.detectChanges();
+      }
+    }, 1000);
   }
 
-  hidePending() {
-    if (this.store.storeSettings.orderAcceptType === 'automatic') {
-      this.showPending = false;
-    }
-  }
-
-  refresh() {
-    this.onRefresh = true;
+  refresh(event) {
     this.pendingOrdersSorted = {today: []};
     this.pendingOrdersSortedKeys = ['today'];
     this.confirmedOrdersSorted = {today: []};
@@ -457,21 +344,8 @@ export class OrderPage implements OnInit {
     this.completedOrdersSortedKeys = ['today'];
     this.ngOnInit();
     setTimeout(() => {
-      this.onRefresh = false;
+      event.target.complete();
     }, 2000);
   }
 
-  showFoo() {
-    this.showFooter = !this.showFooter;
-  }
-
-
-  // sunmi printer test method
-  print() {
-    try {
-      sunmiInnerPrinter.printOriginalText('Hello Printer');
-    } catch (err) {
-      console.error(err);
-    }
-  }
 }

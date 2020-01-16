@@ -106,8 +106,8 @@ class QueryResourceService extends __BaseService {
   static readonly orderCountByCustomerIdAndStoreIdUsingGETPath = '/api/query/orderCountByCustomerIdAndStoreId/{customerId}/{storeId}';
   static readonly findOrderLineByOrderMasterIdUsingGETPath = '/api/query/orderLineByOrderMasterId/{orderMasterId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
-  static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeId}';
-  static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{expectedDelivery}/{storeName}';
+  static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{fromDate}/{toDate}/{storeName}';
+  static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{fromDate}/{toDate}';
   static readonly findReasonByRegNoUsingGETPath = '/api/query/reason/{idpcode}';
   static readonly getAllCategoriesByIdpCodeUsingGETPath = '/api/query/report/getAllCategoriesByIdpCode/{idpcode}';
   static readonly getAllProductsByIdpCodeUsingGETPath = '/api/query/report/getAllProductsByIdpCode/{idpcode}';
@@ -2383,9 +2383,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `toDate`: toDate
    *
-   * - `date`: date
+   * - `storeName`: storeName
+   *
+   * - `fromDate`: fromDate
    *
    * @return OK
    */
@@ -2395,9 +2397,10 @@ class QueryResourceService extends __BaseService {
     let __body: any = null;
 
 
+
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/ordersummary/${params.date}/${params.storeId}`,
+      this.rootUrl + `/api/query/ordersummary/${params.fromDate}/${params.toDate}/${params.storeName}`,
       __body,
       {
         headers: __headers,
@@ -2415,9 +2418,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
    *
-   * - `storeId`: storeId
+   * - `toDate`: toDate
    *
-   * - `date`: date
+   * - `storeName`: storeName
+   *
+   * - `fromDate`: fromDate
    *
    * @return OK
    */
@@ -2430,9 +2435,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
    *
+   * - `toDate`: toDate
+   *
    * - `storeName`: storeName
    *
-   * - `expectedDelivery`: expectedDelivery
+   * - `fromDate`: fromDate
    *
    * @return OK
    */
@@ -2441,10 +2448,11 @@ class QueryResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    if (params.storeName != null) __params = __params.set('storeName', params.storeName.toString());
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/ordersummaryview/${params.expectedDelivery}/${params.storeName}`,
+      this.rootUrl + `/api/query/ordersummaryview/${params.fromDate}/${params.toDate}`,
       __body,
       {
         headers: __headers,
@@ -2462,9 +2470,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
    *
+   * - `toDate`: toDate
+   *
    * - `storeName`: storeName
    *
-   * - `expectedDelivery`: expectedDelivery
+   * - `fromDate`: fromDate
    *
    * @return OK
    */
@@ -3474,14 +3484,19 @@ module QueryResourceService {
   export interface GetOrderSummaryUsingGETParams {
 
     /**
-     * storeId
+     * toDate
      */
-    storeId: string;
+    toDate: string;
 
     /**
-     * date
+     * storeName
      */
-    date: string;
+    storeName: string;
+
+    /**
+     * fromDate
+     */
+    fromDate: string;
   }
 
   /**
@@ -3490,14 +3505,19 @@ module QueryResourceService {
   export interface CreateReportSummaryUsingGETParams {
 
     /**
+     * toDate
+     */
+    toDate: string;
+
+    /**
      * storeName
      */
     storeName: string;
 
     /**
-     * expectedDelivery
+     * fromDate
      */
-    expectedDelivery: string;
+    fromDate: string;
   }
 
   /**
