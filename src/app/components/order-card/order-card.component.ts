@@ -9,7 +9,7 @@ import {
   QueryResourceService
 } from 'src/app/api/services';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Order , Customer } from 'src/app/api/models';
+import { Order, Customer, Product } from 'src/app/api/models';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -39,6 +39,8 @@ export class OrderCardComponent implements OnInit {
   deliveryTime: string;
   user;
   requiredPhoneVerification = false;
+
+   // products: Product[] = [];
   constructor(
     private command: CommandResourceService,
     private modalController: ModalController,
@@ -57,6 +59,13 @@ export class OrderCardComponent implements OnInit {
       .get('user')
       .then(data => {
         this.user = data;
+        this.queryResource.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
+          this.order.orderLines = orderLines;
+          // orderLines.forEach(o => {
+          //   this.queryResource.findProductByIdUsingGET(o.productId).subscribe(p => this.products.push(p));
+          // });
+          console.log(this.order.orderId + ' orderLines' , orderLines);
+        });
         // tslint:disable-next-line: max-line-length
         if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
           console.log('Checking the order count ', this.order.status.name);
@@ -239,7 +248,7 @@ async expectedTimePopover(callback?) {
 
   async print() {
     const encoder = new EscPosEncoder();
-    const result = encoder
+    encoder
       .initialize()
       .size('normal')
       .align('center')
@@ -248,28 +257,52 @@ async expectedTimePopover(callback?) {
       .underline()
       .underline()
       .newline()
-      .text('==========================')
+      .text('================================================')
       .bold()
       .newline()
       .text(this.order.deliveryInfo.deliveryType)
       .newline()
       .text('Due  ' + formatDate(this.order.date, 'yyyy-MM-dd', 'en') + ' ASAP / ' + formatDate(this.order.date, 'HH:mm:a', 'en'))
+      .newline()
+      .newline()
+      .text('Order Number : ' + this.order.orderId)
+      .newline()
+      .text('================================================')
+      .text('Restaurant Notes : ' + this.order.allergyNote)
+      .newline()
+      .text('================================================');
+    const result = this.getOrderlinePrinterData(encoder)
+      .newline()
       .encode();
 
     const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
 
     try {
-      await sunmiInnerPrinter.setFontSize(40, () => {
+      await sunmiInnerPrinter.setFontSize(200, () => {
         sunmiInnerPrinter.sendRAWData(base64String, succes => {
-          // sunmiInnerPrinter.cutPaper();
+          sunmiInnerPrinter.cutPaper();
         }, error => {
           console.log(error);
         });
       });
-      
+
     } catch (err) {
       console.error(err);
     }
   }
+
+  getOrderlinePrinterData(encoder: EscPosEncoder): EscPosEncoder {
+    this.order.orderLines.forEach(o => {
+      console.log(o);
+      encoder
+      .align('left')
+      .text(o.quantity + ' x ' + o.item)
+      .text('     ' + o.total)
+      .newline();
+    });
+    return encoder;
+  }
+
+
 
 }
