@@ -21,7 +21,6 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UomCardComponent } from './uom-card/uom-card.component';
-import { ImageCropperModule } from 'ngx-img-cropper';
 import { AddComponent } from './add/add.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { RouterModule } from '@angular/router';
