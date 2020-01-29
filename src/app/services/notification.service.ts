@@ -60,7 +60,6 @@ export class NotificationService {
            console.log('Notification count is ', this.notificationCount);
            console.log('notification is ', notification);
            this.platform.ready().then(() => {
-             if (notification.type === 'Pending-Notification') {
               this.localNotifications.schedule({
                 title: notification.title,
                 text: notification.message + '\nTracking ID is ' + notification.targetId,
@@ -74,17 +73,6 @@ export class NotificationService {
               //     { id: 'reject',  title: 'Reject' }
               // ]
               });
-             } else if (notification.type === 'Confirmed-Notification') {
-              this.localNotifications.schedule({
-                title: notification.title,
-                text: notification.message + '\nTracking ID is ' + notification.targetId,
-                foreground: true,
-                wakeup: true,
-                lockscreen: true,
-                sound: 'file://assets/beep.mp3',
-                icon: 'file://assets/images/logo.png'
-              });
-             }
             });
         });
   }
