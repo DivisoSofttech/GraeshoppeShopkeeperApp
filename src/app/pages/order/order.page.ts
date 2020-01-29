@@ -14,7 +14,7 @@ import {
   ModalController,
 } from '@ionic/angular';
 import { NotificationService } from 'src/app/services/notification.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 
 declare var sunmiInnerPrinter: any;
 
@@ -55,6 +55,8 @@ export class OrderPage implements OnInit {
   comTotalPages = 0;
   showFooter = false;
   onRefresh = false;
+
+  colors = ['medium' , 'light']
 
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
@@ -161,19 +163,18 @@ export class OrderPage implements OnInit {
   sortOrders(o: Order , keyStore , arrayList) {
     console.log('method sort ');
 
-    const date1: any = new Date(this.datePipe.transform(o.date, 'd/M/yy'));
-    const date2: any = new Date(this.datePipe.transform(new Date() , 'd/M/yy'));
-    const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays === 0) {
+    const date1: any = this.datePipe.transform(o.date, 'dd/MM/yy');
+    const date2: any = this.datePipe.transform(new Date() , 'dd/MM/yy');
+
+    if (date1 === date2) {
        arrayList.today.push(o);
     } else {
-      if (keyStore.includes(this.datePipe.transform(o.date, 'd/M/yy'))) {
-        arrayList[this.datePipe.transform(o.date, 'd/M/yy')].push(o);
+      if (keyStore.includes(this.datePipe.transform(o.date, 'dd/MM/yy'))) {
+        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')].push(o);
       } else {
-        keyStore.push(this.datePipe.transform(o.date, 'd/M/yy'));
-        arrayList[this.datePipe.transform(o.date, 'd/M/yy')] = [];
-        arrayList[this.datePipe.transform(o.date, 'd/M/yy')].push(o);
+        keyStore.push(this.datePipe.transform(o.date, 'dd/MM/yy'));
+        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')] = [];
+        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')].push(o);
       }
     }
   }
@@ -188,7 +189,8 @@ export class OrderPage implements OnInit {
           statusName: 'payment-processed-unapproved',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType
+          deliveryType: this.deliveryType,
+          date: formatDate(new Date() , 'yyyy-MM-dd','en')
         })
         .subscribe(res => {
           res.content.forEach(data =>
@@ -225,7 +227,8 @@ export class OrderPage implements OnInit {
           statusName: 'payment-processed-approved',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType
+          deliveryType: this.deliveryType,
+          date: formatDate(new Date() , 'yyyy-MM-dd','en')
         })
         .subscribe(res => {
           res.content.forEach(data =>
@@ -260,7 +263,8 @@ export class OrderPage implements OnInit {
           statusName: 'delivered',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType
+          deliveryType: this.deliveryType,
+          date: formatDate(new Date() , 'yyyy-MM-dd','en')
         })
         .subscribe(res => {
           res.content.forEach(data => {

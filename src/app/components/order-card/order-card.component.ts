@@ -28,6 +28,7 @@ declare var Socket: any;
 export class OrderCardComponent implements OnInit {
   @Input() order: Order;
   @Input() orderType: string;
+  @Input() color: string;
   taskId: string;
   customer: Customer;
 
