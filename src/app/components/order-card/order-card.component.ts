@@ -1,3 +1,5 @@
+import { formatDate } from '@angular/common';
+import EscPosEncoder from 'esc-pos-encoder';
 import { ExpectedDeliveryComponent } from './../expected-delivery/expected-delivery.component';
 import { OrderViewComponent } from './../order-view/order-view.component';
 import { Storage } from '@ionic/storage';
@@ -6,10 +8,8 @@ import {
   CommandResourceService,
   QueryResourceService
 } from 'src/app/api/services';
-import { CommandResource } from './../../api/models/command-resource';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Order, Product, Customer } from 'src/app/api/models';
-import * as moment from 'moment/moment';
+import { Order , Customer } from 'src/app/api/models';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -17,7 +17,9 @@ import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 
-// declare var sunmiInnerPrinter: any;
+declare var sunmiInnerPrinter: any;
+declare var Socket: any;
+
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -28,6 +30,8 @@ export class OrderCardComponent implements OnInit {
   @Input() orderType: string;
   taskId: string;
   customer: Customer;
+
+  font;
 
   @Output() accept = new EventEmitter();
   @Output() completed = new EventEmitter();
@@ -67,8 +71,6 @@ export class OrderCardComponent implements OnInit {
             });
         }
       });
-
-
   }
 
   completeOrder(order: Order) {
@@ -231,17 +233,43 @@ async expectedTimePopover(callback?) {
     });
   await popover.present();
 }
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad ReceiptPage');
-  // }
-  // print() {
-  //   this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
-  //     try {
-  //       sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ReceiptPage');
+  }
+
+  async print() {
+    const encoder = new EscPosEncoder();
+    const result = encoder
+      .initialize()
+      .size('normal')
+      .align('center')
+      .bold(true)
+      .text(this.order.storeId)
+      .underline()
+      .underline()
+      .newline()
+      .text('==========================')
+      .bold()
+      .newline()
+      .text(this.order.deliveryInfo.deliveryType)
+      .newline()
+      .text('Due  ' + formatDate(this.order.date, 'yyyy-MM-dd', 'en') + ' ASAP / ' + formatDate(this.order.date, 'HH:mm:a', 'en'))
+      .encode();
+
+    const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
+
+    try {
+      await sunmiInnerPrinter.setFontSize(40, () => {
+        sunmiInnerPrinter.sendRAWData(base64String, succes => {
+          // sunmiInnerPrinter.cutPaper();
+        }, error => {
+          console.log(error);
+        });
+      });
+      
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
 }

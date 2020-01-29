@@ -29,7 +29,6 @@ import { OrderCardComponent } from './order-card/order-card.component';
 import { NotificationComponent } from './notification/notification.component';
 import { StockDairyCardComponent } from './stock-dairy-card/stock-dairy-card.component';
 import { StockDairyViewComponent } from './stock-dairy-view/stock-dairy-view.component';
-import { ImageCropperModule } from 'ngx-img-cropper';
 
 
 @NgModule({

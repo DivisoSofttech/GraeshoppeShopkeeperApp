@@ -62,6 +62,7 @@
   <ion-card-footer>
     <ion-grid class="ion-no-padding">
       <ion-row>
+        <ion-input [(ngModel)]="font"></ion-input>
         <ion-col size="6" class="ion-no-padding">
           <ion-buttons class="buttons-right">
             <ion-button *ngIf="orderType=='confirmed'" (click)="getOrderMaster()">

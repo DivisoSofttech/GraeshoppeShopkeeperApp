@@ -37,6 +37,7 @@ import { UOMDTO } from '../models/uomdto';
 import { PageOfUOM } from '../models/page-of-uom';
 import { PageOfEntryLineItem } from '../models/page-of-entry-line-item';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
+import { ReportSummary } from '../models/report-summary';
 import { ProductBundle } from '../models/product-bundle';
 import { StockEntryBundle } from '../models/stock-entry-bundle';
 import { StoreBundleDTO } from '../models/store-bundle-dto';
@@ -44,7 +45,6 @@ import { PageOfLocation } from '../models/page-of-location';
 import { PageOfNotification } from '../models/page-of-notification';
 import { Order } from '../models/order';
 import { OrderMaster } from '../models/order-master';
-import { ReportSummary } from '../models/report-summary';
 import { PageOfReason } from '../models/page-of-reason';
 import { PageOfBanner } from '../models/page-of-banner';
 import { StoreDTO } from '../models/store-dto';
@@ -94,8 +94,11 @@ class QueryResourceService extends __BaseService {
   static readonly findUOMByIdpCodeUsingGETPath = '/api/query/findUOMByIdpCode/{idpCode}';
   static readonly findAllEntryLineItemsByStockEntryIdUsingGETPath = '/api/query/findallentrylineitems/{id}';
   static readonly getAuxilaryLineItemsByIdpCodeUsingGETPath = '/api/query/getAuxilaryLineItemsByIdpCode/{idpCode}';
+  static readonly getDetailedOrderSummeryUsingGETPath = '/api/query/getDetailedOrderSummery/{date}/{storeId}';
+  static readonly getOrderSummaryDetailsUsingGETPath = '/api/query/getDetailedOrderSummeryAsPdf/{date}/{storeId}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/getNotAuxNotComboProductsByIDPcode/{iDPcode}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderNumber}';
+  static readonly getOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETPath = '/api/query/getOrderSummaryBetweenDatesAsPdf/{fromDate}/{toDate}/{storeId}';
   static readonly getProductBundleByIdUsingGETPath = '/api/query/getProductBundle/{id}';
   static readonly getStockEntryBundleByIdUsingGETPath = '/api/query/getStockEntryBundleById/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/getStoreBundle/{regNo}';
@@ -106,8 +109,8 @@ class QueryResourceService extends __BaseService {
   static readonly orderCountByCustomerIdAndStoreIdUsingGETPath = '/api/query/orderCountByCustomerIdAndStoreId/{customerId}/{storeId}';
   static readonly findOrderLineByOrderMasterIdUsingGETPath = '/api/query/orderLineByOrderMasterId/{orderMasterId}';
   static readonly findOrderMasterByOrderIdUsingGETPath = '/api/query/orderMasterByOrderId/{orderId}';
-  static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{fromDate}/{toDate}/{storeName}';
-  static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{fromDate}/{toDate}';
+  static readonly getOrderSummaryUsingGETPath = '/api/query/ordersummary/{date}/{storeName}';
+  static readonly createReportSummaryUsingGETPath = '/api/query/ordersummaryview/{date}/{storeId}';
   static readonly findReasonByRegNoUsingGETPath = '/api/query/reason/{idpcode}';
   static readonly getAllCategoriesByIdpCodeUsingGETPath = '/api/query/report/getAllCategoriesByIdpCode/{idpcode}';
   static readonly getAllProductsByIdpCodeUsingGETPath = '/api/query/report/getAllProductsByIdpCode/{idpcode}';
@@ -1843,6 +1846,100 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.GetDetailedOrderSummeryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getDetailedOrderSummeryUsingGETResponse(params: QueryResourceService.GetDetailedOrderSummeryUsingGETParams): __Observable<__StrictHttpResponse<ReportSummary>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getDetailedOrderSummery/${params.date}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ReportSummary>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetDetailedOrderSummeryUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getDetailedOrderSummeryUsingGET(params: QueryResourceService.GetDetailedOrderSummeryUsingGETParams): __Observable<ReportSummary> {
+    return this.getDetailedOrderSummeryUsingGETResponse(params).pipe(
+      __map(_r => _r.body as ReportSummary)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.GetOrderSummaryDetailsUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getOrderSummaryDetailsUsingGETResponse(params: QueryResourceService.GetOrderSummaryDetailsUsingGETParams): __Observable<__StrictHttpResponse<PdfDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getDetailedOrderSummeryAsPdf/${params.date}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PdfDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetOrderSummaryDetailsUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  getOrderSummaryDetailsUsingGET(params: QueryResourceService.GetOrderSummaryDetailsUsingGETParams): __Observable<PdfDTO> {
+    return this.getOrderSummaryDetailsUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetNotAuxNotComboProductsByIDPcodeUsingGETParams` containing the following parameters:
    *
    * - `iDPcode`: iDPcode
@@ -1931,6 +2028,58 @@ class QueryResourceService extends __BaseService {
    */
   getOrderDocketUsingGET(orderNumber: string): __Observable<PdfDTO> {
     return this.getOrderDocketUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.GetOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETParams` containing the following parameters:
+   *
+   * - `toDate`: toDate
+   *
+   * - `storeName`: storeName
+   *
+   * - `fromDate`: fromDate
+   *
+   * @return OK
+   */
+  getOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETResponse(params: QueryResourceService.GetOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETParams): __Observable<__StrictHttpResponse<PdfDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    if (params.storeName != null) __params = __params.set('storeName', params.storeName.toString());
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getOrderSummaryBetweenDatesAsPdf/${params.fromDate}/${params.toDate}/${params.storeName}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PdfDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETParams` containing the following parameters:
+   *
+   * - `toDate`: toDate
+   *
+   * - `storeName`: storeName
+   *
+   * - `fromDate`: fromDate
+   *
+   * @return OK
+   */
+  getOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGET(params: QueryResourceService.GetOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETParams): __Observable<PdfDTO> {
+    return this.getOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETResponse(params).pipe(
       __map(_r => _r.body as PdfDTO)
     );
   }
@@ -2383,11 +2532,9 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
    *
-   * - `toDate`: toDate
-   *
    * - `storeName`: storeName
    *
-   * - `fromDate`: fromDate
+   * - `date`: date
    *
    * @return OK
    */
@@ -2397,10 +2544,9 @@ class QueryResourceService extends __BaseService {
     let __body: any = null;
 
 
-
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/ordersummary/${params.fromDate}/${params.toDate}/${params.storeName}`,
+      this.rootUrl + `/api/query/ordersummary/${params.date}/${params.storeName}`,
       __body,
       {
         headers: __headers,
@@ -2418,11 +2564,9 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.GetOrderSummaryUsingGETParams` containing the following parameters:
    *
-   * - `toDate`: toDate
-   *
    * - `storeName`: storeName
    *
-   * - `fromDate`: fromDate
+   * - `date`: date
    *
    * @return OK
    */
@@ -2435,11 +2579,9 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
    *
-   * - `toDate`: toDate
+   * - `storeId`: storeId
    *
-   * - `storeName`: storeName
-   *
-   * - `fromDate`: fromDate
+   * - `date`: date
    *
    * @return OK
    */
@@ -2448,11 +2590,10 @@ class QueryResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
 
-    if (params.storeName != null) __params = __params.set('storeName', params.storeName.toString());
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/ordersummaryview/${params.fromDate}/${params.toDate}`,
+      this.rootUrl + `/api/query/ordersummaryview/${params.date}/${params.storeId}`,
       __body,
       {
         headers: __headers,
@@ -2470,11 +2611,9 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.CreateReportSummaryUsingGETParams` containing the following parameters:
    *
-   * - `toDate`: toDate
+   * - `storeId`: storeId
    *
-   * - `storeName`: storeName
-   *
-   * - `fromDate`: fromDate
+   * - `date`: date
    *
    * @return OK
    */
@@ -3343,6 +3482,38 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for getDetailedOrderSummeryUsingGET
+   */
+  export interface GetDetailedOrderSummeryUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * date
+     */
+    date: string;
+  }
+
+  /**
+   * Parameters for getOrderSummaryDetailsUsingGET
+   */
+  export interface GetOrderSummaryDetailsUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * date
+     */
+    date: string;
+  }
+
+  /**
    * Parameters for getNotAuxNotComboProductsByIDPcodeUsingGET
    */
   export interface GetNotAuxNotComboProductsByIDPcodeUsingGETParams {
@@ -3366,6 +3537,27 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for getOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGET
+   */
+  export interface GetOrderSummaryBetweenDatesAndStoreIdAsPdfUsingGETParams {
+
+    /**
+     * toDate
+     */
+    toDate: string;
+
+    /**
+     * storeName
+     */
+    storeName: string;
+
+    /**
+     * fromDate
+     */
+    fromDate: string;
   }
 
   /**
@@ -3484,19 +3676,14 @@ module QueryResourceService {
   export interface GetOrderSummaryUsingGETParams {
 
     /**
-     * toDate
-     */
-    toDate: string;
-
-    /**
      * storeName
      */
     storeName: string;
 
     /**
-     * fromDate
+     * date
      */
-    fromDate: string;
+    date: string;
   }
 
   /**
@@ -3505,19 +3692,14 @@ module QueryResourceService {
   export interface CreateReportSummaryUsingGETParams {
 
     /**
-     * toDate
+     * storeId
      */
-    toDate: string;
+    storeId: string;
 
     /**
-     * storeName
+     * date
      */
-    storeName: string;
-
-    /**
-     * fromDate
-     */
-    fromDate: string;
+    date: string;
   }
 
   /**

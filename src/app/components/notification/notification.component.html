@@ -28,7 +28,7 @@
                     </ion-text>
                     <ion-text  *ngIf="notification.status=='read'">
                         <p class = "read"><strong>{{notification.title}}</strong></p>
-                        <p class = "read">{{notification.date | date:'shortDate'}}</p>
+                        <p class = "read">{{notification.date | date:'d/M/yy'}}</p>
                         <p class = "read">{{notification.date | date:'shortTime'}}</p>
                       </ion-text>
                     
