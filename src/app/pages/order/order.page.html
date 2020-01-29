@@ -53,7 +53,7 @@
                 <ion-label *ngIf="pendingOrdersSorted[okey].length === 0">No Orders</ion-label>
             </div>
             <ng-container *ngFor="let order  of pendingOrdersSorted[okey]; let i = index">
-              <app-order-card *ngIf="i%2===0" [color]="'light'" class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order , okey)"  [order]="order"></app-order-card>
+              <app-order-card *ngIf="i%2===0" [color]="'secondary'" class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order , okey)"  [order]="order"></app-order-card>
               <app-order-card *ngIf="i%2!==0" [color]="'white'" class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(order , okey)"  [order]="order"></app-order-card>
             </ng-container>
           </ion-list>
