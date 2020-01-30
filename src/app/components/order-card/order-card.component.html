@@ -1,4 +1,4 @@
-<ion-card *ngIf="order != null" color="{{color}}">
+<ion-card *ngIf="order != null" [ngClass]="{'blue':color==='secondary'}">
   <ion-card-header class="ion-no-padding">
     <ion-item lines="full">
       <ion-text slot="start">
