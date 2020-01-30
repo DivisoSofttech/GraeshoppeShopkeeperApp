@@ -158,7 +158,11 @@ export class OrderSummaryPage implements OnInit {
             const options: PrintOptions = {
               name: 'MyDocument'
             };
-            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then(data => {
+              console.log('print succes');
+            }).catch(err => {
+              console.log('print failed', err);
+            });
             // this.fileOpener
             //   .showOpenWithDialog(
             //     this.file.externalCacheDirectory + 'items.pdf',
