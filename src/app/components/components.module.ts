@@ -1,4 +1,3 @@
-import { ImageCropperModule } from 'ngx-img-cropper';
 import { ExpectedDeliveryComponent } from './expected-delivery/expected-delivery.component';
 import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
 import { MaterialModule } from './material.module';

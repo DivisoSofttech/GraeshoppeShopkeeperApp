@@ -205,6 +205,7 @@ export class CreateEditProductComponent implements OnInit {
       });
     this.commandResource.createDiscountUsingPOST(this.discount).subscribe(discount => {
       this.productDTO.discountId = discount.id;
+      this.productDTO.name = this.productDTO.name[0].toUpperCase() + this.productDTO.name.slice(1, this.productDTO.name.length);
       this.commandResource.createProductUsingPOST(this.productDTO)
         .subscribe(data => {
           this.dismiss(data);
@@ -238,6 +239,7 @@ export class CreateEditProductComponent implements OnInit {
         this.loader = loader;
         this.loader.present();
       });
+    this.productDTO.name = this.productDTO.name[0].toUpperCase() + this.productDTO.name.slice(1, this.productDTO.name.length);
     this.commandResource.updateProductUsingPUT(this.productDTO)
       .subscribe(data => {
         this.productbundle.comboLineItems.forEach(combo =>

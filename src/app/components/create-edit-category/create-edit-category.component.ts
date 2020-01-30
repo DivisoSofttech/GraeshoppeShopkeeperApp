@@ -84,6 +84,7 @@ export class CreateEditCategoryComponent implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
+    this.categoryDTO.name = this.categoryDTO.name[0].toUpperCase() + this.categoryDTO.name.slice(1, this.categoryDTO.name.length);
     this.commandResource.createProductCategoryUsingPOST(this.categoryDTO)
         .subscribe(data => {
           this.categoryDTO = data;
@@ -109,6 +110,7 @@ export class CreateEditCategoryComponent implements OnInit {
       this.loader = loader;
       this.loader.present();
     });
+    this.categoryDTO.name = this.categoryDTO.name[0].toUpperCase() + this.categoryDTO.name.slice(1, this.categoryDTO.name.length);
     this.commandResource.updateCategoryUsingPUT(this.categoryDTO)
     .subscribe(data => {
       this.loader.dismiss();
