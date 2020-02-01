@@ -1,3 +1,5 @@
+import { formatDate } from '@angular/common';
+import EscPosEncoder from 'esc-pos-encoder';
 import { ExpectedDeliveryComponent } from './../expected-delivery/expected-delivery.component';
 import { OrderViewComponent } from './../order-view/order-view.component';
 import { Storage } from '@ionic/storage';
@@ -6,10 +8,8 @@ import {
   CommandResourceService,
   QueryResourceService
 } from 'src/app/api/services';
-import { CommandResource } from './../../api/models/command-resource';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Order, Product, Customer } from 'src/app/api/models';
-import * as moment from 'moment/moment';
+import { Order, Customer, Product } from 'src/app/api/models';
 
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -17,7 +17,9 @@ import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 
-// declare var sunmiInnerPrinter: any;
+declare var sunmiInnerPrinter: any;
+declare var Socket: any;
+
 @Component({
   selector: 'app-order-card',
   templateUrl: './order-card.component.html',
@@ -26,8 +28,11 @@ import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
 export class OrderCardComponent implements OnInit {
   @Input() order: Order;
   @Input() orderType: string;
+  @Input() color: string;
   taskId: string;
   customer: Customer;
+
+  font;
 
   @Output() accept = new EventEmitter();
   @Output() completed = new EventEmitter();
@@ -35,6 +40,8 @@ export class OrderCardComponent implements OnInit {
   deliveryTime: string;
   user;
   requiredPhoneVerification = false;
+
+   // products: Product[] = [];
   constructor(
     private command: CommandResourceService,
     private modalController: ModalController,
@@ -53,6 +60,13 @@ export class OrderCardComponent implements OnInit {
       .get('user')
       .then(data => {
         this.user = data;
+        this.queryResource.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
+          this.order.orderLines = orderLines;
+          // orderLines.forEach(o => {
+          //   this.queryResource.findProductByIdUsingGET(o.productId).subscribe(p => this.products.push(p));
+          // });
+          console.log(this.order.orderId + ' orderLines' , orderLines);
+        });
         // tslint:disable-next-line: max-line-length
         if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
           console.log('Checking the order count ', this.order.status.name);
@@ -67,8 +81,6 @@ export class OrderCardComponent implements OnInit {
             });
         }
       });
-
-
   }
 
   completeOrder(order: Order) {
@@ -231,17 +243,67 @@ async expectedTimePopover(callback?) {
     });
   await popover.present();
 }
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad ReceiptPage');
-  // }
-  // print() {
-  //   this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
-  //     try {
-  //       sunmiInnerPrinter.printBitmap('data:' + orderDocket.contentType + ';base64,' + orderDocket.pdf, 50, 50);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ReceiptPage');
+  }
+
+  async print() {
+    const encoder = new EscPosEncoder();
+    encoder
+      .initialize()
+      .size('normal')
+      .align('center')
+      .bold(true)
+      .text(this.order.storeId)
+      .underline()
+      .underline()
+      .newline()
+      .text('================================================')
+      .bold()
+      .newline()
+      .text(this.order.deliveryInfo.deliveryType)
+      .newline()
+      .text('Due  ' + formatDate(this.order.date, 'yyyy-MM-dd', 'en') + ' ASAP / ' + formatDate(this.order.date, 'HH:mm:a', 'en'))
+      .newline()
+      .newline()
+      .text('Order Number : ' + this.order.orderId)
+      .newline()
+      .text('================================================')
+      .text('Restaurant Notes : ' + this.order.allergyNote)
+      .newline()
+      .text('================================================');
+    const result = this.getOrderlinePrinterData(encoder)
+      .newline()
+      .encode();
+
+    const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
+
+    try {
+      await sunmiInnerPrinter.setFontSize(200, () => {
+        sunmiInnerPrinter.sendRAWData(base64String, succes => {
+          sunmiInnerPrinter.cutPaper();
+        }, error => {
+          console.log(error);
+        });
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  getOrderlinePrinterData(encoder: EscPosEncoder): EscPosEncoder {
+    this.order.orderLines.forEach(o => {
+      console.log(o);
+      encoder
+      .align('left')
+      .text(o.quantity + ' x ' + o.item)
+      .text('     ' + o.total)
+      .newline();
+    });
+    return encoder;
+  }
+
+
 
 }

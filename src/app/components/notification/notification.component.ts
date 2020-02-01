@@ -14,11 +14,11 @@ import { Storage } from '@ionic/storage';
 export class NotificationComponent implements OnInit {
 
   loader: HTMLIonLoadingElement;
-  show= false;
+  show = false;
   IdpCode: string;
-  //pageCount = 0;
+  // pageCount = 0;
   notifications: Notification[] = [];
-  notification: NotificationDTO
+  notification: NotificationDTO;
   clickedNotification: Notification;
   constructor(
     private modal: ModalController,
@@ -27,7 +27,7 @@ export class NotificationComponent implements OnInit {
     private util: Util,
     private command: CommandResourceService
   ) { }
- 
+
   ngOnInit() {
     this.util.createLoader()
     .then(loader => {
@@ -35,39 +35,39 @@ export class NotificationComponent implements OnInit {
       this.IdpCode = user.preferred_username;
       this.getNotifications(0);
     });
-      this.loader = loader;
-      this.loader.present();
+    this.loader = loader;
+    this.loader.present();
     });
   }
-   
-  dismiss(){
+
+  dismiss() {
     this.modal.dismiss();
   }
-  onClick(notification: Notification){
+  onClick(notification: Notification) {
     console.log();
     this.clickedNotification = notification;
     this.show = !this.show;
-    if(notification.status=='unread'){
+    if (notification.status === 'unread') {
       this.updateNotification(notification);
     }
   }
-  getNotifications(i){
-    this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode,page: i})
+  getNotifications(i) {
+    this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode, page: i})
         .subscribe(res => {
           console.log(this.IdpCode);
-          
+
           res.content.forEach(data => this.notifications.push(data));
-          console.log('notification',res.content);
+          console.log('notification', res.content);
           i++;
-          if(i < res.totalPages) {
-            this.getNotifications(i);  
+          if (i < res.totalPages) {
+            this.getNotifications(i);
           } else {
             this.loader.dismiss();
           }
         });
   }
-  updateNotification(notification: Notification){
-    const notificationDto: Notification ={
+  updateNotification(notification: Notification) {
+    const notificationDto: Notification = {
       id : notification.id,
       date: notification.date,
       image: notification.image,
@@ -78,11 +78,11 @@ export class NotificationComponent implements OnInit {
       targetId: notification.targetId,
       title: notification.title,
       type: notification.type
-    }
+    };
     this.command.updateNotificationUsingPUT(notificationDto)
         .subscribe(notificationDto => {
-          const index = this.notifications.indexOf(notification)
+          const index = this.notifications.indexOf(notification);
           this.notifications[index] = notificationDto;
-        })
+        });
   }
 }

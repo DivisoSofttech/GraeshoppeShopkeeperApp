@@ -80,19 +80,19 @@
           <ion-label>
             <address>
               <span *ngIf="order.deliveryInfo.deliveryAddress.addressType">
-                ({{ order.deliveryInfo.deliveryAddress.addressType | titlecase}})
+                ({{ order.deliveryInfo.deliveryAddress.addressType | titlecase}}),
               </span>
-              <span>{{ order.deliveryInfo.deliveryAddress.name | titlecase }}</span>
+              <span>{{ order.deliveryInfo.deliveryAddress.name | titlecase }},</span>
               <span>
-                {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }}
+                {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }},
               </span>
             </address>
 
             <address>
-              <span>{{ order.deliveryInfo.deliveryAddress.city }}</span>
-              <span>{{ order.deliveryInfo.deliveryAddress.landmark }}</span>
+              <span>{{ order.deliveryInfo.deliveryAddress.city }},</span>
+              <span>{{ order.deliveryInfo.deliveryAddress.landmark }},</span>
               <span *ngIf="order.deliveryInfo.deliveryAddress.pincode">
-                {{ order.deliveryInfo.deliveryAddress.pincode }}
+                {{ order.deliveryInfo.deliveryAddress.pincode}},
               </span>
             </address>
           </ion-label>

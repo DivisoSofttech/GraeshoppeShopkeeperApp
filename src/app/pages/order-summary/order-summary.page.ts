@@ -37,7 +37,7 @@ export class OrderSummaryPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fromDate = formatDate(new Date().setDate( new Date().getDate() - 1 ), 'yyyy-MM-dd', 'en');
+    this.fromDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.toDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.storage.get('user').then(user => {
       this.user = user;
@@ -66,7 +66,7 @@ export class OrderSummaryPage implements OnInit {
   getOrderSummary() {
     this.queryResource.findStoreByRegNoUsingGET(this.user.preferred_username).subscribe(store => {
       this.queryResource.createReportSummaryUsingGET({
-        storeName: this.user.preferred_username, fromDate: this.fromDate , toDate: this.toDate
+        storeId: this.user.preferred_username, date: this.fromDate
       }).subscribe(orderSummary => {
         this.orderSummary = orderSummary;
         console.log('summary', this.orderSummary);
@@ -90,13 +90,38 @@ export class OrderSummaryPage implements OnInit {
     this.getOrderSummary();
   }
 
+  getDetailedOrder() {
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.queryResource.getOrderSummaryDetailsUsingGET({
+        date: this.fromDate,
+        storeId: this.user.preferred_username
+      }).subscribe(orderDocket => {
+        console.log(orderDocket.pdf, orderDocket.contentType);
+        const byteCharacters = atob(orderDocket.pdf);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: orderDocket.contentType });
+        console.log('blob is' + blob);
+        this.fileCreation(blob, orderDocket);
+        loader.dismiss();
+      }, err => {
+        console.log('error geting order summary', err);
+        loader.dismiss();
+        this.util.createToast('Error Loading Pdf', 'alert');
+      });
+    });
+  }
+
   getOrderSummaryPdf() {
     this.util.createLoader().then(loader => {
       loader.present();
       this.queryResource.getOrderSummaryUsingGET({
         storeName: this.user.preferred_username,
-        fromDate: this.fromDate,
-        toDate: this.toDate
+        date: this.fromDate,
       }).subscribe(orderDocket => {
         console.log(orderDocket.pdf, orderDocket.contentType);
         const byteCharacters = atob(orderDocket.pdf);
@@ -133,7 +158,11 @@ export class OrderSummaryPage implements OnInit {
             const options: PrintOptions = {
               name: 'MyDocument'
             };
-            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then();
+            this.printer.print(this.file.externalCacheDirectory + 'items.pdf', options).then(data => {
+              console.log('print succes');
+            }).catch(err => {
+              console.log('print failed', err);
+            });
             // this.fileOpener
             //   .showOpenWithDialog(
             //     this.file.externalCacheDirectory + 'items.pdf',

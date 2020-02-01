@@ -5,6 +5,7 @@ export interface OrderMaster {
   addressType?: string;
   allergyNote?: string;
   alternatePhone?: number;
+  cancellationRef?: number;
   city?: string;
   customerId?: string;
   customerName?: string;
@@ -31,6 +32,7 @@ export interface OrderMaster {
   phone?: number;
   pincode?: string;
   preOrderDate?: string;
+  refundedAmount?: number;
   roadNameAreaOrStreet?: string;
   serviceCharge?: number;
   state?: string;
