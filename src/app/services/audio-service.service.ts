@@ -5,14 +5,16 @@ import { Platform } from '@angular/cdk/platform';
 @Injectable({
   providedIn: 'root'
 })
-export class AudioServiceService implements OnInit {
+export class AudioServiceService   {
 
   constructor(private nativeAudio: NativeAudio,
-    ) { }
+    ) {
+    }
 
-  ngOnInit() {
+  preloadSounds() {
+    console.log('ngOnINit preloading the sound file');
     this.nativeAudio.
-      preloadComplex('orderrequest', '../../assets/beep.mp3', 1, 1, 0)
+      preloadComplex('orderrequest', 'assets/beep.mp3', 1, 1, 0)
       .then(() => {
         console.log('ON Success load complex');
       }, err => {
@@ -21,6 +23,8 @@ export class AudioServiceService implements OnInit {
   }
 
   playSoundLoop(key) {
+    this.preloadSounds();
+    console.log('Sound is playing in loop', key);
     this.nativeAudio.loop(key)
     .then(() => {
       console.log('Sound is playing with id ', key);
@@ -30,6 +34,7 @@ export class AudioServiceService implements OnInit {
   }
 
   stopPlayingSound(key) {
+    console.log('Sound is stopping');
     this.nativeAudio.stop(key)
     .then(() => {
       console.log('audio stopped playing');

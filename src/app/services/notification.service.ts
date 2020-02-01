@@ -77,7 +77,7 @@ export class NotificationService {
               // ]
               });
               this.audioService.playSoundLoop('orderrequest');
-              this.presentAlert(notification.message, () => {
+              this.presentAlert(notification.message + '\nTracking ID is ' + notification.targetId, () => {
                 console.log('OnDeny called sound is stopping');
                 this.audioService.stopPlayingSound('orderrequest');
               });
