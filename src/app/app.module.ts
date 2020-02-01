@@ -33,6 +33,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ApiModule } from './api/api.module';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 const config: SocketIoConfig = { url: 'http://dev.ci1.divisosofttech.com:9999', options: {} };
 
 @NgModule({
@@ -68,6 +69,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci1.divisosofttech.com:9999', 
     ImagePicker,
     Camera,
     StatusBar,
+    NativeAudio,
     Util,
     SplashScreen,
     Geolocation,

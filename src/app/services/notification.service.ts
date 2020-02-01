@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import {  Subscription } from 'rxjs';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, AlertController } from '@ionic/angular';
 import { NotificationDTO } from '../api/models';
 import { QueryResourceService } from '../api/services';
 import { BehaviorSubject } from 'rxjs';
+import { AudioServiceService } from './audio-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class NotificationService {
               private localNotifications: LocalNotifications,
               private platform: Platform,
               private navCtrl: NavController,
-              private queryResource: QueryResourceService) {
+              private queryResource: QueryResourceService,
+              private audioService: AudioServiceService,
+              private alertControll: AlertController) {
     this.socket.disconnect();
     this.onConnect().subscribe(data => {
       console.log('Socket has been connected successfully');
@@ -73,10 +76,32 @@ export class NotificationService {
               //     { id: 'reject',  title: 'Reject' }
               // ]
               });
+              this.audioService.playSoundLoop('orderrequest');
+              this.presentAlert(notification.message, () => {
+                console.log('OnDeny called sound is stopping');
+                this.audioService.stopPlayingSound('orderrequest');
+              });
             });
         });
   }
 
+  async presentAlert(message: string, onDeny?: any) {
+    const alert = await this.alertControll.create({
+      message,
+      animated: true,
+      buttons: [
+        {
+          text: 'Dismiss',
+          handler: () => {
+              if (onDeny) {
+                onDeny();
+              }
+          }
+      },
+      ]
+    });
+    await alert.present();
+  }
 
  getNoticationCount(user) {
       this.queryResource
