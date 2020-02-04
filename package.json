@@ -142,13 +142,10 @@
       "cordova-plugin-printer": {
         "ANDROID_SUPPORT_V4_VERSION": "28.+"
       },
-<<<<<<< HEAD
       "cordova-plugin-sunmi-inner-printer": {
         "ANDROID_SUPPORT_V13_VERSION": "27.+"
-      }
-=======
+      },
       "cordova-plugin-nativeaudio": {}
->>>>>>> 12029d45d606732797545e5581472a9e8567b2b3
     },
     "platforms": [
       "browser",
