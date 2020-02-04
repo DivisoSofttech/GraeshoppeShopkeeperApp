@@ -13,6 +13,7 @@ export class OrderViewComponent implements OnInit {
 
   order: Order = {};
 
+
   products = [];
   auxilaries = [];
   comboLineItems = [];
@@ -34,7 +35,11 @@ export class OrderViewComponent implements OnInit {
       console.log('orderLines' , orderLines);
     });
   }
-  
+
+  findAllofferLines() {
+
+  }
+
   dismiss() {
     this.modalController.dismiss();
   }

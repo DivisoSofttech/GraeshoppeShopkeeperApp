@@ -466,14 +466,4 @@ export class OrderPage implements OnInit {
   showFoo() {
     this.showFooter = !this.showFooter;
   }
-
-
-  // sunmi printer test method
-  print() {
-    try {
-      sunmiInnerPrinter.printOriginalText('Hello Printer');
-    } catch (err) {
-      console.error(err);
-    }
-  }
 }

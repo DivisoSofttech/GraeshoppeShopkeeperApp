@@ -32,6 +32,8 @@ export class OrderCardComponent implements OnInit {
   taskId: string;
   customer: Customer;
 
+  count = 0;
+
   font;
 
   @Output() accept = new EventEmitter();
@@ -40,6 +42,10 @@ export class OrderCardComponent implements OnInit {
   deliveryTime: string;
   user;
   requiredPhoneVerification = false;
+
+  header;
+  content;
+  products;
 
    // products: Product[] = [];
   constructor(
@@ -60,13 +66,13 @@ export class OrderCardComponent implements OnInit {
       .get('user')
       .then(data => {
         this.user = data;
-        this.queryResource.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
-          this.order.orderLines = orderLines;
-          // orderLines.forEach(o => {
-          //   this.queryResource.findProductByIdUsingGET(o.productId).subscribe(p => this.products.push(p));
-          // });
-          console.log(this.order.orderId + ' orderLines' , orderLines);
-        });
+        // this.queryResource.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
+        //   this.order.orderLines = orderLines;
+        //   // orderLines.forEach(o => {
+        //   //   this.queryResource.findProductByIdUsingGET(o.productId).subscribe(p => this.products.push(p));
+        //   // });
+        //   console.log(this.order.orderId + ' orderLines' , orderLines);
+        // });
         // tslint:disable-next-line: max-line-length
         if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
           console.log('Checking the order count ', this.order.status.name);
@@ -249,61 +255,45 @@ async expectedTimePopover(callback?) {
 
   async print() {
     const encoder = new EscPosEncoder();
-    encoder
-      .initialize()
-      .size('normal')
-      .align('center')
-      .bold(true)
-      .text(this.order.storeId)
-      .underline()
-      .underline()
-      .newline()
-      .text('================================================')
-      .bold()
-      .newline()
-      .text(this.order.deliveryInfo.deliveryType)
-      .newline()
-      .text('Due  ' + formatDate(this.order.date, 'yyyy-MM-dd', 'en') + ' ASAP / ' + formatDate(this.order.date, 'HH:mm:a', 'en'))
-      .newline()
-      .newline()
-      .text('Order Number : ' + this.order.orderId)
-      .newline()
-      .text('================================================')
-      .text('Restaurant Notes : ' + this.order.allergyNote)
-      .newline()
-      .text('================================================');
-    const result = this.getOrderlinePrinterData(encoder)
-      .newline()
-      .encode();
-
+    const result = encoder
+        .initialize()
+        .bold()
+        .align('center')
+        .newline()
+        .text(this.header)
+        .newline()
+        .text(this.content)
+        .newline()
+        .align('left')
+        .text(this.products)
+        .newline()
+        .encode();
     const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
-
     try {
-      await sunmiInnerPrinter.setFontSize(200, () => {
-        sunmiInnerPrinter.sendRAWData(base64String, succes => {
-          sunmiInnerPrinter.cutPaper();
-        }, error => {
-          console.log(error);
-        });
-      });
+          sunmiInnerPrinter.sendRAWData(base64String, succes => {
+            sunmiInnerPrinter.cutPaper();
+          }, error => {
+            console.log(error);
+          });
 
-    } catch (err) {
-      console.error(err);
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }
 
-  getOrderlinePrinterData(encoder: EscPosEncoder): EscPosEncoder {
-    this.order.orderLines.forEach(o => {
-      console.log(o);
-      encoder
-      .align('left')
-      .text(o.quantity + ' x ' + o.item)
-      .text('     ' + o.total)
-      .newline();
+  getDocketData() {
+    this.queryResource.getDocketHeaderUsingGET(this.order.orderId).subscribe(header => {
+      this.header = header;
+      this.count++;
     });
-    return encoder;
+    this.queryResource.getDocketContentUsingGET(this.order.orderId).subscribe(content => {
+      this.content = content;
+      this.count++;
+    });
+    this.queryResource.getProductUsingGET(this.order.orderId).subscribe(products => {
+      this.products = products;
+      this.count++;
+    });
   }
-
-
 
 }

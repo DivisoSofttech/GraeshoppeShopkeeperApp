@@ -63,7 +63,7 @@ export class CreateEditProductComponent implements OnInit {
     private storage: Storage,
     private commandResource: CommandResourceService,
     private util: Util,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
   ) {
     setInterval(() => {
       if (!this.ref['destroyed']) {

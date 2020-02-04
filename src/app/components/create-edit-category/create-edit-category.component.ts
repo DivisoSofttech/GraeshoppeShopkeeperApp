@@ -43,7 +43,7 @@ export class CreateEditCategoryComponent implements OnInit {
     private commandResource: CommandResourceService,
     private storage: Storage,
     private query: QueryResourceService,
-    private util: Util
+    private util: Util,
   ) { }
 
   ngOnInit() {

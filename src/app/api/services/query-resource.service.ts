@@ -24,6 +24,7 @@ import { PageOfComboItem } from '../models/page-of-combo-item';
 import { ComboLineItemDTO } from '../models/combo-line-item-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
+import { Offer } from '../models/offer';
 import { PageOfOrder } from '../models/page-of-order';
 import { OrderLine } from '../models/order-line';
 import { Product } from '../models/product';
@@ -76,6 +77,7 @@ class QueryResourceService extends __BaseService {
   static readonly findContactByIdUsingGETPath = '/api/query/findContactById/{id}';
   static readonly findCustomerByIdUsingGETPath = '/api/query/findCustomerById/{id}';
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findNotificationCountByReceiverIdAndStatusName/{receiverId}/{status}';
+  static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{orderId}';
   static readonly findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETPath = '/api/query/findOrderByStatusNameAndStoreIdAndDeliveryType/{date}/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/findOrderLineByStoreId/{storeId}';
   static readonly findOrderLinesByOrderNumberUsingGETPath = '/api/query/findOrderLinesByOrderNumber/{orderId}';
@@ -85,11 +87,20 @@ class QueryResourceService extends __BaseService {
   static readonly findUOMDTOByIdUsingGETPath = '/api/query/findUOMById/{id}';
   static readonly findUOMByIdpCodeUsingGETPath = '/api/query/findUOMByIdpCode/{idpCode}';
   static readonly findAllEntryLineItemsByStockEntryIdUsingGETPath = '/api/query/findallentrylineitems/{id}';
+  static readonly getAttentionForFirstOrderUsingGETPath = '/api/query/getAttentionForFirstOrder/{orderNumber}';
   static readonly getAuxilaryLineItemsByIdpCodeUsingGETPath = '/api/query/getAuxilaryLineItemsByIdpCode/{idpCode}';
+  static readonly getCustomerDetailsUsingGETPath = '/api/query/getCustomerDetails/{orderNumber}';
+  static readonly getCustomerOrderDetailsUsingGETPath = '/api/query/getCustomerOrderDetails/{orderNumber}';
   static readonly getDetailedOrderSummeryUsingGETPath = '/api/query/getDetailedOrderSummery/{date}/{storeId}';
   static readonly getOrderSummaryDetailsUsingGETPath = '/api/query/getDetailedOrderSummeryAsPdf/{date}/{storeId}';
+  static readonly getDiscountAndTotalUsingGETPath = '/api/query/getDiscountAndTotal/{orderNumber}';
+  static readonly getDocketContentUsingGETPath = '/api/query/getDocketContent/{orderNumber}';
+  static readonly getDocketHeaderUsingGETPath = '/api/query/getDocketHeader/{orderNumber}';
+  static readonly getFooterUsingGETPath = '/api/query/getFooter/{orderNumber}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/getNotAuxNotComboProductsByIDPcode/{iDPcode}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderNumber}';
+  static readonly getPaymentStatusForDocketUsingGETPath = '/api/query/getPaymentStatusForDocket/{orderNumber}';
+  static readonly getProductUsingGETPath = '/api/query/getProduct/{orderNumber}';
   static readonly getProductBundleByIdUsingGETPath = '/api/query/getProductBundle/{id}';
   static readonly getStockEntryBundleByIdUsingGETPath = '/api/query/getStockEntryBundleById/{id}';
   static readonly getStoreBundleUsingGETPath = '/api/query/getStoreBundle/{regNo}';
@@ -1175,6 +1186,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOfferLinesByOrderIdUsingGETResponse(orderId: number): __Observable<__StrictHttpResponse<Array<Offer>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findOfferLinesByOrderId/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<Offer>>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOfferLinesByOrderIdUsingGET(orderId: number): __Observable<Array<Offer>> {
+    return this.findOfferLinesByOrderIdUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as Array<Offer>)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -1598,6 +1645,42 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getAttentionForFirstOrderUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getAttentionForFirstOrder/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getAttentionForFirstOrderUsingGET(orderNumber: string): __Observable<string> {
+    return this.getAttentionForFirstOrderUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetAuxilaryLineItemsByIdpCodeUsingGETParams` containing the following parameters:
    *
    * - `idpCode`: idpCode
@@ -1651,6 +1734,78 @@ class QueryResourceService extends __BaseService {
   getAuxilaryLineItemsByIdpCodeUsingGET(params: QueryResourceService.GetAuxilaryLineItemsByIdpCodeUsingGETParams): __Observable<PageOfAuxilaryLineItem> {
     return this.getAuxilaryLineItemsByIdpCodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfAuxilaryLineItem)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getCustomerDetailsUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getCustomerDetails/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getCustomerDetailsUsingGET(orderNumber: string): __Observable<string> {
+    return this.getCustomerDetailsUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getCustomerOrderDetailsUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getCustomerOrderDetails/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getCustomerOrderDetailsUsingGET(orderNumber: string): __Observable<string> {
+    return this.getCustomerOrderDetailsUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
@@ -1749,6 +1904,150 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDiscountAndTotalUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getDiscountAndTotal/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDiscountAndTotalUsingGET(orderNumber: string): __Observable<string> {
+    return this.getDiscountAndTotalUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDocketContentUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getDocketContent/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDocketContentUsingGET(orderNumber: string): __Observable<string> {
+    return this.getDocketContentUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDocketHeaderUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getDocketHeader/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getDocketHeaderUsingGET(orderNumber: string): __Observable<string> {
+    return this.getDocketHeaderUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getFooterUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getFooter/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getFooterUsingGET(orderNumber: string): __Observable<string> {
+    return this.getFooterUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetNotAuxNotComboProductsByIDPcodeUsingGETParams` containing the following parameters:
    *
    * - `iDPcode`: iDPcode
@@ -1838,6 +2137,78 @@ class QueryResourceService extends __BaseService {
   getOrderDocketUsingGET(orderNumber: string): __Observable<PdfDTO> {
     return this.getOrderDocketUsingGETResponse(orderNumber).pipe(
       __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getPaymentStatusForDocketUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getPaymentStatusForDocket/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getPaymentStatusForDocketUsingGET(orderNumber: string): __Observable<string> {
+    return this.getPaymentStatusForDocketUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getProductUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getProduct/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getProductUsingGET(orderNumber: string): __Observable<string> {
+    return this.getProductUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
