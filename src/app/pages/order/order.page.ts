@@ -1,3 +1,4 @@
+import { OrderMaster } from './../../api/models/order-master';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Util } from './../../services/util';
@@ -12,6 +13,7 @@ import {
   IonSlides,
   ActionSheetController,
   ModalController,
+  IonRefresher,
 } from '@ionic/angular';
 import { NotificationService } from 'src/app/services/notification.service';
 import { DatePipe, formatDate } from '@angular/common';
@@ -27,7 +29,9 @@ export class OrderPage implements OnInit {
   store: Store;
   user;
   loader: HTMLIonLoadingElement;
-  orders: Order[] = [];
+
+  slideOptions = { autoHeight: true };
+  slideWidthChecker;
 
   deliveryType = 'all';
 
@@ -45,6 +49,7 @@ export class OrderPage implements OnInit {
   completedOrdersSortedKeys = ['today'];
 
 
+  showSearch = false;
   showPending = true;
   currentPage = 'pending';
   penCount = 0;
@@ -54,12 +59,16 @@ export class OrderPage implements OnInit {
   conTotalPages = 0;
   comTotalPages = 0;
   showFooter = false;
-  onRefresh = false;
+  searchTerm;
 
-  colors = ['medium' , 'light']
+  searchedOrder: OrderMaster = {};
+  searchedOrderDate;
+
+  colors = ['medium' , 'light'];
 
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonRefresher, {static: false}) private IonRefresher: IonRefresher;
   @ViewChild('slides', null) slides: IonSlides;
   notificationCount: any;
   constructor(
@@ -93,6 +102,7 @@ export class OrderPage implements OnInit {
             this.initTasks();
             console.log('last log ');
             loader.dismiss();
+            this.fixSliderHeight();
           });
         });
       }
@@ -101,6 +111,22 @@ export class OrderPage implements OnInit {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReceiptPage');
+    }
+
+    fixSliderHeight() {
+      this.slideWidthChecker = setInterval(() => {
+        if (this.slides !== undefined) {
+          this.slides.updateAutoHeight();
+        }
+      }, 3000);
+    }
+
+    ngOnDestroy(): void {
+      clearInterval(this.slideWidthChecker);
+    }
+
+    toggleSearch() {
+      this.showSearch = !this.showSearch;
     }
 
   initTasks() {
@@ -160,26 +186,33 @@ export class OrderPage implements OnInit {
     return 'warning';
   }
 
-  sortOrders(o: Order , keyStore , arrayList) {
+  sortOrders(o: OrderMaster , keyStore , arrayList) {
     console.log('method sort ');
 
-    const date1: any = this.datePipe.transform(o.date, 'dd/MM/yy');
+    const date1: any = this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy');
     const date2: any = this.datePipe.transform(new Date() , 'dd/MM/yy');
 
     if (date1 === date2) {
        arrayList.today.push(o);
     } else {
-      if (keyStore.includes(this.datePipe.transform(o.date, 'dd/MM/yy'))) {
-        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')].push(o);
+      if (keyStore.includes(this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy'))) {
+        arrayList[this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy')].push(o);
       } else {
-        keyStore.push(this.datePipe.transform(o.date, 'dd/MM/yy'));
-        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')] = [];
-        arrayList[this.datePipe.transform(o.date, 'dd/MM/yy')].push(o);
+        keyStore.push(this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy'));
+        arrayList[this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy')] = [];
+        arrayList[this.datePipe.transform(o.orderPlaceAt, 'dd/MM/yy')].push(o);
       }
     }
+
+    this.slides.updateAutoHeight()
+      .then(() => {
+        document.body.scrollTo(0, 0);
+      });
   }
 
   getPendingOrders(i) {
+    console.log('type'+ this.deliveryType);
+    
     console.log('method pending oders ');
 
     this.util.createLoader().then(loader => {
@@ -189,12 +222,11 @@ export class OrderPage implements OnInit {
           statusName: 'payment-processed-unapproved',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType,
-          date: formatDate(new Date() , 'yyyy-MM-dd','en')
+          deliveryType: this.deliveryType.toUpperCase(),
+          date: formatDate(new Date() , 'yyyy-MM-dd', 'en')
         })
         .subscribe(res => {
-          res.content.forEach(data =>
-          {
+          res.content.forEach(data => {
               this.sortOrders(data , this.pendingOrdersSortedKeys , this.pendingOrdersSorted);
           }, err => {
 
@@ -208,6 +240,10 @@ export class OrderPage implements OnInit {
          } else {
            this.ionInfiniteScroll.disabled = false;
           }
+          this.slides.updateAutoHeight()
+          .then(() => {
+            document.body.scrollTo(0, 0);
+          });
           console.log('pending', i, '==',  res.totalPages );
           loader.dismiss();
         }, err => {
@@ -227,12 +263,11 @@ export class OrderPage implements OnInit {
           statusName: 'payment-processed-approved',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType,
-          date: formatDate(new Date() , 'yyyy-MM-dd','en')
+          deliveryType: this.deliveryType.toUpperCase(),
+          date: formatDate(new Date() , 'yyyy-MM-dd', 'en')
         })
         .subscribe(res => {
-          res.content.forEach(data =>
-            {
+          res.content.forEach(data => {
               this.sortOrders(data , this.confirmedOrdersSortedKeys, this.confirmedOrdersSorted);
             });
           i++;
@@ -263,8 +298,8 @@ export class OrderPage implements OnInit {
           statusName: 'delivered',
           page: i,
           storeId: this.user.preferred_username,
-          deliveryType: this.deliveryType,
-          date: formatDate(new Date() , 'yyyy-MM-dd','en')
+          deliveryType: this.deliveryType.toUpperCase(),
+          date: formatDate(new Date() , 'yyyy-MM-dd', 'en')
         })
         .subscribe(res => {
           res.content.forEach(data => {
@@ -286,35 +321,6 @@ export class OrderPage implements OnInit {
           this.util.createToast('Error getting Completed Orders', 'information-circle');
         });
     });
-  }
-  getOrders(i, limit: boolean) {
-    console.log('method getOders ');
-
-    this.queryResource
-      .findOrderLineByStoreIdUsingGET({
-        storeId: this.user.preferred_username,
-        page: i
-      })
-      .subscribe(porders => {
-        porders.content.forEach(o => {
-          this.orders.push(o);
-        });
-
-        i++;
-
-        if (limit === false) {
-          // Load All Pages Recursively
-          if (i < porders.totalPages) {
-            this.getOrders(i, limit);
-          }
-        }
-
-        if (i === porders.totalPages) {
-          // Disable infinite Scroll
-          console.log('All Pages Retrieved PageCount', porders.totalPages);
-          this.toggleInfiniteScroll();
-        }
-      });
   }
 
   toggleInfiniteScroll() {
@@ -418,8 +424,10 @@ export class OrderPage implements OnInit {
   }
 
   orderAccepted(order , key) {
+
+    console.log(order + '  ' + key);
     this.pendingOrdersSorted[key] = this.pendingOrdersSorted[key].filter(
-      po => po.orderId !== order.orderId
+      po => po.orderNumber !== order.orderNumber
     );
     if (this.confirmedOrdersSortedKeys.includes(key)) {
       this.confirmedOrdersSorted[key].unshift(order);
@@ -428,11 +436,16 @@ export class OrderPage implements OnInit {
       this.confirmedOrdersSorted[key] = [];
       this.confirmedOrdersSorted[key].unshift(order);
     }
+    if (this.showSearch) {
+      this.toggleSearch();
+    }
   }
 
   orderCompleted(order , key) {
+
+    console.log(order + '  ' + key);
     this.confirmedOrdersSorted[key] = this.confirmedOrdersSorted[key].filter(
-      co => co.orderId !== order.orderId
+      co => co.orderNumber !== order.orderNumber
     );
     if (this.completedOrdersSortedKeys.includes(key)) {
       this.completedOrdersSorted[key].unshift(order);
@@ -440,6 +453,9 @@ export class OrderPage implements OnInit {
       this.completedOrdersSortedKeys.push(key);
       this.completedOrdersSorted[key] = [];
       this.completedOrdersSorted[key].unshift(order);
+    }
+    if (this.showSearch) {
+      this.toggleSearch();
     }
   }
 
@@ -449,8 +465,7 @@ export class OrderPage implements OnInit {
     }
   }
 
-  refresh() {
-    this.onRefresh = true;
+  refresh(event) {
     this.pendingOrdersSorted = {today: []};
     this.pendingOrdersSortedKeys = ['today'];
     this.confirmedOrdersSorted = {today: []};
@@ -458,12 +473,29 @@ export class OrderPage implements OnInit {
     this.completedOrdersSorted = {today: []};
     this.completedOrdersSortedKeys = ['today'];
     this.ngOnInit();
+    this.IonRefresher.disabled = true;
     setTimeout(() => {
-      this.onRefresh = false;
+      event.target.complete();
     }, 2000);
+    setTimeout(() => {
+      this.IonRefresher.disabled = false;
+    }, 3000);
   }
 
   showFoo() {
     this.showFooter = !this.showFooter;
+  }
+
+  getSearchedOrder() {
+    this.queryResource.findOrderMasterByOrderIdUsingGET(this.searchTerm).subscribe(order => {
+      this.searchedOrder = order;
+      const date2: any = this.datePipe.transform(new Date() , 'dd/MM/yy');
+      const date1: any = this.datePipe.transform(order.orderPlaceAt, 'dd/MM/yy');
+      if (date1 === date2) {
+        this.searchedOrderDate = 'today';
+      } else {
+        this.searchedOrderDate = this.datePipe.transform(order.orderPlaceAt, 'dd/MM/yy');
+      }
+    });
   }
 }

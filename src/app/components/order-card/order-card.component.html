@@ -2,13 +2,13 @@
   <ion-card-header class="ion-no-padding">
     <ion-item lines="full">
       <ion-text slot="start">
-        {{order.orderId}}
+        {{order.orderNumber}}
       </ion-text>
       <ion-badge color="dark" slot="end">
-        {{order.deliveryInfo.deliveryType}}
+        {{order.methodOfOrder}}
       </ion-badge>
       <ion-text slot="end">
-        {{order.customerId}}
+        {{order.customerName}}
       </ion-text>
     </ion-item>
   </ion-card-header>
@@ -20,13 +20,13 @@
             <ion-row class="ion-margin-bottom">
               <ion-text color="danger" float-left class="center">
                 <ion-icon name="calendar" class="icon-big"></ion-icon>
-                {{order.date | date: 'd/M/yy'}}
+                {{order.orderPlaceAt | date: 'd/M/yy'}}
               </ion-text>
             </ion-row>
             <ion-row>
               <ion-text color="danger" class="center">
                 <ion-icon name="time" class="icon-big"></ion-icon>
-                {{order.date | date: 'shortTime'}}
+                {{order.orderPlaceAt | date: 'shortTime'}}
               </ion-text>
             </ion-row>
           </ion-grid>
@@ -35,17 +35,17 @@
           <ion-grid>
             <ion-row class="ion-margin-bottom">
               <ion-col>
-                <ion-label class="center" *ngIf="order.deliveryInfo && order.deliveryInfo.deliveryAddress">
-                  {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ', ' + order.deliveryInfo.deliveryAddress.city}}
+                <ion-label class="center">
+                  {{order.houseNoOrBuildingName + ', ' + order.city}}
                 </ion-label>
               </ion-col>
             </ion-row>
             <ion-row class="ion-margin-bottom">
               <ion-col>
                 <ion-text class="center">
-                  <ion-icon *ngIf="order.paymentMode != 'COD'"  class="icon-big" name="card"></ion-icon>
-                  <ion-icon *ngIf="order.paymentMode == 'COD'" class="icon-big" name="wallet"></ion-icon>
-                  {{order.paymentMode}}
+                  <ion-icon *ngIf="order.paymentStatus != 'ORDER NOT PAID'"  class="icon-big" name="card"></ion-icon>
+                  <ion-icon *ngIf="order.paymentStatus == 'ORDER NOT PAID'" class="icon-big" name="wallet"></ion-icon>
+                  {{order.paymentStatus}}
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -64,14 +64,14 @@
       <ion-row>
         <ion-col class="ion-no-padding">
           <ion-buttons class="buttons-right">
-            <ion-button *ngIf="orderType=='confirmed'" (click)="print()">
+            <ion-button *ngIf="orderType=='confirmed'" (click)="getDocketData()">
               <ion-icon slot="icon-only" name="print"></ion-icon>
             </ion-button>
             <ion-button (click)="viewOrderViewModal()">
               <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-button>
             <ion-button *ngIf="orderType!='completed' && requiredPhoneVerification">
-              <a href=tel:9876543210>
+              <a href=tel:{{order.phone}}>
                 <ion-icon slot="icon-only" name="call"></ion-icon>
               </a>
             </ion-button>
@@ -82,7 +82,7 @@
             Mark as delivered
             <ion-icon name="checkmark"></ion-icon>
           </ion-button>
-          <ion-button (click)="acceptOrder()" *ngIf="orderType=='pending'" color="success" fill="clear">Accept
+          <ion-button (click)="routeAcceptOrder()" *ngIf="orderType=='pending'" color="success" fill="clear">Accept
           </ion-button>
         </ion-col>
       </ion-row>

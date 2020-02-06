@@ -6,7 +6,7 @@ import { AuxilaryLineItemDTO } from './../../api/models/auxilary-line-item-dto';
 import { UOMDTO } from './../../api/models/uomdto';
 import { CategoryDTO } from './../../api/models/category-dto';
 import { ProductDTO } from './../../api/models/product-dto';
-import { ModalController, PopoverController, IonSlides, IonContent } from '@ionic/angular';
+import { ModalController, PopoverController, IonSlides, IonContent, IonSelectOption } from '@ionic/angular';
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import {
   QueryResourceService,
@@ -84,8 +84,12 @@ export class CreateEditProductComponent implements OnInit {
           console.log('product' , this.product);
           console.log('productBundle ', productBundle);
           this.productbundle = productBundle;
-          this.productDTO.discountId = productBundle.discount.id;
-          this.discount = productBundle.discount;
+          if (productBundle.discount) {
+            this.productDTO.discountId = productBundle.discount.id;
+          }
+          if (productBundle.discount) {
+            this.discount = productBundle.discount;
+          }
         });
     }
   }
@@ -417,5 +421,14 @@ export class CreateEditProductComponent implements OnInit {
       }
       return false;
     }
+  }
+
+  selectedCategory(categoryid): boolean {
+    console.log(categoryid + ' === '+this.productDTO.categoryId);
+    
+    if (this.productDTO.categoryId == categoryid) {
+      return true;
+    }
+    return false;
   }
 }

@@ -1,3 +1,4 @@
+import { OrderMaster } from './../../api/models/order-master';
 import { formatDate } from '@angular/common';
 import EscPosEncoder from 'esc-pos-encoder';
 import { ExpectedDeliveryComponent } from './../expected-delivery/expected-delivery.component';
@@ -16,6 +17,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Util } from 'src/app/services/util';
 
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
+import moment from 'moment';
 
 declare var sunmiInnerPrinter: any;
 declare var Socket: any;
@@ -26,7 +28,7 @@ declare var Socket: any;
   styleUrls: ['./order-card.component.scss']
 })
 export class OrderCardComponent implements OnInit {
-  @Input() order: Order;
+  @Input() order: OrderMaster;
   @Input() orderType: string;
   @Input() color: string;
   taskId: string;
@@ -46,6 +48,12 @@ export class OrderCardComponent implements OnInit {
   header;
   content;
   products;
+  discountTotal;
+  paymentStatus;
+  customerOrderDetail;
+  attention;
+  customerDetail;
+  footer;
 
    // products: Product[] = [];
   constructor(
@@ -66,35 +74,28 @@ export class OrderCardComponent implements OnInit {
       .get('user')
       .then(data => {
         this.user = data;
-        // this.queryResource.findOrderLinesByOrderNumberUsingGET(this.order.orderId).subscribe(orderLines => {
-        //   this.order.orderLines = orderLines;
-        //   // orderLines.forEach(o => {
-        //   //   this.queryResource.findProductByIdUsingGET(o.productId).subscribe(p => this.products.push(p));
-        //   // });
-        //   console.log(this.order.orderId + ' orderLines' , orderLines);
-        // });
-        // tslint:disable-next-line: max-line-length
-        if (this.order.status.name === 'unapproved' || this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
-          console.log('Checking the order count ', this.order.status.name);
           // tslint:disable-next-line: max-line-length
-          this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
-            .subscribe(ordercount => {
-              console.log('Order count is ', ordercount);
-              if (ordercount === 1) {
-                console.log('call enable set to true');
-                this.requiredPhoneVerification = true;
-              }
-            });
-        }
+        if (this.order.orderStatus === 'unapproved' || this.order.orderStatus === 'approved' || this.order.orderStatus === 'payment-processed') {
+            console.log('Checking the order count ', this.order.orderStatus);
+            // tslint:disable-next-line: max-line-length
+            this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
+              .subscribe(ordercount => {
+                console.log('Order count is ', ordercount);
+                if (ordercount === 1) {
+                  console.log('call enable set to true');
+                  this.requiredPhoneVerification = true;
+                }
+              });
+          }
       });
   }
 
-  completeOrder(order: Order) {
+  completeOrder(order: OrderMaster) {
     this.util.createLoader().then(
       loader => {
         loader.present();
         this.command
-          .markOrderAsDeliveredUsingPOST(order.orderId)
+          .markOrderAsDeliveredUsingPOST(order.orderNumber)
           .subscribe(data => {
             this.completed.emit();
             loader.dismiss();
@@ -113,7 +114,9 @@ export class OrderCardComponent implements OnInit {
       this.expectedTimePopover((data) => {
         this.deliveryTime = data;
         console.log(this.deliveryTime);
-        this.acceptOrder();
+        if (this.deliveryTime) {
+          this.acceptOrder();
+        }
       });
     } else {
       this.acceptOrder();
@@ -127,27 +130,26 @@ export class OrderCardComponent implements OnInit {
           this.deliveryTime = this.order.preOrderDate;
         }
       const date = new Date();
-        // const time: string = this.deliveryTime.slice(
-        //   this.deliveryTime.indexOf('T') + 1,
-        //   this.deliveryTime.indexOf('.'));
-        // const tempTime: string[] = time.split(':');
-        // const newTime = moment(date)
-        //   .add(0, 'seconds')
-        //   .add(tempTime[1], 'minutes')
-        //   .add(tempTime[0], 'hours')
-        //   .toISOString();
+      const time: string = this.deliveryTime.slice(
+        this.deliveryTime.indexOf('T') + 1,
+        this.deliveryTime.indexOf('.'));
+      const tempTime: string[] = time.split(':');
+      const newTime = moment(date)
+        .add(0, 'seconds')
+        .add(tempTime[1], 'minutes')
+        .add(tempTime[0], 'hours')
+        .toISOString();
         // console.log('new time', newTime);
         // console.log('task id', openTask.taskId);
 
       this.command
           .acceptOrderUsingPOST({
-            taskId: this.order.acceptOrderId,
+            taskId: this.order.nextTaskId,
             approvalDetailsDTO: {
               acceptedAt: date.toISOString(),
               decision: 'accepted',
-              orderId: this.order.orderId,
-              // expectedDelivery: newTime
-              expectedDelivery: null
+              orderId: this.order.orderNumber,
+              expectedDelivery: newTime
             }
           })
           .subscribe(data => {
@@ -174,7 +176,7 @@ export class OrderCardComponent implements OnInit {
     if (this.orderType === 'confirmed') {
       this.util.createLoader().then(loader => {
         loader.present();
-        this.queryResource.getOrderDocketUsingGET(this.order.orderId).subscribe(orderDocket => {
+        this.queryResource.getOrderDocketUsingGET(this.order.orderNumber).subscribe(orderDocket => {
           console.log(orderDocket.pdf, orderDocket.contentType);
           const byteCharacters = atob(orderDocket.pdf);
           const byteNumbers = new Array(byteCharacters.length);
@@ -254,8 +256,10 @@ async expectedTimePopover(callback?) {
   }
 
   async print() {
-    const encoder = new EscPosEncoder();
-    const result = encoder
+    console.log('count === ' + this.count);
+    if (this.count === 9) {
+      const encoder = new EscPosEncoder();
+      const result = encoder
         .initialize()
         .bold()
         .align('center')
@@ -264,35 +268,82 @@ async expectedTimePopover(callback?) {
         .newline()
         .text(this.content)
         .newline()
-        .align('left')
         .text(this.products)
         .newline()
+        .text(this.discountTotal)
+        .newline()
+        .text(this.paymentStatus)
+        .newline()
+        .text(this.customerOrderDetail)
+        .newline()
+        .text(this.attention)
+        .newline()
+        .text(this.customerDetail)
+        .newline()
+        .text(this.footer)
+        .newline()
         .encode();
-    const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
-    try {
+      const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
+      try {
           sunmiInnerPrinter.sendRAWData(base64String, succes => {
-            sunmiInnerPrinter.cutPaper();
+            sunmiInnerPrinter.cutPaper().then(_ => this.count = 0);
           }, error => {
             console.log(error);
+            this.count = 0;
           });
 
       } catch (err) {
         console.error(err);
+        this.count = 0;
       }
+    }
     }
 
   getDocketData() {
-    this.queryResource.getDocketHeaderUsingGET(this.order.orderId).subscribe(header => {
+    this.queryResource.getDocketHeaderUsingGET(this.order.orderNumber).subscribe(header => {
       this.header = header;
       this.count++;
+      this.print();
     });
-    this.queryResource.getDocketContentUsingGET(this.order.orderId).subscribe(content => {
+    this.queryResource.getDocketContentUsingGET(this.order.orderNumber).subscribe(content => {
       this.content = content;
       this.count++;
+      this.print();
     });
-    this.queryResource.getProductUsingGET(this.order.orderId).subscribe(products => {
+    this.queryResource.getProductUsingGET(this.order.orderNumber).subscribe(products => {
       this.products = products;
       this.count++;
+      this.print();
+    });
+    this.queryResource.getDiscountAndTotalUsingGET(this.order.orderNumber).subscribe(discountTotal => {
+      this.discountTotal = discountTotal;
+      this.count++;
+      this.print();
+    });
+    this.queryResource.getPaymentStatusForDocketUsingGET(this.order.orderNumber).subscribe(paymentStatus => {
+      this.paymentStatus = paymentStatus;
+      this.count++;
+      this.print();
+    });
+    this.queryResource.getCustomerOrderDetailsUsingGET(this.order.orderNumber).subscribe(customerOrderDetail => {
+      this.customerOrderDetail = customerOrderDetail;
+      this.count++;
+      this.print();
+    });
+    this.queryResource.getAttentionForFirstOrderUsingGET(this.order.orderNumber).subscribe(attention => {
+      this.attention = attention;
+      this.count++;
+      this.print();
+    });
+    this.queryResource.getCustomerDetailsUsingGET(this.order.orderNumber).subscribe(customerDetail => {
+      this.customerDetail = customerDetail;
+      this.count++;
+      this.print();
+    });
+    this.queryResource.getFooterUsingGET(this.order.orderNumber).subscribe(footer => {
+      this.footer = footer;
+      this.count++;
+      this.print();
     });
   }
 

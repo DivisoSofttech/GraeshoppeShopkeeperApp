@@ -18,6 +18,7 @@ export interface OrderMaster {
   landmark?: string;
   loyaltyPoint?: number;
   methodOfOrder?: string;
+  nextTaskId?: string;
   notes?: string;
   offerLines?: Array<OfferLine>;
   orderAcceptedAt?: string;

@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar>
-      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-        <ion-title>Order</ion-title>
+      <ion-menu-button *ngIf="showSearch == false" slot="start" auto-hide="true"></ion-menu-button>
         
-        <ion-item slot="end">
+        <ion-buttons>
+          <ion-button (click)="toggleSearch()" *ngIf="showSearch == true" ><ion-icon slot="icon-only" name="close"></ion-icon></ion-button>
+        <ion-title *ngIf="showSearch==false">Order</ion-title>
+        <ion-searchbar *ngIf="showSearch == true"  [(ngModel)] ="searchTerm" (ionChange)="getSearchedOrder()"></ion-searchbar>
+        </ion-buttons>
+        <ion-item *ngIf="showSearch == false" slot="end">
           <ion-button fill="none"><ion-icon slot="icon-only" name="funnel"></ion-icon></ion-button>
           <ion-select class="ion-no-padding ion-no-margin" okText="Okay" (ionChange)="filter($event)" cancelText="Dismiss">
             <ion-select-option value="all">All</ion-select-option>
@@ -16,18 +20,20 @@
           <!-- <ion-button (click)="print()">
             <ion-icon slot="icon-only" name="print" ></ion-icon>
           </ion-button> -->
-          <ion-button slot="end" fill="none"(click)="refresh()"><ion-icon slot="icon-only" name="refresh"></ion-icon></ion-button>
-          <ion-button (click)="openNotificationModal()">
+          <!-- <ion-button slot="end" fill="none"(click)="refresh()"><ion-icon slot="icon-only" name="refresh"></ion-icon></ion-button> -->
+          <ion-button (click)="toggleSearch()" *ngIf="showSearch==false">
+            <ion-icon slot="icon-only"  name="search"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="showSearch == false" (click)="openNotificationModal()">
             <ion-icon class="icon" name="notifications"></ion-icon>
           </ion-button>
-          <ion-badge *ngIf="notificationCount != 0" id="notifications-badge" color="danger">{{notificationCount}}</ion-badge>
+          <ion-badge  *ngIf="showSearch == false && notificationCount != 0" id="notifications-badge" color="danger">{{notificationCount}}</ion-badge >
         </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<i *ngIf="onRefresh" class="center fa fa-refresh fa-spin" style="font-size:30px"><ion-icon name="refresh"></ion-icon></i>
-
 <ion-content >
-  <div>
+  <ng-container *ngIf="!showSearch">
+    <div>
       <ion-segment (ionChange)="segmentChange($event)" [value]="currentPage" color="secondary">
         <ion-segment-button value="pending">
           <ion-label>Pending</ion-label>
@@ -41,7 +47,7 @@
       </ion-segment>
     </div>
 
-    <ion-slides #slides (ionSlideDidChange)="slideChange()">
+    <ion-slides #slides [options]="slideOptions" (ionSlideDidChange)="slideChange()">
 
         <ion-slide *ngIf="showPending">
          <div class="slideContent">
@@ -59,14 +65,13 @@
           </ion-list>
          </div>
         </ion-slide>
-
         <ion-slide>
           <div class="slideContent">
               <ion-list justify-content-center *ngFor="let okey of confirmedOrdersSortedKeys">
                   <ion-list-header color="secondary">
                     <ion-label>
                       <b>{{okey | titlecase}}</b>
-                    </ion-label>
+                    </ion-label>const
                   </ion-list-header>    
                   <div class="mg-top">
                       <ion-label *ngIf="confirmedOrdersSorted[okey].length === 0">No Orders</ion-label>
@@ -82,7 +87,7 @@
                 <ion-list-header color="secondary">
                   <ion-label>
                     <b>{{okey | titlecase}}</b>
-                  </ion-label>
+                  </ion-label>const
                 </ion-list-header>    
                 <div class="mg-top">
                     <ion-label *ngIf="completedOrdersSorted[okey].length === 0">No Orders</ion-label>
@@ -99,15 +104,18 @@
             loadingText="Loading more data...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <!-- <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+      <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
           <ion-refresher-content
             pullingIcon="arrow-dropdown"
             pullingText="Pull to refresh"
             refreshingSpinner="circles"
             refreshingText="Refreshing...">
           </ion-refresher-content>
-        </ion-refresher> -->
+        </ion-refresher>
+  </ng-container>
+  <ng-container *ngIf="showSearch && searchedOrder  ">
+    <app-order-card *ngIf="searchedOrder.orderStatus == 'payment-processed-unapproved'" class="vertical-align-center" [orderType]='"pending"' (accept)="orderAccepted(searchedOrder , searchedOrderDate)" [order]="searchedOrder"></app-order-card>
+    <app-order-card *ngIf="searchedOrder.orderStatus == 'payment-processed-approved'" class="vertical-align-center" [orderType]='"confirmed"' (completed)="orderCompleted(searchedOrder , searchedOrderDate)" [order]="searchedOrder"></app-order-card>
+    <app-order-card *ngIf="searchedOrder.orderStatus == 'delivered'" class="vertical-align-center" [orderType]='"completed"' [order]="searchedOrder"></app-order-card>
+    </ng-container>
   </ion-content>
-<!-- <ion-content>
-  <app-order></app-order>
-</ion-content> -->

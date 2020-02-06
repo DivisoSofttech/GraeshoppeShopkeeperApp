@@ -70,8 +70,8 @@
                     <ion-col size="10" no-padding no-margin>
                       <ion-item  lines="none">
                         <ion-label position="floating">Category <ion-text color="danger">*</ion-text></ion-label>
-                        <ion-select value="{{productDTO.categoryId}}" [(ngModel)]="productDTO.categoryId">
-                          <ion-select-option *ngFor="let category of categories" value="{{category.id}}" required>
+                        <ion-select [(ngModel)]="productDTO.categoryId" value="productDTO.categoryId">
+                          <ion-select-option *ngFor="let category of categories" [value]="category.id"required>
                             {{category.name}}
                           </ion-select-option>
                         </ion-select>

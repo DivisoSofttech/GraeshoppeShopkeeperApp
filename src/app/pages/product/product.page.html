@@ -3,8 +3,16 @@
     <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
     <ion-title *ngIf="showSearchbar==false">Product</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="inputClick()" *ngIf="showSearchbar==false">
+        <input
+        (change)="uploadCsv($event)"
+        class="hide"
+        type="file"
+        />
+        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+      </ion-button>
       <ion-button (click)="toggleSearchbar()" *ngIf="showSearchbar==false">
-        <ion-icon  name="search"></ion-icon>
+        <ion-icon slot="icon-only"  name="search"></ion-icon>
       </ion-button>
       <!-- <ion-button (click)="openNotificationModal()" >
         <ion-icon class="icon" name="notifications"></ion-icon>

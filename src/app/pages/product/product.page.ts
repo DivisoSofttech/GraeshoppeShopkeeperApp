@@ -1,8 +1,9 @@
+import { CommandResourceService } from 'src/app/api/services';
 import { NotificationService } from './../../services/notification.service';
 import { ProductViewComponent } from './../../components/product-view/product-view.component';
 
 import { Storage } from '@ionic/storage';
-import { Component,  OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService } from '../../api/services/query-resource.service';
 import { Product } from '../../api/models/product';
 import { Util } from 'src/app/services/util';
@@ -25,13 +26,15 @@ export class ProductPage implements OnInit {
   notificationCount: number;
 
   @ViewChild(IonInfiniteScroll , null) infiniteScroll: IonInfiniteScroll;
+  @ViewChild('input' , null) input;
 
   constructor(
     private storage: Storage,
     private util: Util,
     private queryService: QueryResourceService,
     private modalController: ModalController,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private commandService: CommandResourceService
   ) { }
 
   ngOnInit() {
@@ -48,6 +51,34 @@ export class ProductPage implements OnInit {
     this.showSearchbar = !this.showSearchbar;
     this.products = this.tempProducts;
     console.log(this.products);
+  }
+
+  inputClick() {
+    const element: HTMLElement = document.querySelector('input[type="file"]') as HTMLElement;
+    element.click();
+  }
+
+  uploadCsv(event) {
+    let base64 = '';
+    console.log(event.target.files[0]);
+    const file: File = event.target.files[0];
+    console.log(event);
+    const myReader: FileReader = new FileReader();
+
+    myReader.onloadend = async (e)  =>  {
+    const data = myReader.result.toString();
+    base64 = data.split(',')[1];
+    console.log(base64);
+    this.commandService.importexcelDatatoDBUsingPOST({file: base64}).subscribe(_ => {
+      console.log('succes');
+    },
+    err => {
+      console.log(err);
+    });
+  };
+    myReader.readAsDataURL(file);
+
+    
   }
 
   getAuxilaries(i) {
@@ -102,7 +133,7 @@ export class ProductPage implements OnInit {
     let iDPcode;
     this.storage.get('user').then(user => {
       iDPcode = user.preferred_username;
-      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode:iDPcode, page: i})
+      this.queryService.findAllProductsByIdpCodeUsingGET({idpCode: iDPcode, page: i})
       .subscribe(res => {
         this.infiniteScroll.complete();
         success !== undefined ? success(res) : null;
@@ -130,7 +161,7 @@ export class ProductPage implements OnInit {
         }
       },
       err => {
-        console.log("error getting products",err);
+        console.log('error getting products', err);
         this.loader.dismiss();
       });
     })

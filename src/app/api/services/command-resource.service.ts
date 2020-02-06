@@ -19,6 +19,7 @@ import { CustomerAggregator } from '../models/customer-aggregator';
 import { DeliveryInfoDTO } from '../models/delivery-info-dto';
 import { DiscountDTO } from '../models/discount-dto';
 import { EntryLineItemDTO } from '../models/entry-line-item-dto';
+import { ProductFile } from '../models/product-file';
 import { LocationDTO } from '../models/location-dto';
 import { NotificationDTO } from '../models/notification-dto';
 import { AddressDTO } from '../models/address-dto';
@@ -67,6 +68,7 @@ class CommandResourceService extends __BaseService {
   static readonly createEntryLineItemUsingPOSTPath = '/api/command/entryLineItem';
   static readonly updateEntryLineItemUsingPUTPath = '/api/command/entryLineItem';
   static readonly deleteEntryLineItemUsingDELETEPath = '/api/command/entryLineItem/{id}';
+  static readonly importexcelDatatoDBUsingPOSTPath = '/api/command/importexcelDatatoDB';
   static readonly createLocationUsingPOSTPath = '/api/command/location';
   static readonly updateLocationUsingPUTPath = '/api/command/location';
   static readonly deleteLocationUsingDELETEPath = '/api/command/location/{id}';
@@ -1073,6 +1075,40 @@ class CommandResourceService extends __BaseService {
    */
   deleteEntryLineItemUsingDELETE(id: number): __Observable<null> {
     return this.deleteEntryLineItemUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param product product
+   */
+  importexcelDatatoDBUsingPOSTResponse(product: ProductFile): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = product;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/importexcelDatatoDB`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param product product
+   */
+  importexcelDatatoDBUsingPOST(product: ProductFile): __Observable<null> {
+    return this.importexcelDatatoDBUsingPOSTResponse(product).pipe(
       __map(_r => _r.body as null)
     );
   }

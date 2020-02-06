@@ -21,15 +21,15 @@
             &#8364;{{ order.subTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
-      <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
+      <ion-item lines="none" *ngIf="order.methodOfOrder ==='DELIVERY'">
           <ion-text slot="start" >
               Delivery
           </ion-text>
           <ion-text slot="start" slot="end" class="ion-text-right">
-              &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
+              &#8364;{{order.deliveryCharge |  number: "1.1-2"}}
           </ion-text>
         </ion-item>  
-        <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
+        <ion-item lines="none" *ngIf="order.methodOfOrder ==='COLLECTION'">
             <ion-text slot="start" >
                 Collection
             </ion-text>
@@ -37,6 +37,14 @@
                 &#8364; 0
             </ion-text>
         </ion-item>
+        <ion-item lines="none" *ngIf="discount !== 0">
+          <ion-text slot="start" >
+              Discount
+          </ion-text>
+          <ion-text slot="start" slot="end" class="ion-text-right">
+              -&#8364;{{discount |  number: "1.1-2"}}
+          </ion-text>
+        </ion-item> 
 
     </ion-card-header>
     <ion-card-content class="ion-no-padding">
@@ -45,7 +53,7 @@
                 <b>Total</b>
             </ion-text>
             <ion-text slot="start" slot="end" class="ion-text-right">
-              <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+              <b>&#8364;{{order.totalDue |  number: "1.1-2"}}</b>
             </ion-text>
           </ion-item>    
     </ion-card-content>
@@ -56,43 +64,43 @@
       <ion-text slot="start" >
           Payment mode
       </ion-text>
-      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.paymentMode}}</ion-text>
+      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.paymentStatus}}</ion-text>
     </ion-item>
 
     <ion-item lines="none">
       <ion-text slot="start" >
           Delivery type
       </ion-text>
-      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.deliveryInfo.deliveryType}}</ion-text>
+      <ion-text slot="start" slot="end" class="ion-text-right">{{ order.methodOfOrder}}</ion-text>
     </ion-item>
   </ion-card>
 
 
 
-  <ion-card  *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
+  <ion-card>
       <ion-card-header color="primary">
         <ion-card-title>
           <h1>Address</h1>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content class="ion-no-padding pd-10">
-        <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
+        <ion-item lines="none">
           <ion-label>
             <address>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.addressType">
-                ({{ order.deliveryInfo.deliveryAddress.addressType | titlecase}}),
+              <span *ngIf="order.addressType">
+                ({{ order.addressType | titlecase}}),
               </span>
-              <span>{{ order.deliveryInfo.deliveryAddress.name | titlecase }},</span>
+              <span>{{ order.customerName | titlecase }},</span>
               <span>
-                {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }},
+                {{ order.houseNoOrBuildingName }},
               </span>
             </address>
 
             <address>
-              <span>{{ order.deliveryInfo.deliveryAddress.city }},</span>
-              <span>{{ order.deliveryInfo.deliveryAddress.landmark }},</span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.pincode">
-                {{ order.deliveryInfo.deliveryAddress.pincode}},
+              <span>{{ order.city }},</span>
+              <span>{{ order.landmark }},</span>
+              <span *ngIf="order.pincode">
+                {{ order.pincode}},
               </span>
             </address>
           </ion-label>
@@ -100,7 +108,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null">
+    <ion-card *ngIf="order.notes !== null ">
         <ion-card-header color="primary">
           <ion-card-title>
             <h1>Note</h1>
@@ -108,7 +116,7 @@
         </ion-card-header>
         <ion-card-content class="ion-no-padding pd-10">
           <ion-item lines="none">
-              <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
+              <p><b>{{order.notes | titlecase}}</b></p>
           </ion-item>
         </ion-card-content>
       </ion-card>
