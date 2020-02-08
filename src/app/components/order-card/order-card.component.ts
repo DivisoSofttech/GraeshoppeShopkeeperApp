@@ -55,6 +55,8 @@ export class OrderCardComponent implements OnInit {
   customerDetail;
   footer;
 
+  expecteddeliveryTime = 20;
+
    // products: Product[] = [];
   constructor(
     private command: CommandResourceService,
@@ -88,12 +90,12 @@ export class OrderCardComponent implements OnInit {
       });
   }
 
-  completeOrder(order: OrderMaster) {
+  completeOrder() {
     this.util.createLoader().then(
       loader => {
         loader.present();
         this.command
-          .markOrderAsDeliveredUsingPOST(order.orderNumber)
+          .markOrderAsDeliveredUsingPOST(this.order.orderNumber)
           .subscribe(data => {
             this.completed.emit();
             loader.dismiss();
@@ -124,21 +126,11 @@ export class OrderCardComponent implements OnInit {
   acceptOrder() {
     this.util.createLoader().then(loader => {
       loader.present();
-      if (this.order.preOrderDate) {
-          this.deliveryTime = this.order.preOrderDate;
-        }
       const date = new Date();
-      const time: string = this.deliveryTime.slice(
-        this.deliveryTime.indexOf('T') + 1,
-        this.deliveryTime.indexOf('.'));
-      const tempTime: string[] = time.split(':');
       const newTime = moment(date)
         .add(0, 'seconds')
-        .add(tempTime[1], 'minutes')
-        .add(tempTime[0], 'hours')
+        .add(this.expecteddeliveryTime, 'minutes')
         .toISOString();
-        // console.log('new time', newTime);
-        // console.log('task id', openTask.taskId);
 
       this.command
           .acceptOrderUsingPOST({
@@ -160,6 +152,18 @@ export class OrderCardComponent implements OnInit {
           });
     });
 
+  }
+
+  alterTime(type) {
+    if (type === 0) {
+      if (this.expecteddeliveryTime < 180) {
+        this.expecteddeliveryTime++;
+      }
+    } else {
+      if (this.expecteddeliveryTime > 0) {
+        this.expecteddeliveryTime--;
+      }
+    }
   }
 
   async viewOrderViewModal(order) {
