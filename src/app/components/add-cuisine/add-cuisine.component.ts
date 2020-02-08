@@ -33,6 +33,7 @@ export class AddCuisineComponent implements OnInit, AfterViewInit {
 
   dismiss() {
     if (this.storetype.name !== null && this.storetype.name !== undefined && this.storetype.name !== '') {
+      this.storetype.name = this.storetype.name.toLowerCase();
       this.popoverCtrl.dismiss(this.storetype);
     } else {
       this.popoverCtrl.dismiss();

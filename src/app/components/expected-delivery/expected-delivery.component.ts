@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExpectedDeliveryComponent implements OnInit {
 
-  selectedTime;
+  selectedTime = '2005-06-17T00:20';
 
   constructor(
     private popoverController: PopoverController

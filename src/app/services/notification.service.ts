@@ -17,6 +17,7 @@ export class NotificationService {
   connectSubscription: Subscription;
   notificationListenSubscription: Subscription;
   notificationBehaviouralSubject: BehaviorSubject<number> =  new BehaviorSubject(this.notificationCount);
+  orderIdBehaviourSubject: BehaviorSubject<string> = new BehaviorSubject(null);
 
   constructor(private socket: Socket,
               private localNotifications: LocalNotifications,
@@ -77,6 +78,7 @@ export class NotificationService {
               // ]
               });
               this.audioService.playSoundLoop('orderrequest');
+              this.orderIdBehaviourSubject.next(notification.targetId);
               this.presentAlert(notification.message + '\nTracking ID is ' + notification.targetId, () => {
                 console.log('OnDeny called sound is stopping');
                 this.audioService.stopPlayingSound('orderrequest');
@@ -92,10 +94,12 @@ export class NotificationService {
       buttons: [
         {
           text: 'Dismiss',
+          role: 'cancel',
           handler: () => {
-              if (onDeny) {
-                onDeny();
-              }
+            console.log('cancel clicked');
+            if (onDeny) {
+              onDeny();
+            }
           }
       },
       ]

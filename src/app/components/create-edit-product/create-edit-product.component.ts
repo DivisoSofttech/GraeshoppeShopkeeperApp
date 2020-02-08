@@ -81,6 +81,7 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
+          this.discount = this.product.discount;
           console.log('product' , this.product);
           console.log('productBundle ', productBundle);
           this.productbundle = productBundle;
@@ -244,7 +245,8 @@ export class CreateEditProductComponent implements OnInit {
         this.loader.present();
       });
     this.productDTO.name = this.productDTO.name[0].toUpperCase() + this.productDTO.name.slice(1, this.productDTO.name.length);
-    this.commandResource.updateProductUsingPUT(this.productDTO)
+    this.commandResource.updateDiscountUsingPUT(this.discount).subscribe(() => {
+      this.commandResource.updateProductUsingPUT(this.productDTO)
       .subscribe(data => {
         this.productbundle.comboLineItems.forEach(combo =>
           this.query.findCombolineItemByIdUsingGET(combo.id)
@@ -252,12 +254,6 @@ export class CreateEditProductComponent implements OnInit {
               this.comboLineItems = this.comboLineItems.filter(com => com.comboItemId !== comboDto.comboItemId)
             )
         );
-        if (this.discount.rate == null) {
-          this.commandResource.deleteDiscountUsingDELETE(this.discount.id).subscribe();
-        } else {
-          this.commandResource.updateDiscountUsingPUT(this.discount).subscribe();
-        }
-
         this.auxilaryLineItemDTOs.forEach(
           ai => ai.productId = data.id
         );
@@ -290,6 +286,9 @@ export class CreateEditProductComponent implements OnInit {
       }, err => {
         this.util.createToast('Product Updation Error', 'alert');
       });
+    }, err => {
+      this.loader.dismiss();
+    });
   }
   async selectImage() {
 

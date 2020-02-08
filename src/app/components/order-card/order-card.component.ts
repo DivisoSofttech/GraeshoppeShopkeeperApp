@@ -75,10 +75,9 @@ export class OrderCardComponent implements OnInit {
       .then(data => {
         this.user = data;
           // tslint:disable-next-line: max-line-length
-        if (this.order.orderStatus === 'unapproved' || this.order.orderStatus === 'approved' || this.order.orderStatus === 'payment-processed') {
-            console.log('Checking the order count ', this.order.orderStatus);
+        console.log('Checking the order count ', this.order.orderStatus);
             // tslint:disable-next-line: max-line-length
-            this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
+        this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
               .subscribe(ordercount => {
                 console.log('Order count is ', ordercount);
                 if (ordercount === 1) {
@@ -86,7 +85,6 @@ export class OrderCardComponent implements OnInit {
                   this.requiredPhoneVerification = true;
                 }
               });
-          }
       });
   }
 

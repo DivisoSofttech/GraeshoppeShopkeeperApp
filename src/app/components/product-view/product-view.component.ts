@@ -14,11 +14,11 @@ export class ProductViewComponent implements OnInit {
   product: Product = {
     comboLineItems : [],
     auxilaryLineItems: [],
-    discount:{}
+    discount: {}
   };
 
   constructor(
-    private modalController:  ModalController,
+    private modalController: ModalController,
     private query: QueryResourceService
   ) { }
 
@@ -26,8 +26,8 @@ export class ProductViewComponent implements OnInit {
     this.query.getProductBundleByIdUsingGET(this.product.id).subscribe(productBundle =>{
       this.product.auxilaryLineItems = productBundle.auxilaryLineItems;
       this.product.comboLineItems = productBundle.comboLineItems;
-      this.product.discount = productBundle.discount;
-      console.log(this.product);
+      // this.product.discount = productBundle.discount;
+      console.log(productBundle);
     })
     
     

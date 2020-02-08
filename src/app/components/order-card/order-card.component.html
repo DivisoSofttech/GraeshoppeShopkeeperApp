@@ -4,7 +4,7 @@
       <ion-text slot="start">
         {{order.orderNumber}}
       </ion-text>
-      <ion-badge color="dark" slot="end">
+      <ion-badge color="dark">
         {{order.methodOfOrder}}
       </ion-badge>
       <ion-text slot="end">
@@ -35,7 +35,7 @@
           <ion-grid>
             <ion-row class="ion-margin-bottom">
               <ion-col>
-                <ion-label class="center">
+                <ion-label *ngIf="order.methodOfOrder == 'DELIVERY'" class="center">
                   {{order.houseNoOrBuildingName + ', ' + order.city}}
                 </ion-label>
               </ion-col>
@@ -64,7 +64,7 @@
       <ion-row>
         <ion-col class="ion-no-padding">
           <ion-buttons class="buttons-right">
-            <ion-button *ngIf="orderType=='confirmed'" (click)="getDocketData()">
+            <ion-button *ngIf="orderType=='confirmed'" (click)="getOrderMaster()">
               <ion-icon slot="icon-only" name="print"></ion-icon>
             </ion-button>
             <ion-button (click)="viewOrderViewModal()">

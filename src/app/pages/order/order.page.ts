@@ -60,6 +60,7 @@ export class OrderPage implements OnInit {
   comTotalPages = 0;
   showFooter = false;
   searchTerm;
+  newOrderId;
 
   searchedOrder: OrderMaster = {};
   searchedOrderDate;
@@ -107,6 +108,16 @@ export class OrderPage implements OnInit {
         });
       }
     );
+    this.notification.orderIdBehaviourSubject.subscribe(orderId => {
+      if (this.newOrderId !== orderId) {
+        this.newOrderId = orderId;
+        console.log('order Id ===========  ' + orderId);
+        this.queryResource.findOrderMasterByOrderIdUsingGET(orderId).subscribe(order => {
+        console.log('new order', order);
+        this.pendingOrdersSorted.today.unshift(order);
+      });
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -211,8 +222,7 @@ export class OrderPage implements OnInit {
   }
 
   getPendingOrders(i) {
-    console.log('type'+ this.deliveryType);
-    
+    console.log('type' + this.deliveryType);
     console.log('method pending oders ');
 
     this.util.createLoader().then(loader => {
