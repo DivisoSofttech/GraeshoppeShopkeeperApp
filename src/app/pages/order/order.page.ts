@@ -1,3 +1,4 @@
+import { FilterOrderComponent } from './../../components/filter-order/filter-order.component';
 import { OrderMaster } from './../../api/models/order-master';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
@@ -14,6 +15,7 @@ import {
   ActionSheetController,
   ModalController,
   IonRefresher,
+  PopoverController,
 } from '@ionic/angular';
 import { NotificationService } from 'src/app/services/notification.service';
 import { DatePipe, formatDate } from '@angular/common';
@@ -81,6 +83,7 @@ export class OrderPage implements OnInit {
     private keycloakService: KeycloakService,
     private notification: NotificationService,
     private datePipe: DatePipe,
+    private popover: PopoverController
   ) {}
 
   ngOnInit() {
@@ -170,8 +173,8 @@ export class OrderPage implements OnInit {
   filter(filterBy) {
     console.log('method filterBy ');
 
-    this.deliveryType = filterBy.detail.value;
-    console.log('filterBy ', filterBy.detail.value);
+    this.deliveryType = filterBy;
+    console.log('filterBy ', filterBy);
     this.confirmedOrdersSorted = {
       today: []
     };
@@ -508,4 +511,23 @@ export class OrderPage implements OnInit {
       }
     });
   }
+
+  async openFilterPopover() {
+    const popover = await this.popover.create({
+      component: FilterOrderComponent,
+      translucent: true,
+      cssClass: 'custom-popover',
+      componentProps: {
+        deliveryType: this.deliveryType
+      }
+    });
+    await popover.present();
+    popover.onDidDismiss().then(data => {
+     if (data.data && data.data !== this.deliveryType) {
+      this.filter(data.data);
+     }
+    });
+  }
+
+  
 }

@@ -3,7 +3,12 @@
     <ion-menu type="overlay">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Menu</ion-title>
+         <ion-item>
+           <ion-avatar>
+             <img [src]="store.imageLink">
+           </ion-avatar>
+          <ion-text class="margin">{{store.name}}</ion-text>
+         </ion-item>
         </ion-toolbar>
       </ion-header>
       <ion-content>

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Filter</ion-title>
+    <ion-button slot="end" color="success" class="right" (click)="dismiss()">Done</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label>Delivery</ion-label>
+    <ion-toggle color="success" [(ngModel)]="delivery"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>Collection</ion-label>
+    <ion-toggle color="success" [(ngModel)]="collection"></ion-toggle>
+  </ion-item>
+</ion-content>

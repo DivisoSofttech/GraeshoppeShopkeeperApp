@@ -1,5 +1,6 @@
+import { FilterOrderComponent } from './../../components/filter-order/filter-order.component';
 import { OrderViewComponent } from './../../components/order-view/order-view.component';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
@@ -66,6 +67,7 @@ const routes: Routes = [
   ],
   declarations: [OrderPage],
   providers: [DatePipe],
-  entryComponents: [OrderCardComponent,OrderViewComponent,NotificationComponent]
+  entryComponents: [OrderCardComponent,OrderViewComponent,NotificationComponent,FilterOrderComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OrderPageModule {}

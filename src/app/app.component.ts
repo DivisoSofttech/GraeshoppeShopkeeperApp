@@ -1,3 +1,6 @@
+import { Store } from './api/models/store';
+import { QueryResourceService } from 'src/app/api/services';
+import { Storage } from '@ionic/storage';
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
@@ -66,6 +69,10 @@ export class AppComponent {
       icon: 'settings'
     },
   ];
+  store: Store = {
+    storeUniqueId: '',
+    imageLink: ''
+  };
 
   constructor(
     private platform: Platform,
@@ -73,7 +80,9 @@ export class AppComponent {
     private statusBar: StatusBar,
     private util: Util,
     private keycloakService: KeycloakService,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private storage: Storage,
+    private query: QueryResourceService
   ) {
     this.initializeApp();
   }
@@ -90,6 +99,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#FFFFFF');
       this.splashScreen.hide();
+      this.storage.get('user').then(user => {
+        this.query.findStoreByRegNoUsingGET(user.preferred_username).subscribe(store => {
+          this.store = store;
+        });
+      });
     });
   }
 

@@ -7,20 +7,10 @@
         <ion-title *ngIf="showSearch==false">Order</ion-title>
         <ion-searchbar *ngIf="showSearch == true"  [(ngModel)] ="searchTerm" (ionChange)="getSearchedOrder()"></ion-searchbar>
         </ion-buttons>
-        <ion-item *ngIf="showSearch == false" slot="end">
-          <ion-button fill="none"><ion-icon slot="icon-only" name="funnel"></ion-icon></ion-button>
-          <ion-select class="ion-no-padding ion-no-margin" okText="Okay" (ionChange)="filter($event)" cancelText="Dismiss">
-            <ion-select-option value="all">All</ion-select-option>
-            <ion-select-option value="delivery">Delivery</ion-select-option>
-            <ion-select-option value="collection">Collection</ion-select-option>
-          </ion-select>
-        </ion-item>
+        <ion-popover-controller></ion-popover-controller>
+        
         <ion-buttons slot="end">
-          <!-- Sunmi Printer Test -->
-          <!-- <ion-button (click)="print()">
-            <ion-icon slot="icon-only" name="print" ></ion-icon>
-          </ion-button> -->
-          <!-- <ion-button slot="end" fill="none"(click)="refresh()"><ion-icon slot="icon-only" name="refresh"></ion-icon></ion-button> -->
+          <ion-button (click)="openFilterPopover()" *ngIf="showSearch==false"><ion-icon slot="icon-only" name="funnel"></ion-icon></ion-button>
           <ion-button (click)="toggleSearch()" *ngIf="showSearch==false">
             <ion-icon slot="icon-only"  name="search"></ion-icon>
           </ion-button>

@@ -1,3 +1,4 @@
+import { FilterOrderComponent } from './filter-order/filter-order.component';
 import { ExpectedDeliveryComponent } from './expected-delivery/expected-delivery.component';
 import { OrderProductCardComponent } from './order-product-card/order-product-card.component';
 import { MaterialModule } from './material.module';
@@ -60,6 +61,7 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     SaleHistoryComponent,
     OrderProductCardComponent,
     ExpectedDeliveryComponent,
+    FilterOrderComponent
   ],
 
   imports: [
@@ -99,6 +101,7 @@ import { ImageCropperModule } from 'ngx-img-cropper';
     SaleHistoryComponent,
     OrderProductCardComponent,
     ExpectedDeliveryComponent,
+    FilterOrderComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
