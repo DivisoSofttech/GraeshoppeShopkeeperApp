@@ -29,6 +29,11 @@ export class AppComponent {
       icon: 'logo-buffer'
     },
     {
+      title: 'Menu',
+      url: '/menu',
+      icon: 'logo-buffer'
+    },
+    {
       title: 'Category',
       url: '/category',
       icon: 'filing'

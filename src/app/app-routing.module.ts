@@ -75,8 +75,12 @@ const routes: Routes = [
    loadChildren: './pages/dashboard/dashboard.module#DashboardPageModule',
    canActivate: [AuthGuardService]
    },
-  { path: 'stock-dairy', 
+  { path: 'stock-dairy',
     loadChildren: './pages/stock-dairy/stock-dairy.module#StockDairyPageModule',
+    canActivate: [AuthGuardService]
+  },
+  { path: 'menu',
+    loadChildren: './pages/menu/menu.module#MenuPageModule',
     canActivate: [AuthGuardService]
   },
 

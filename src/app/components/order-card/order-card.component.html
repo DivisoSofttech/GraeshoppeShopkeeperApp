@@ -63,7 +63,7 @@
       <ion-button *ngIf="orderType!='completed' && requiredPhoneVerification" slot="start" fill="none" class="ion-no-padding">
         <a href=tel:{{order.phone}}><ion-icon class="call-font" color="primary" slot="icon-only" name="call"></ion-icon></a>
       </ion-button>
-      <ion-button *ngIf="orderType=='confirmed'" slot="start" fill="none" class="ion-no-padding" (click)="getOrderMaster()"><ion-icon slot="icon-only" name="print"></ion-icon></ion-button>
+      <ion-button *ngIf="orderType=='confirmed'" slot="start" fill="none" class="ion-no-padding" (click)="getDocketData()"><ion-icon slot="icon-only" name="print"></ion-icon></ion-button>
     <ion-button *ngIf="orderType=='pending'" class="btn-b" slot="end" color="success" (click)="acceptOrder()">ACCEPT ORDER</ion-button>
     <ion-button *ngIf="orderType=='confirmed'" class="btn-b" slot="end" color="success" (click)="completeOrder()">MARK AS DELIVERED</ion-button>
   </ion-item>
