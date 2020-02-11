@@ -84,6 +84,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderByStatusNameAndStoreIdAndDeliveryTypeUsingGETPath = '/api/query/findOrderByStatusNameAndStoreIdAndDeliveryType/{date}/{statusName}/{storeId}/{deliveryType}';
   static readonly findOrderLineByStoreIdUsingGETPath = '/api/query/findOrderLineByStoreId/{storeId}';
   static readonly findOrderLinesByOrderNumberUsingGETPath = '/api/query/findOrderLinesByOrderNumber/{orderId}';
+  static readonly findProductByCategoryIdUsingGETPath = '/api/query/findProductByCategoryId/{categoryId}/{storeId}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
   static readonly findProductDTOByIdUsingGETPath = '/api/query/findProductDTOById/{id}';
   static readonly findStockEntryByIdUsingGETPath = '/api/query/findStockEntryById/{id}';
@@ -1422,6 +1423,68 @@ class QueryResourceService extends __BaseService {
   findOrderLinesByOrderNumberUsingGET(orderId: string): __Observable<Array<OrderLine>> {
     return this.findOrderLinesByOrderNumberUsingGETResponse(orderId).pipe(
       __map(_r => _r.body as Array<OrderLine>)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindProductByCategoryIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `categoryId`: categoryId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findProductByCategoryIdUsingGETResponse(params: QueryResourceService.FindProductByCategoryIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfProduct>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findProductByCategoryId/${params.categoryId}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfProduct>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindProductByCategoryIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
+   *
+   * - `categoryId`: categoryId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findProductByCategoryIdUsingGET(params: QueryResourceService.FindProductByCategoryIdUsingGETParams): __Observable<PageOfProduct> {
+    return this.findProductByCategoryIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfProduct)
     );
   }
 
@@ -3449,6 +3512,37 @@ module QueryResourceService {
      * storeId
      */
     storeId: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findProductByCategoryIdUsingGET
+   */
+  export interface FindProductByCategoryIdUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * categoryId
+     */
+    categoryId: number;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

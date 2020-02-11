@@ -86,7 +86,13 @@ export class EditRestaurantPage implements OnInit {
     // ]),
     zipcode: new FormControl('', [
       Validators.required
-    ])
+    ]),
+    // collectionStartTime: new FormControl('', [
+    //   Validators.required
+    // ]),
+    // collectionEndTime: new FormControl('', [
+    //   Validators.required
+    // ])
 
   });
 
@@ -361,7 +367,7 @@ export class EditRestaurantPage implements OnInit {
     // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
     console.log('ivdfhvdfvuy', this.imageValidation());
-    if (!this.storeForm.invalid && this.imageValidation()) {
+    if (!this.storeForm.invalid && this.imageValidation() && this.collectionChecked && this.collectionInfo.startingTime && this.collectionInfo.endTime) {
         this.util.createLoader().then(loader => {
           this.loader = loader;
           this.loader.present();
@@ -403,6 +409,16 @@ export class EditRestaurantPage implements OnInit {
           );
     } else {
       this.showError = true;
+      if (!this.collectionChecked) {
+        this.util.createAlert(
+          'Skipped mantatory fields',
+        'collection must be enabled');
+      }
+      if(!this.collectionInfo.startingTime || !this.collectionInfo.endTime) {
+        this.util.createAlert(
+          'Skipped mandatory fields',
+        'Stat time and end time of collection is mandatory');
+      }
     }
   }
   connectDeliveryInfo() {

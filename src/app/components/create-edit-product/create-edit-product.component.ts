@@ -81,7 +81,9 @@ export class CreateEditProductComponent implements OnInit {
       this.getProductDtoUsingProduct();
       this.query.getProductBundleByIdUsingGET(this.product.id)
         .subscribe(productBundle => {
-          this.discount = this.product.discount;
+          if (this.product.discount) {
+            this.discount = this.product.discount;
+          }
           console.log('product' , this.product);
           console.log('productBundle ', productBundle);
           this.productbundle = productBundle;
@@ -208,8 +210,7 @@ export class CreateEditProductComponent implements OnInit {
         this.loader = loader;
         this.loader.present();
       });
-    this.commandResource.createDiscountUsingPOST(this.discount).subscribe(discount => {
-      this.productDTO.discountId = discount.id;
+    this.createDiscount(() => {
       this.productDTO.name = this.productDTO.name[0].toUpperCase() + this.productDTO.name.slice(1, this.productDTO.name.length);
       this.commandResource.createProductUsingPOST(this.productDTO)
         .subscribe(data => {
@@ -233,7 +234,26 @@ export class CreateEditProductComponent implements OnInit {
           }
         );
     });
-
+  }
+  createDiscount(success) {
+    if (this.discount.rate) {
+      console.log(this.discount.rate);
+      
+      this.commandResource.createDiscountUsingPOST(this.discount).subscribe(discount => {
+        this.productDTO.discountId = discount.id;
+        success();
+      });
+    }
+    success();
+  }
+  updateDiscount(success) {
+    if (this.discount.rate) {
+      console.log(this.discount.rate);
+      this.commandResource.updateDiscountUsingPUT(this.discount).subscribe(discount => {
+        success();
+      });
+    }
+    success();
   }
   updateProduct() {
     if (this.productDTO.isAuxilaryItem === true) {
@@ -245,7 +265,7 @@ export class CreateEditProductComponent implements OnInit {
         this.loader.present();
       });
     this.productDTO.name = this.productDTO.name[0].toUpperCase() + this.productDTO.name.slice(1, this.productDTO.name.length);
-    this.commandResource.updateDiscountUsingPUT(this.discount).subscribe(() => {
+    this.updateDiscount(() => {
       this.commandResource.updateProductUsingPUT(this.productDTO)
       .subscribe(data => {
         this.productbundle.comboLineItems.forEach(combo =>
@@ -286,8 +306,6 @@ export class CreateEditProductComponent implements OnInit {
       }, err => {
         this.util.createToast('Product Updation Error', 'alert');
       });
-    }, err => {
-      this.loader.dismiss();
     });
   }
   async selectImage() {
@@ -423,8 +441,8 @@ export class CreateEditProductComponent implements OnInit {
   }
 
   selectedCategory(categoryid): boolean {
-    console.log(categoryid + ' === '+this.productDTO.categoryId);
-    
+    console.log(categoryid + ' === ' + this.productDTO.categoryId);
+
     if (this.productDTO.categoryId == categoryid) {
       return true;
     }

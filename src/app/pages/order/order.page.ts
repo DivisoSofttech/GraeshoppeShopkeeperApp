@@ -61,7 +61,7 @@ export class OrderPage implements OnInit {
   conTotalPages = 0;
   comTotalPages = 0;
   showFooter = false;
-  searchTerm;
+  searchTerm = 'FEXP-';
   newOrderId;
 
   searchedOrder: OrderMaster = {};

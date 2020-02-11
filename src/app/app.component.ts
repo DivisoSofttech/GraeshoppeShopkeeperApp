@@ -28,11 +28,11 @@ export class AppComponent {
       url: '/product',
       icon: 'logo-buffer'
     },
-    {
-      title: 'Menu',
-      url: '/menu',
-      icon: 'logo-buffer'
-    },
+    // {
+    //   title: 'Menu',
+    //   url: '/menu',
+    //   icon: 'logo-buffer'
+    // },
     {
       title: 'Category',
       url: '/category',
@@ -53,11 +53,11 @@ export class AppComponent {
       url: '/order-summary',
       icon: 'browsers'
     },
-    {
-      title: 'UOM',
-      url: '/uom',
-      icon: 'speedometer'
-    },
+    // {
+    //   title: 'UOM',
+    //   url: '/uom',
+    //   icon: 'speedometer'
+    // },
     // {
     //   title: 'Sale',
     //   url: '/sale',

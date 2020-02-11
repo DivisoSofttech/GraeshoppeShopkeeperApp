@@ -6,5 +6,16 @@
 </ion-header>
 
 <ion-content>
+<ion-item>
+    <ion-button shape="round" [ngClass]="{'btn-brdr2': currentTab===1}" fill="none" class="btn-brdr" (click)="currentTab=1">All items</ion-button>
+    <ion-button shape="round" [ngClass]="{'btn-brdr2': currentTab===2}" fill="none" class="btn-brdr" (click)="currentTab=2">Out of stock</ion-button>
+</ion-item>
 
+<ion-list *ngFor="let category of categories">
+  <ion-item lines="none" >
+    <ion-text>{{category.name}}</ion-text>
+    <ion-text slot="end" color="primary">Edit</ion-text>
+    </ion-item>
+      <app-category-product [category] = category></app-category-product>
+</ion-list>
 </ion-content>
