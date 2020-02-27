@@ -60,7 +60,7 @@
   </ion-item>
   <ion-item>
       <ion-button slot="start" fill="none" class="ion-no-padding" (click)="viewOrderViewModal()"><ion-icon slot="icon-only" name="information-circle-outline"></ion-icon></ion-button>
-      <ion-button *ngIf="orderType!='completed' && requiredPhoneVerification" slot="start" fill="none" class="ion-no-padding">
+      <ion-button *ngIf="orderType!='completed' && order.loyaltyPoint == 1" slot="start" fill="none" class="ion-no-padding">
         <a href=tel:{{order.phone}}><ion-icon class="call-font" color="primary" slot="icon-only" name="call"></ion-icon></a>
       </ion-button>
       <ion-button *ngIf="orderType=='confirmed'" slot="start" fill="none" class="ion-no-padding" (click)="getDocketData()"><ion-icon slot="icon-only" name="print"></ion-icon></ion-button>

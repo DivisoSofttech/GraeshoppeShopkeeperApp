@@ -367,7 +367,7 @@ export class EditRestaurantPage implements OnInit {
     // this.storeBundleDTO.storeAddress.state = formValue.state;
     this.storeBundleDTO.storeAddress.pincode = formValue.zipcode;
     console.log('ivdfhvdfvuy', this.imageValidation());
-    if (!this.storeForm.invalid && this.imageValidation() && this.collectionChecked && this.collectionInfo.startingTime && this.collectionInfo.endTime) {
+    if (!this.storeForm.invalid && this.imageValidation() && this.collectionChecked && this.collectionInfo.startingTime && this.collectionInfo.endTime && this.storeBundleDTO.preOrderSettings.toTime) {
         this.util.createLoader().then(loader => {
           this.loader = loader;
           this.loader.present();
@@ -414,10 +414,15 @@ export class EditRestaurantPage implements OnInit {
           'Skipped mantatory fields',
         'collection must be enabled');
       }
-      if(!this.collectionInfo.startingTime || !this.collectionInfo.endTime) {
+      if (!this.collectionInfo.startingTime || !this.collectionInfo.endTime) {
         this.util.createAlert(
           'Skipped mandatory fields',
-        'Stat time and end time of collection is mandatory');
+        'Start time and end time of collection is mandatory');
+      }
+      if (this.storeBundleDTO.preOrderSettings.isPreOrderAvailable && !this.storeBundleDTO.preOrderSettings.toTime) {
+        this.util.createAlert(
+          'Skipped mandatory fields',
+        'Stat time is required for Preorder');
       }
     }
   }

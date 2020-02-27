@@ -103,6 +103,7 @@ class QueryResourceService extends __BaseService {
   static readonly getFooterUsingGETPath = '/api/query/getFooter/{orderNumber}';
   static readonly getNotAuxNotComboProductsByIDPcodeUsingGETPath = '/api/query/getNotAuxNotComboProductsByIDPcode/{iDPcode}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderNumber}';
+  static readonly getOrderTimesUsingGETPath = '/api/query/getOrderTimes/{orderNumber}';
   static readonly getPaymentStatusForDocketUsingGETPath = '/api/query/getPaymentStatusForDocket/{orderNumber}';
   static readonly getProductUsingGETPath = '/api/query/getProduct/{orderNumber}';
   static readonly getProductBundleByIdUsingGETPath = '/api/query/getProductBundle/{id}';
@@ -2239,6 +2240,42 @@ class QueryResourceService extends __BaseService {
   getOrderDocketUsingGET(orderNumber: string): __Observable<PdfDTO> {
     return this.getOrderDocketUsingGETResponse(orderNumber).pipe(
       __map(_r => _r.body as PdfDTO)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getOrderTimesUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getOrderTimes/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getOrderTimesUsingGET(orderNumber: string): __Observable<string> {
+    return this.getOrderTimesUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as string)
     );
   }
 

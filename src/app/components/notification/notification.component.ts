@@ -1,3 +1,4 @@
+import { OrderViewComponent } from './../order-view/order-view.component';
 import { CommandResource } from './../../api/models/command-resource';
 import { Util } from 'src/app/services/util';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
@@ -14,18 +15,22 @@ import { Storage } from '@ionic/storage';
 export class NotificationComponent implements OnInit {
 
   loader: HTMLIonLoadingElement;
-  show = false;
+  // show = false;
   IdpCode: string;
   // pageCount = 0;
   notifications: Notification[] = [];
   notification: NotificationDTO;
   clickedNotification: Notification;
+
+  order;
+
   constructor(
     private modal: ModalController,
     private query: QueryResourceService,
     private storage: Storage,
     private util: Util,
-    private command: CommandResourceService
+    private command: CommandResourceService,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -43,14 +48,23 @@ export class NotificationComponent implements OnInit {
   dismiss() {
     this.modal.dismiss();
   }
-  onClick(notification: Notification) {
-    console.log();
+
+  async viewOrderViewModal(notification) {
     this.clickedNotification = notification;
-    this.show = !this.show;
-    if (notification.status === 'unread') {
-      this.updateNotification(notification);
-    }
+    this.query.findOrderMasterByOrderIdUsingGET(this.clickedNotification.targetId).subscribe(async order => {
+      console.log(order);
+      if (notification.status === 'unread') {
+        this.updateNotification(notification);
+      }
+      const modal = await this.modalController.create({
+        component: OrderViewComponent,
+        componentProps: { order }
+      });
+      return await modal.present();
+    });
   }
+
+
   getNotifications(i) {
     this.query.findNotificationByReceiverIdUsingGET({receiverId: this.IdpCode, page: i})
         .subscribe(res => {

@@ -54,6 +54,7 @@ export class OrderCardComponent implements OnInit {
   attention;
   customerDetail;
   footer;
+  orderTimes;
 
   expecteddeliveryTime = 20;
 
@@ -76,17 +77,6 @@ export class OrderCardComponent implements OnInit {
       .get('user')
       .then(data => {
         this.user = data;
-          // tslint:disable-next-line: max-line-length
-        console.log('Checking the order count ', this.order.orderStatus);
-            // tslint:disable-next-line: max-line-length
-        this.queryResource.orderCountByCustomerIdAndStoreIdUsingGET({ storeId: data.preferred_username, customerId: this.order.customerId })
-              .subscribe(ordercount => {
-                console.log('Order count is ', ordercount);
-                if (ordercount === 1) {
-                  console.log('call enable set to true');
-                  this.requiredPhoneVerification = true;
-                }
-              });
       });
   }
 
@@ -277,18 +267,32 @@ async expectedTimePopover(callback?) {
         .text(this.paymentStatus)
         .newline()
         .text(this.customerOrderDetail)
-        .newline()
-        .text(this.attention)
-        .newline()
-        .text(this.customerDetail)
-        .newline()
+        .newline();
+
+      if (this.order.methodOfOrder !== 'COLLECTION') {
+          result
+          .text(this.customerDetail)
+          .newline();
+          // .align('center');
+      }
+      if (this.order.loyaltyPoint === 1) {
+        result.text(this.attention)
+        .newline();
+      }
+
+      result
+        .text(this.orderTimes)
+        .newline();
+
+      const data = result
         .text(this.footer)
         .newline()
         .encode();
-      const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(result)));
+      const base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
       try {
           sunmiInnerPrinter.sendRAWData(base64String, succes => {
-            sunmiInnerPrinter.cutPaper().then(_ => this.count = 0);
+            sunmiInnerPrinter.cutPaper();
+            this.count = 0;
           }, error => {
             console.log(error);
             this.count = 0;
@@ -345,6 +349,12 @@ async expectedTimePopover(callback?) {
     this.queryResource.getFooterUsingGET(this.order.orderNumber).subscribe(footer => {
       this.footer = footer;
       this.count++;
+      this.print();
+    });
+    this.queryResource.getOrderTimesUsingGET(this.order.orderNumber).subscribe(orderTimes => {
+      this.orderTimes = orderTimes;
+      this.count++;
+      console.log(this.orderTimes);
       this.print();
     });
   }

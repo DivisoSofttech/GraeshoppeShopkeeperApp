@@ -11,16 +11,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-        <ion-list>
+        <!-- <ion-list>
           <ion-card *ngFor="let notification of notifications">
             <ion-card-header (click)="onClick(notification)">
                 <ion-item >
-                    <!-- <ion-avatar *ngIf="notification.status=='unread'" margin> 
-                      <ion-img [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
-                    </ion-avatar>
-                    <ion-avatar *ngIf="notification.status=='read'" margin> 
-                        <ion-img class="read-img" [src]="'data:' + notification.imageContentType + ';base64,' + notification.image"></ion-img>
-                      </ion-avatar> -->
                     <ion-text *ngIf="notification.status=='unread'">
                       <p><strong>{{notification.title}}</strong></p>
                       <p>{{notification.date | date:'d/M/yy'}}</p>
@@ -41,5 +35,26 @@
               </ion-item>
             </ion-card-content>
           </ion-card>
+        </ion-list> -->
+
+        <ion-list *ngFor="let n of notifications">
+          <ion-item >
+          <in-grid (click)="viewOrderViewModal(n)" class="ion-padding">
+            <ion-row>
+              <ion-text><strong>{{n.title}}</strong></ion-text>&nbsp;&nbsp;
+              <img *ngIf="n.status == 'unread'"  class="img-size" src="../../../assets/svg/dot.png">
+            </ion-row>
+            <ion-row >
+            <ion-badge color="success">{{n.targetId}}</ion-badge>
+            </ion-row>
+            <ion-row>
+            <ion-text>{{n.message}}</ion-text>
+            </ion-row>
+            <ion-row>
+            <ion-text>{{n.date | date:'dd/MM/yyyy'}}   {{n.date | date: 'HH:mm a'}}</ion-text>
+            </ion-row>
+          </in-grid>
+          </ion-item>
+          <div class="bg"></div>
         </ion-list>
 </ion-content>

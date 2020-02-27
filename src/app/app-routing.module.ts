@@ -83,6 +83,11 @@ const routes: Routes = [
     loadChildren: './pages/menu/menu.module#MenuPageModule',
     canActivate: [AuthGuardService]
   },
+  {
+    path: 'offers',
+    loadChildren: () => import('./pages/offers/offers.module').then( m => m.OffersPageModule),
+    canActivate: [AuthGuardService]
+  },
 
 ];
 

@@ -28,15 +28,20 @@ export class AppComponent {
       url: '/product',
       icon: 'logo-buffer'
     },
-    // {
-    //   title: 'Menu',
-    //   url: '/menu',
-    //   icon: 'logo-buffer'
-    // },
+    {
+      title: 'Menu',
+      url: '/menu',
+      icon: 'logo-buffer'
+    },
     {
       title: 'Category',
       url: '/category',
       icon: 'filing'
+    },
+    {
+      title: 'Offers',
+      url: '/offers',
+      icon: 'pricetags'
     },
     // {
     //   title: 'Stock Dairy',

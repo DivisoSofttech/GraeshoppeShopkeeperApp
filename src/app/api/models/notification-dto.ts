@@ -2,8 +2,7 @@
 export interface NotificationDTO {
   date?: string;
   id?: number;
-  image?: string;
-  imageContentType?: string;
+  imageLink?: string;
   message?: string;
   receiverId?: string;
   status?: string;
