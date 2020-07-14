@@ -55,7 +55,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci1.divisosofttech.com:9999', 
     ComponentsModule,
     OAuthModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDgCo5uoS1ziWYwxC_urPwZBIP-pO2geRY',
+      apiKey: 'AIzaSyBIe2IuJ8-vkU2RvxYF3u47c4CPDyDS9Og',
       libraries: ['places', 'geometry']
     }),
     MaterialModule,
